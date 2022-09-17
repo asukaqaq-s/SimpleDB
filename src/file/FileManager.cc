@@ -61,7 +61,7 @@ void FileManager::Read(const BlockId &block, Page &page) {
     }
 }
 
-// Write can extent the file's coontent, 
+// Write can extend the file, 
 // so it can write past the end of file
 void FileManager::Write(const BlockId &block, Page &page) {
     std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
@@ -79,6 +79,8 @@ void FileManager::Write(const BlockId &block, Page &page) {
     file_io->flush();
 }
 
+// By writing to next logical block to file that not belonging to us
+// The OS will automatically complete the extension
 BlockId FileManager::Append(const std::string &file_name) {
     std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
     auto file_io = GetFile(file_name);
@@ -108,7 +110,7 @@ std::shared_ptr<std::fstream> FileManager::GetFile(const std::string &file_name)
     
     // search the hash-table
     if(open_files_.find(file_name) != open_files_.end()) {
-        // the file has been opened
+        // the file has been created
         file_io = open_files_[file_name];
         if(file_io->is_open()) { /* file is being opened */
             return file_io;
@@ -129,7 +131,7 @@ std::shared_ptr<std::fstream> FileManager::GetFile(const std::string &file_name)
             throw std::runtime_error("can't open file " + file_name);
         }
     }
-    // put it in open_file_
+    // put it in open_files_
     open_files_[file_name] = file_io;
     return file_io;
 }

@@ -22,7 +22,7 @@ class FileManager {
 public:
     /**
     * @brief create a filemanager, only one object exist in Simpledb::client
-    * 
+    *   
     * @param db_directory direcotry path name (linux)
     * @param block_size
     */
@@ -64,11 +64,12 @@ public:
     int BlockSize() { return block_size_; }
     
     /**
-    * @brief return the next logical block of the file
-    * i.e.The file has only one block: block 0, and file'size = 4kb 
-    *   but call Length, will return logical number 1
-    *   Actually block 1 doesn't belong to us, we can extent the file in this-way
-    * p.s The file length is a multiple of 4kb
+    * @brief return the next logical block number of the file
+    * i.e.The file has only one block: block 0, so the size of file is 4kb 
+    *   but if we call Length func, will return logical number 1
+    *   Actually block 1 doesn't belong to us, OS will automatically expand the size of file
+    *   we can expand the file in this-way
+    * p.s The length of the file is always a multiple of 4kb
     */
     int Length(const std::string &file_name) {
         return GetFileSize(file_name) / block_size_;

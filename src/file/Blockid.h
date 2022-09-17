@@ -6,9 +6,10 @@
 namespace SimpleDB {
 
 /**
-* @brief we use page-level to access a file that Identified by a file name.
+* @brief we use page-level to access a file that identified by a file name.
 * a file consists of many disk-blocks that identified by a logical block number.
-* so, blockid consist of a filename and a logical block number  
+* so, blockid consist of a filename and a logical block number
+* A disk-block can be uniquely identified by BlockId 
 */
 class BlockId {
     
@@ -53,7 +54,7 @@ public:
     int BlockNum() const;
     
     /**
-    * @brief Is obj equal to block_num_?
+    * @brief whether obj equal to this one?
     * 
     * @param
     * @return if equal,return true
@@ -62,7 +63,7 @@ public:
     bool equals(const BlockId &obj) const;
 
     /**
-    * @brief for debugging...
+    * @brief for debugging purpose
     * 
     * @return the information of the block
     */

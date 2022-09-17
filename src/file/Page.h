@@ -28,7 +28,7 @@ public:
     
     /**
     * @brief copy-constructor,
-    *   will Increasing the reference count
+    *   will increasing the reference count
     *   Commly used to log manager
     * @param buffer_page
     */
@@ -104,6 +104,7 @@ public:
     /**
     * @brief for debugging purpose
     * 
+    * @param mode print mode
     */
     void PrintPage(int mode);
 private:

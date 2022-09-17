@@ -1,12 +1,12 @@
 
-[中文版](CHINESE_README.md)
-[笔记](https://zhuanlan.zhihu.com/p/563388103)
+
+[中文版笔记](https://zhuanlan.zhihu.com/p/563388103)
 
 ----
 
 ## SimpleDB
 
-Simpleb is SimpleDB is a tiny-database-manage-system for education purpose
+Simpleb is SimpleDB is a tiny-database-manage-system for education purpose.Note that this is just a toy for learning and is NOT a robust and full solution to Database.
 
 Schedule 
 
