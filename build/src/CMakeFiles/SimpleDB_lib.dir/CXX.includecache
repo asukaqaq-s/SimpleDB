@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/include/file/page.h
+memory
+-
+vector
+-
+
+/home/asuka/workbench/project/SimpleDB/src/file/page.cc
+file/page.h
+/home/asuka/workbench/project/SimpleDB/src/file/file/page.h
+cstring
+-
+

@@ -1,0 +1,5 @@
+if(EXISTS "/home/asuka/workbench/project/SimpleDB/build/test/FileTest[1]_tests.cmake")
+  include("/home/asuka/workbench/project/SimpleDB/build/test/FileTest[1]_tests.cmake")
+else()
+  add_test(FileTest_NOT_BUILT FileTest_NOT_BUILT)
+endif()

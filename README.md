@@ -13,7 +13,7 @@ Schedule
 - FileManager (comepleted in 9/16/2022)
 - BufferManager(todo)
 - Recover by WAL(todo)
-- Transaction
+- Transaction(todo)
 
 ## reference
 
