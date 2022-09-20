@@ -6,7 +6,7 @@
 namespace SimpleDB {
 
 TEST(PageTest, simpletest1) {
-    SimpleDB::Page page(4096);
+    Page page(4096);
 
     // test SetInt and GetInt
     for(int i = 0;i < 1000;i ++) {

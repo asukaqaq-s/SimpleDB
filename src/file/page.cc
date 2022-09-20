@@ -10,7 +10,7 @@ namespace SimpleDB {
 int Page::GetInt(int offset) const {
     char* page_offset;
     int res;
-
+    
     if(offset + sizeof(int) > buffer_page_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when GetInt");

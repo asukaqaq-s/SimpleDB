@@ -68,49 +68,17 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
 
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
 # Special rule for the target test
 test:
@@ -123,17 +91,49 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
 
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -168,64 +168,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/page_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
-.PHONY : test/CMakeFiles/page_test.dir/rule
+test/CMakeFiles/show-tests.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
+.PHONY : test/CMakeFiles/show-tests.dir/rule
 
 # Convenience name for target.
-page_test: test/CMakeFiles/page_test.dir/rule
+show-tests: test/CMakeFiles/show-tests.dir/rule
 
-.PHONY : page_test
+.PHONY : show-tests
 
 # fast build rule for target.
-page_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/file_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_test.dir/rule
-.PHONY : test/CMakeFiles/file_test.dir/rule
-
-# Convenience name for target.
-file_test: test/CMakeFiles/file_test.dir/rule
-
-.PHONY : file_test
-
-# fast build rule for target.
-file_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-.PHONY : file_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/file_manager_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
-.PHONY : test/CMakeFiles/file_manager_test.dir/rule
-
-# Convenience name for target.
-file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
-
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/main.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/rule
-.PHONY : test/CMakeFiles/main.dir/rule
-
-# Convenience name for target.
-main: test/CMakeFiles/main.dir/rule
-
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
-.PHONY : main/fast
+show-tests/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
+.PHONY : show-tests/fast
 
 # Convenience name for target.
 test/CMakeFiles/unittests.dir/rule:
@@ -243,19 +198,79 @@ unittests/fast:
 .PHONY : unittests/fast
 
 # Convenience name for target.
-test/CMakeFiles/show-tests.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
-.PHONY : test/CMakeFiles/show-tests.dir/rule
+test/CMakeFiles/main.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/rule
+.PHONY : test/CMakeFiles/main.dir/rule
 
 # Convenience name for target.
-show-tests: test/CMakeFiles/show-tests.dir/rule
+main: test/CMakeFiles/main.dir/rule
 
-.PHONY : show-tests
+.PHONY : main
 
 # fast build rule for target.
-show-tests/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
-.PHONY : show-tests/fast
+main/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+# Convenience name for target.
+test/CMakeFiles/file_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
+.PHONY : test/CMakeFiles/file_manager_test.dir/rule
+
+# Convenience name for target.
+file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
+
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/file_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_test.dir/rule
+.PHONY : test/CMakeFiles/file_test.dir/rule
+
+# Convenience name for target.
+file_test: test/CMakeFiles/file_test.dir/rule
+
+.PHONY : file_test
+
+# fast build rule for target.
+file_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
+.PHONY : file_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
+.PHONY : test/CMakeFiles/page_test.dir/rule
+
+# Convenience name for target.
+page_test: test/CMakeFiles/page_test.dir/rule
+
+.PHONY : page_test
+
+# fast build rule for target.
+page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/log_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/log_test.dir/rule
+.PHONY : test/CMakeFiles/log_test.dir/rule
+
+# Convenience name for target.
+log_test: test/CMakeFiles/log_test.dir/rule
+
+.PHONY : log_test
+
+# fast build rule for target.
+log_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
+.PHONY : log_test/fast
 
 arbitrarily_test/main.o: arbitrarily_test/main.cc.o
 
@@ -365,6 +380,33 @@ file/page_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/file/page_test.cc.s
 .PHONY : file/page_test.cc.s
 
+log/log_test.o: log/log_test.cc.o
+
+.PHONY : log/log_test.o
+
+# target to build an object file
+log/log_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.o
+.PHONY : log/log_test.cc.o
+
+log/log_test.i: log/log_test.cc.i
+
+.PHONY : log/log_test.i
+
+# target to preprocess a source file
+log/log_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.i
+.PHONY : log/log_test.cc.i
+
+log/log_test.s: log/log_test.cc.s
+
+.PHONY : log/log_test.s
+
+# target to generate assembly for a file
+log/log_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.s
+.PHONY : log/log_test.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -372,18 +414,19 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... install"
-	@echo "... list_install_components"
-	@echo "... rebuild_cache"
-	@echo "... page_test"
-	@echo "... file_test"
-	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... file_manager_test"
-	@echo "... main"
-	@echo "... unittests"
-	@echo "... install/local"
 	@echo "... show-tests"
+	@echo "... install/local"
+	@echo "... unittests"
+	@echo "... main"
+	@echo "... file_manager_test"
+	@echo "... test"
+	@echo "... file_test"
+	@echo "... page_test"
+	@echo "... edit_cache"
+	@echo "... rebuild_cache"
+	@echo "... log_test"
+	@echo "... list_install_components"
+	@echo "... install"
 	@echo "... arbitrarily_test/main.o"
 	@echo "... arbitrarily_test/main.i"
 	@echo "... arbitrarily_test/main.s"
@@ -396,6 +439,9 @@ help:
 	@echo "... file/page_test.o"
 	@echo "... file/page_test.i"
 	@echo "... file/page_test.s"
+	@echo "... log/log_test.o"
+	@echo "... log/log_test.i"
+	@echo "... log/log_test.s"
 .PHONY : help
 
 

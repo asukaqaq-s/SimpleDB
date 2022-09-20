@@ -263,59 +263,59 @@ file/page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 .PHONY : file/page.cc.s
 
-log/LogIterator.o: log/LogIterator.cc.o
+log/log_iterator.o: log/log_iterator.cc.o
 
-.PHONY : log/LogIterator.o
-
-# target to build an object file
-log/LogIterator.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o
-.PHONY : log/LogIterator.cc.o
-
-log/LogIterator.i: log/LogIterator.cc.i
-
-.PHONY : log/LogIterator.i
-
-# target to preprocess a source file
-log/LogIterator.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.i
-.PHONY : log/LogIterator.cc.i
-
-log/LogIterator.s: log/LogIterator.cc.s
-
-.PHONY : log/LogIterator.s
-
-# target to generate assembly for a file
-log/LogIterator.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.s
-.PHONY : log/LogIterator.cc.s
-
-log/LogManager.o: log/LogManager.cc.o
-
-.PHONY : log/LogManager.o
+.PHONY : log/log_iterator.o
 
 # target to build an object file
-log/LogManager.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o
-.PHONY : log/LogManager.cc.o
+log/log_iterator.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o
+.PHONY : log/log_iterator.cc.o
 
-log/LogManager.i: log/LogManager.cc.i
+log/log_iterator.i: log/log_iterator.cc.i
 
-.PHONY : log/LogManager.i
+.PHONY : log/log_iterator.i
 
 # target to preprocess a source file
-log/LogManager.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.i
-.PHONY : log/LogManager.cc.i
+log/log_iterator.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.i
+.PHONY : log/log_iterator.cc.i
 
-log/LogManager.s: log/LogManager.cc.s
+log/log_iterator.s: log/log_iterator.cc.s
 
-.PHONY : log/LogManager.s
+.PHONY : log/log_iterator.s
 
 # target to generate assembly for a file
-log/LogManager.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.s
-.PHONY : log/LogManager.cc.s
+log/log_iterator.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.s
+.PHONY : log/log_iterator.cc.s
+
+log/log_manager.o: log/log_manager.cc.o
+
+.PHONY : log/log_manager.o
+
+# target to build an object file
+log/log_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o
+.PHONY : log/log_manager.cc.o
+
+log/log_manager.i: log/log_manager.cc.i
+
+.PHONY : log/log_manager.i
+
+# target to preprocess a source file
+log/log_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.i
+.PHONY : log/log_manager.cc.i
+
+log/log_manager.s: log/log_manager.cc.s
+
+.PHONY : log/log_manager.s
+
+# target to generate assembly for a file
+log/log_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s
+.PHONY : log/log_manager.cc.s
 
 # Help Target
 help:
@@ -340,12 +340,12 @@ help:
 	@echo "... file/page.o"
 	@echo "... file/page.i"
 	@echo "... file/page.s"
-	@echo "... log/LogIterator.o"
-	@echo "... log/LogIterator.i"
-	@echo "... log/LogIterator.s"
-	@echo "... log/LogManager.o"
-	@echo "... log/LogManager.i"
-	@echo "... log/LogManager.s"
+	@echo "... log/log_iterator.o"
+	@echo "... log/log_iterator.i"
+	@echo "... log/log_iterator.s"
+	@echo "... log/log_manager.o"
+	@echo "... log/log_manager.i"
+	@echo "... log/log_manager.s"
 .PHONY : help
 
 

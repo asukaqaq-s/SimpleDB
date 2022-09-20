@@ -142,7 +142,7 @@ int FileManager::GetFileSize(const std::string &file_name) {
     struct stat stat_buf;
 
     int success = stat(file_path.c_str(), &stat_buf);
-    return success == 0 ? static_cast<int> (stat_buf.st_size) : -1;
+    return success == 0 ? static_cast<int> (stat_buf.st_size) : 0;
 }
 
 } // namespace SimpleDB

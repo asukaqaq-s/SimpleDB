@@ -96,39 +96,39 @@ src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/file/page.cc.s"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/file/page.cc -o CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 
-src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
-src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o: ../src/log/LogIterator.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o"
-	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o -c /home/asuka/workbench/project/SimpleDB/src/log/LogIterator.cc
+src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
+src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o: ../src/log/log_iterator.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o -c /home/asuka/workbench/project/SimpleDB/src/log/log_iterator.cc
 
-src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.i"
-	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/src/log/LogIterator.cc > CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.i
+src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.i"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/src/log/log_iterator.cc > CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.i
 
-src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.s"
-	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/log/LogIterator.cc -o CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.s
+src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.s"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/log/log_iterator.cc -o CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.s
 
-src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
-src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o: ../src/log/LogManager.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o"
-	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/log/LogManager.cc
+src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
+src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/log/log_manager.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/log/log_manager.cc
 
-src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.i"
-	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/src/log/LogManager.cc > CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.i
+src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.i"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/src/log/log_manager.cc > CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.i
 
-src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.s"
-	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/log/LogManager.cc -o CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.s
+src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/log/log_manager.cc -o CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s
 
 # Object files for target SimpleDB_lib
 SimpleDB_lib_OBJECTS = \
 "CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/file/page.cc.o" \
-"CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o" \
-"CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o"
+"CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o" \
+"CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o"
 
 # External object files for target SimpleDB_lib
 SimpleDB_lib_EXTERNAL_OBJECTS =
@@ -136,8 +136,8 @@ SimpleDB_lib_EXTERNAL_OBJECTS =
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.o
-src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/log/LogIterator.cc.o
-src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/log/LogManager.cc.o
+src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o
+src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/build.make
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libSimpleDB_lib.a"

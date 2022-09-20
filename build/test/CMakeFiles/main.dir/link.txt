@@ -1,0 +1,1 @@
+/usr/bin/c++   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   CMakeFiles/main.dir/arbitrarily_test/main.cc.o  -o main  ../lib/libgtest_main.a ../src/libSimpleDB_lib.a ../lib/libgtest.a -lpthread 

@@ -233,56 +233,17 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
-# Target rules for targets named page_test
+# Target rules for targets named show-tests
 
 # Build rule for target.
-page_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 page_test
-.PHONY : page_test
+show-tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 show-tests
+.PHONY : show-tests
 
 # fast build rule for target.
-page_test/fast:
-	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
-
-#=============================================================================
-# Target rules for targets named file_test
-
-# Build rule for target.
-file_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_test
-.PHONY : file_test
-
-# fast build rule for target.
-file_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-.PHONY : file_test/fast
-
-#=============================================================================
-# Target rules for targets named file_manager_test
-
-# Build rule for target.
-file_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named main
-
-# Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 main
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
-.PHONY : main/fast
+show-tests/fast:
+	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
+.PHONY : show-tests/fast
 
 #=============================================================================
 # Target rules for targets named unittests
@@ -298,17 +259,69 @@ unittests/fast:
 .PHONY : unittests/fast
 
 #=============================================================================
-# Target rules for targets named show-tests
+# Target rules for targets named main
 
 # Build rule for target.
-show-tests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 show-tests
-.PHONY : show-tests
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-show-tests/fast:
-	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
-.PHONY : show-tests/fast
+main/fast:
+	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+#=============================================================================
+# Target rules for targets named file_manager_test
+
+# Build rule for target.
+file_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named file_test
+
+# Build rule for target.
+file_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_test
+.PHONY : file_test
+
+# fast build rule for target.
+file_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
+.PHONY : file_test/fast
+
+#=============================================================================
+# Target rules for targets named page_test
+
+# Build rule for target.
+page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 page_test
+.PHONY : page_test
+
+# fast build rule for target.
+page_test/fast:
+	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
+
+#=============================================================================
+# Target rules for targets named log_test
+
+# Build rule for target.
+log_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 log_test
+.PHONY : log_test
+
+# fast build rule for target.
+log_test/fast:
+	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
+.PHONY : log_test/fast
 
 # Help Target
 help:
@@ -328,12 +341,13 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
-	@echo "... page_test"
-	@echo "... file_test"
-	@echo "... file_manager_test"
-	@echo "... main"
-	@echo "... unittests"
 	@echo "... show-tests"
+	@echo "... unittests"
+	@echo "... main"
+	@echo "... file_manager_test"
+	@echo "... file_test"
+	@echo "... page_test"
+	@echo "... log_test"
 .PHONY : help
 
 

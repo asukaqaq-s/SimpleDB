@@ -1,5 +1,0 @@
-if(EXISTS "/home/asuka/workbench/project/SimpleDB/build/test/PageTest[1]_tests.cmake")
-  include("/home/asuka/workbench/project/SimpleDB/build/test/PageTest[1]_tests.cmake")
-else()
-  add_test(PageTest_NOT_BUILT PageTest_NOT_BUILT)
-endif()

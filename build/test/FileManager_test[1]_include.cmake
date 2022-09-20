@@ -1,5 +1,0 @@
-if(EXISTS "/home/asuka/workbench/project/SimpleDB/build/test/FileManager_test[1]_tests.cmake")
-  include("/home/asuka/workbench/project/SimpleDB/build/test/FileManager_test[1]_tests.cmake")
-else()
-  add_test(FileManager_test_NOT_BUILT FileManager_test_NOT_BUILT)
-endif()
