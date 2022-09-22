@@ -182,6 +182,33 @@ SimpleDB_lib/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/build
 .PHONY : SimpleDB_lib/fast
 
+buffer/buffer_manager.o: buffer/buffer_manager.cc.o
+
+.PHONY : buffer/buffer_manager.o
+
+# target to build an object file
+buffer/buffer_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o
+.PHONY : buffer/buffer_manager.cc.o
+
+buffer/buffer_manager.i: buffer/buffer_manager.cc.i
+
+.PHONY : buffer/buffer_manager.i
+
+# target to preprocess a source file
+buffer/buffer_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.i
+.PHONY : buffer/buffer_manager.cc.i
+
+buffer/buffer_manager.s: buffer/buffer_manager.cc.s
+
+.PHONY : buffer/buffer_manager.s
+
+# target to generate assembly for a file
+buffer/buffer_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.s
+.PHONY : buffer/buffer_manager.cc.s
+
 buffer/lru_replace.o: buffer/lru_replace.cc.o
 
 .PHONY : buffer/lru_replace.o
@@ -358,6 +385,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... SimpleDB_lib"
+	@echo "... buffer/buffer_manager.o"
+	@echo "... buffer/buffer_manager.i"
+	@echo "... buffer/buffer_manager.s"
 	@echo "... buffer/lru_replace.o"
 	@echo "... buffer/lru_replace.i"
 	@echo "... buffer/lru_replace.s"

@@ -285,6 +285,19 @@ main/fast:
 .PHONY : main/fast
 
 #=============================================================================
+# Target rules for targets named buffer_test
+
+# Build rule for target.
+buffer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 buffer_test
+.PHONY : buffer_test
+
+# fast build rule for target.
+buffer_test/fast:
+	$(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
+.PHONY : buffer_test/fast
+
+#=============================================================================
 # Target rules for targets named file_manager_test
 
 # Build rule for target.
@@ -358,6 +371,7 @@ help:
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... main"
+	@echo "... buffer_test"
 	@echo "... file_manager_test"
 	@echo "... file_test"
 	@echo "... page_test"

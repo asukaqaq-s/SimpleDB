@@ -80,6 +80,18 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -122,18 +134,6 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -228,6 +228,21 @@ main/fast:
 .PHONY : main/fast
 
 # Convenience name for target.
+test/CMakeFiles/buffer_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_test.dir/rule
+.PHONY : test/CMakeFiles/buffer_test.dir/rule
+
+# Convenience name for target.
+buffer_test: test/CMakeFiles/buffer_test.dir/rule
+
+.PHONY : buffer_test
+
+# fast build rule for target.
+buffer_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
+.PHONY : buffer_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/file_manager_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
 .PHONY : test/CMakeFiles/file_manager_test.dir/rule
@@ -313,6 +328,33 @@ arbitrarily_test/main.s: arbitrarily_test/main.cc.s
 arbitrarily_test/main.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/arbitrarily_test/main.cc.s
 .PHONY : arbitrarily_test/main.cc.s
+
+buffer/buffer_test.o: buffer/buffer_test.cc.o
+
+.PHONY : buffer/buffer_test.o
+
+# target to build an object file
+buffer/buffer_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o
+.PHONY : buffer/buffer_test.cc.o
+
+buffer/buffer_test.i: buffer/buffer_test.cc.i
+
+.PHONY : buffer/buffer_test.i
+
+# target to preprocess a source file
+buffer/buffer_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.i
+.PHONY : buffer/buffer_test.cc.i
+
+buffer/buffer_test.s: buffer/buffer_test.cc.s
+
+.PHONY : buffer/buffer_test.s
+
+# target to generate assembly for a file
+buffer/buffer_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.s
+.PHONY : buffer/buffer_test.cc.s
 
 buffer/lru_replacer_test.o: buffer/lru_replacer_test.cc.o
 
@@ -457,10 +499,12 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
+	@echo "... install"
 	@echo "... show-tests"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... main"
+	@echo "... buffer_test"
 	@echo "... file_manager_test"
 	@echo "... test"
 	@echo "... file_test"
@@ -469,10 +513,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... log_test"
 	@echo "... list_install_components"
-	@echo "... install"
 	@echo "... arbitrarily_test/main.o"
 	@echo "... arbitrarily_test/main.i"
 	@echo "... arbitrarily_test/main.s"
+	@echo "... buffer/buffer_test.o"
+	@echo "... buffer/buffer_test.i"
+	@echo "... buffer/buffer_test.s"
 	@echo "... buffer/lru_replacer_test.o"
 	@echo "... buffer/lru_replacer_test.i"
 	@echo "... buffer/lru_replacer_test.s"

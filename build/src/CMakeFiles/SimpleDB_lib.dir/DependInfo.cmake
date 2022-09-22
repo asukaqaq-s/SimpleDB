@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/asuka/workbench/project/SimpleDB/src/buffer/buffer_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/buffer/lru_replace.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/file/block_id.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/file/file_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o"

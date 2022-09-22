@@ -66,6 +66,7 @@ public:
     
     // for debugging purpose
     void PrintLRU();
+
 private:
     using list_t = std::list<frame_id_t>;
     
