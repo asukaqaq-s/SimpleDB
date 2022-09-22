@@ -25,11 +25,15 @@ public:
 
     BlockId& operator= (const BlockId &obj);
     /**
-    * @brief non-parameters constructor
-    * 
+    * @brief non-parameters constructor 
     */
     BlockId() {}
     
+    /**
+    * @brief copy-constructor
+    */
+    BlockId(const BlockId &b) : 
+        file_name_(b.FileName()), block_num_(b.BlockNum()) {} 
     /**
     * @brief Construct a Blockid object
     * 

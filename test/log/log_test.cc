@@ -36,6 +36,7 @@ std::vector<std::vector<char>> CreateLogs(LogManager * lm,int times) {
     for(int i = 0;i < times;i ++) {
         std::vector<char> log_record = CreateLogRecord(i);
         lm->Append(log_record);
+        // std::cout << x << std::endl;
         res.push_back(log_record);
     }
     return res;
@@ -55,8 +56,55 @@ int get_file_size(const char* filename)
 * TEST  CLASS 
 ************************************************************************************/
 
-TEST(LogManagerTest, RandomTest1) {
+
+TEST(LogManagerTest, EasyTest1) {
     
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string cmd;
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+    
+    /**************************************************************
+    * start test!!!! 
+    ***************************************************************/
+
+
+    std::vector<std::vector<char>> log_records; //= CreateLogs(log_manager.get(), times);
+    
+    for(int i = 0;i < 10;i ++) {
+        char c = i % 10 + '0';
+        std::vector<char> test_vector(10,c);
+        log_manager->Append(test_vector);
+        log_records.push_back(test_vector);
+    }
+    // return;
+    std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
+    auto log_iterator = log_manager->Iterator();
+    
+    
+    for(int i = 0;i < 10;i ++) {
+        std::vector<char> array1 = log_iterator.NextRecord();
+        std::vector<char> array2 = log_records[i];
+        EXPECT_EQ(array1, array2);    
+    }
+    
+    /**************************************************************
+    * end test!!!! 
+    ***************************************************************/
+    // delete all database file for testing 
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+}
+
+TEST(LogManagerTest, RandomTest1) {
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -97,7 +145,7 @@ TEST(LogManagerTest, RandomTest1) {
 
 
 TEST(LogManagerTest, RandomTest2) {
-    
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -114,7 +162,7 @@ TEST(LogManagerTest, RandomTest2) {
     * start test
     ***************************************************************/
 
-    int times = 10;//00000;
+    int times = 1145679;
     
     auto log_records = CreateLogs(log_manager.get(), times);
     std::reverse(log_records.begin(), log_records.end()); 
@@ -137,7 +185,7 @@ TEST(LogManagerTest, RandomTest2) {
 
 
 TEST(LogManagerTest, RandomTest3) {
-    
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -178,7 +226,7 @@ TEST(LogManagerTest, RandomTest3) {
 }
 
 TEST(LogManagerTest, FlushTest) {
-    
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -225,7 +273,7 @@ TEST(LogManagerTest, FlushTest) {
 }
 
 TEST(LogManagerTest, FixSizeLogTest) {
-    
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -283,7 +331,7 @@ TEST(LogManagerTest, FixSizeLogTest) {
 
 
 TEST(LogManagerTest, AppendTest) {
-    
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -299,9 +347,7 @@ TEST(LogManagerTest, AppendTest) {
     /**************************************************************
     * start test
     ***************************************************************/
-    int times = 100;
     std::vector<std::vector<char>> total_log_records;
-    int file_size_cnt = 0;
     int block_size = 4096;
     int log_size = 40;
     
@@ -313,10 +359,10 @@ TEST(LogManagerTest, AppendTest) {
             log_manager->Flush(x);
         }
         
-        int cnt = 0;
         int block_num = get_file_size(log_file_path.c_str()) / block_size;
         EXPECT_EQ(block_num, i + 1);
     }
+
     /**************************************************************
     * end test
     ***************************************************************/

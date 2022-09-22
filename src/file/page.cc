@@ -3,6 +3,7 @@
 
 #include "file/page.h"
 
+#include <iostream>
 #include <cstring>
 
 namespace SimpleDB {
@@ -108,6 +109,17 @@ void Page::PrintPage(int mode) {
             printf("%c", (*buffer_page_)[i]);
         }
         printf("\n");
+    }
+    else if(mode == 1) { /* log page */
+        int boundary = GetInt(0);
+        std::cout << "boundary = " << boundary << std::endl;
+        for(int i = boundary;i < 4096;) {
+            auto vec = GetBytes(i);
+            for(auto t:vec)
+                std::cout << t << std::flush;
+            std::cout << std::endl;
+            i += sizeof(int) + vec.size();
+        }
     }
 }
 

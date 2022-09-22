@@ -183,6 +183,21 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 # Convenience name for target.
+test/CMakeFiles/lru_replacer_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
+.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
+
+# Convenience name for target.
+lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
+
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/unittests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/unittests.dir/rule
 .PHONY : test/CMakeFiles/unittests.dir/rule
@@ -299,6 +314,33 @@ arbitrarily_test/main.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/arbitrarily_test/main.cc.s
 .PHONY : arbitrarily_test/main.cc.s
 
+buffer/lru_replacer_test.o: buffer/lru_replacer_test.cc.o
+
+.PHONY : buffer/lru_replacer_test.o
+
+# target to build an object file
+buffer/lru_replacer_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/buffer/lru_replacer_test.cc.o
+.PHONY : buffer/lru_replacer_test.cc.o
+
+buffer/lru_replacer_test.i: buffer/lru_replacer_test.cc.i
+
+.PHONY : buffer/lru_replacer_test.i
+
+# target to preprocess a source file
+buffer/lru_replacer_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/buffer/lru_replacer_test.cc.i
+.PHONY : buffer/lru_replacer_test.cc.i
+
+buffer/lru_replacer_test.s: buffer/lru_replacer_test.cc.s
+
+.PHONY : buffer/lru_replacer_test.s
+
+# target to generate assembly for a file
+buffer/lru_replacer_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/buffer/lru_replacer_test.cc.s
+.PHONY : buffer/lru_replacer_test.cc.s
+
 file/file_manager_test.o: file/file_manager_test.cc.o
 
 .PHONY : file/file_manager_test.o
@@ -414,8 +456,9 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... show-tests"
 	@echo "... install/local"
+	@echo "... show-tests"
+	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... main"
 	@echo "... file_manager_test"
@@ -430,6 +473,9 @@ help:
 	@echo "... arbitrarily_test/main.o"
 	@echo "... arbitrarily_test/main.i"
 	@echo "... arbitrarily_test/main.s"
+	@echo "... buffer/lru_replacer_test.o"
+	@echo "... buffer/lru_replacer_test.i"
+	@echo "... buffer/lru_replacer_test.s"
 	@echo "... file/file_manager_test.o"
 	@echo "... file/file_manager_test.i"
 	@echo "... file/file_manager_test.s"

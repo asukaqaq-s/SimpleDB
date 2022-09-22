@@ -1,3 +1,5 @@
+add_test( LogManagerTest.EasyTest1 /home/asuka/workbench/project/SimpleDB/build/test/log_test [==[--gtest_filter=LogManagerTest.EasyTest1]==] --gtest_also_run_disabled_tests)
+set_tests_properties( LogManagerTest.EasyTest1 PROPERTIES WORKING_DIRECTORY /home/asuka/workbench/project/SimpleDB/build/test)
 add_test( LogManagerTest.RandomTest1 /home/asuka/workbench/project/SimpleDB/build/test/log_test [==[--gtest_filter=LogManagerTest.RandomTest1]==] --gtest_also_run_disabled_tests)
 set_tests_properties( LogManagerTest.RandomTest1 PROPERTIES WORKING_DIRECTORY /home/asuka/workbench/project/SimpleDB/build/test)
 add_test( LogManagerTest.RandomTest2 /home/asuka/workbench/project/SimpleDB/build/test/log_test [==[--gtest_filter=LogManagerTest.RandomTest2]==] --gtest_also_run_disabled_tests)
@@ -10,4 +12,4 @@ add_test( LogManagerTest.FixSizeLogTest /home/asuka/workbench/project/SimpleDB/b
 set_tests_properties( LogManagerTest.FixSizeLogTest PROPERTIES WORKING_DIRECTORY /home/asuka/workbench/project/SimpleDB/build/test)
 add_test( LogManagerTest.AppendTest /home/asuka/workbench/project/SimpleDB/build/test/log_test [==[--gtest_filter=LogManagerTest.AppendTest]==] --gtest_also_run_disabled_tests)
 set_tests_properties( LogManagerTest.AppendTest PROPERTIES WORKING_DIRECTORY /home/asuka/workbench/project/SimpleDB/build/test)
-set( log_test_TESTS LogManagerTest.RandomTest1 LogManagerTest.RandomTest2 LogManagerTest.RandomTest3 LogManagerTest.FlushTest LogManagerTest.FixSizeLogTest LogManagerTest.AppendTest)
+set( log_test_TESTS LogManagerTest.EasyTest1 LogManagerTest.RandomTest1 LogManagerTest.RandomTest2 LogManagerTest.RandomTest3 LogManagerTest.FlushTest LogManagerTest.FixSizeLogTest LogManagerTest.AppendTest)

@@ -1,0 +1,1 @@
+/usr/bin/c++   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   CMakeFiles/lru_replacer_test.dir/buffer/lru_replacer_test.cc.o  -o lru_replacer_test  ../lib/libgtest_main.a ../src/libSimpleDB_lib.a ../lib/libgtest.a -lpthread 

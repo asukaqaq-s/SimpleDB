@@ -50,7 +50,7 @@ int LogManager::Append(const std::vector<char> &log_record) {
     int need_size = record_length + sizeof(int);
     int record_pos;
     
-    if(page_boundary < sizeof(int) + need_size) {
+    if(page_boundary < static_cast<int>(sizeof(int)) + need_size) {
         // sizeof(int) means the size of the page-header
         Flush();
         current_block_ = AppendNewBlock();

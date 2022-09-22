@@ -246,6 +246,19 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 #=============================================================================
+# Target rules for targets named lru_replacer_test
+
+# Build rule for target.
+lru_replacer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+#=============================================================================
 # Target rules for targets named unittests
 
 # Build rule for target.
@@ -342,6 +355,7 @@ help:
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
 	@echo "... show-tests"
+	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... main"
 	@echo "... file_manager_test"

@@ -30,9 +30,10 @@ bool operator < (const BlockId &lobj, const BlockId &robj) {
 bool operator > (const BlockId &lobj, const BlockId &robj) {
     if(lobj.file_name_ == robj.file_name_) {
         return lobj.block_num_ > robj.block_num_;
-    } else if(robj.block_num_ == robj.block_num_) {
+    } else if(robj.block_num_ == lobj.block_num_) {
         return lobj.file_name_ > robj.file_name_;
     }
+    return false;
 }
 
 bool operator <= (const BlockId &lobj, const BlockId &robj) {

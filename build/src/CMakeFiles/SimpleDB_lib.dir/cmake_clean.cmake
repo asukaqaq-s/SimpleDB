@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/file/page.cc.o"

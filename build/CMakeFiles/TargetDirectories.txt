@@ -39,8 +39,9 @@
 /home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/strip.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/local.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_manager_test.dir

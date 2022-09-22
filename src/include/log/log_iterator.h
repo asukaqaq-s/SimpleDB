@@ -11,6 +11,7 @@ namespace SimpleDB {
 
 /**
 * @brief a logiterator object, can be used to access the log file
+    which stored in disk.
 */
 class LogIterator {
     
@@ -20,7 +21,8 @@ public:
     *   call MoveToBlock func to access the last block of the log file 
     */
     LogIterator(FileManager *file_manager, BlockId block)
-    : file_manager_(file_manager), block_(block) {
+    : file_manager_(file_manager) {
+        block_ = block;
         page_ = std::make_shared<Page> (file_manager_->BlockSize());
         MoveToBlock(block_);
     }

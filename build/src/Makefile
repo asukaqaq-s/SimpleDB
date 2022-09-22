@@ -182,6 +182,33 @@ SimpleDB_lib/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/build
 .PHONY : SimpleDB_lib/fast
 
+buffer/lru_replace.o: buffer/lru_replace.cc.o
+
+.PHONY : buffer/lru_replace.o
+
+# target to build an object file
+buffer/lru_replace.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o
+.PHONY : buffer/lru_replace.cc.o
+
+buffer/lru_replace.i: buffer/lru_replace.cc.i
+
+.PHONY : buffer/lru_replace.i
+
+# target to preprocess a source file
+buffer/lru_replace.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.i
+.PHONY : buffer/lru_replace.cc.i
+
+buffer/lru_replace.s: buffer/lru_replace.cc.s
+
+.PHONY : buffer/lru_replace.s
+
+# target to generate assembly for a file
+buffer/lru_replace.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.s
+.PHONY : buffer/lru_replace.cc.s
+
 file/block_id.o: file/block_id.cc.o
 
 .PHONY : file/block_id.o
@@ -331,6 +358,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... SimpleDB_lib"
+	@echo "... buffer/lru_replace.o"
+	@echo "... buffer/lru_replace.i"
+	@echo "... buffer/lru_replace.s"
 	@echo "... file/block_id.o"
 	@echo "... file/block_id.i"
 	@echo "... file/block_id.s"
