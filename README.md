@@ -11,7 +11,7 @@ Simpleb is SimpleDB is a tiny-database-manage-system for education purpose.Note 
 Schedule 
 
 - FileManager (comepleted in 9/16/2022)
-- BufferManager(todo)
+- BufferManager(completed in 9/23/2022)
 - Recover by WAL(todo)
 - Transaction(todo)
 

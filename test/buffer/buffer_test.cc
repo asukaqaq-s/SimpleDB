@@ -1,9 +1,14 @@
+/************************************************************
+** this test file is focus on the correctness of pin_count
+*************************************************************/
+
 #include "buffer/buffer_manager.h"
 #include "file/block_id.h"
 #include "file/file_manager.h"
 #include "file/page.h"
 #include "gtest/gtest.h"
 
+#include <execinfo.h>
 #include <iostream>
 #include <random>
 #include <queue>
@@ -37,17 +42,19 @@ std::vector<char> GetRandomVector() {
 }
 
 void TestPin(std::map<BlockId,int> *mp, BlockId x) {
-    std::lock_guard<std::mutex> lock(latch);
+    assert( (*mp)[x] >= 0 );
     // if(mp->find(x) == mp->end()) {
         (*mp)[x] ++;
     // }
 }
 
 void TestUnpin(std::map<BlockId,int> *mp, BlockId x) {
-    std::lock_guard<std::mutex> lock(latch);
-    if(mp->find(x) == mp->end()) {
+    assert( (*mp)[x] >= 0 );
+    if(mp->find(x) == mp->end() || (*mp)[x] <= 0) {
         return;
     }
+    assert( (*mp)[x] > 0 );
+    
     (*mp)[x] --;
     if((*mp)[x] == 0) {
         mp->erase(x);
@@ -61,7 +68,7 @@ void TestUnpin(std::map<BlockId,int> *mp, BlockId x) {
 
 TEST(BufferTest, Simpletest1) {
   // simpledb db("buffertest", 400, 3); // three buffers
-    return;
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
@@ -123,7 +130,7 @@ TEST(BufferTest, Simpletest1) {
 
 
 TEST(BufferPoolManagerTest, BinaryDataTest) {
-    return;
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
@@ -174,7 +181,7 @@ TEST(BufferPoolManagerTest, BinaryDataTest) {
 
 
 TEST(BufferPoolManagerTest, ConcurrencyWriteTest) {
-    return;
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
@@ -365,22 +372,26 @@ TEST(BufferPoolManagerTest, ConcurrencyPinTest) {
                 std::string file_name = "test1.txt";
 
                 for(int i = 0;i < 500;i ++) {
-                    std::uniform_int_distribution<unsigned> k(3, 9);
+                    std::uniform_int_distribution<unsigned> k(4, 9);
                     int c = k(engine);
-                    (*count)[BlockId(file_name, i)] += c;
                     
                     for(int j = 0;j < c;j ++) {
-                        bpm->Pin(BlockId(file_name, i));    
+                        std::unique_lock<std::mutex> lock(latch);
+                        (*count)[BlockId(file_name, i)] ++;
+                        bpm->Pin(BlockId(file_name, i)); 
+                        lock.unlock();   
                     }
                 }
 
                 for(int i = 0;i < 500;i ++) {
                     std::uniform_int_distribution<unsigned> k(0, 3);
                     int c = k(engine);
-                    (*count)[BlockId(file_name, i)] -= c;
                     
                     for(int j = 0;j < c;j ++) {
-                        bpm->Unpin(BlockId(file_name, i));    
+                        std::unique_lock<std::mutex> lock(latch);
+                        (*count)[BlockId(file_name, i)] --;
+                        bpm->Unpin(BlockId(file_name, i));  
+                        lock.unlock();  
                     }
                 }
 
@@ -407,7 +418,7 @@ TEST(BufferPoolManagerTest, ConcurrencyPinTest) {
 }
 
 
-TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
+TEST(BufferPoolManagerTest, OneProcessVictimTest) {
     // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -420,7 +431,7 @@ TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
     const int buffer_pool_size = 100;
 
     const int num_threads = 1;
-    const int num_runs = 1000;
+    const int num_runs = 100;
     // const int one_thread_control = 10;
 
     for(int run = 0; run < num_runs; run++) {
@@ -431,7 +442,7 @@ TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
         std::vector<std::thread> threads;
         std::map<BlockId, int> count_;
 
-        for(int i = 0;i < buffer_pool_size;i ++) {
+        for(int i = 0;i < buffer_pool_size * 2;i ++) {
             bpm->NewPage(BlockId(file_name, i));
             bpm->Unpin(BlockId(file_name, i));
         }
@@ -441,30 +452,36 @@ TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
                 std::random_device seed; // get ramdom seed
                 std::ranlux48 engine(seed());
                 std::string file_name = "test1.txt";
-                std::uniform_int_distribution<unsigned> k(10000, 20000);
+                std::uniform_int_distribution<unsigned> k(1000, 20000);
                 int simluated_round = k(engine);
                 
                 for(int i = 0;i < simluated_round;i ++) {
                     // randomly simulated a request
-                    std::uniform_int_distribution<unsigned> select_victim(0, 99);
+                    std::uniform_int_distribution<unsigned> select_victim(0, buffer_pool_size - 1);
                     BlockId victim = BlockId(file_name, select_victim(engine));
                     
                     if(i & 1) {
+                        std::unique_lock<std::mutex> lock(latch);
                         TestPin(count, victim);
                         bpm->Pin(victim);
+                        lock.unlock();
                         // std::unique_lock<std::mutex> lock(latch);
                         // std::cout << "thread " << num << " pin victim " << victim.BlockNum()<< std::endl;
                         // std::cout << std::endl;
                         // lock.unlock();
                     } else {
+                        std::unique_lock<std::mutex> lock(latch);
                         TestUnpin(count, victim);
                         bpm->Unpin(victim);
+                        lock.unlock();
                         // std::unique_lock<std::mutex> lock(latch);
                         // std::cout << "thread " << num << " unpin victim " << victim.BlockNum()<< std::endl;
                         // std::cout << std::endl;
                         // l/ock.unlock();
                     }
-                    
+
+
+                    assert( (*count)[victim] >= 0 );
                 }
 
             }, tid, &count_));
@@ -473,7 +490,7 @@ TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
             threads[i].join();
         }
         
-        for (int i = 0;i < buffer_pool_size;i ++) {
+        for (int i = 0;i < buffer_pool_size * 2;i ++) {
             auto page = bpm->Pin(BlockId(file_name, i));
             bpm->Unpin(BlockId(file_name, i));
             EXPECT_EQ(page->GetPinCount(), (count_[BlockId(file_name, i)]));
@@ -488,6 +505,103 @@ TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
         delete lm;
     }
 }
+
+
+void printbuffer(std::vector<Buffer*> bu) {
+    for(auto t:bu) {
+        std::cout<<t->GetPinCount() << ' '<<std::flush;
+    }
+    std::cout << std::endl;
+}
+
+TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
+
+
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string directory_path = local_path + "/test_directory";
+    int block_size = 4 * 1024;
+    std::string file_name = "test1.txt";
+    std::default_random_engine e;
+    std::uniform_int_distribution<unsigned> u(0, 9);
+
+    const int buffer_pool_size = 100;
+    const int num_page = 500;
+    const int num_threads = 5;
+    const int num_runs = 100;
+    // const int one_thread_control = 10;
+
+    for(int run = 0; run < num_runs; run++) {
+        FileManager *fm = new FileManager(directory_path, block_size);
+        LogManager *lm = new LogManager(fm, "buffertest.log");
+        BufferManager *bpm = new BufferManager(fm, lm, buffer_pool_size);
+        
+        std::vector<std::thread> threads;
+        std::map<BlockId, int> count_;
+        
+        
+        for(int i = 0;i < num_page;i ++) {
+            bpm->NewPage(BlockId(file_name, i));
+            bpm->Unpin(BlockId(file_name, i));
+        }
+        // printbuffer(buffer_array);
+        for(int tid = 0; tid < num_threads; tid ++) {
+            threads.push_back(std::thread([&bpm](int num, std::map<BlockId, int> *count) {
+                std::random_device seed; // get ramdom seed
+                std::ranlux48 engine(seed());
+                std::string file_name = "test1.txt";
+                std::uniform_int_distribution<unsigned> k(1000, 2000);
+                int simluated_round = k(engine);
+                simluated_round = 10;
+
+                for(int i = 0;i < simluated_round;i ++) {
+                    // randomly simulated a request
+                    std::uniform_int_distribution<unsigned> select_victim(0, num_page - 1);
+                    BlockId victim = BlockId(file_name, select_victim(engine));
+                    
+                    std::unique_lock<std::mutex> lock(latch);
+                    // if(i & 1) {
+                        TestPin(count, victim);
+                        auto page = bpm->Pin(victim);
+                    // } else {
+                        page->SetModified(1,0);
+                        *page->contents()->content() = GetRandomVector();
+                        page->flush();
+                        TestUnpin(count, victim);
+                        bpm->Unpin(victim);
+                    // }
+                    lock.unlock();
+
+                    assert( (*count)[victim] >= 0 );
+                }
+                
+                
+            }, tid, &count_));
+        }
+    
+        for (int i = 0; i < num_threads; i++) {
+            threads[i].join();
+        }
+
+        for (int i = 0;i < num_page;i ++) {
+            auto page = bpm->Pin(BlockId(file_name, i));
+            bpm->Unpin(BlockId(file_name, i));
+            EXPECT_EQ(page->GetPinCount(), (count_[BlockId(file_name, i)]));
+            // std::cout << std::endl;
+        }
+        
+        
+        ///////////////////////// delete /////////////////////////
+        std::string cmd = "rm -rf " + directory_path;
+        system(cmd.c_str());
+        delete fm;
+        delete bpm;
+        delete lm;
+    }
+}
+
+
 
 
 } // namespace simpledb

@@ -66,6 +66,16 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   -std=gnu++17 -o CMakeFiles/buffer_manager_test.dir/buffer/buffer_manager_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/buffer/buffer_manager_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/buffer/buffer_manager_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   -std=gnu++17 -o CMakeFiles/file_test.dir/file/file_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/file/file_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   -std=gnu++17 -o CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/buffer/buffer_test.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/test/buffer/buffer_test.cc"
 },
@@ -73,11 +83,6 @@
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   -std=gnu++17 -o CMakeFiles/file_manager_test.dir/file/file_manager_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/file/file_manager_test.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/test/file/file_manager_test.cc"
-},
-{
-  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
-  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   -std=gnu++17 -o CMakeFiles/file_test.dir/file/file_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc",
-  "file": "/home/asuka/workbench/project/SimpleDB/test/file/file_test.cc"
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",

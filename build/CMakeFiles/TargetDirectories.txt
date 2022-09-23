@@ -45,12 +45,13 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/page_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/list_install_components.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/log_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/edit_cache.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/rebuild_cache.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/log_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/list_install_components.dir

@@ -115,6 +115,8 @@ file/page.h
 /home/asuka/workbench/project/SimpleDB/test/buffer/file/page.h
 gtest/gtest.h
 /home/asuka/workbench/project/SimpleDB/test/buffer/gtest/gtest.h
+execinfo.h
+-
 iostream
 -
 random

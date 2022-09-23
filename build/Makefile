@@ -285,6 +285,32 @@ main/fast:
 .PHONY : main/fast
 
 #=============================================================================
+# Target rules for targets named buffer_manager_test
+
+# Build rule for target.
+buffer_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 buffer_manager_test
+.PHONY : buffer_manager_test
+
+# fast build rule for target.
+buffer_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
+.PHONY : buffer_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named file_test
+
+# Build rule for target.
+file_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_test
+.PHONY : file_test
+
+# fast build rule for target.
+file_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
+.PHONY : file_test/fast
+
+#=============================================================================
 # Target rules for targets named buffer_test
 
 # Build rule for target.
@@ -309,19 +335,6 @@ file_manager_test: cmake_check_build_system
 file_manager_test/fast:
 	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
 .PHONY : file_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named file_test
-
-# Build rule for target.
-file_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_test
-.PHONY : file_test
-
-# fast build rule for target.
-file_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-.PHONY : file_test/fast
 
 #=============================================================================
 # Target rules for targets named page_test
@@ -371,9 +384,10 @@ help:
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... main"
+	@echo "... buffer_manager_test"
+	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... file_manager_test"
-	@echo "... file_test"
 	@echo "... page_test"
 	@echo "... log_test"
 .PHONY : help

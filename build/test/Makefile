@@ -103,6 +103,16 @@ test/fast: test
 
 .PHONY : test/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -124,16 +134,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -228,6 +228,36 @@ main/fast:
 .PHONY : main/fast
 
 # Convenience name for target.
+test/CMakeFiles/buffer_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_manager_test.dir/rule
+.PHONY : test/CMakeFiles/buffer_manager_test.dir/rule
+
+# Convenience name for target.
+buffer_manager_test: test/CMakeFiles/buffer_manager_test.dir/rule
+
+.PHONY : buffer_manager_test
+
+# fast build rule for target.
+buffer_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
+.PHONY : buffer_manager_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/file_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_test.dir/rule
+.PHONY : test/CMakeFiles/file_test.dir/rule
+
+# Convenience name for target.
+file_test: test/CMakeFiles/file_test.dir/rule
+
+.PHONY : file_test
+
+# fast build rule for target.
+file_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
+.PHONY : file_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/buffer_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_test.dir/rule
 .PHONY : test/CMakeFiles/buffer_test.dir/rule
@@ -256,21 +286,6 @@ file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
 file_manager_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
 .PHONY : file_manager_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/file_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_test.dir/rule
-.PHONY : test/CMakeFiles/file_test.dir/rule
-
-# Convenience name for target.
-file_test: test/CMakeFiles/file_test.dir/rule
-
-.PHONY : file_test
-
-# fast build rule for target.
-file_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-.PHONY : file_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/page_test.dir/rule:
@@ -328,6 +343,33 @@ arbitrarily_test/main.s: arbitrarily_test/main.cc.s
 arbitrarily_test/main.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/arbitrarily_test/main.cc.s
 .PHONY : arbitrarily_test/main.cc.s
+
+buffer/buffer_manager_test.o: buffer/buffer_manager_test.cc.o
+
+.PHONY : buffer/buffer_manager_test.o
+
+# target to build an object file
+buffer/buffer_manager_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/buffer/buffer_manager_test.cc.o
+.PHONY : buffer/buffer_manager_test.cc.o
+
+buffer/buffer_manager_test.i: buffer/buffer_manager_test.cc.i
+
+.PHONY : buffer/buffer_manager_test.i
+
+# target to preprocess a source file
+buffer/buffer_manager_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/buffer/buffer_manager_test.cc.i
+.PHONY : buffer/buffer_manager_test.cc.i
+
+buffer/buffer_manager_test.s: buffer/buffer_manager_test.cc.s
+
+.PHONY : buffer/buffer_manager_test.s
+
+# target to generate assembly for a file
+buffer/buffer_manager_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/buffer/buffer_manager_test.cc.s
+.PHONY : buffer/buffer_manager_test.cc.s
 
 buffer/buffer_test.o: buffer/buffer_test.cc.o
 
@@ -504,18 +546,22 @@ help:
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... main"
+	@echo "... buffer_manager_test"
+	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... file_manager_test"
 	@echo "... test"
-	@echo "... file_test"
 	@echo "... page_test"
+	@echo "... list_install_components"
+	@echo "... log_test"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... log_test"
-	@echo "... list_install_components"
 	@echo "... arbitrarily_test/main.o"
 	@echo "... arbitrarily_test/main.i"
 	@echo "... arbitrarily_test/main.s"
+	@echo "... buffer/buffer_manager_test.o"
+	@echo "... buffer/buffer_manager_test.i"
+	@echo "... buffer/buffer_manager_test.s"
 	@echo "... buffer/buffer_test.o"
 	@echo "... buffer/buffer_test.i"
 	@echo "... buffer/buffer_test.s"
