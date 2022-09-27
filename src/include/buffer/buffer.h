@@ -12,7 +12,9 @@
 namespace SimpleDB {
 
 /**
-* @brief 
+* @brief a buffer is a unit of the bufferpool
+To better manage the buffer pool, we use buffer class to replacer
+page class.
 */
 class Buffer {
     
@@ -50,7 +52,9 @@ public:
     * and change its modifying trx 
     */
     void AssignBlock(BlockId blk) {
-        flush();
+        flush(); /* through calling flush func in AssignBlock, in 
+                    bufferpool pin a page, we don't need to care 
+                    about wirting dirty page to disk*/
         block_ = blk;
         file_manager_->Read(block_, *contents_);
         pin_ = 0; 
@@ -74,6 +78,10 @@ public:
     BlockId BlockNum() { return block_;}
     
     int GetPinCount() { return pin_; }
+    
+    // for debugging purpose
+    // because of AssignBlock, we don't need to this function
+    bool IsDirty() { return trx_num_ != -1; }
 
 private:
     

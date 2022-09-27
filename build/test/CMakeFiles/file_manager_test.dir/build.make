@@ -79,9 +79,9 @@ file_manager_test_EXTERNAL_OBJECTS =
 
 test/file_manager_test: test/CMakeFiles/file_manager_test.dir/file/file_manager_test.cc.o
 test/file_manager_test: test/CMakeFiles/file_manager_test.dir/build.make
-test/file_manager_test: lib/libgtest_main.a
+test/file_manager_test: lib/libgtest_maind.a
 test/file_manager_test: src/libSimpleDB_lib.a
-test/file_manager_test: lib/libgtest.a
+test/file_manager_test: lib/libgtestd.a
 test/file_manager_test: test/CMakeFiles/file_manager_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable file_manager_test"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/file_manager_test.dir/link.txt --verbose=$(VERBOSE)

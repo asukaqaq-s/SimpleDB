@@ -350,6 +350,19 @@ page_test/fast:
 .PHONY : page_test/fast
 
 #=============================================================================
+# Target rules for targets named log_record_test
+
+# Build rule for target.
+log_record_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 log_record_test
+.PHONY : log_record_test
+
+# fast build rule for target.
+log_record_test/fast:
+	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
+.PHONY : log_record_test/fast
+
+#=============================================================================
 # Target rules for targets named log_test
 
 # Build rule for target.
@@ -389,6 +402,7 @@ help:
 	@echo "... buffer_test"
 	@echo "... file_manager_test"
 	@echo "... page_test"
+	@echo "... log_record_test"
 	@echo "... log_test"
 .PHONY : help
 

@@ -31,7 +31,7 @@ frame_id_t BufferManager::VictimHelper() {
     }
     // 2. select a victim buffer
     bool is_find = replacer_->Evict(&frame_id);
-    if(!is_find) {
+    if(!is_find && !available_num_) {
         return -1; /* fail */
     }
     return frame_id;
@@ -80,10 +80,15 @@ Buffer* BufferManager::TryToPin(BlockId block) {
         // step 2
         frame_id = VictimHelper();
         if(frame_id == -1) {
+            assert(available_num_ == 0);
             return NULL; /* will wait until a unpinned buffer occur*/
         }
+        assert(buffer_pool_[frame_id]->GetPinCount() == 0);
+        
         PinHelper(frame_id, block);
     }
+
+    assert(!buffer_pool_[frame_id]->IsDirty()); /* should not dirty */
     
     buffer = buffer_pool_[frame_id].get();
     return buffer;
@@ -119,6 +124,7 @@ Buffer* BufferManager::Pin(BlockId block) {
 }
 
 bool BufferManager::Unpin(Buffer *buffer) {
+    assert(buffer != nullptr);
     std::unique_lock<std::mutex> lock(latch_);
     auto block = buffer->BlockNum();
     

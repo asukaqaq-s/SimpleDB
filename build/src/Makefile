@@ -371,6 +371,60 @@ log/log_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s
 .PHONY : log/log_manager.cc.s
 
+recovery/log_record.o: recovery/log_record.cc.o
+
+.PHONY : recovery/log_record.o
+
+# target to build an object file
+recovery/log_record.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o
+.PHONY : recovery/log_record.cc.o
+
+recovery/log_record.i: recovery/log_record.cc.i
+
+.PHONY : recovery/log_record.i
+
+# target to preprocess a source file
+recovery/log_record.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.i
+.PHONY : recovery/log_record.cc.i
+
+recovery/log_record.s: recovery/log_record.cc.s
+
+.PHONY : recovery/log_record.s
+
+# target to generate assembly for a file
+recovery/log_record.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.s
+.PHONY : recovery/log_record.cc.s
+
+recovery/setint_record.o: recovery/setint_record.cc.o
+
+.PHONY : recovery/setint_record.o
+
+# target to build an object file
+recovery/setint_record.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o
+.PHONY : recovery/setint_record.cc.o
+
+recovery/setint_record.i: recovery/setint_record.cc.i
+
+.PHONY : recovery/setint_record.i
+
+# target to preprocess a source file
+recovery/setint_record.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.i
+.PHONY : recovery/setint_record.cc.i
+
+recovery/setint_record.s: recovery/setint_record.cc.s
+
+.PHONY : recovery/setint_record.s
+
+# target to generate assembly for a file
+recovery/setint_record.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.s
+.PHONY : recovery/setint_record.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -406,6 +460,12 @@ help:
 	@echo "... log/log_manager.o"
 	@echo "... log/log_manager.i"
 	@echo "... log/log_manager.s"
+	@echo "... recovery/log_record.o"
+	@echo "... recovery/log_record.i"
+	@echo "... recovery/log_record.s"
+	@echo "... recovery/setint_record.o"
+	@echo "... recovery/setint_record.i"
+	@echo "... recovery/setint_record.s"
 .PHONY : help
 
 

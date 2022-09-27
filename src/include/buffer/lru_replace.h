@@ -14,8 +14,7 @@ namespace SimpleDB {
 /**
 * @brief the LRUReplacer can be used to bufferpool
 In LRUReplacer, frames are organized into a queue, with the frame at the head of 
-the squad being expelled first.Each time a newly used  each timeor newly entered frame 
-enters the tail of the queueq
+the queue being poped  first.Each time a newly unpinned frame_id enters the tail of the queue
 */
 class LRUReplacer{
 public:
@@ -78,6 +77,7 @@ private:
     // if buffer pool manager is protected by lock, then we don't need this mutex
     // however, since linux will use futex as mutex, we just need a additional atomic instruction
     // which should be cheap. because contention occurs at high-level in the lock of buffer pool manager
+    // i add one latch here for testing this algorithm correctness in lru_replacer_test.cc
     std::mutex latch_;
 
 };

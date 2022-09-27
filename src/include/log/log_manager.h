@@ -40,7 +40,6 @@ public:
     LogManager(FileManager* file_manager, std::string log_file_name);
     
     ~LogManager() = default;
-    
     /**
     * @brief be always used when dirty pages are to be writen back to disk
     * 
@@ -57,11 +56,15 @@ public:
     */
     lsn_t Append(const std::vector<char> &log_record);
     
+    lsn_t AppendLogRecord(std::vector<char> log_record);
+
     /**
     * @brief return the current log-iterator
     */
     LogIterator Iterator();
-    
+
+    void SetLastestLsn(lsn_t lsn) { lastest_lsn_ = lsn; }
+
 private:
 
     /**
@@ -90,29 +93,27 @@ private:
     // lastest written block
     BlockId current_block_;
     // lastest lsn 
-    lsn_t lastest_lsn_;
+    std::atomic<lsn_t> lastest_lsn_;
     // last lsn which saved to disk
-    lsn_t last_saved_lsn_;
+    std::atomic<lsn_t> last_saved_lsn_;
     // latch
     std::mutex latch_;
     
-    /********* advance log-manager *********
-     * TODO ....
+    /********* advance log-manager *********/
+    // TODO ....
     // a flush buff in memory
-    std::unique_ptr<Page> flush_page_;
+    // std::unique_ptr<Page> flush_page_;
     // background thread for flushing 
-    std::unique_ptr<std::thread> flush_thread_;
+    // std::unique_ptr<std::thread> flush_thread_;
     // whether flush_thread working?
-    std::atomic<bool> enable_flushing_;
-    // all lsn less than last_saved_lsn_ has been flushed to disk
-    std::atomic<lsn_t> last_saved_lsn_;
+    // std::atomic<bool> enable_flushing_;
     // cv used to wakeup the background thread
-    std::condition_variable flush_cv_;
+    // std::condition_variable flush_cv_;
     // cv used to block normal operation
-    std::condition_variable operation_cv_;
-    // 
-    std::atomic<bool> is_full;
-    ****************************************/
+    // std::condition_variable operation_cv_;
+    // sleep time
+    // std::chrono::milliseconds sleep_time_{300};
+    /****************************************/
 };
 
 } // namespace SimpleDB

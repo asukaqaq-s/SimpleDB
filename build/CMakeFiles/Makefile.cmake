@@ -92,5 +92,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "test/CMakeFiles/buffer_test.dir/DependInfo.cmake"
   "test/CMakeFiles/file_manager_test.dir/DependInfo.cmake"
   "test/CMakeFiles/page_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/log_record_test.dir/DependInfo.cmake"
   "test/CMakeFiles/log_test.dir/DependInfo.cmake"
   )

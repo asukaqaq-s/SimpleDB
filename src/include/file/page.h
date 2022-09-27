@@ -92,7 +92,7 @@ public:
     * @param strlen The number of characters inputed
     * @return sizeof(int) + (strlen * The byte of each character)
     */
-    static int MaxLength(int strlen);
+    static int MaxLength(int strlen) { return sizeof(int) + strlen; }
     
     /**
     * @brief page's content,usually 4kb size. 

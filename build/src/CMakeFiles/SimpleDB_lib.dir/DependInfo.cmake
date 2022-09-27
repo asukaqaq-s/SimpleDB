@@ -11,6 +11,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/asuka/workbench/project/SimpleDB/src/file/page.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/log/log_iterator.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/log/log_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/recovery/log_record.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/recovery/setint_record.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

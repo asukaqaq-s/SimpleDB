@@ -136,8 +136,8 @@ private:
     std::condition_variable victim_cv_;
     
     /* wait time can be setted by user */
-    std::chrono::milliseconds milliseconds{1000};
-    const int max_time_ = 1000;
+    std::chrono::milliseconds milliseconds{10000};
+    const int max_time_ = 10000;
 };  
 
 } // namespace SimpleDB

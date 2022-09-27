@@ -103,15 +103,16 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
 
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
 
-.PHONY : list_install_components/fast
+.PHONY : rebuild_cache/fast
 
 # Special rule for the target edit_cache
 edit_cache:
@@ -124,16 +125,15 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
 
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
 
-.PHONY : rebuild_cache/fast
+.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -301,6 +301,21 @@ page_test: test/CMakeFiles/page_test.dir/rule
 page_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
 .PHONY : page_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/log_record_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/log_record_test.dir/rule
+.PHONY : test/CMakeFiles/log_record_test.dir/rule
+
+# Convenience name for target.
+log_record_test: test/CMakeFiles/log_record_test.dir/rule
+
+.PHONY : log_record_test
+
+# fast build rule for target.
+log_record_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
+.PHONY : log_record_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/log_test.dir/rule:
@@ -533,6 +548,33 @@ log/log_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.s
 .PHONY : log/log_test.cc.s
 
+recovery/log_record_test.o: recovery/log_record_test.cc.o
+
+.PHONY : recovery/log_record_test.o
+
+# target to build an object file
+recovery/log_record_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/recovery/log_record_test.cc.o
+.PHONY : recovery/log_record_test.cc.o
+
+recovery/log_record_test.i: recovery/log_record_test.cc.i
+
+.PHONY : recovery/log_record_test.i
+
+# target to preprocess a source file
+recovery/log_record_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/recovery/log_record_test.cc.i
+.PHONY : recovery/log_record_test.cc.i
+
+recovery/log_record_test.s: recovery/log_record_test.cc.s
+
+.PHONY : recovery/log_record_test.s
+
+# target to generate assembly for a file
+recovery/log_record_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/recovery/log_record_test.cc.s
+.PHONY : recovery/log_record_test.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -551,11 +593,12 @@ help:
 	@echo "... buffer_test"
 	@echo "... file_manager_test"
 	@echo "... test"
+	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... page_test"
 	@echo "... list_install_components"
+	@echo "... log_record_test"
 	@echo "... log_test"
-	@echo "... edit_cache"
-	@echo "... rebuild_cache"
 	@echo "... arbitrarily_test/main.o"
 	@echo "... arbitrarily_test/main.i"
 	@echo "... arbitrarily_test/main.s"
@@ -580,6 +623,9 @@ help:
 	@echo "... log/log_test.o"
 	@echo "... log/log_test.i"
 	@echo "... log/log_test.s"
+	@echo "... recovery/log_record_test.o"
+	@echo "... recovery/log_record_test.i"
+	@echo "... recovery/log_record_test.s"
 .PHONY : help
 
 

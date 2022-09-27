@@ -4,6 +4,7 @@ build/**
 *.exe
 1311722138@qq.com
 1311722138@qq.com.pub
+build/
 build/CMakeCache.txt
 build/CTestTestfile.cmake  
 build/_deps  

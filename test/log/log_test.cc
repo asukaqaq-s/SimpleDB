@@ -35,8 +35,8 @@ std::vector<std::vector<char>> CreateLogs(LogManager * lm,int times) {
     std::vector<std::vector<char>> res;
     for(int i = 0;i < times;i ++) {
         std::vector<char> log_record = CreateLogRecord(i);
-        lm->Append(log_record);
-        // std::cout << x << std::endl;
+        int x = lm->Append(log_record);
+        // std::cout << "lsn = " << x << std::endl;
         res.push_back(log_record);
     }
     return res;
@@ -74,11 +74,11 @@ TEST(LogManagerTest, EasyTest1) {
     /**************************************************************
     * start test!!!! 
     ***************************************************************/
-
+    
 
     std::vector<std::vector<char>> log_records; //= CreateLogs(log_manager.get(), times);
     
-    for(int i = 0;i < 10;i ++) {
+    for(int i = 0;i < 1000;i ++) {
         char c = i % 10 + '0';
         std::vector<char> test_vector(10,c);
         log_manager->Append(test_vector);
@@ -89,12 +89,12 @@ TEST(LogManagerTest, EasyTest1) {
     auto log_iterator = log_manager->Iterator();
     
     
-    for(int i = 0;i < 10;i ++) {
+    for(int i = 0;i < 1000;i ++) {
         std::vector<char> array1 = log_iterator.NextRecord();
         std::vector<char> array2 = log_records[i];
         EXPECT_EQ(array1, array2);    
     }
-    
+    // pause();
     /**************************************************************
     * end test!!!! 
     ***************************************************************/
@@ -105,42 +105,56 @@ TEST(LogManagerTest, EasyTest1) {
 
 TEST(LogManagerTest, RandomTest1) {
     // return;
-    char buf[100];
-    std::string local_path = getcwd(buf, 100);
-    std::string test_dir = local_path + "/" + "test_dir";
-    std::string cmd;
-    std::string log_file_name = "log.log";
-    std::string log_file_path = test_dir + "/" + log_file_name;
-    std::unique_ptr<FileManager> file_manager 
-        = std::make_unique<FileManager>(test_dir, 4096);
-    
-    std::unique_ptr<LogManager> log_manager 
-        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
-    
-    /**************************************************************
-    * start test!!!! 
-    ***************************************************************/
-    
-    int times = 10000;
+    for(int i = 0;i < 100;i ++ ) {
+        char buf[100];
+        std::string local_path = getcwd(buf, 100);
+        std::string test_dir = local_path + "/" + "test_dir";
+        std::string cmd;
+        std::string log_file_name = "log.log";
+        std::string log_file_path = test_dir + "/" + log_file_name;
+        std::unique_ptr<FileManager> file_manager 
+            = std::make_unique<FileManager>(test_dir, 4096);
+        
+        std::unique_ptr<LogManager> log_manager 
+            = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+        
+        /**************************************************************
+        * start test!!!! 
+        ***************************************************************/
+        
+        int times = 1000;
 
-    auto log_records = CreateLogs(log_manager.get(), times);
-    std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
-    auto log_iterator = log_manager->Iterator();
-    
+        auto log_records = CreateLogs(log_manager.get(), times);
+        std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
+        auto log_iterator = log_manager->Iterator();
 
-    for(int i = 0;i < times;i ++) {
-        std::vector<char> array1 = log_iterator.NextRecord();
-        std::vector<char> array2 = log_records[i];
-        EXPECT_EQ(array1, array2);    
+        // sleep(20);
+        int time = 0;
+        for(int i = 0;i < times;i ++) {
+            std::vector<char> array1 = log_iterator.NextRecord();
+            std::vector<char> array2 = log_records[i];
+            // for(auto t:array1) std::cout <<t<< std::flush;
+            // std::cout << std::endl;
+            // for(auto t:array2) std::cout <<t<< std::flush;
+            // std::cout << std::endl;
+            
+            EXPECT_EQ(array1, array2);    
+            // if(array1 != array2) time++;
+            // if(time == 10) 
+            if(array1 != array2)
+                pause();
+        }
+        
+        /**************************************************************
+        * end test!!!! 
+        ***************************************************************/
+        // pause();
+        // delete all database file for testing 
+        cmd = "rm -rf " + test_dir;
+        system(cmd.c_str());
+
+        // std::cout << std::endl << std::endl;
     }
-    
-    /**************************************************************
-    * end test!!!! 
-    ***************************************************************/
-   
-    // delete all database file for testing 
-    cmd = "rm -rf " + test_dir;
-    system(cmd.c_str());
 }
 
 
@@ -162,7 +176,7 @@ TEST(LogManagerTest, RandomTest2) {
     * start test
     ***************************************************************/
 
-    int times = 1145679;
+    int times = 1679;
     
     auto log_records = CreateLogs(log_manager.get(), times);
     std::reverse(log_records.begin(), log_records.end()); 
@@ -261,7 +275,7 @@ TEST(LogManagerTest, FlushTest) {
             std::vector<char> array1 = log_iterator.NextRecord();
             std::vector<char> array2 = total_log_records[i];
             EXPECT_EQ(array1, array2);
-            assert(array1 == array2);    
+            // assert(array1 == array2);    
     }
     /**************************************************************
     * end test

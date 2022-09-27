@@ -43,11 +43,11 @@ void LogManager::Flush(int lsn) {
 // note that the log records in the page from right to left
 // and the size of a log record which stores in disk is equal
 // to (log_record_length + sizeof(int))
-int LogManager::Append(const std::vector<char> &log_record) {
+lsn_t LogManager::Append(const std::vector<char> &log_record) {
     std::lock_guard<std::mutex> lock(latch_);
     int record_length = log_record.size(); 
     int page_boundary = log_page_->GetInt(0);
-    int need_size = record_length + sizeof(int);
+    int need_size = record_length + sizeof(int); /* add the size of log record */
     int record_pos;
     
     if(page_boundary < static_cast<int>(sizeof(int)) + need_size) {
@@ -56,16 +56,41 @@ int LogManager::Append(const std::vector<char> &log_record) {
         current_block_ = AppendNewBlock();
         page_boundary = log_page_->GetInt(0);
     }
+    
     record_pos = page_boundary - need_size;
     log_page_->SetBytes(record_pos, log_record);
     log_page_->SetInt(0, record_pos);
     lastest_lsn_ ++; 
-    return lastest_lsn_; // the log of lastest_lsn_ is not generated  
+    return lastest_lsn_.load(); // the log of lastest_lsn_ is not generated  
 }
+
+lsn_t LogManager::AppendLogRecord(std::vector<char> log_record) {
+    std::lock_guard<std::mutex> lock(latch_);
+    int record_length = log_record.size(); 
+    int page_boundary = log_page_->GetInt(0);
+    int need_size = record_length + sizeof(int); /* add the size of log record */
+    int record_pos;
+    
+    if(page_boundary < static_cast<int>(sizeof(int)) + need_size) {
+        // sizeof(int) means the size of the page-header
+        Flush();
+        current_block_ = AppendNewBlock();
+        page_boundary = log_page_->GetInt(0);
+    }
+    
+    *reinterpret_cast<int*>(&(log_record[0])) = lastest_lsn_.load(); /* set lsn */
+    record_pos = page_boundary - need_size;
+    log_page_->SetBytes(record_pos, log_record);
+    log_page_->SetInt(0, record_pos);
+    lastest_lsn_ ++; 
+    return lastest_lsn_.load(); // the log of lastest_lsn_ is not generated  
+}
+
+
 
 void LogManager::Flush() {
     file_manager_->Write(current_block_, *log_page_);
-    last_saved_lsn_ = lastest_lsn_; 
+    last_saved_lsn_.store(lastest_lsn_); 
 }
 
 LogIterator LogManager::Iterator() {
