@@ -76,6 +76,8 @@ public:
     void unpin() { pin_--; }
 
     BlockId BlockNum() { return block_;}
+
+    BlockId GetBlockID() { return block_; }
     
     int GetPinCount() { return pin_; }
     

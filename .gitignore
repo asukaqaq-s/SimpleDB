@@ -4,14 +4,6 @@ build/**
 *.exe
 1311722138@qq.com
 1311722138@qq.com.pub
-build/
-build/CMakeCache.txt
-build/CTestTestfile.cmake  
-build/_deps  
-build/cmake_install.cmake    
-build/lib
-build/CMakeFiles
-build/bin 
-build/log.txt
-build/.cmake
-build/*.swp
+
+
+build

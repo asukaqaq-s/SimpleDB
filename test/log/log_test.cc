@@ -85,13 +85,18 @@ TEST(LogManagerTest, EasyTest1) {
         log_records.push_back(test_vector);
     }
     // return;
-    std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
-    auto log_iterator = log_manager->Iterator();
+    // std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
+    auto log_iterator = log_manager->Iterator(0, sizeof(int));
     
     
     for(int i = 0;i < 1000;i ++) {
         std::vector<char> array1 = log_iterator.NextRecord();
         std::vector<char> array2 = log_records[i];
+        // for(auto t:array1) std::cout << t;
+        // std::cout<<std::endl;
+        // for(auto t:array2) std::cout << t;
+        // std::cout<<std::endl;
+        
         EXPECT_EQ(array1, array2);    
     }
     // pause();
@@ -125,7 +130,7 @@ TEST(LogManagerTest, RandomTest1) {
         int times = 1000;
 
         auto log_records = CreateLogs(log_manager.get(), times);
-        std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
+        // std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
         auto log_iterator = log_manager->Iterator();
 
         // sleep(20);
@@ -179,7 +184,7 @@ TEST(LogManagerTest, RandomTest2) {
     int times = 1679;
     
     auto log_records = CreateLogs(log_manager.get(), times);
-    std::reverse(log_records.begin(), log_records.end()); 
+    // std::reverse(log_records.begin(), log_records.end()); 
     auto log_iterator = log_manager->Iterator();
     
     for(int i = 0;i < times;i ++) {
@@ -216,12 +221,11 @@ TEST(LogManagerTest, RandomTest3) {
     * start test
     ***************************************************************/
 
-    int times = 100;
+    int times = 12130;
     
-    for(int i = 0;i < 100;i ++ ) {
+    for(int i = 0;i < 1;i ++ ) {
         
         auto log_records = CreateLogs(log_manager.get(), times);
-        std::reverse(log_records.begin(), log_records.end()); 
         auto log_iterator = log_manager->Iterator();
         
         for(int i = 0;i < times;i ++) {
@@ -269,7 +273,7 @@ TEST(LogManagerTest, FlushTest) {
         }
         log_manager->Flush(lsn);
     }
-    std::reverse(total_log_records.begin(), total_log_records.end());
+    // std::reverse(total_log_records.begin(), total_log_records.end());
     auto log_iterator = log_manager->Iterator();
     for(int i = 0;i < times * 100;i ++) {
             std::vector<char> array1 = log_iterator.NextRecord();
@@ -325,7 +329,7 @@ TEST(LogManagerTest, FixSizeLogTest) {
         }
         log_manager->Flush(lsn);
     }
-    std::reverse(total_log_records.begin(), total_log_records.end());
+    // std::reverse(total_log_records.begin(), total_log_records.end());
     auto log_iterator = log_manager->Iterator();
     
     for(int i = 0;i < times * 100;i ++) {

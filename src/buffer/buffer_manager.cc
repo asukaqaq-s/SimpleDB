@@ -145,12 +145,14 @@ bool BufferManager::Unpin(BlockId block) {
     }
     auto frame_id = page_table_[block];
     UnpinHelper(frame_id, block);
+    return true;
 }
 
 void BufferManager::FlushAll(txn_id_t txn_num) {
     std::lock_guard<std::mutex> lock(latch_);
+    int buffer_pool_size = static_cast<int> (buffer_pool_.size());
 
-    for(int i = 0;i < buffer_pool_.size();i ++) {
+    for(int i = 0;i < buffer_pool_size;i ++) {
         auto *buffer = buffer_pool_[i].get();
         if(buffer->ModifyingTrx() == txn_num) {
             buffer->flush();
@@ -160,8 +162,9 @@ void BufferManager::FlushAll(txn_id_t txn_num) {
 
 void BufferManager::FlushAll() {
     std::lock_guard<std::mutex> lock(latch_);
+    int buffer_pool_size = static_cast<int> (buffer_pool_.size());
 
-    for(int i = 0;i < buffer_pool_.size();i ++) {
+    for(int i = 0;i < buffer_pool_size;i ++) {
         auto *buffer = buffer_pool_[i].get();
         buffer->flush();
     }

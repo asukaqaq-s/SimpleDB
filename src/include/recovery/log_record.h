@@ -5,12 +5,12 @@
 #include "file/block_id.h"
 #include "file/page.h"
 #include "concurrency/transaction.h"
-#include "log/log_manager.h"
 
 #include <memory>
 #include <string>
 #include <vector>
 #include <sstream>
+#include <assert.h>
 
 namespace SimpleDB {
 
@@ -21,7 +21,7 @@ enum class LogRecordType {
     SETSTRING,
     // txn related
     CHECKPOINT,
-    START,
+    BEGIN,
     COMMIT,
     ROLLBACK, // or called abort
 };
@@ -41,13 +41,13 @@ enum class LogRecordType {
 * | Header | 
 * ----------
 * For SetInt
-* --------------------------------------------------------------------------
-* | Header | FileName.size() | FileName | BlockNum | Old value | New value |
-* --------------------------------------------------------------------------
+* -----------------------------------------------------------------------------------
+* | Header | FileName.size() | FileName | BlockNum | offset | Old value | New value |
+* -----------------------------------------------------------------------------------
 * For SetString
-* ----------------------------------------------------------------------------------------------------------------
-* | Header | FileName.size() | FileName | BlockNum | Old String Size | Old String | New String Size | New String |
-* ----------------------------------------------------------------------------------------------------------------
+* -------------------------------------------------------------------------------------------------------------------------
+* | Header | FileName.size() | FileName | BlockNum | offset | Old String Size | Old String | New String Size | New String |
+* -------------------------------------------------------------------------------------------------------------------------
 */
 class LogRecord {
 
@@ -56,11 +56,15 @@ public:
     LogRecord() = default;
     // virtual ~LogRecord() = default;
 
+    void SetLsn(lsn_t lsn) {
+        lsn_ = lsn;    
+    }
+
     lsn_t GetLsn() {
         return lsn_;
     }
 
-    txn_id_t GetTnxID() {
+    txn_id_t GetTxnID() {
         return txn_id_;
     }
     
@@ -83,7 +87,7 @@ public:
     bool IsCLR() {
         return is_clr_;
     }
-
+    
     std::string GetHeaderToString() {
         std::string clr;
         if(is_clr_) 
@@ -99,6 +103,8 @@ public:
         return os.str();
     }
         
+    virtual int RecordSize() = 0;
+
     virtual std::string ToString() = 0;
 
     /**
@@ -113,6 +119,8 @@ public:
 
     /**
     * @brief turn a logrecord object into the byte-sequence
+    * 
+    * @return byte-sequence
     */
     virtual std::shared_ptr<std::vector<char>> Serializeto() = 0;
 
@@ -131,7 +139,7 @@ public:
     static Page GetHeaderPage(txn_id_t txn_id, LogRecordType type, int is_clr, int record_size);
 
     /**
-    * @brief Get header information through page
+    * @brief helper function which get header information through page
     */
     void GetHeaderInfor(Page *p);
 
@@ -168,12 +176,16 @@ public:
     SetIntRecord(txn_id_t txn_id,  BlockId block, 
                     int offset, int old_value, int new_value);
     
+    int RecordSize() override {
+        return record_size_;
+    }
+
     void Redo(Transaction *txn) override;
     
     void Undo(Transaction *txn) override;
 
     std::string ToString() override;
-
+    
     std::shared_ptr<std::vector<char>> Serializeto() override;
     
 
@@ -202,28 +214,223 @@ private:
     int record_size_;
 };
 
-/*
+
 class SetStringRecord : public LogRecord {
 
+public: 
+
+    SetStringRecord() = default;
+    
+    SetStringRecord(Page *p);
+
+    SetStringRecord(txn_id_t txn_id,  BlockId block, 
+                    int offset, std::string old_string, std::string new_string);
+    
+    int RecordSize() override {
+        return record_size_;
+    }
+
+    void Redo(Transaction *txn) override;
+    
+    void Undo(Transaction *txn) override;
+
+    std::string ToString() override;
+
+    std::shared_ptr<std::vector<char>> Serializeto() override;
+
+    // for debugging purpose
+    bool operator ==(const SetStringRecord &obj) const {
+        return lsn_ == obj.lsn_ && txn_id_ == obj.txn_id_ && 
+                prev_lsn_ == obj.prev_lsn_ && block_ == obj.block_ &&
+                new_value_ == obj.new_value_ && old_value_ == obj.old_value_ &&
+                record_size_ == obj.record_size_ && is_clr_ == obj.is_clr_;
+    }
+    
+    bool operator !=(const SetStringRecord &obj) const {
+        return !(obj == *this);
+    }
+
+private:
+    
+    BlockId block_;
+    // the offset in block
+    int offset_;
+    
+    std::string new_value_;
+    
+    std::string old_value_;
+
+    int record_size_;
 };
+
 
 class CommitRecord : public LogRecord {
 
+public:
+
+    CommitRecord() = default;
+    
+    CommitRecord(Page *p) { 
+        GetHeaderInfor(p); 
+        assert(type_ == LogRecordType::COMMIT);
+    }
+
+    CommitRecord(txn_id_t txn_id) { 
+        txn_id_ = txn_id;
+        type_ = LogRecordType::COMMIT;
+    }
+    
+    int RecordSize() override {
+        return HEADER_SIZE;
+    }
+
+    void Redo(Transaction *txn) override { /* do nothing */ }
+    
+    void Undo(Transaction *txn) override { /* do nothing */}
+
+    std::string ToString() override { return GetHeaderToString(); }
+
+    std::shared_ptr<std::vector<char>> Serializeto() override;
+
+    // for debugging purpose
+    bool operator ==(const CommitRecord &obj) const {
+        return lsn_ == obj.lsn_ && txn_id_ == obj.txn_id_ && 
+                prev_lsn_ == obj.prev_lsn_ && is_clr_ == obj.is_clr_;
+    }
+    
+    bool operator !=(const CommitRecord &obj) const {
+        return !(obj == *this);
+    }
+
+private:
+    // nothing
 };
 
 
 class CheckpointRecord : public LogRecord {
+
+public:
+
+    CheckpointRecord() : LogRecord() { type_ = LogRecordType::CHECKPOINT; }
     
+    CheckpointRecord(Page *p) { 
+        GetHeaderInfor(p);
+        assert(type_ == LogRecordType::CHECKPOINT);
+    }
+    
+    int RecordSize() override {
+        return HEADER_SIZE;
+    }
+
+    void Redo(Transaction *txn) override { /* do nothing */ }
+    
+    void Undo(Transaction *txn) override { /* do nothing */}
+
+    std::string ToString() override { return GetHeaderToString(); }
+
+    std::shared_ptr<std::vector<char>> Serializeto() override;
+
+    // for debugging purpose
+    bool operator ==(const CheckpointRecord &obj) const {
+        return lsn_ == obj.lsn_ && txn_id_ == obj.txn_id_ && 
+                prev_lsn_ == obj.prev_lsn_ && is_clr_ == obj.is_clr_;
+    }
+    
+    bool operator !=(const CheckpointRecord &obj) const {
+        return !(obj == *this);
+    }
+
+private:
+    // nothing
 };
+
 
 class BeginRecord : public LogRecord {
 
+public:
+    
+    BeginRecord() = default;
+
+    BeginRecord(txn_id_t txn_id) : LogRecord() { 
+        txn_id_ = txn_id;
+        type_ = LogRecordType::BEGIN; 
+    }
+    
+    BeginRecord(Page *p) {
+        GetHeaderInfor(p);
+        assert(type_ == LogRecordType::BEGIN);
+    }
+    
+    int RecordSize() override {
+        return HEADER_SIZE;
+    }
+
+    void Redo(Transaction *txn) override { /* do nothing */ }
+    
+    void Undo(Transaction *txn) override { /* do nothing */}
+
+    std::string ToString() override { return GetHeaderToString(); }
+
+    std::shared_ptr<std::vector<char>> Serializeto() override;
+
+    // for debugging purpose
+    bool operator ==(const BeginRecord &obj) const {
+        return lsn_ == obj.lsn_ && txn_id_ == obj.txn_id_ && 
+                prev_lsn_ == obj.prev_lsn_ && is_clr_ == obj.is_clr_;
+    }
+    
+    bool operator !=(const BeginRecord &obj) const {
+        return !(obj == *this);
+    }
+
+private:
+    // nothing
 };
+
 
 class RollbackRecord : public LogRecord {
     
+public:
+    
+    RollbackRecord() = default;
+
+    RollbackRecord(txn_id_t txn_id) : LogRecord() { 
+        txn_id_ = txn_id;
+        type_ = LogRecordType::ROLLBACK; 
+    }
+    
+    RollbackRecord(Page *p) {
+        GetHeaderInfor(p);
+        assert(type_ == LogRecordType::ROLLBACK);
+    }
+    
+    int RecordSize() override {
+        return HEADER_SIZE;
+    }
+
+    void Redo(Transaction *txn) override { /* do nothing */ }
+    
+    void Undo(Transaction *txn) override { /* do nothing */}
+
+    std::string ToString() override { return GetHeaderToString(); }
+
+    std::shared_ptr<std::vector<char>> Serializeto() override;
+
+    // for debugging purpose
+    bool operator ==(const RollbackRecord &obj) const {
+        return lsn_ == obj.lsn_ && txn_id_ == obj.txn_id_ && 
+                prev_lsn_ == obj.prev_lsn_ && is_clr_ == obj.is_clr_;
+    }
+    
+    bool operator !=(const RollbackRecord &obj) const {
+        return !(obj == *this);
+    }
+
+private:
+    // nothing
+
 };
-*/
+
 } // namespace SimpleDB
 
 #endif

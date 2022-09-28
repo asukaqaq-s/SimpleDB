@@ -92,17 +92,6 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -124,6 +113,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
 
 # Special rule for the target list_install_components
 list_install_components:
@@ -196,21 +196,6 @@ lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
 lru_replacer_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
 .PHONY : lru_replacer_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/unittests.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/unittests.dir/rule
-.PHONY : test/CMakeFiles/unittests.dir/rule
-
-# Convenience name for target.
-unittests: test/CMakeFiles/unittests.dir/rule
-
-.PHONY : unittests
-
-# fast build rule for target.
-unittests/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
-.PHONY : unittests/fast
 
 # Convenience name for target.
 test/CMakeFiles/main.dir/rule:
@@ -331,6 +316,36 @@ log_test: test/CMakeFiles/log_test.dir/rule
 log_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
 .PHONY : log_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/unittests.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/unittests.dir/rule
+.PHONY : test/CMakeFiles/unittests.dir/rule
+
+# Convenience name for target.
+unittests: test/CMakeFiles/unittests.dir/rule
+
+.PHONY : unittests
+
+# fast build rule for target.
+unittests/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
+.PHONY : unittests/fast
+
+# Convenience name for target.
+test/CMakeFiles/recovery_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/recovery_manager_test.dir/rule
+.PHONY : test/CMakeFiles/recovery_manager_test.dir/rule
+
+# Convenience name for target.
+recovery_manager_test: test/CMakeFiles/recovery_manager_test.dir/rule
+
+.PHONY : recovery_manager_test
+
+# fast build rule for target.
+recovery_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/build
+.PHONY : recovery_manager_test/fast
 
 arbitrarily_test/main.o: arbitrarily_test/main.cc.o
 
@@ -575,6 +590,33 @@ recovery/log_record_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/recovery/log_record_test.cc.s
 .PHONY : recovery/log_record_test.cc.s
 
+recovery/recovery_manager_test.o: recovery/recovery_manager_test.cc.o
+
+.PHONY : recovery/recovery_manager_test.o
+
+# target to build an object file
+recovery/recovery_manager_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/recovery/recovery_manager_test.cc.o
+.PHONY : recovery/recovery_manager_test.cc.o
+
+recovery/recovery_manager_test.i: recovery/recovery_manager_test.cc.i
+
+.PHONY : recovery/recovery_manager_test.i
+
+# target to preprocess a source file
+recovery/recovery_manager_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/recovery/recovery_manager_test.cc.i
+.PHONY : recovery/recovery_manager_test.cc.i
+
+recovery/recovery_manager_test.s: recovery/recovery_manager_test.cc.s
+
+.PHONY : recovery/recovery_manager_test.s
+
+# target to generate assembly for a file
+recovery/recovery_manager_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/recovery/recovery_manager_test.cc.s
+.PHONY : recovery/recovery_manager_test.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -584,21 +626,22 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
+	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... show-tests"
 	@echo "... lru_replacer_test"
-	@echo "... unittests"
 	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... file_manager_test"
 	@echo "... test"
-	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... page_test"
 	@echo "... list_install_components"
 	@echo "... log_record_test"
 	@echo "... log_test"
+	@echo "... unittests"
+	@echo "... recovery_manager_test"
 	@echo "... arbitrarily_test/main.o"
 	@echo "... arbitrarily_test/main.i"
 	@echo "... arbitrarily_test/main.s"
@@ -626,6 +669,9 @@ help:
 	@echo "... recovery/log_record_test.o"
 	@echo "... recovery/log_record_test.i"
 	@echo "... recovery/log_record_test.s"
+	@echo "... recovery/recovery_manager_test.o"
+	@echo "... recovery/recovery_manager_test.i"
+	@echo "... recovery/recovery_manager_test.s"
 .PHONY : help
 
 

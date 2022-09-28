@@ -398,6 +398,33 @@ recovery/log_record.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.s
 .PHONY : recovery/log_record.cc.s
 
+recovery/recovery_manager.o: recovery/recovery_manager.cc.o
+
+.PHONY : recovery/recovery_manager.o
+
+# target to build an object file
+recovery/recovery_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o
+.PHONY : recovery/recovery_manager.cc.o
+
+recovery/recovery_manager.i: recovery/recovery_manager.cc.i
+
+.PHONY : recovery/recovery_manager.i
+
+# target to preprocess a source file
+recovery/recovery_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.i
+.PHONY : recovery/recovery_manager.cc.i
+
+recovery/recovery_manager.s: recovery/recovery_manager.cc.s
+
+.PHONY : recovery/recovery_manager.s
+
+# target to generate assembly for a file
+recovery/recovery_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.s
+.PHONY : recovery/recovery_manager.cc.s
+
 recovery/setint_record.o: recovery/setint_record.cc.o
 
 .PHONY : recovery/setint_record.o
@@ -424,6 +451,33 @@ recovery/setint_record.s: recovery/setint_record.cc.s
 recovery/setint_record.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.s
 .PHONY : recovery/setint_record.cc.s
+
+recovery/setstring_record.o: recovery/setstring_record.cc.o
+
+.PHONY : recovery/setstring_record.o
+
+# target to build an object file
+recovery/setstring_record.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o
+.PHONY : recovery/setstring_record.cc.o
+
+recovery/setstring_record.i: recovery/setstring_record.cc.i
+
+.PHONY : recovery/setstring_record.i
+
+# target to preprocess a source file
+recovery/setstring_record.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.i
+.PHONY : recovery/setstring_record.cc.i
+
+recovery/setstring_record.s: recovery/setstring_record.cc.s
+
+.PHONY : recovery/setstring_record.s
+
+# target to generate assembly for a file
+recovery/setstring_record.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.s
+.PHONY : recovery/setstring_record.cc.s
 
 # Help Target
 help:
@@ -463,9 +517,15 @@ help:
 	@echo "... recovery/log_record.o"
 	@echo "... recovery/log_record.i"
 	@echo "... recovery/log_record.s"
+	@echo "... recovery/recovery_manager.o"
+	@echo "... recovery/recovery_manager.i"
+	@echo "... recovery/recovery_manager.s"
 	@echo "... recovery/setint_record.o"
 	@echo "... recovery/setint_record.i"
 	@echo "... recovery/setint_record.s"
+	@echo "... recovery/setstring_record.o"
+	@echo "... recovery/setstring_record.i"
+	@echo "... recovery/setstring_record.s"
 .PHONY : help
 
 

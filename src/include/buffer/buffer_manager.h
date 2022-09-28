@@ -34,7 +34,7 @@ public:
     * @return the number of avaiable (unused, unpinned) buffers.
     */
     int available() {return available_num_;}
-
+    
     /**
     * @brief pins a buffer to the specified block, potentially
     * waiting until a buffer becomes available.
@@ -70,7 +70,6 @@ public:
     * Flushes the all dirty buffers 
     */
     void FlushAll();
-
     
     /********* for debugging purpose *********/
     

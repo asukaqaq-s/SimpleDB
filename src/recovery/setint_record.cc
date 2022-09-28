@@ -14,9 +14,9 @@ namespace SimpleDB {
 * | LSN | txn_ID | prevLSN | LogType | IsCLR |
 * --------------------------------------------
 * SetInt-LOG
-* --------------------------------------------------------------------------
-* | Header | FileName.size() | FileName | BlockNum | Old value | New value |
-* --------------------------------------------------------------------------
+* -----------------------------------------------------------------------------------
+* | Header | FileName.size() | FileName | BlockNum | offset | Old value | New value |
+* -----------------------------------------------------------------------------------
 */
 
 SetIntRecord::SetIntRecord(txn_id_t txn_id, BlockId block, 
@@ -45,7 +45,6 @@ SetIntRecord::SetIntRecord(Page *p) : LogRecord() {
     GetHeaderInfor(p);
     // get blockid 
     std::string file_name(p->GetString(HEADER_SIZE));
-    std::cout << file_name << std::endl;
     int block_number = p->GetInt(block_number_pos);
     block_ = BlockId(file_name, block_number);
     // get offset
@@ -77,15 +76,17 @@ std::string SetIntRecord::ToString() {
     
     str = str + block_.to_string() + " "
               + "offset: " + std::to_string(offset_) + " "
-              + "new_value: " + std::to_string(new_value_) + " "
-              + "old_value: " + std::to_string(old_value_);
+              + "old_value: " + std::to_string(old_value_) + " "
+              + "new_value: " + std::to_string(new_value_);
     
     return str;
 }
  
 std::shared_ptr<std::vector<char>> SetIntRecord::Serializeto() {
 
-    auto page = GetHeaderPage(txn_id_, type_, false, record_size_);
+    auto page = GetHeaderPage(txn_id_, type_, is_clr_, record_size_);
+    int lsn_pos = 0;
+    int prev_lsn_pos = sizeof(txn_id_t) + sizeof(lsn_t);
     int file_name_pos = HEADER_SIZE;
     int file_name_size = block_.FileName().size();
     int block_num_pos = HEADER_SIZE + Page::MaxLength(file_name_size);
@@ -93,6 +94,8 @@ std::shared_ptr<std::vector<char>> SetIntRecord::Serializeto() {
     int old_value_pos = offset_pos + sizeof(int);
     int new_value_pos = old_value_pos + sizeof(int);
     
+    page.SetInt(lsn_pos, lsn_);
+    page.SetInt(prev_lsn_pos, prev_lsn_);
     page.SetString(file_name_pos, block_.FileName());
     page.SetInt(block_num_pos, block_.BlockNum());
     page.SetInt(offset_pos, offset_);

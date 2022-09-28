@@ -18,19 +18,19 @@ std::shared_ptr<LogRecord> LogRecord::DeserializeFrom
         return std::make_shared<SetIntRecord>(&page);
         break;
     case LogRecordType::SETSTRING:
-        
+        return std::make_shared<SetStringRecord>(&page);
         break;
     case LogRecordType::COMMIT:
-
+        return std::make_shared<CommitRecord>(&page);
         break;
     case LogRecordType::ROLLBACK:
-
+        return std::make_shared<RollbackRecord>(&page);
         break;
-    case LogRecordType::START:
-
+    case LogRecordType::BEGIN:
+        return std::make_shared<BeginRecord>(&page);
         break;
     case LogRecordType::CHECKPOINT:
-
+        return std::make_shared<CheckpointRecord>(&page);
         break;
     default:
         return nullptr;
@@ -51,8 +51,9 @@ Page LogRecord::GetHeaderPage
             std::make_shared<std::vector<char>> (record_size);
     Page p(array);
     
+    p.SetInt(0, INVALID_LSN);
     p.SetInt(txn_pos, txn_id);
-    p.SetInt(prev_lsn_pos, INVALID_TXN_ID);
+    p.SetInt(prev_lsn_pos, INVALID_LSN);
     p.SetInt(logtype_pos, static_cast<int>(type));
     p.SetInt(clr_pos, is_clr);
     return p;
@@ -65,11 +66,58 @@ void LogRecord::GetHeaderInfor(Page *p) {
     int logtype_pos = prev_lsn_pos + sizeof(lsn_t);
     int clr_pos = logtype_pos + sizeof(LogRecordType);
 
+    lsn_ = p->GetInt(lsn_pos);
     txn_id_ = p->GetInt(txn_pos);
     prev_lsn_ = p->GetInt(prev_lsn_pos);
     type_ = static_cast<LogRecordType>(p->GetInt(logtype_pos));
     is_clr_ = p->GetInt(clr_pos);
 }
+
+std::shared_ptr<std::vector<char>> CommitRecord::Serializeto() {
+    auto page = GetHeaderPage(txn_id_, type_, is_clr_, HEADER_SIZE);
+    int lsn_pos = 0;
+    int prev_lsn_pos = sizeof(lsn_t) + sizeof(txn_id_t);
+    
+    page.SetInt(lsn_pos, lsn_);
+    page.SetInt(prev_lsn_pos, prev_lsn_);
+
+    return page.content();
+}
+
+std::shared_ptr<std::vector<char>> CheckpointRecord::Serializeto() {
+    auto page = GetHeaderPage(txn_id_, type_, is_clr_, HEADER_SIZE);
+    int lsn_pos = 0;
+    int prev_lsn_pos = sizeof(lsn_t) + sizeof(txn_id_t);
+    
+    page.SetInt(lsn_pos, lsn_);
+    page.SetInt(prev_lsn_pos, prev_lsn_);
+
+    return page.content();
+}
+
+std::shared_ptr<std::vector<char>> BeginRecord::Serializeto() {
+    auto page = GetHeaderPage(txn_id_, type_, is_clr_, HEADER_SIZE);
+    int lsn_pos = 0;
+    int prev_lsn_pos = sizeof(lsn_t) + sizeof(txn_id_t);
+    
+    page.SetInt(lsn_pos, lsn_);
+    page.SetInt(prev_lsn_pos, prev_lsn_);
+
+    return page.content();
+} 
+
+
+std::shared_ptr<std::vector<char>> RollbackRecord::Serializeto() {
+    auto page = GetHeaderPage(txn_id_, type_, is_clr_, HEADER_SIZE);
+    int lsn_pos = 0;
+    int prev_lsn_pos = sizeof(lsn_t) + sizeof(txn_id_t);
+    
+    page.SetInt(lsn_pos, lsn_);
+    page.SetInt(prev_lsn_pos, prev_lsn_);
+
+    return page.content();
+}
+
 
 } // namespace SimpleDB
 

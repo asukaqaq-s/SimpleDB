@@ -13,9 +13,11 @@
 #include "file/block_id.h"
 #include "log/log_iterator.h"
 #include "config/type.h"
+#include "recovery/log_record.h"
 
 namespace SimpleDB {
 
+class LogRecord;
 /**
 * @brief 
     The DB has a log file and only one LogManager Object exist in system.
@@ -25,6 +27,7 @@ in disk through the log.
     Note that, LogManager does not know the meaning of the stored data and 
 how to produce a log-record, it is only responsible for storage  and  not 
 responsible for recovery data.
+    Note that, LogManager will set the lsn for log to ensure that recovermanager work.
 */
 
 class LogManager {
@@ -48,7 +51,7 @@ public:
     void Flush(lsn_t lsn);
 
     /**
-    * @brief append one log record to the file
+    * @brief append one log record to the file 
     * Note that, this is an optimaization that first write to the page
     * 
     * @param log_record char-array, logmanager does not know what the log-recode means
@@ -56,13 +59,43 @@ public:
     */
     lsn_t Append(const std::vector<char> &log_record);
     
-    lsn_t AppendLogRecord(std::vector<char> log_record);
+    /**
+    * @brief append one log record object to the file
+    * and set the lsn for log
+    * @param log_record log_record object, logmanager does not know what the log-recode means
+    * @return return lastest_lsn_ + 1 
+    */
+    lsn_t AppendLogRecord(LogRecord &log_record);
 
     /**
-    * @brief return the current log-iterator
+    * @brief append one log record object to the file
+    * and set the lsn for log
+    * @param log_record log_record object, logmanager does not know what the log-recode means
+    * @param offset the offset of log_record in log file 
+    */
+    lsn_t AppendLogWithOffset(LogRecord &log_record,int *offset);
+
+    /**
+    * @return the first log-record in log file
     */
     LogIterator Iterator();
 
+    /**
+    * @param block_number logical block number
+    * @param offset the offset in block
+    * 
+    * @return the specified log-record in log file
+    */
+    LogIterator Iterator(int block_number, int offset);
+
+    /**
+    * @param offset the offset of the log file
+    * 
+    * @return the specified log-record in log file
+    */
+    LogIterator Iterator(int offset);
+
+    
     void SetLastestLsn(lsn_t lsn) { lastest_lsn_ = lsn; }
 
 private:
@@ -93,11 +126,13 @@ private:
     // lastest written block
     BlockId current_block_;
     // lastest lsn 
-    std::atomic<lsn_t> lastest_lsn_;
+    std::atomic<lsn_t> lastest_lsn_{INVALID_LSN};
     // last lsn which saved to disk
-    std::atomic<lsn_t> last_saved_lsn_;
+    std::atomic<lsn_t> last_flush_lsn_{INVALID_LSN};
     // latch
     std::mutex latch_;
+    // cache block_size
+    int block_size_;
     
     /********* advance log-manager *********/
     // TODO ....

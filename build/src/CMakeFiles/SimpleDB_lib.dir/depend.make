@@ -4,12 +4,14 @@
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/buffer/buffer.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/buffer/lru_replace.h
+src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/config/type.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/file/block_id.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/include/recovery/log_record.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o: ../src/buffer/buffer_manager.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o: ../src/include/buffer/lru_replace.h
@@ -33,31 +35,48 @@ src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o: ../src/include/file/page.
 src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o: ../src/log/log_iterator.cc
 
+src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/config/type.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/file/block_id.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/include/recovery/log_record.h
 src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o: ../src/log/log_manager.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/config/type.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/file/block_id.h
-src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/file/page.h
-src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/log/log_iterator.h
-src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/include/recovery/log_record.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/recovery/log_record.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/buffer/buffer.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/buffer/buffer_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/buffer/lru_replace.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/concurrency/transaction.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/config/type.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/file/block_id.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/file/file_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/file/page.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/log/log_iterator.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/recovery/log_record.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/include/recovery/recovery_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/recovery/recovery_manager.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/config/type.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/file/block_id.h
-src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/file/page.h
-src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/log/log_iterator.h
-src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/recovery/log_record.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/recovery/setint_record.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/concurrency/transaction.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/config/type.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/file/block_id.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/file/page.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/recovery/log_record.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/recovery/setstring_record.cc
 

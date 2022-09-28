@@ -85,7 +85,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/SimpleDB_lib.dir/DependInfo.cmake"
   "test/CMakeFiles/show-tests.dir/DependInfo.cmake"
   "test/CMakeFiles/lru_replacer_test.dir/DependInfo.cmake"
-  "test/CMakeFiles/unittests.dir/DependInfo.cmake"
   "test/CMakeFiles/main.dir/DependInfo.cmake"
   "test/CMakeFiles/buffer_manager_test.dir/DependInfo.cmake"
   "test/CMakeFiles/file_test.dir/DependInfo.cmake"
@@ -94,4 +93,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "test/CMakeFiles/page_test.dir/DependInfo.cmake"
   "test/CMakeFiles/log_record_test.dir/DependInfo.cmake"
   "test/CMakeFiles/log_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/unittests.dir/DependInfo.cmake"
+  "test/CMakeFiles/recovery_manager_test.dir/DependInfo.cmake"
   )
