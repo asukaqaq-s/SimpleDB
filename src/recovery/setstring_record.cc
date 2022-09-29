@@ -2,6 +2,7 @@
 #define SETSTRING_RECORD_CC
 
 #include "recovery/log_record.h"
+#include "concurrency/transaction.h"
 
 #include <memory>
 #include <iostream>
@@ -61,7 +62,7 @@ void SetStringRecord::Redo(Transaction *txn) {
     
 void SetStringRecord::Undo(Transaction *txn) {
     txn->Pin(block_);
-    txn->SetString(block_, offset_, old_value_, true); /* undo should write to log */
+    txn->SetString(block_, offset_, old_value_, false); /* undo should write to log */
     txn->Unpin(block_);
 }
 

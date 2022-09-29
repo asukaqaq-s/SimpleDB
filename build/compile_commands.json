@@ -31,6 +31,11 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o -c /home/asuka/workbench/project/SimpleDB/src/concurrency/transaction.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/concurrency/transaction.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o -c /home/asuka/workbench/project/SimpleDB/src/file/block_id.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/src/file/block_id.cc"
 },

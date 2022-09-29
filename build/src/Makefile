@@ -236,6 +236,33 @@ buffer/lru_replace.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.s
 .PHONY : buffer/lru_replace.cc.s
 
+concurrency/transaction.o: concurrency/transaction.cc.o
+
+.PHONY : concurrency/transaction.o
+
+# target to build an object file
+concurrency/transaction.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o
+.PHONY : concurrency/transaction.cc.o
+
+concurrency/transaction.i: concurrency/transaction.cc.i
+
+.PHONY : concurrency/transaction.i
+
+# target to preprocess a source file
+concurrency/transaction.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.i
+.PHONY : concurrency/transaction.cc.i
+
+concurrency/transaction.s: concurrency/transaction.cc.s
+
+.PHONY : concurrency/transaction.s
+
+# target to generate assembly for a file
+concurrency/transaction.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.s
+.PHONY : concurrency/transaction.cc.s
+
 file/block_id.o: file/block_id.cc.o
 
 .PHONY : file/block_id.o
@@ -499,6 +526,9 @@ help:
 	@echo "... buffer/lru_replace.o"
 	@echo "... buffer/lru_replace.i"
 	@echo "... buffer/lru_replace.s"
+	@echo "... concurrency/transaction.o"
+	@echo "... concurrency/transaction.i"
+	@echo "... concurrency/transaction.s"
 	@echo "... file/block_id.o"
 	@echo "... file/block_id.i"
 	@echo "... file/block_id.s"

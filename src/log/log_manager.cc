@@ -4,6 +4,7 @@
 #include "log/log_manager.h"
 
 #include <vector>
+#include <iostream>
 
 namespace SimpleDB {
 
@@ -48,7 +49,7 @@ lsn_t LogManager::Append(const std::vector<char> &log_record) {
     int start_address = log_page_->GetInt(0); 
     // the size of log record + sizeof(int)
     int need_size = Page::MaxLength(record_length); 
-    
+
     if(start_address + need_size > block_size_ ) { // past than a page
         // sizeof(int) means the size of the page-header
         Flush();
@@ -88,7 +89,7 @@ lsn_t LogManager::AppendLogWithOffset(LogRecord &log_record,int *offset) {
     int record_length = log_record.RecordSize(); 
     int start_address = log_page_->GetInt(0); 
     int need_size = Page::MaxLength(record_length); 
-    
+
     if(start_address + need_size > block_size_) {
         // sizeof(int) means the size of the page-header
         Flush();

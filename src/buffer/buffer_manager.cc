@@ -1,7 +1,8 @@
-#ifndef BUFFER_MANAGER_cc
-#define BUFFER_MANAGER_cc
+#ifndef BUFFER_MANAGER_CC
+#define BUFFER_MANAGER_CC
 
 #include "buffer/buffer_manager.h"
+#include "config/macro.h"
 
 #include <iostream>
 
@@ -83,12 +84,13 @@ Buffer* BufferManager::TryToPin(BlockId block) {
             assert(available_num_ == 0);
             return NULL; /* will wait until a unpinned buffer occur*/
         }
-        assert(buffer_pool_[frame_id]->GetPinCount() == 0);
-        
+        SIMPLEDB_ASSERT(!buffer_pool_[frame_id]->IsDirty() && 
+                     buffer_pool_[frame_id]->GetPinCount() == 0,
+                     "a new buffer should not be dirty"); /* should not dirty */
+
         PinHelper(frame_id, block);
     }
 
-    assert(!buffer_pool_[frame_id]->IsDirty()); /* should not dirty */
     
     buffer = buffer_pool_[frame_id].get();
     return buffer;

@@ -4,13 +4,15 @@
 #include "log/log_iterator.h"
 #include "config/macro.h"
 
+#include <iostream>
+
 namespace SimpleDB {
 
 bool LogIterator::HasNextRecord() {
-    if(block_.BlockNum() < log_file_size_)
+    if(block_.BlockNum() < log_file_size_ - 1)
         return true;
     else {
-        log_file_size_ = file_manager_->Length(block_.FileName());
+        log_file_size_ = file_manager_->Length(block_.FileName()) - 1;
         return block_.BlockNum() < log_file_size_ ||
                 current_pos_ < boundary_;
     }
@@ -20,10 +22,7 @@ bool LogIterator::HasNextRecord() {
 std::vector<char> LogIterator::NextRecord() {
     int add_len;
     std::vector<char> log_record;
-    
-    if(!HasNextRecord()) { // no more records
-        return std::vector<char>(0);
-    }
+
     if(current_pos_ == boundary_){ // should move to next block
         // update to new blockid
         block_ = BlockId(block_.FileName(), block_.BlockNum() + 1); 
@@ -37,9 +36,9 @@ std::vector<char> LogIterator::NextRecord() {
 }
 
 void LogIterator::MoveToBlock(BlockId block) {
-    SIMPLEDB_ASSERT(block == block_, "LogIterator error"); /* for debugging purpose */
 
     file_manager_->Read(block, *page_);
+    block_ = block;
     boundary_ = page_->GetInt(0);
     current_pos_ = sizeof(int);
 }
@@ -50,9 +49,10 @@ std::vector<char> LogIterator::MoveToRecord(int offset) {
     int block_offset = offset % block_size;
     std::vector<char> log_record;
 
-    SIMPLEDB_ASSERT(block_number <= block_.BlockNum(),
-                    "LogIterator error");
-    if(block_number < block_.BlockNum()) {
+    // SIMPLEDB_ASSERT(block_number <= block_.BlockNum(),
+    //                 "LogIterator error");
+
+    if(block_number != block_.BlockNum()) {
         // need to move block
         MoveToBlock(BlockId(block_.FileName(), block_number));
     }

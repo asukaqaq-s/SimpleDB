@@ -2,6 +2,7 @@
 #define SETINT_RECORD_CC
 
 #include "recovery/log_record.h"
+#include "concurrency/transaction.h"
 
 #include <memory>
 #include <iostream>
@@ -67,7 +68,7 @@ void SetIntRecord::Redo(Transaction *txn) {
 
 void SetIntRecord::Undo(Transaction *txn) {
     txn->Pin(block_);
-    txn->SetInt(block_, offset_, old_value_, true); /* undo should write to log */
+    txn->SetInt(block_, offset_, old_value_, false); /* currently, undo don't write to log */
     txn->Unpin(block_);
 }
 

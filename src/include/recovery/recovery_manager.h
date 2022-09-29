@@ -1,16 +1,17 @@
 #ifndef RECOVERY_MANAGER_H
 #define RECOVERY_MANAGER_H
 
-#include "recovery/log_record.h"
-#include "file/file_manager.h"
-#include "log/log_manager.h"
-#include "buffer/buffer_manager.h"
-#include "concurrency/transaction.h"
 
+#include "buffer/buffer_manager.h"
+#include "log/log_manager.h"
+
+#include <iostream>
 #include <unordered_map>
+
 
 namespace SimpleDB {
 
+class Transaction;
 /**
  * @brief The recovery manager.  
  * Each transaction has its own recovery manager.
@@ -40,7 +41,7 @@ public:
     * 
     * Usually be called when db is restarted
     */
-    void Recover() {}
+    void Recover();
     
     /**
     * @brief Write a setint record to the log and return its lsn.
@@ -76,12 +77,11 @@ private: // helper function
     * @brief  Find the location of the checkpoint 
     *   and maintain which txns are committed and which txns are aborted
     */
-    void DoRecoverScan(std::unordered_map<txn_id_t, lsn_t>* commit_txn,
-                       std::unordered_map<txn_id_t, lsn_t>* abort_txn );
+    int DoRecoverScan();
 
-    void DoRecoverRedo() {}
+    void DoRecoverRedo(std::unordered_map<txn_id_t, lsn_t>* active_txn, int);
     
-    void DoRecoverUndo() {}
+    void DoRecoverUndo(std::unordered_map<txn_id_t, lsn_t>* active_txn);
 
 
 // these two functions are for manipulation lsn_map_    

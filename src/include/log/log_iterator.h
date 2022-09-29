@@ -25,7 +25,7 @@ public:
         block_ = block;
         page_ = std::make_shared<Page> (file_manager_->BlockSize());
         MoveToBlock(block_);
-        log_file_size_ = file_manager_->Length(block_.FileName());
+        log_file_size_ = file_manager_->Length(block_.FileName()) - 1;
     }
     
     /**
@@ -37,11 +37,12 @@ public:
     * @param offset the offset in the specified block
     */
     LogIterator(FileManager *file_manager, BlockId block, int offset)
-    : file_manager_(file_manager), current_pos_(offset) {
+    : file_manager_(file_manager) {
         block_ = block;
         page_ = std::make_shared<Page> (file_manager_->BlockSize());
         MoveToBlock(block_);
         log_file_size_ = file_manager_->Length(block_.FileName());
+        current_pos_ = offset;
     }
 
     /**
@@ -63,8 +64,12 @@ public:
     std::vector<char> MoveToRecord(int offset);
 
 
-    int GetLogOffset() { 
-        return block_.BlockNum() * file_manager_->BlockSize() + current_pos_;
+    int GetLogOffset() {
+        if(current_pos_ == boundary_) {
+            return (block_.BlockNum() + 1) * file_manager_->BlockSize() + sizeof(int);
+        } else {
+            return block_.BlockNum() * file_manager_->BlockSize() + current_pos_;
+        }
     }
     
 private:

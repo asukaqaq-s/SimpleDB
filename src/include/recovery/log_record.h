@@ -1,18 +1,20 @@
 #ifndef LOG_RECORD_H
 #define LOG_RECORD_H
 
-#include "config/type.h"
-#include "file/block_id.h"
-#include "file/page.h"
-#include "concurrency/transaction.h"
-
 #include <memory>
 #include <string>
 #include <vector>
 #include <sstream>
 #include <assert.h>
 
+#include "config/type.h"
+#include "file/block_id.h"
+#include "file/page.h"
+#include "log/log_manager.h"
+
 namespace SimpleDB {
+
+class Transaction;
 
 enum class LogRecordType {
     INVALID = 0,

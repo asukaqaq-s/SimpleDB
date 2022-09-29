@@ -1,5 +1,5 @@
-#ifndef LOGMANAGER_H
-#define LOGMANAGER_H
+#ifndef LOG_MANAGER_H
+#define LOG_MANAGER_H
 
 #include <string>
 #include <memory>

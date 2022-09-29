@@ -6,35 +6,19 @@
 
 #IncludeRegexTransform: 
 
-../src/include/buffer/buffer.h
-config/type.h
-../src/include/buffer/config/type.h
-file/file_manager.h
-../src/include/buffer/file/file_manager.h
-log/log_manager.h
-../src/include/buffer/log/log_manager.h
-memory
--
-assert.h
--
-
 ../src/include/buffer/buffer_manager.h
-log/log_manager.h
-../src/include/buffer/log/log_manager.h
-file/file_manager.h
-../src/include/buffer/file/file_manager.h
-buffer/buffer.h
-../src/include/buffer/buffer/buffer.h
-buffer/lru_replace.h
-../src/include/buffer/buffer/lru_replace.h
-file/block_id.h
-../src/include/buffer/file/block_id.h
 list
 -
 map
 -
 chrono
 -
+file/file_manager.h
+../src/include/buffer/file/file_manager.h
+log/log_manager.h
+../src/include/buffer/log/log_manager.h
+buffer/lru_replace.h
+../src/include/buffer/buffer/lru_replace.h
 
 ../src/include/buffer/lru_replace.h
 config/type.h
@@ -46,8 +30,8 @@ mutex
 list
 -
 
-../src/include/concurrency/transaction.h
-string
+../src/include/config/macro.h
+assert.h
 -
 
 ../src/include/config/type.h
@@ -111,14 +95,6 @@ recovery/log_record.h
 ../src/include/log/recovery/log_record.h
 
 ../src/include/recovery/log_record.h
-config/type.h
-../src/include/recovery/config/type.h
-file/block_id.h
-../src/include/recovery/file/block_id.h
-file/page.h
-../src/include/recovery/file/page.h
-concurrency/transaction.h
-../src/include/recovery/concurrency/transaction.h
 memory
 -
 string
@@ -129,24 +105,34 @@ sstream
 -
 assert.h
 -
-
-../src/include/recovery/recovery_manager.h
-recovery/log_record.h
-../src/include/recovery/recovery/log_record.h
-file/file_manager.h
-../src/include/recovery/file/file_manager.h
+config/type.h
+../src/include/recovery/config/type.h
+file/block_id.h
+../src/include/recovery/file/block_id.h
+file/page.h
+../src/include/recovery/file/page.h
 log/log_manager.h
 ../src/include/recovery/log/log_manager.h
+
+../src/include/recovery/recovery_manager.h
 buffer/buffer_manager.h
 ../src/include/recovery/buffer/buffer_manager.h
-concurrency/transaction.h
-../src/include/recovery/concurrency/transaction.h
+log/log_manager.h
+../src/include/recovery/log/log_manager.h
+iostream
+-
 unordered_map
 -
 
 /home/asuka/workbench/project/SimpleDB/src/recovery/recovery_manager.cc
 recovery/recovery_manager.h
 /home/asuka/workbench/project/SimpleDB/src/recovery/recovery/recovery_manager.h
+config/macro.h
+/home/asuka/workbench/project/SimpleDB/src/recovery/config/macro.h
 map
+-
+set
+-
+iostream
 -
 
