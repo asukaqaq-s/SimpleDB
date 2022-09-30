@@ -28,7 +28,7 @@ int offset, std::string old_value, std::string new_value, LogManager &lm) {
 
 
 TEST(RecoveryTest, SimpleRollBackTest) {
-    return;
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
@@ -51,7 +51,7 @@ TEST(RecoveryTest, SimpleRollBackTest) {
     tx1->SetInt(test_block, 10, 30, true);
     tx1->SetString(test_block, 50, "teststring now", true);
     tx1->SetString(test_block, 70, "teststring curr", true);
-
+    
     /* tx2 is just read-only transaction */
     tx2->Pin(test_block);
     std::cout << "offset: 10 new-value: " << tx2->GetInt(test_block, 10) << std::endl;
@@ -69,9 +69,10 @@ TEST(RecoveryTest, SimpleRollBackTest) {
     auto log_iter = lm.Iterator();
     while(log_iter.HasNextRecord()) {
         std::cout << log_iter.GetLogOffset() << std::endl;
-        auto byte_array = log_iter.NextRecord();
+        auto byte_array = log_iter.CurrentRecord();
         auto log_record = LogRecord::DeserializeFrom(byte_array);
         std::cout << log_record->ToString() << std::endl;
+        log_iter.NextRecord();
     }  
 
 
@@ -83,17 +84,24 @@ TEST(RecoveryTest, SimpleRollBackTest) {
 
 
 TEST(RecoveryTest, SimpleRecoverTest) {
-    return;
+    // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
     int block_size = 4 * 1024;
 
     std::string file_name = "test1.txt";
+
+
+    std::string cmd1 = "rm -rf " + directory_path;
+    
+    system(cmd1.c_str());
+
     BlockId test_block = BlockId(file_name, 0);
     FileManager fm(directory_path, block_size);
     LogManager lm(&fm, "log.log");
     BufferManager bm(&fm, &lm, 10);
+    
     
 
     auto buffer = bm.NewPage(file_name);
@@ -110,10 +118,13 @@ TEST(RecoveryTest, SimpleRecoverTest) {
     WriteSetStringLog(2, test_block, 300, "fff", "checkccpc", lm);
     // auto commit_record = CommitRecord(2);
     // lm.AppendLogRecord(commit_record);
-    
+    // return;
     tx1->Recovery();
+    
     tx1->Pin(test_block);
 
+    std::cout << test_block.to_string() << std::endl;
+    
     EXPECT_EQ(tx1->GetInt(test_block, 10), 333);
     EXPECT_EQ(tx1->GetInt(test_block, 30), 222);
     EXPECT_EQ(tx1->GetInt(test_block, 40), 555);
@@ -131,8 +142,7 @@ TEST(RecoveryTest, SimpleRecoverTest) {
 }
 
 TEST(RecoveryTest, UndoRedoTEST) {
-    
-    // return;
+
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
@@ -226,9 +236,10 @@ TEST(RecoveryTest, UndoRedoTEST) {
     // return;
     // test recovery
     tx2->Recovery();
+    
     pos = 4;
     tx2->Pin(test_block);
-
+    
     for(int i = 0;i < 100;i ++) {
         EXPECT_EQ(tx2->GetInt(test_block, pos),old_int_array[i] );
         pos += 4;
@@ -239,7 +250,7 @@ TEST(RecoveryTest, UndoRedoTEST) {
         pos += 14;
     }
     
-    
+    // return;
     // test rollback
     tx1->RollBack();
     
@@ -255,6 +266,77 @@ TEST(RecoveryTest, UndoRedoTEST) {
         EXPECT_EQ(tx2->GetString(test_block, pos), old_string_array[i]);
         pos += 14;
     }
+
+     std::string cmd3 = "rm -rf " + directory_path;
+    
+    system(cmd3.c_str());
+}
+
+
+TEST(RecoveryTest, CheckpointTEST) {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string directory_path = local_path + "/test_directory";
+    int block_size = 4 * 1024;
+
+
+    std::string cmd2 = "rm -rf " + directory_path;
+    
+    system(cmd2.c_str());
+
+    std::string file_name = "test1.txt";
+    BlockId test_block = BlockId(file_name, 0);
+    FileManager fm(directory_path, block_size);
+    LogManager lm(&fm, "log.log");
+    BufferManager bm(&fm, &lm, 10);
+    
+
+    // random object
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    
+
+    // test_buffer
+    auto buffer = bm.NewPage(file_name);
+    // bm.Unpin(buffer);
+    
+    // store tmp value
+    std::vector<int> old_int_array(100);
+    std::vector<int> new_int_array(100);
+    std::vector<std::string> old_string_array(10);
+    std::vector<std::string> new_string_array(10);
+
+    // two transaction to vertify correctness
+    std::unique_ptr<Transaction> tx1 = std::make_unique<Transaction>(&fm, &lm, &bm);
+    tx1->Pin(test_block);
+    
+    WriteSetIntLog(2, test_block, 10, 333, 20, lm);
+    WriteSetIntLog(2, test_block, 30, 222, 30, lm);
+    WriteSetIntLog(2, test_block, 40, 555, 40, lm);
+    WriteSetIntLog(2, test_block, 50, 666, 50, lm);
+    WriteSetIntLog(2, test_block, 100, 777, 1220, lm);
+    WriteSetStringLog(2, test_block, 200, "qaq", "hukeman", lm);
+    WriteSetStringLog(2, test_block, 300, "fff", "checkccpc", lm);
+
+    auto checkpoint_record = CheckpointRecord();
+
+    lm.AppendLogRecord(checkpoint_record);
+    
+    EXPECT_NE(tx1->GetInt(test_block, 10), 333);
+    EXPECT_NE(tx1->GetInt(test_block, 30), 222);
+    EXPECT_NE(tx1->GetInt(test_block, 40), 555);
+    EXPECT_NE(tx1->GetInt(test_block, 50), 666);
+    EXPECT_NE(tx1->GetInt(test_block, 100), 777);
+    EXPECT_NE(tx1->GetInt(test_block, 100), 777);
+    EXPECT_NE(tx1->GetString(test_block, 200), "qaq");
+    EXPECT_NE(tx1->GetString(test_block, 300), "fff");
+
+
+
+    std::string cmd3 = "rm -rf " + directory_path;
+    
+    system(cmd3.c_str());
 }
 
 

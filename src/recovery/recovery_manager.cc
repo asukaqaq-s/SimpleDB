@@ -21,22 +21,22 @@ RecoveryManager::RecoveryManager(Transaction *txn, txn_id_t txn_id, LogManager *
     InsertLsnMap(last_lsn_, log_offset);
 }
 
-
+// not need to flush buffer immediately
+// but need to flush the commit log record immediately
 void RecoveryManager::Commit() {
-    int offset = 0;
-    buffer_manager_->FlushAll(txn_id_);
     auto commit_record = CommitRecord(txn_id_);
     commit_record.SetPrevLSN(last_lsn_);
-    last_lsn_ = log_manager_->AppendLogWithOffset(commit_record, &offset);
+    last_lsn_ = log_manager_->AppendLogRecord(commit_record);
     // flush the lsn immediately
     log_manager_->Flush(last_lsn_);
     // no need to update lsn_map_
 }
 
+// not need to flush buffer immediately
+// but need to flush the rollback log record immediatly
 void RecoveryManager::RollBack() {
     int log_offset;
     DoRollBack();
-    buffer_manager_->FlushAll(txn_id_);
     auto rollback_record = RollbackRecord(txn_id_);
     rollback_record.SetPrevLSN(last_lsn_);
     last_lsn_ = log_manager_->AppendLogWithOffset(rollback_record, &log_offset);
@@ -46,7 +46,7 @@ void RecoveryManager::RollBack() {
     InsertLsnMap(last_lsn_, log_offset);
 }
 
-
+// 
 lsn_t RecoveryManager::SetIntLogRec(Buffer *buffer, 
     int offset, int new_value) {
     int log_offset;
@@ -82,7 +82,7 @@ void RecoveryManager::DoRollBack() {
     while(true) { /* while will quit when it encounters begin */
         
         // get the offset of the current log
-        int offset = lsn_map_[lsn_ptr];
+        int offset = GetLsnMap(lsn_ptr);
         // move to the specified record
         auto byte_array = log_iter.MoveToRecord(offset);
         auto log_record = LogRecord::DeserializeFrom(byte_array);
@@ -92,7 +92,7 @@ void RecoveryManager::DoRollBack() {
                         log_record_type != LogRecordType::INVALID || 
                         log_record_type != LogRecordType::COMMIT, "txn rollback type error");
 
-        if(log_record->GetRecordType() == LogRecordType::BEGIN) {
+        if(log_record_type == LogRecordType::BEGIN) {
             return;
         } 
         // undo
@@ -106,8 +106,7 @@ void RecoveryManager::Recover() {
     // keep track of what txn we need to undo,txn -> last lsn
     std::unique_ptr<std::unordered_map<txn_id_t, lsn_t>> active_txn
                 = std::make_unique<std::unordered_map<txn_id_t, lsn_t>>();
-
-    int checkpoint_pos = DoRecoverScan(); 
+    int checkpoint_pos = DoRecoverScan();
     // redo any log after checkpoint 
     DoRecoverRedo(active_txn.get(), checkpoint_pos);
     // undo any uncommited transactions before crashing
@@ -124,25 +123,27 @@ void RecoveryManager::Recover() {
 
 
 int RecoveryManager::DoRecoverScan() {
-    // find the checkpoint
-    int checkpoint_pos = sizeof(int);
+    // analyze phase: find the checkpoint
+    int checkpoint_pos = 0;
     auto log_iter = log_manager_->Iterator();
     int max_lsn = INVALID_LSN;
 
     // a stupid way to find the checkpoint
     while(log_iter.HasNextRecord()) {
-        auto byte_array = log_iter.NextRecord();
+        auto byte_array = log_iter.CurrentRecord();
         auto log_record = LogRecord::DeserializeFrom(byte_array);
         auto log_record_type = log_record->GetRecordType();
         lsn_t log_record_lsn = log_record->GetLsn();
 
         max_lsn = log_record_lsn;
+        // update the lastest checkpoint position
         if(log_record_type == LogRecordType::CHECKPOINT) {
             checkpoint_pos = log_iter.GetLogOffset();
         }
+        log_iter.NextRecord();
     }
-
-    log_manager_->SetLastestLsn(max_lsn); // update to lastest
+    // update to lastest lsn
+    log_manager_->SetLastestLsn(max_lsn); 
     return checkpoint_pos;
 }
 
@@ -150,33 +151,35 @@ int RecoveryManager::DoRecoverScan() {
 void RecoveryManager::DoRecoverRedo
 (std::unordered_map<txn_id_t, lsn_t>* active_txn, int pos) {
     // pos is start positon
-    auto log_iter = log_manager_->Iterator();
+    auto log_iter = log_manager_->Iterator(pos);
     
     while(log_iter.HasNextRecord()) {
-        // Since nextrecord is called, logiterator at the location of the next record
-        // so, we should save the log_record_offset before calling nextrecord
-        int old_log_record_offset = log_iter.GetLogOffset();
-        auto byte_array = log_iter.NextRecord();
+        // we should update lsn_map_ in redo phase
+        // to ensure that can rollback txn in undo phase
+        int log_record_offset = log_iter.GetLogOffset();
+        auto byte_array = log_iter.CurrentRecord();
         auto log_record = LogRecord::DeserializeFrom(byte_array);
         auto log_record_type = log_record->GetRecordType();
         txn_id_t log_record_txn = log_record->GetTxnID();
         lsn_t log_record_lsn = log_record->GetLsn();
-        // update lsn_map_, should update any record, even commit, rollback and begine
-        InsertLsnMap(log_record_lsn, old_log_record_offset);
+        // update lsn_map_, should update any record, even commit, rollback and begin
+        InsertLsnMap(log_record_lsn, log_record_offset);
         
-        SIMPLEDB_ASSERT(log_record_type != LogRecordType::CHECKPOINT ||
-                        log_record_type != LogRecordType::INVALID, "recover redo error");
-
+        SIMPLEDB_ASSERT(log_record_type != LogRecordType::INVALID, 
+                            "recover redo error");
+        
         if(log_record_type == LogRecordType::COMMIT ||
            log_record_type == LogRecordType::ROLLBACK ||
-           log_record_type == LogRecordType::BEGIN) {
+           log_record_type == LogRecordType::BEGIN || 
+           log_record_type == LogRecordType::CHECKPOINT
+           ) {
             active_txn->erase(log_record_txn);
-            continue;
+        } else { // SETINT or SETSTRING, we should redo it
+            // update active_txn_
+            (*active_txn)[log_record_txn] = log_record_lsn;
+            log_record->Redo(txn_);
         }
-        
-        // update active_txn_
-        (*active_txn)[log_record_txn] = log_record_lsn;
-        log_record->Redo(txn_);
+        log_iter.NextRecord();
     } 
 }
 
@@ -192,7 +195,7 @@ void RecoveryManager::DoRecoverUndo
     
     while (!next_lsn.empty()) {
         auto lsn = *next_lsn.rbegin();
-        int offset = lsn_map_[lsn];
+        int offset = GetLsnMap(lsn);
         
         auto byte_array = log_iter.MoveToRecord(offset);
         auto log_record = LogRecord::DeserializeFrom(byte_array);

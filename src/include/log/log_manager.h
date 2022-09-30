@@ -42,89 +42,68 @@ public:
     */
     LogManager(FileManager* file_manager, std::string log_file_name);
     
+    
     ~LogManager() = default;
+    
     /**
     * @brief be always used when dirty pages are to be writen back to disk
     * 
     * @param lsn the lastest lsn of dirty page
     */
     void Flush(lsn_t lsn);
-
-    /**
-    * @brief append one log record to the file 
-    * Note that, this is an optimaization that first write to the page
-    * 
-    * @param log_record char-array, logmanager does not know what the log-recode means
-    * @return return lastest_lsn_ + 1 
-    */
+    
+    
     lsn_t Append(const std::vector<char> &log_record);
     
-    /**
-    * @brief append one log record object to the file
-    * and set the lsn for log
-    * @param log_record log_record object, logmanager does not know what the log-recode means
-    * @return return lastest_lsn_ + 1 
-    */
     lsn_t AppendLogRecord(LogRecord &log_record);
 
     /**
     * @brief append one log record object to the file
     * and set the lsn for log
     * @param log_record log_record object, logmanager does not know what the log-recode means
-    * @param offset the offset of log_record in log file 
+    * @param offset return the offset of log_record in log file 
+    * @return the lsn of log
     */
     lsn_t AppendLogWithOffset(LogRecord &log_record,int *offset);
 
     /**
+    * @brief use iterator to access log file
+    * 
     * @return the first log-record in log file
     */
     LogIterator Iterator();
 
     /**
-    * @param block_number logical block number
-    * @param offset the offset in block
+    * @brief use iterator to access log file
     * 
-    * @return the specified log-record in log file
-    */
-    LogIterator Iterator(int block_number, int offset);
-
-    /**
     * @param offset the offset of the log file
-    * 
     * @return the specified log-record in log file
     */
     LogIterator Iterator(int offset);
 
     
-    void SetLastestLsn(lsn_t lsn) { lastest_lsn_ = lsn; }
+    void SetLastestLsn(lsn_t lsn) { lastest_lsn_.store(lsn); }
 
 private:
-
-    /**
-    * @brief extend one disk-block size of the log file
-    * 
-    * @return the BlockId type of newly created disk-block
-    */
-    BlockId AppendNewBlock();
     
     /**
-    * @brief flush the page to disk
-    *   it will just be called by logmanager
+    * @brief flush the current buffer to log file which stores in disk
+    * always be called when log_count_ past than buffer_size_
+    * and write some log immediately
     */
     void Flush();
     
-
-    /* data memember */
+private:
     
     // only one filemanager object exist in system, so it is a pointer type
     // we use the file_manager_ to write logs to disk 
     FileManager * file_manager_;
     // file_name, is not a path
     std::string log_file_name_;
+    // write count and instructs the next location which be written
+    int log_count_;
     // a page in memeory 
-    std::unique_ptr<Page> log_page_;
-    // lastest written block
-    BlockId current_block_;
+    std::unique_ptr<Page> log_buffer_;
     // lastest lsn 
     std::atomic<lsn_t> lastest_lsn_{INVALID_LSN};
     // last lsn which saved to disk
@@ -132,7 +111,9 @@ private:
     // latch
     std::mutex latch_;
     // cache block_size
-    int block_size_;
+    int buffer_size_;
+    // file_size
+    int log_file_size_;
     
     /********* advance log-manager *********/
     // TODO ....

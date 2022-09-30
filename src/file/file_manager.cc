@@ -80,6 +80,46 @@ void FileManager::Write(const BlockId &block, Page &page) {
     file_io->flush();
 }
 
+
+void FileManager::ReadLog(const std::string &log_name, int offset, Page &page) {
+    std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
+    auto log_io = GetLogFile(log_name);
+    uint32_t read_count;
+
+    if(offset > GetFileSize(log_name)) {
+        std::cerr << "read past end of file" << std::endl;
+        memset(&((*page.content())[0]),0,block_size_); 
+        return;
+    }
+    // seek to the location you want to read, seekp and seekg work the same
+    log_io->seekp(offset, std::ios::beg);
+    log_io->read(&((*page.content())[0]), block_size_);
+    if(log_io->bad()) {
+        throw std::runtime_error("I/O error when read a log");
+    }
+    
+    read_count = log_io->gcount();
+    if(read_count < block_size_) {
+        // the size of log is not always multiple of block_size_
+        // so, log iterator always read less than a page. 
+        log_io->clear();
+        // set those to zero
+        memset(&((*page.content())[0]) + read_count, 0, block_size_ - read_count);
+        return;
+    }
+}
+
+void FileManager::WriteLog(const std::string &log_name, int size, Page &page) {
+    std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
+    auto log_io = GetLogFile(log_name);
+    log_io->write(&((*page.content())[0]), size);
+    if(log_io->bad()) {
+        throw std::runtime_error("I/O error when write a log");
+    }
+    // write immediately
+    log_io->flush();
+}
+
 // By writing to next logical block to file that not belonging to us
 // The OS will automatically complete the extension
 BlockId FileManager::Append(const std::string &file_name) {
@@ -122,8 +162,8 @@ std::shared_ptr<std::fstream> FileManager::GetFile(const std::string &file_name)
     if(!file_io->is_open()) { /* the file is not created */
         file_io->clear();
         // create new file, use trunc to make sure to overwrite the original file content
-        file_io->open(file_path, std::ios::binary | std::ios::in
-            | std::ios::out | std::ios::trunc);
+        file_io->open(file_path, std::ios::binary | std::ios::in | 
+                                 std::ios::out | std::ios::trunc);
         // reopen the file with original mode
         file_io->close();
         file_io->open(file_path, std::ios::binary | std::ios::in | std::ios::out);
@@ -136,6 +176,42 @@ std::shared_ptr<std::fstream> FileManager::GetFile(const std::string &file_name)
     open_files_[file_name] = file_io;
     return file_io;
 }
+
+std::shared_ptr<std::fstream> FileManager::GetLogFile(const std::string &log_name) {
+    auto log_io = std::make_shared<std::fstream>();
+    std::string file_path = directory_name_ + "/" + log_name;
+    
+    // search the hash-table
+    if(open_files_.find(log_name) != open_files_.end()) {
+        // the file has been created
+        log_io = open_files_[log_name];
+        if(log_io->is_open()) { /* file is being opened */
+            return log_io;
+        }
+    }
+    // file is not opened
+    log_io->open(file_path, std::ios::binary | std::ios::in | std::ios::out);
+    if(!log_io->is_open()) { /* the file is not created */
+        // clear bad statu to ensure that normally operation
+        log_io->clear();
+        // create new file, use trunc to make sure to overwrite the original file content
+        log_io->open(file_path, std::ios::binary | std::ios::in | 
+                                std::ios::out | std::ios::trunc);
+        // reopen the file with app mode
+        // to ensure sequential write
+        log_io->close();
+        log_io->open(file_path, std::ios::binary | std::ios::in | 
+                                std::ios::out | std::ios::app);
+        
+        if(!log_io->is_open()) { 
+            throw std::runtime_error("can't open log " + log_name);
+        }
+    }
+    // put it in open_files_
+    open_files_[log_name] = log_io;
+    return log_io;
+}
+
 
 int FileManager::GetFileSize(const std::string &file_name) {
     std::string file_path = directory_name_ + "/" + file_name;

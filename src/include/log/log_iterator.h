@@ -16,82 +16,59 @@ namespace SimpleDB {
 class LogIterator {
     
 public:
-    /**
-    * @brief constructor
-    *   call MoveToBlock func to access the first block of the log file 
-    */
-    LogIterator(FileManager *file_manager, BlockId block)
-    : file_manager_(file_manager) {
-        block_ = block;
-        page_ = std::make_shared<Page> (file_manager_->BlockSize());
-        MoveToBlock(block_);
-        log_file_size_ = file_manager_->Length(block_.FileName()) - 1;
-    }
     
     /**
-    * @brief constructor
-    *   call MoveToBlock func to access the specified block of the log file 
-    * 
-    * @param file_manager 
-    * @param block 
-    * @param offset the offset in the specified block
+    * @brief 
     */
-    LogIterator(FileManager *file_manager, BlockId block, int offset)
-    : file_manager_(file_manager) {
-        block_ = block;
-        page_ = std::make_shared<Page> (file_manager_->BlockSize());
-        MoveToBlock(block_);
-        log_file_size_ = file_manager_->Length(block_.FileName());
-        current_pos_ = offset;
-    }
+    LogIterator(FileManager *file_manager, std::string file_name, int offset);
 
     /**
-    * @brief 
+    * @brief whether has next record
+    * if current_pos == log_file_size, return true
+    * else return false
     */
     bool HasNextRecord();
     
     /**
     * @brief move to next log record
+    * cache to reduce io cost
     */
-    std::vector<char> NextRecord();
+    void NextRecord();
     
     /**
-    * @brief move to the specified position which
-    * must less than current postion
+    * @brief return the current log record
+    * 
+    * @return the byte array of log record  
+    */
+    std::vector<char> CurrentRecord();
+
+    /**
+    * @brief move to the specified position 
     * 
     * @param offset the offset of the log file
+    * @return the byte-array of the specified log record
     */
     std::vector<char> MoveToRecord(int offset);
 
-
     int GetLogOffset() {
-        if(current_pos_ == boundary_) {
-            return (block_.BlockNum() + 1) * file_manager_->BlockSize() + sizeof(int);
-        } else {
-            return block_.BlockNum() * file_manager_->BlockSize() + current_pos_;
-        }
+        return file_offset_;
     }
     
 private:
-    /**
-    * @brief the logiterator move to the Specified block
-    *   is always used to Contructor or read finish a block.
-    * 
-    * @param block the specified block
-    */
-    void MoveToBlock(BlockId block);
 
     // shared file_manager
     FileManager* file_manager_;
-    
-    BlockId block_;
+    // log file name
+    std::string log_name_;
     // read buff
-    std::shared_ptr<Page> page_;
-    // the position in block
-    int current_pos_;
-    // the boundary in block, be used to ensure whether the access ends
-    int boundary_;
-    // the size of log file
+    std::unique_ptr<Page> read_buf_;
+    // read buffer size
+    int buffer_size_;
+    // read count
+    int buffer_offset_;
+    // the position in log file
+    int file_offset_;
+    // the size of log file 
     int log_file_size_;
 };
 

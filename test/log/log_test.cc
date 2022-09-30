@@ -1,5 +1,6 @@
 #include "log/log_iterator.h"
 #include "log/log_manager.h"
+#include "recovery/log_record.h"
 #include "gtest/gtest.h"
 
 #include <iostream>
@@ -8,6 +9,7 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
+
 
 namespace SimpleDB {
 
@@ -52,6 +54,9 @@ int get_file_size(const char* filename)
     return sp;
 }
 
+
+
+
 /***********************************************************************************
 * TEST  CLASS 
 ************************************************************************************/
@@ -77,27 +82,25 @@ TEST(LogManagerTest, EasyTest1) {
     
 
     std::vector<std::vector<char>> log_records; //= CreateLogs(log_manager.get(), times);
-    
+    lsn_t lsn;
     for(int i = 0;i < 1000;i ++) {
         char c = i % 10 + '0';
         std::vector<char> test_vector(10,c);
-        log_manager->Append(test_vector);
+        lsn = log_manager->Append(test_vector);
         log_records.push_back(test_vector);
     }
+    log_manager->Flush(lsn);
     // return;
     // std::reverse(log_records.begin(), log_records.end()); // for debugging purpose
-    auto log_iterator = log_manager->Iterator(0, sizeof(int));
+    auto log_iterator = log_manager->Iterator(0);
     
-    
-    for(int i = 0;i < 1000;i ++) {
-        std::vector<char> array1 = log_iterator.NextRecord();
-        std::vector<char> array2 = log_records[i];
-        // for(auto t:array1) std::cout << t;
-        // std::cout<<std::endl;
-        // for(auto t:array2) std::cout << t;
-        // std::cout<<std::endl;
+    int i = 0;
+    while (log_iterator.HasNextRecord()) {
+        std::vector<char> array1 = log_iterator.CurrentRecord();
+        std::vector<char> array2 = log_records[i ++];
         
         EXPECT_EQ(array1, array2);    
+        log_iterator.NextRecord();
     }
     // pause();
     /**************************************************************
@@ -107,6 +110,7 @@ TEST(LogManagerTest, EasyTest1) {
     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
 }
+
 
 TEST(LogManagerTest, RandomTest1) {
     // return;
@@ -136,18 +140,11 @@ TEST(LogManagerTest, RandomTest1) {
         // sleep(20);
         int time = 0;
         for(int i = 0;i < times;i ++) {
-            std::vector<char> array1 = log_iterator.NextRecord();
+            std::vector<char> array1 = log_iterator.CurrentRecord();
             std::vector<char> array2 = log_records[i];
-            // for(auto t:array1) std::cout <<t<< std::flush;
-            // std::cout << std::endl;
-            // for(auto t:array2) std::cout <<t<< std::flush;
-            // std::cout << std::endl;
             
-            EXPECT_EQ(array1, array2);    
-            // if(array1 != array2) time++;
-            // if(time == 10) 
-            if(array1 != array2)
-                pause();
+            EXPECT_EQ(array1, array2); 
+            log_iterator.NextRecord();
         }
         
         /**************************************************************
@@ -188,9 +185,10 @@ TEST(LogManagerTest, RandomTest2) {
     auto log_iterator = log_manager->Iterator();
     
     for(int i = 0;i < times;i ++) {
-        std::vector<char> array1 = log_iterator.NextRecord();
+        std::vector<char> array1 = log_iterator.CurrentRecord();
         std::vector<char> array2 = log_records[i];
         EXPECT_EQ(array1, array2);    
+        log_iterator.NextRecord();
     }
     
     /**************************************************************
@@ -229,9 +227,10 @@ TEST(LogManagerTest, RandomTest3) {
         auto log_iterator = log_manager->Iterator();
         
         for(int i = 0;i < times;i ++) {
-            std::vector<char> array1 = log_iterator.NextRecord();
+            std::vector<char> array1 = log_iterator.CurrentRecord();
             std::vector<char> array2 = log_records[i];
             EXPECT_EQ(array1, array2);    
+            log_iterator.NextRecord();
         }
     }
     /**************************************************************
@@ -276,9 +275,10 @@ TEST(LogManagerTest, FlushTest) {
     // std::reverse(total_log_records.begin(), total_log_records.end());
     auto log_iterator = log_manager->Iterator();
     for(int i = 0;i < times * 100;i ++) {
-            std::vector<char> array1 = log_iterator.NextRecord();
+            std::vector<char> array1 = log_iterator.CurrentRecord();
             std::vector<char> array2 = total_log_records[i];
             EXPECT_EQ(array1, array2);
+            log_iterator.NextRecord();
             // assert(array1 == array2);    
     }
     /**************************************************************
@@ -333,10 +333,11 @@ TEST(LogManagerTest, FixSizeLogTest) {
     auto log_iterator = log_manager->Iterator();
     
     for(int i = 0;i < times * 100;i ++) {
-        std::vector<char> array1 = log_iterator.NextRecord();
+        std::vector<char> array1 = log_iterator.CurrentRecord();
         std::vector<char> array2 = total_log_records[i];
         EXPECT_EQ(array1, array2);
         EXPECT_EQ(array1.size(), 10);
+        log_iterator.NextRecord();
     }
     /**************************************************************
     * end test
@@ -348,8 +349,7 @@ TEST(LogManagerTest, FixSizeLogTest) {
 }
 
 
-TEST(LogManagerTest, AppendTest) {
-    // return;
+TEST(LogTest, LogIteratorMixTest) {
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -361,32 +361,48 @@ TEST(LogManagerTest, AppendTest) {
     
     std::unique_ptr<LogManager> log_manager 
         = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+
+    int min = -1e9,max = 1e9;
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+
+    // produce log record
     
-    /**************************************************************
-    * start test
-    ***************************************************************/
-    std::vector<std::vector<char>> total_log_records;
-    int block_size = 4096;
-    int log_size = 40;
-    
-    for(int i = 0;i < 30;i ++) {
-        int one_block_log_number = (block_size - 4)/ (log_size + 4);
-        for(int j = 0;j < one_block_log_number;j ++) {
-            std::vector<char> log_record(log_size ,'0');
-            int x = log_manager->Append(log_record);
-            log_manager->Flush(x);
-        }
+    std::map<int,int> mp;
+
+    for(int i = 0;i < 1000;i ++) {
+        int new_value = distrib(engine);
+        int old_value = distrib(engine);
+        int offset;
+        auto log_record = SetIntRecord(1, BlockId("text1.txt", 0), 10, old_value, new_value);
+        log_manager->AppendLogWithOffset(log_record, &offset);
         
-        int block_num = get_file_size(log_file_path.c_str()) / block_size;
-        EXPECT_EQ(block_num, i + 1);
+        mp[i] = offset;
+    }    
+    
+    auto log_iter_main = log_manager->Iterator();
+    int i = 0;
+    while(log_iter_main.HasNextRecord()) {
+        auto byte_array1 = log_iter_main.CurrentRecord();
+        
+        auto log_iter_branch = log_manager->Iterator(mp[i]);
+        
+        auto byte_array2 = log_iter_branch.CurrentRecord();
+
+        EXPECT_EQ(byte_array1, byte_array2);
+
+        auto byte_array3 = log_iter_branch.MoveToRecord(mp[i]);
+        
+        EXPECT_EQ(byte_array1, byte_array3);
+
+        i ++;
+        log_iter_main.NextRecord();
     }
 
-    /**************************************************************
-    * end test
-    ***************************************************************/
-    
-    // delete all database file for testing 
-    cmd = "rm -rf " + test_dir;
+
+     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
 }
 

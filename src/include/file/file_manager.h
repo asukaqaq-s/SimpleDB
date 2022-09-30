@@ -18,6 +18,8 @@ namespace SimpleDB {
 */
 class FileManager {
     
+    friend class LogManager;
+    friend class LogIterator;
 public:
     /**
     * @brief create a filemanager, only one object exist in Simpledb::client
@@ -44,6 +46,25 @@ public:
     * @param page
     */
     void Write(const BlockId &block, Page &page);
+
+    /**
+    * @brief read a page from log file
+    * usually be called by log ietrator 
+    * @param log_name log file name
+    * @param offset the offset in log file
+    * @param page the cache of block
+    */
+    void ReadLog(const std::string &log_name, int offset, Page &page);
+
+    /**
+    * @brief write a page to log file
+    * usually be called by log manager
+    * @param log_name log file name
+    * @param size the size of log which be flushed
+    * @param page the cache of block
+    */
+    void WriteLog(const std::string &log_name, int size, Page &page);
+
     
     /**
     * @brief seek to the end of the file and writes an empty array of bytes to it,
@@ -83,6 +104,14 @@ private:
     * @param file_name
     */
     std::shared_ptr<std::fstream> GetFile(const std::string &file_name);
+
+    /**
+    * @brief Get the corresponding log-file-stream by log name
+    * 
+    * @param log_name
+    * @return the file-stream of log file
+    */
+    std::shared_ptr<std::fstream> GetLogFile(const std::string &log_name);
     
     /**
     * @brief Get the file'size by file name

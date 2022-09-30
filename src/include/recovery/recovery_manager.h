@@ -15,6 +15,12 @@ class Transaction;
 /**
  * @brief The recovery manager.  
  * Each transaction has its own recovery manager.
+ * 
+ * current, due to use undo-redo strategy, we don't flush the buffer of being used immediatly.
+ * TODO: non-quiescent checkpoint
+ * TODO: clr log
+ * TODO: TXN-END log 
+ * TODO: will store checkpoint offset in meta-data manager.
  */
 class RecoveryManager {
 
@@ -30,8 +36,8 @@ public:
     void Commit();
 
     /**
-    * @brief if a transaction commit, the log should be flushed out immediately
-    * 
+    * @brief if a transaction rollback, the log should be flushed out immediately
+    * current, we just undo any operations and don't write the clr log to disk
     */
     void RollBack();
 
@@ -40,6 +46,11 @@ public:
     * and then write a quiescent checkpoint record to the log and flush it.
     * 
     * Usually be called when db is restarted
+    * There are three phases in recover function:
+    * 1. scan(analyse): find the checkpoint position and dirty pages
+    *                   current, we just need to find the quiescent checkpoint
+    * 2. redo: redo any log record before crash.
+    * 3. undo: undo any log record of uncommited transaction.
     */
     void Recover();
     
@@ -70,21 +81,31 @@ public:
 
 private: // helper function
     
-    
+    /**
+    * @brief rollback current transaction
+    * undo any operations but not write the clr log to disk
+    */
     void DoRollBack();
 
     /**
-    * @brief  Find the location of the checkpoint 
-    *   and maintain which txns are committed and which txns are aborted
+    * @brief analyze phase  
+    * find the location of the checkpoint 
     */
     int DoRecoverScan();
 
+    /**
+    * @brief redo phase
+    * 
+    */
     void DoRecoverRedo(std::unordered_map<txn_id_t, lsn_t>* active_txn, int);
     
+    /**
+    * @brief undo phase
+    */
     void DoRecoverUndo(std::unordered_map<txn_id_t, lsn_t>* active_txn);
 
 
-// these two functions are for manipulation lsn_map_    
+// these three functions are for manipulation lsn_map_    
 
     inline void InsertLsnMap(lsn_t lsn, int offset) {
         lsn_map_[lsn] = offset;
@@ -92,6 +113,10 @@ private: // helper function
 
     inline void RemoveLsnMap(lsn_t lsn) {
         lsn_map_.erase(lsn);
+    }
+
+    inline int GetLsnMap(lsn_t lsn) {
+        return lsn_map_.at(lsn);
     }
 
 private:
