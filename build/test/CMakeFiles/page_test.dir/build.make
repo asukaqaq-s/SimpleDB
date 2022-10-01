@@ -79,9 +79,9 @@ page_test_EXTERNAL_OBJECTS =
 
 test/page_test: test/CMakeFiles/page_test.dir/file/page_test.cc.o
 test/page_test: test/CMakeFiles/page_test.dir/build.make
-test/page_test: lib/libgtest_main.a
+test/page_test: lib/libgtest_maind.a
 test/page_test: src/libSimpleDB_lib.a
-test/page_test: lib/libgtest.a
+test/page_test: lib/libgtestd.a
 test/page_test: test/CMakeFiles/page_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable page_test"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/page_test.dir/link.txt --verbose=$(VERBOSE)

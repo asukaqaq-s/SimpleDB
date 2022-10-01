@@ -127,6 +127,7 @@ private:
     std::chrono::milliseconds wait_max_time_{10000};
     
     int max_time_{10000};
+    
 };
 
 } // namespace SimpleDB

@@ -1,1 +1,1 @@
-/usr/bin/c++   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes   CMakeFiles/log_test.dir/log/log_test.cc.o  -o log_test  ../lib/libgtest_main.a ../src/libSimpleDB_lib.a ../lib/libgtest.a -lpthread 
+/usr/bin/c++   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   CMakeFiles/log_test.dir/log/log_test.cc.o  -o log_test  ../lib/libgtest_maind.a ../src/libSimpleDB_lib.a ../lib/libgtestd.a -lpthread 

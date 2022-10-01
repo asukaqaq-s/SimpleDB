@@ -7,6 +7,8 @@
 
 #include "concurrency/transaction.h"
 
+#include <iostream>
+
 namespace SimpleDB {
 
 // note that, because SimpleDB use Rigorous 2PL concurrency strategy
@@ -42,12 +44,11 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
         LockRequest(txn->txn_id_, LockMode::SHARED));
     
     auto it = lock_request_queue->request_queue_.rbegin();
-    
     // if a txn is writing, it must wait until unlock
     auto start = std::chrono::high_resolution_clock::now();
     while (lock_request_queue->writing_ &&
-           WaitTooLong(start)) {
-        lock_request_queue->wait_cv_.wait_for(latch, wait_max_time_);
+           !WaitTooLong(start)) {
+        lock_request_queue->wait_cv_.wait_for(latch, std::chrono::milliseconds(max_time_));
     }
 
     // if can not acquire a shared lock
@@ -103,18 +104,22 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
     if(it == lock_request_queue->request_queue_.end()) {
         SIMPLEDB_ASSERT(false, "logical error");
     }
+
+    // update before wait for
     it->lock_mode_ = LockMode::EXCLUSIVE;
-    
+    it->granted_ = false;
+    lock_request_queue->shared_count_ --;
+
     auto start = std::chrono::high_resolution_clock::now();
-    while (lock_request_queue->writing_ &&
-           lock_request_queue->shared_count_ > 1 &&
+    while ((lock_request_queue->writing_ ||
+           lock_request_queue->shared_count_ > 0) &&
            !WaitTooLong(start)) {
-        lock_request_queue->wait_cv_.wait_for(latch, wait_max_time_);
+        lock_request_queue->wait_cv_.wait_for(latch, std::chrono::milliseconds(max_time_));
     }
     
     // if can not acquire a exclusive lock
     if (lock_request_queue->writing_ || 
-        lock_request_queue->shared_count_ > 1) {
+        lock_request_queue->shared_count_ > 0) {
         throw std::runtime_error(
             "Wait too long when acquire exclusive-lock"
         );
@@ -177,7 +182,13 @@ bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
         if (lock_request_queue->shared_count_ == 0) {
             should_notify = true;
         }
+
     }
+    // std::cout << "should_notify = " << should_notify << " "
+    //           << "lockmode = " << static_cast<int>(it->lock_mode_) << "  "
+    //           << "shared_count = " << lock_request_queue->shared_count_ << " "
+    //           << "writring = " << lock_request_queue->writing_ << " " 
+    //           << "block_num  " << block.BlockNum() << std::endl;
     
     lock_request_queue->request_queue_.erase(it);
     // notifly all transactions in wait list

@@ -246,6 +246,32 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 #=============================================================================
+# Target rules for targets named recovery_manager_test
+
+# Build rule for target.
+recovery_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 recovery_manager_test
+.PHONY : recovery_manager_test
+
+# fast build rule for target.
+recovery_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/build
+.PHONY : recovery_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named unittests
+
+# Build rule for target.
+unittests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 unittests
+.PHONY : unittests
+
+# fast build rule for target.
+unittests/fast:
+	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
+.PHONY : unittests/fast
+
+#=============================================================================
 # Target rules for targets named main
 
 # Build rule for target.
@@ -324,6 +350,19 @@ transaction_test/fast:
 .PHONY : transaction_test/fast
 
 #=============================================================================
+# Target rules for targets named concurrency_test
+
+# Build rule for target.
+concurrency_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 concurrency_test
+.PHONY : concurrency_test
+
+# fast build rule for target.
+concurrency_test/fast:
+	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
+.PHONY : concurrency_test/fast
+
+#=============================================================================
 # Target rules for targets named file_manager_test
 
 # Build rule for target.
@@ -375,32 +414,6 @@ log_test/fast:
 	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
 .PHONY : log_test/fast
 
-#=============================================================================
-# Target rules for targets named unittests
-
-# Build rule for target.
-unittests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 unittests
-.PHONY : unittests
-
-# fast build rule for target.
-unittests/fast:
-	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
-.PHONY : unittests/fast
-
-#=============================================================================
-# Target rules for targets named recovery_manager_test
-
-# Build rule for target.
-recovery_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 recovery_manager_test
-.PHONY : recovery_manager_test
-
-# fast build rule for target.
-recovery_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/build
-.PHONY : recovery_manager_test/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -420,18 +433,19 @@ help:
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
 	@echo "... show-tests"
+	@echo "... recovery_manager_test"
+	@echo "... unittests"
 	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
+	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... page_test"
 	@echo "... log_record_test"
 	@echo "... log_test"
-	@echo "... unittests"
-	@echo "... recovery_manager_test"
 .PHONY : help
 
 
