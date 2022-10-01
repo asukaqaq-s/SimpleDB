@@ -209,10 +209,10 @@ private:
     // the offset in block
     int offset_;
     
+    int old_value_;
+    
     int new_value_;
     
-    int old_value_;
-
     int record_size_;
 };
 
@@ -258,9 +258,9 @@ private:
     // the offset in block
     int offset_;
     
-    std::string new_value_;
-    
     std::string old_value_;
+    
+    std::string new_value_;
 
     int record_size_;
 };

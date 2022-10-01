@@ -16,6 +16,7 @@ RecoveryManager::RecoveryManager(Transaction *txn, txn_id_t txn_id, LogManager *
     // transaction begin
     auto begin_record = BeginRecord(txn_id_);
     last_lsn_ = log_manager_->AppendLogWithOffset(begin_record, &log_offset);
+    
     earlist_lsn_ = last_lsn_;
     // update lsn_map_
     InsertLsnMap(last_lsn_, log_offset);
@@ -27,6 +28,7 @@ void RecoveryManager::Commit() {
     auto commit_record = CommitRecord(txn_id_);
     commit_record.SetPrevLSN(last_lsn_);
     last_lsn_ = log_manager_->AppendLogRecord(commit_record);
+    
     // flush the lsn immediately
     log_manager_->Flush(last_lsn_);
     // no need to update lsn_map_
@@ -40,6 +42,7 @@ void RecoveryManager::RollBack() {
     auto rollback_record = RollbackRecord(txn_id_);
     rollback_record.SetPrevLSN(last_lsn_);
     last_lsn_ = log_manager_->AppendLogWithOffset(rollback_record, &log_offset);
+    
     // flush the lsn immediately
     log_manager_->Flush(last_lsn_);
     // update lsn_map_
@@ -56,6 +59,7 @@ lsn_t RecoveryManager::SetIntLogRec(Buffer *buffer,
     auto setint_record = SetIntRecord(txn_id_, block, offset, old_value, new_value);
     setint_record.SetPrevLSN(last_lsn_);
     last_lsn_ = log_manager_->AppendLogWithOffset(setint_record, &log_offset);
+    
     // update lsn_map_
     InsertLsnMap(last_lsn_, log_offset);
     return last_lsn_;
@@ -70,6 +74,7 @@ lsn_t RecoveryManager::SetStringLogRec(Buffer *buffer,
     auto setstring_record = SetStringRecord(txn_id_, block, offset, old_value, new_value);
     setstring_record.SetPrevLSN(last_lsn_);
     last_lsn_ = log_manager_->AppendLogWithOffset(setstring_record, &log_offset);
+    
     // update lsn_map_
     InsertLsnMap(last_lsn_, log_offset); 
     return last_lsn_;
@@ -109,15 +114,19 @@ void RecoveryManager::Recover() {
     int checkpoint_pos = DoRecoverScan();
     // redo any log after checkpoint 
     DoRecoverRedo(active_txn.get(), checkpoint_pos);
+
     // undo any uncommited transactions before crashing
     DoRecoverUndo(active_txn.get());
+    
     // checkpoint means that all logs and corresponding operations 
     // that precede it should update to disk
     buffer_manager_->FlushAll();
     auto checkpoint_record = CheckpointRecord();
+    
     // flush log
     lsn_t lsn = log_manager_->AppendLogRecord(checkpoint_record);
     log_manager_->Flush(lsn);
+    
     // not need to update lsn_map_
 }
 
@@ -140,6 +149,8 @@ int RecoveryManager::DoRecoverScan() {
         if(log_record_type == LogRecordType::CHECKPOINT) {
             checkpoint_pos = log_iter.GetLogOffset();
         }
+        
+        
         log_iter.NextRecord();
     }
     // update to lastest lsn
@@ -162,6 +173,7 @@ void RecoveryManager::DoRecoverRedo
         auto log_record_type = log_record->GetRecordType();
         txn_id_t log_record_txn = log_record->GetTxnID();
         lsn_t log_record_lsn = log_record->GetLsn();
+        
         // update lsn_map_, should update any record, even commit, rollback and begin
         InsertLsnMap(log_record_lsn, log_record_offset);
         
@@ -179,6 +191,8 @@ void RecoveryManager::DoRecoverRedo
             (*active_txn)[log_record_txn] = log_record_lsn;
             log_record->Redo(txn_);
         }
+        
+        
         log_iter.NextRecord();
     } 
 }
@@ -203,6 +217,7 @@ void RecoveryManager::DoRecoverUndo
         log_record->Undo(txn_);
         // erase lsn and insert the previous lsn
         next_lsn.erase(lsn);
+        
         if(log_record->GetPrevLSN() != INVALID_LSN) {
             next_lsn.insert(log_record->GetPrevLSN());
         }

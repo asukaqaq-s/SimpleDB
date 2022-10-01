@@ -2,6 +2,7 @@
 #define TRANSACTION_H
 
 #include "recovery/recovery_manager.h"
+#include "concurrency/concurrency_manager.h"
 #include "concurrency/buffer_list.h"
 #include "buffer/buffer_manager.h"
 
@@ -12,7 +13,35 @@
 
 namespace SimpleDB {
 
-// class RecoveryManager;
+class Transaction;
+
+class TransactionMap {
+
+public:
+
+    TransactionMap();
+    
+    ~TransactionMap();
+    
+    void InsertTransaction(Transaction *txn);
+
+    void RemoveTransaction(Transaction *txn);
+
+    bool IsTransactionAlive(txn_id_t txn_id);
+
+    Transaction* GetTransaction(txn_id_t txn_id);
+
+    txn_id_t GetNextTransactionID();
+    
+private:
+
+    std::unordered_map<txn_id_t, Transaction*> txn_map_;
+
+    std::mutex latch_;
+
+    int next_txn_id_{0};
+};
+
 
 /**
 * @brief * Provide transaction management for clients, 
@@ -20,10 +49,14 @@ namespace SimpleDB {
 */
 class Transaction {
 
+    friend class LockManager;
+
 public:
 
     Transaction(FileManager *fm, LogManager *lm, BufferManager *bm);
     
+    ~Transaction();
+
     /**
     * @brief commit the current transaction
     * flush the commit log records immediately,
@@ -80,31 +113,50 @@ public:
     
     std::string GetString(const BlockId &block, int offset);
     
+    int GetFileSize(std::string file_name);
+
+    BlockId Append(std::string file_name);
+
+    int BlockSize();
+    
+    int AvialableBuffers();
+    
+
+public: // todo
+
+    void SetTxnState(TransactionState txn_state) {state_ = txn_state;}
+
+    void SetLockStage(LockStage lks) {stage_ = lks;}
+
+    txn_id_t GetTxnID() { return txn_id_;}
+
+private:
+
+    static txn_id_t NextTxnID();
+
 private:
     
-    static txn_id_t Next_Txn_ID;
-    
-    static std::mutex latch_;
-
+    static TransactionMap txn_map;
+    // which be used to append file or get file size
     const int END_OF_FILE = -1;
-    
+    // unique concurrency manager
+    std::unique_ptr<ConcurrencyManager> concurrency_manager_;
+    // unique recovery manager
     std::unique_ptr<RecoveryManager> recovery_manager_;
-
-    BufferManager *buffer_manager_;
-
+    // shard filemanager
     FileManager *file_manager_;
-    
-    txn_id_t txn_id;
-
+    // shared buffermanager
+    BufferManager *buffer_manager_;
+    // to identify transaction
+    txn_id_t txn_id_;
+    // buffser list for remembering all pinned buffer
     std::unique_ptr<BufferList> buffers_;
-
-    
-
-    static txn_id_t NextTxnID() { 
-        std::lock_guard<std::mutex> lock(latch_);
-        int x = ++Next_Txn_ID; 
-        return x;
-    }
+    // 2pl lock stage
+    LockStage stage_{LockStage::GROWING};
+    // isolation level
+    IsoLationLevel isolation_level_{IsoLationLevel::READ_COMMITED};    
+    // transactionstate
+    TransactionState state_{TransactionState::RUNNING};
 
 };
 

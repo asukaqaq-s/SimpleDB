@@ -236,6 +236,60 @@ buffer/lru_replace.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.s
 .PHONY : buffer/lru_replace.cc.s
 
+concurrency/concurrency_manager.o: concurrency/concurrency_manager.cc.o
+
+.PHONY : concurrency/concurrency_manager.o
+
+# target to build an object file
+concurrency/concurrency_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o
+.PHONY : concurrency/concurrency_manager.cc.o
+
+concurrency/concurrency_manager.i: concurrency/concurrency_manager.cc.i
+
+.PHONY : concurrency/concurrency_manager.i
+
+# target to preprocess a source file
+concurrency/concurrency_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.i
+.PHONY : concurrency/concurrency_manager.cc.i
+
+concurrency/concurrency_manager.s: concurrency/concurrency_manager.cc.s
+
+.PHONY : concurrency/concurrency_manager.s
+
+# target to generate assembly for a file
+concurrency/concurrency_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.s
+.PHONY : concurrency/concurrency_manager.cc.s
+
+concurrency/lock_manager.o: concurrency/lock_manager.cc.o
+
+.PHONY : concurrency/lock_manager.o
+
+# target to build an object file
+concurrency/lock_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o
+.PHONY : concurrency/lock_manager.cc.o
+
+concurrency/lock_manager.i: concurrency/lock_manager.cc.i
+
+.PHONY : concurrency/lock_manager.i
+
+# target to preprocess a source file
+concurrency/lock_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.i
+.PHONY : concurrency/lock_manager.cc.i
+
+concurrency/lock_manager.s: concurrency/lock_manager.cc.s
+
+.PHONY : concurrency/lock_manager.s
+
+# target to generate assembly for a file
+concurrency/lock_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.s
+.PHONY : concurrency/lock_manager.cc.s
+
 concurrency/transaction.o: concurrency/transaction.cc.o
 
 .PHONY : concurrency/transaction.o
@@ -526,6 +580,12 @@ help:
 	@echo "... buffer/lru_replace.o"
 	@echo "... buffer/lru_replace.i"
 	@echo "... buffer/lru_replace.s"
+	@echo "... concurrency/concurrency_manager.o"
+	@echo "... concurrency/concurrency_manager.i"
+	@echo "... concurrency/concurrency_manager.s"
+	@echo "... concurrency/lock_manager.o"
+	@echo "... concurrency/lock_manager.i"
+	@echo "... concurrency/lock_manager.s"
 	@echo "... concurrency/transaction.o"
 	@echo "... concurrency/transaction.i"
 	@echo "... concurrency/transaction.s"

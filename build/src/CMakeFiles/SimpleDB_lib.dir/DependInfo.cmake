@@ -6,6 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/asuka/workbench/project/SimpleDB/src/buffer/buffer_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/buffer/lru_replace.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/concurrency/lock_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/concurrency/transaction.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/file/block_id.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/file/file_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o"

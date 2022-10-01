@@ -183,21 +183,6 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 # Convenience name for target.
-test/CMakeFiles/lru_replacer_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
-.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
-
-# Convenience name for target.
-lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
-
-.PHONY : lru_replacer_test
-
-# fast build rule for target.
-lru_replacer_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
-
-# Convenience name for target.
 test/CMakeFiles/main.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/rule
 .PHONY : test/CMakeFiles/main.dir/rule
@@ -256,6 +241,36 @@ buffer_test: test/CMakeFiles/buffer_test.dir/rule
 buffer_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
 .PHONY : buffer_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/lru_replacer_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
+.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
+
+# Convenience name for target.
+lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
+
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/transaction_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/transaction_test.dir/rule
+.PHONY : test/CMakeFiles/transaction_test.dir/rule
+
+# Convenience name for target.
+transaction_test: test/CMakeFiles/transaction_test.dir/rule
+
+.PHONY : transaction_test
+
+# fast build rule for target.
+transaction_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
+.PHONY : transaction_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/file_manager_test.dir/rule:
@@ -455,6 +470,33 @@ buffer/lru_replacer_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/buffer/lru_replacer_test.cc.s
 .PHONY : buffer/lru_replacer_test.cc.s
 
+concurrency/transaction_test.o: concurrency/transaction_test.cc.o
+
+.PHONY : concurrency/transaction_test.o
+
+# target to build an object file
+concurrency/transaction_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/concurrency/transaction_test.cc.o
+.PHONY : concurrency/transaction_test.cc.o
+
+concurrency/transaction_test.i: concurrency/transaction_test.cc.i
+
+.PHONY : concurrency/transaction_test.i
+
+# target to preprocess a source file
+concurrency/transaction_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/concurrency/transaction_test.cc.i
+.PHONY : concurrency/transaction_test.cc.i
+
+concurrency/transaction_test.s: concurrency/transaction_test.cc.s
+
+.PHONY : concurrency/transaction_test.s
+
+# target to generate assembly for a file
+concurrency/transaction_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/concurrency/transaction_test.cc.s
+.PHONY : concurrency/transaction_test.cc.s
+
 file/file_manager_test.o: file/file_manager_test.cc.o
 
 .PHONY : file/file_manager_test.o
@@ -629,13 +671,14 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... show-tests"
-	@echo "... lru_replacer_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
-	@echo "... file_manager_test"
+	@echo "... lru_replacer_test"
+	@echo "... transaction_test"
 	@echo "... test"
+	@echo "... file_manager_test"
 	@echo "... page_test"
 	@echo "... list_install_components"
 	@echo "... log_record_test"
@@ -654,6 +697,9 @@ help:
 	@echo "... buffer/lru_replacer_test.o"
 	@echo "... buffer/lru_replacer_test.i"
 	@echo "... buffer/lru_replacer_test.s"
+	@echo "... concurrency/transaction_test.o"
+	@echo "... concurrency/transaction_test.i"
+	@echo "... concurrency/transaction_test.s"
 	@echo "... file/file_manager_test.o"
 	@echo "... file/file_manager_test.i"
 	@echo "... file/file_manager_test.s"

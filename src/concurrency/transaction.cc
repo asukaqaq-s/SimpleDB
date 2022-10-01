@@ -5,30 +5,76 @@
 
 namespace SimpleDB {
 
-int Transaction::Next_Txn_ID = 0;
-std::mutex Transaction::latch_;
+TransactionMap Transaction::txn_map;
+
+txn_id_t Transaction::NextTxnID() { 
+    return txn_map.GetNextTransactionID();
+}
+
+TransactionMap::TransactionMap() {}
+    
+TransactionMap::~TransactionMap() {}
+
+void TransactionMap::InsertTransaction(Transaction *txn) {
+        std::lock_guard<std::mutex> latch(latch_);
+        txn_map_[txn->GetTxnID()] = txn;
+}
+
+void TransactionMap::RemoveTransaction(Transaction *txn) {
+    std::lock_guard<std::mutex> latch(latch_);
+    txn_map_.erase(txn->GetTxnID());
+}
+
+bool TransactionMap::IsTransactionAlive(txn_id_t txn_id) {
+    std::lock_guard<std::mutex> latch(latch_);
+    return txn_map_.find(txn_id) != txn_map_.end();            
+}
+
+Transaction* TransactionMap::GetTransaction(txn_id_t txn_id) {
+    std::lock_guard<std::mutex> latch(latch_);
+    if (IsTransactionAlive(txn_id))
+        return txn_map_[txn_id];
+    else return NULL;
+}
+
+txn_id_t TransactionMap::GetNextTransactionID() {
+    std::lock_guard<std::mutex> latch(latch_);
+    return ++next_txn_id_;
+}
+
 
 Transaction::Transaction(FileManager *fm, LogManager *lm, BufferManager *bm) :
 file_manager_(fm), buffer_manager_(bm) {
-    txn_id = NextTxnID();
+    txn_id_ = NextTxnID();
+    // update transaction map
+    // txn_map.InsertTransaction(this);
+
+    concurrency_manager_ = std::make_unique<ConcurrencyManager>
+                        (this);
     recovery_manager_ = std::make_unique<RecoveryManager>
-                        (this, txn_id, lm, buffer_manager_);
+                        (this, txn_id_, lm, buffer_manager_);
     buffers_ = std::make_unique<BufferList>(buffer_manager_);
 }
 
+Transaction::~Transaction() {
+    // txn_map.RemoveTransaction(this);
+}
+
 void Transaction::Commit() {
+    state_ = TransactionState::COMMITTED;
     recovery_manager_->Commit();
-    std::cout << "Transaction: " << std::to_string(txn_id) 
+    std::cout << "Transaction: " << std::to_string(txn_id_) 
               << " committed" << std::endl;
-    
+    concurrency_manager_->Release(); // strong 2pl
     buffers_->UnpinAll();
 }
 
 void Transaction::RollBack() {
+    state_ = TransactionState::ABORTED;
     recovery_manager_->RollBack();
-    std::cout << "Transaction: " << std::to_string(txn_id) 
+    std::cout << "Transaction: " << std::to_string(txn_id_) 
                 << " rolled back" << std::endl;
-    
+    concurrency_manager_->Release(); // strong 2pl
     buffers_->UnpinAll();
 }
 
@@ -45,20 +91,20 @@ void Transaction::Unpin(const BlockId &block) {
 }
 
 int Transaction::GetInt(const BlockId &block, int offset) {
-    // concurMgr.sLock(blk);
+    concurrency_manager_->LockShared(block);
     Buffer *buffer = buffers_->GetBuffer(block);
     return buffer->contents()->GetInt(offset);
 }
 
 std::string Transaction::GetString(const BlockId &block, int offset) {
-    // concurMgr.sLock(blk);
+    concurrency_manager_->LockShared(block);
     Buffer *buffer = buffers_->GetBuffer(block);
     return buffer->contents()->GetString(offset);
 }
 
 void Transaction::SetInt
 (const BlockId &block, int offset, int new_value,bool is_log) {
-    // concurMgr.xLock(blk);
+    concurrency_manager_->LockExclusive(block);
     Buffer *buffer = buffers_->GetBuffer(block);
     lsn_t lsn = INVALID_LSN;
     // first, write log
@@ -68,12 +114,12 @@ void Transaction::SetInt
     // second, modify the specified block
     Page* page = buffer->contents();
     page->SetInt(offset, new_value);
-    buffer->SetModified(txn_id, lsn);
+    buffer->SetModified(txn_id_, lsn);
 }
 
 void Transaction::SetString
 (const BlockId &block, int offset, std::string new_value, bool is_log) {
-    // concurMgr.xLock(blk);
+    concurrency_manager_->LockExclusive(block);
     Buffer *buffer = buffers_->GetBuffer(block);
     lsn_t lsn = INVALID_LSN;
     // first, write log
@@ -83,8 +129,30 @@ void Transaction::SetString
     // second, modify the specified block
     Page *page = buffer->contents();
     page->SetString(offset, new_value);
-    buffer->SetModified(txn_id, lsn);
+    buffer->SetModified(txn_id_, lsn);
 }
+
+int Transaction::GetFileSize(std::string file_name) {
+    BlockId dummy_block(file_name, END_OF_FILE);
+    concurrency_manager_->LockShared(dummy_block);
+    return file_manager_->Length(file_name);
+}
+
+BlockId Transaction::Append(std::string file_name) {
+    BlockId dummy_block(file_name, END_OF_FILE);
+    concurrency_manager_->LockExclusive(dummy_block);
+    return file_manager_->Append(file_name);
+}
+
+int Transaction::BlockSize() {
+    return file_manager_->BlockSize();
+}
+
+int Transaction::AvialableBuffers() {
+    return buffer_manager_->available();
+}
+
+
 
 } // namespace SimpleDB
 

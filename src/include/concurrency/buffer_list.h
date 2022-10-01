@@ -76,7 +76,6 @@ private:
     std::list<BlockId> pins_;
 
     BufferManager *buffer_manager_;
-
 };
 
 

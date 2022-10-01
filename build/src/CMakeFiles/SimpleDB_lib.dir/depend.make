@@ -17,9 +17,45 @@ src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o: ../src/include/buffer/l
 src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o: ../src/include/config/type.h
 src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o: ../src/buffer/lru_replace.cc
 
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/buffer/buffer_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/buffer/lru_replace.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/concurrency/buffer_list.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/concurrency/concurrency_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/concurrency/lock_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/concurrency/transaction.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/config/type.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/file/block_id.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/file/file_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/file/page.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/log/log_iterator.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/recovery/log_record.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/include/recovery/recovery_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o: ../src/concurrency/concurrency_manager.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/buffer/buffer_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/buffer/lru_replace.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/concurrency/buffer_list.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/concurrency/concurrency_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/concurrency/lock_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/concurrency/transaction.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/type.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/file/block_id.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/file/file_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/file/page.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/log/log_iterator.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/recovery/log_record.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/recovery/recovery_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/concurrency/lock_manager.cc
+
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/buffer/lru_replace.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/concurrency/buffer_list.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/concurrency/concurrency_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/concurrency/lock_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o: ../src/include/config/type.h
@@ -84,6 +120,8 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/recovery/
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/buffer/lru_replace.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/concurrency/buffer_list.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/concurrency/concurrency_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/concurrency/lock_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/include/config/type.h
@@ -99,6 +137,8 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o: ../src/recovery/set
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/buffer/lru_replace.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/concurrency/buffer_list.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/concurrency/concurrency_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/concurrency/lock_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o: ../src/include/config/type.h
