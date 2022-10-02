@@ -21,6 +21,7 @@ enum class LockMode {
 
 enum class DeadLockResolveRrotocol {
     INVALID = 0,
+    DO_NOTHING,
     DL_DETECT,
     WAIT_DIE,
     WOUND_WAIT,
@@ -80,8 +81,6 @@ class LockManager {
         std::list<LockRequest> request_queue_;
         // for notifying blocked transactions on this block
         std::condition_variable wait_cv_;
-        // whether request for upgrading
-        bool upgrading_{false};
         // whther lock is held in execlusive mode
         bool writing_{false};
         // count for txn that hold shared lock
@@ -98,7 +97,7 @@ public:
 
     bool LockExclusive(Transaction *txn, const BlockId &block);
     
-    bool LockUpdate(Transaction *txn, const BlockId &block);
+    bool LockUpgrade(Transaction *txn, const BlockId &block);
 
     bool UnLock(Transaction *txn, const BlockId &block);
 

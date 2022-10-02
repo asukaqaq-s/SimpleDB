@@ -31,8 +31,13 @@ void ConcurrencyManager::LockShared(const BlockId &block) {
 
 void ConcurrencyManager::LockExclusive(const BlockId &block) {
     if (!HasXLock(block)) {
-        LockShared(block);
-        lock_manager.LockExclusive(txn_, block);
+        
+        if(HasSLock(block)) {
+            // if this txn has shared lock, we just need to update it    
+        } else {
+            // if this txn has not lock, we need to acquire xlock directly
+            lock_manager.LockExclusive(txn_, block);
+        }
         held_locks_[block] = LockMode::EXCLUSIVE;
     }
 }

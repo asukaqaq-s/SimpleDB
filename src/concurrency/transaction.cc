@@ -16,8 +16,8 @@ TransactionMap::TransactionMap() {}
 TransactionMap::~TransactionMap() {}
 
 void TransactionMap::InsertTransaction(Transaction *txn) {
-        std::lock_guard<std::mutex> latch(latch_);
-        txn_map_[txn->GetTxnID()] = txn;
+    std::lock_guard<std::mutex> latch(latch_);
+    txn_map_[txn->GetTxnID()] = txn;
 }
 
 void TransactionMap::RemoveTransaction(Transaction *txn) {
@@ -153,6 +153,9 @@ int Transaction::AvialableBuffers() {
 }
 
 
+Transaction* Transaction::TransactionLookUp(txn_id_t txn_id) {
+    return txn_map.GetTransaction(txn_id);
+}
 
 } // namespace SimpleDB
 

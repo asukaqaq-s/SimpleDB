@@ -6,14 +6,22 @@
 
 ## SimpleDB
 
-Simpleb is SimpleDB is a tiny-database-manage-system for education purpose.Note that this is just a toy for learning and is NOT a robust and full solution to Database.
+SimpleDB is a tiny-database-manage-system for learning purpose.Note that this is just a toy for learning and is NOT a robust and full solution to Database.
 
 Schedule 
 
 - FileManager (comepleted in 9/16/2022)
 - BufferManager(completed in 9/23/2022)
-- Recover by WAL(todo)
-- Transaction(todo)
+- Recover by WAL(completed in 1/10/2022)
+- Transaction by 2pl(completed in 1/10/2022)
+- Record Manager(todo)
+- Metadata Manager(todo)
+- Query(todo)
+- Parsing(todo)
+- Planning(todo)
+- JDBC(todo)
+- Indexing(todo)
+
 
 ## reference
 
