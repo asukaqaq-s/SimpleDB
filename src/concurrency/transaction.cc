@@ -7,8 +7,10 @@ namespace SimpleDB {
 
 TransactionMap Transaction::txn_map;
 
+
 txn_id_t Transaction::NextTxnID() { 
-    return txn_map.GetNextTransactionID();
+    int res = txn_map.GetNextTransactionID();
+    return res;
 }
 
 TransactionMap::TransactionMap() {}
@@ -39,7 +41,8 @@ Transaction* TransactionMap::GetTransaction(txn_id_t txn_id) {
 
 txn_id_t TransactionMap::GetNextTransactionID() {
     std::lock_guard<std::mutex> latch(latch_);
-    return ++next_txn_id_;
+    int res = ++next_txn_id_;
+    return res;
 }
 
 
@@ -47,7 +50,7 @@ Transaction::Transaction(FileManager *fm, LogManager *lm, BufferManager *bm) :
 file_manager_(fm), buffer_manager_(bm) {
     txn_id_ = NextTxnID();
     // update transaction map
-    // txn_map.InsertTransaction(this);
+    txn_map.InsertTransaction(this);
 
     concurrency_manager_ = std::make_unique<ConcurrencyManager>
                         (this);
@@ -57,7 +60,7 @@ file_manager_(fm), buffer_manager_(bm) {
 }
 
 Transaction::~Transaction() {
-    // txn_map.RemoveTransaction(this);
+    txn_map.RemoveTransaction(this);
 }
 
 void Transaction::Commit() {

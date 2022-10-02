@@ -15,72 +15,101 @@ namespace SimpleDB {
 void run_A(FileManager &fM, LogManager &lM, BufferManager &bM) {
   try {
     auto txA = std::make_unique<Transaction>(&fM, &lM, &bM);
+    
     std::string testFile = "testfile";
     BlockId blk1(testFile, 1);
     BlockId blk2(testFile, 2);
     txA->Pin(blk1);
     txA->Pin(blk2);
-    std::cout << "Tx A: request slock 1" << std::endl;
+    std::cout   << "Tx " << txA->GetTxnID() << ": request slock 1" << std::endl;
     ;
     txA->GetInt(blk1, 0);
-    std::cout << "Tx A: receive slock 1" << std::endl;
+    std::cout   << "Tx " << txA->GetTxnID() << ": receive slock 1" << std::endl;
     std::this_thread::sleep_for(1000ms);
-    std::cout << "Tx A: request slock 2" << std::endl;
+    std::cout   << "Tx " << txA->GetTxnID() << ": request slock 2" << std::endl;
     txA->GetInt(blk2, 0);
-    std::cout << "Tx A: receive slock 2" << std::endl;
+    std::cout   << "Tx " << txA->GetTxnID() << ": receive slock 2" << std::endl;
     txA->Commit();
-    std::cout << "Tx A: commit" << std::endl;
+    std::cout   << "Tx " << txA->GetTxnID() << ": commit" << std::endl;
   } catch (std::exception &e) {
-    std::cout << e.what() << std::endl;
+    std::cout  << "A " << e.what() << std::endl;
   }
 }
 
 void run_B(FileManager &fM, LogManager &lM, BufferManager &bM) {
   try {
     auto txB = std::make_unique<Transaction>(&fM, &lM, &bM);
+    
     std::string testFile = "testfile";
     BlockId blk1(testFile, 1);
     BlockId blk2(testFile, 2);
     txB->Pin(blk1);
     txB->Pin(blk2);
-    std::cout << "Tx B: request xlock 2" << std::endl;
+    std::cout   << "Tx " << txB->GetTxnID() << ": request xlock 2" << std::endl;
     ;
     txB->SetInt(blk2, 0, 0, false);
-    std::cout << "Tx B: receive xlock 2" << std::endl;
+    std::cout   << "Tx " << txB->GetTxnID() << ": receive xlock 2" << std::endl;
     std::this_thread::sleep_for(1000ms);
-    std::cout << "Tx B: request slock 1" << std::endl;
+    std::cout   << "Tx " << txB->GetTxnID() << ": request slock 1" << std::endl;
     txB->GetInt(blk1, 0);
-    std::cout << "Tx B: receive slock 1" << std::endl;
+    std::cout   << "Tx " << txB->GetTxnID() << ": receive slock 1" << std::endl;
     txB->Commit();
-    std::cout << "Tx B: commit" << std::endl;
+    std::cout   << "Tx " << txB->GetTxnID() << ": commit" << std::endl;
   } catch (std::exception &e) {
-    std::cout << e.what() << std::endl;
+    std::cout  << "B " << e.what() << std::endl;
   }
 }
 
 void run_C(FileManager &fM, LogManager &lM, BufferManager &bM) {
   try {
     auto txC = std::make_unique<Transaction>(&fM, &lM, &bM);
+    
     std::string testFile = "testfile";
     BlockId blk1(testFile, 1);
     BlockId blk2(testFile, 2);
     txC->Pin(blk1);
     txC->Pin(blk2);
     std::this_thread::sleep_for(500ms);
-    std::cout << "Tx C: request xlock 1" << std::endl;
+    std::cout   << "Tx " << txC->GetTxnID() << ": request xlock 1" << std::endl;
     ;
     txC->SetInt(blk1, 0, 0, false);
-    std::cout << "Tx C: receive xlock 1" << std::endl;
+    std::cout   << "Tx " << txC->GetTxnID() << ": receive xlock 1" << std::endl;
     std::this_thread::sleep_for(1000ms);
-    std::cout << "Tx C: request slock 2" << std::endl;
+    std::cout   << "Tx " << txC->GetTxnID() << ": request slock 2" << std::endl;
     txC->GetInt(blk2, 0);
-    std::cout << "Tx C: receive slock 2" << std::endl;
+    std::cout   << "Tx " << txC->GetTxnID() << ": receive slock 2" << std::endl;
     txC->Commit();
-    std::cout << "Tx C: commit" << std::endl;
+    std::cout   << "Tx " << txC->GetTxnID() << ": commit" << std::endl;
   } catch (std::exception &e) {
-    std::cout << e.what() << std::endl;
+    std::cout  << "C " << e.what() << std::endl;
   }
 }
+void run_D(FileManager &fM, LogManager &lM, BufferManager &bM) {
+    try {
+    auto txD = std::make_unique<Transaction>(&fM, &lM, &bM);
+    
+    std::string testFile = "testfile";
+    BlockId blk1(testFile, 1);
+    BlockId blk2(testFile, 2);
+    txD->Pin(blk1);
+    txD->Pin(blk2);
+    std::this_thread::sleep_for(1000ms);
+    std::cout   << "Tx " << txD->GetTxnID() << ": request xlock 1" << std::endl;
+    ;
+    txD->GetInt(blk2, 0);
+    
+    std::cout   << "Tx " << txD->GetTxnID() << ": receive xlock 1" << std::endl;
+    std::this_thread::sleep_for(1500ms);
+    std::cout   << "Tx " << txD->GetTxnID() << ": request slock 2" << std::endl;
+    txD->SetInt(blk2, 0, 0, false);
+    
+    txD->Commit();
+    
+  } catch (std::exception &e) {
+    std::cout  << "C " << e.what() << std::endl;
+  }
+}
+
 
 TEST(tx, concurrency_test) {
     char buf[100];
@@ -104,15 +133,27 @@ TEST(tx, concurrency_test) {
     bm.NewPage(BlockId(testFile, 2));
     
 
-  std::thread A(run_A, std::ref(fm), std::ref(lm), std::ref(bm));
-  std::thread B(run_B, std::ref(fm), std::ref(lm), std::ref(bm));
-  std::thread C(run_C, std::ref(fm), std::ref(lm), std::ref(bm));
+    std::thread A(run_A, std::ref(fm), std::ref(lm), std::ref(bm));
+    std::thread B(run_B, std::ref(fm), std::ref(lm), std::ref(bm));
+    std::thread C(run_C, std::ref(fm), std::ref(lm), std::ref(bm));
+    std::thread D(run_D, std::ref(fm), std::ref(lm), std::ref(bm));
+    
+    A.join();
+    B.join();
+    C.join();
+    D.join();
 
-  A.join();
-  B.join();
-  C.join();
+    std::vector<std::thread> q;
+    
+    // for (int i = 0;i < 40;i ++) {
+    //     q.push_back(std::thread (run_A, std::ref(fm), std::ref(lm), std::ref(bm)));
+    // }
+    
+    // for (int i = 0;i < 40;i ++) {
+    //     q[i].join();
+    // }
 
-  cmd = "rm -rf " + test_dir;
+    cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
 
 }

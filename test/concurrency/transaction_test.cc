@@ -52,27 +52,32 @@ TEST(tx, transaction_test) {
     std::string sVal = tx2->GetString(blk, 40);
     std::cout << "inital value at location 80 = " << iVal << std::endl;
     std::cout << "inital value at location 40 = " << sVal << std::endl;
+    EXPECT_EQ(iVal, 1);
+    EXPECT_EQ(sVal, "one");
     int newIVal = iVal + 1;
     std::string newSVal = sVal + "!";
     tx2->SetInt(blk, 80, newIVal, true);
     tx2->SetString(blk, 40, newSVal, true);
     tx2->Commit();
-
+    
     auto tx3 = std::make_unique<Transaction>(file_manager.get(), log_manager.get(), buffer_manager.get());
     tx3->Pin(blk);
     std::cout << "new value at location 80 = " << tx3->GetInt(blk, 80)
                 << std::endl;
+    EXPECT_EQ(tx3->GetInt(blk, 80), newIVal);
     std::cout << "new value at location 40 = " << tx3->GetString(blk, 40)
                 << std::endl;
+    EXPECT_EQ(tx3->GetString(blk, 40), newSVal);
     tx3->SetInt(blk, 80, 9999, true);
     std::cout << "pre-rollback value at location 80 = " << tx3->GetInt(blk, 80)
                 << std::endl;
     tx3->RollBack();
-
+    
     auto tx4 = std::make_unique<Transaction>(file_manager.get(), log_manager.get(), buffer_manager.get());
     tx4->Pin(blk);
     std::cout << "post-rollback at location 80 = " << tx4->GetInt(blk, 80)
                 << std::endl;
+    EXPECT_EQ(tx4->GetInt(blk, 80),newIVal);
     tx4->Commit();
 
     cmd = "rm -rf " + test_dir;

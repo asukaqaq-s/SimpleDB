@@ -10,7 +10,10 @@ LockManager ConcurrencyManager::lock_manager;
 
 bool ConcurrencyManager::HasSLock(const BlockId &block) {
     bool res = held_locks_.find(block) != held_locks_.end();
-    return res;
+    if(res) {
+        return held_locks_[block] == LockMode::SHARED;
+    } else 
+        return false;
 }
 
 bool ConcurrencyManager::HasXLock(const BlockId &block) {
@@ -23,7 +26,7 @@ bool ConcurrencyManager::HasXLock(const BlockId &block) {
 
 
 void ConcurrencyManager::LockShared(const BlockId &block) {
-    if (!HasSLock(block)) {
+    if (!HasSLock(block) && !HasXLock(block)) {
         lock_manager.LockShared(txn_, block);
         held_locks_[block] = LockMode::SHARED;
     }
@@ -33,7 +36,8 @@ void ConcurrencyManager::LockExclusive(const BlockId &block) {
     if (!HasXLock(block)) {
         
         if(HasSLock(block)) {
-            // if this txn has shared lock, we just need to update it    
+            // if this txn has shared lock, we just need to update it 
+            lock_manager.LockUpgrade(txn_, block);   
         } else {
             // if this txn has not lock, we need to acquire xlock directly
             lock_manager.LockExclusive(txn_, block);

@@ -44,8 +44,11 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
     auto *lock_request_queue = &lock_table_[block];
     lock_request_queue->request_queue_.emplace_back(
         LockRequest(txn->txn_id_, LockMode::SHARED));
+
+    // note that, we can not use std::rbegin in here
+    // because it is unthread-safe, maybe happen error.
+    auto it = std::prev(lock_request_queue->request_queue_.end());
     
-    auto it = lock_request_queue->request_queue_.rbegin();
     // if a txn is writing, it must wait until unlock
     auto start = std::chrono::high_resolution_clock::now();
     while (lock_request_queue->writing_ &&
@@ -68,6 +71,9 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
     // update necessary meta data
     lock_request_queue->shared_count_ ++;
     it->granted_ = true;
+    
+    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " request slock in block" << block.BlockNum() << std::endl;
+    // PrintLockTable(block);
 
     // return true if this transaction acquire the lock
     return true;
@@ -99,7 +105,7 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
     // the iterator points to the new request
     // because we use latch to protect lock manager
     // so, this will not happen to logical error
-    auto it = lock_request_queue->request_queue_.rbegin();
+    auto it = std::prev(lock_request_queue->request_queue_.end());
     
     // If there are others transactions has xlock or slock
     // this transactions will wait until acquire xlock
@@ -130,7 +136,9 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
     lock_request_queue->writing_ = true;
     it->granted_ = true;
     
-
+    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " request xlock in block" << block.BlockNum() << std::endl;
+    // PrintLockTable(block);
+    
     return true;
 }
 
@@ -189,6 +197,9 @@ bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
     lock_request_queue->writing_ = true;
     lock_request_queue->shared_count_ = 0;
 
+    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " request update in block" << block.BlockNum() << std::endl;
+    // PrintLockTable(block);
+
     return true;
 }
 
@@ -210,7 +221,7 @@ bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
     if (it == lock_request_queue->request_queue_.end()) {
         SIMPLEDB_ASSERT(false, "release a non-exist lock");
     }
-
+    
     SIMPLEDB_ASSERT(it->granted_, 
         "the transaction does't have lock before unlock");
     
@@ -243,6 +254,9 @@ bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
     //           << "writring = " << lock_request_queue->writing_ << " " 
     //           << "block_num = " << block.BlockNum() << std::endl;
     
+    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " release block" << block.BlockNum() << std::endl;
+    // PrintLockTable(block);
+
     lock_request_queue->request_queue_.erase(it);
     // notifly all transactions in wait list
     // rescheduled by themselves
@@ -286,7 +300,7 @@ bool LockManager::DeadLockDeal(Transaction *txn, const BlockId &block) {
     SIMPLEDB_ASSERT(it == lock_request_queue->request_queue_.end(),
                     "No transaction hold the block");
 
-    Transaction *hold_lock_txn = Transaction::TransactionLookUp(it->txn_id_);
+    // Transaction *hold_lock_txn = Transaction::TransactionLookUp(it->txn_id_);
 
     // according to global transaction map, we can use txn_id to lockup
     // a pointer that points to its transaction

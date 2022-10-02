@@ -8,6 +8,7 @@
 #include <list>
 #include <memory>
 #include <unordered_map>
+#include <iostream>
 #include <map>
 
 namespace SimpleDB {
@@ -102,6 +103,31 @@ public:
     bool UnLock(Transaction *txn, const BlockId &block);
 
 private:
+
+    void PrintLockTable(BlockId block) {
+        BlockId blk1(block.FileName(), 1);
+        BlockId blk2(block.FileName(), 2);
+        std::cout << std::endl;
+        std::cout << "[Print Lock Table] " << std::endl;
+        std::cout << "lockrequestqueue 1 :" << " "
+                  << "writing = " << lock_table_[blk1].writing_ << " "
+                  << "shared_count = " << lock_table_[blk1].shared_count_ << std::endl;
+        for (auto t:lock_table_[blk1].request_queue_) {
+            std::cout << "      granted = " << t.granted_ << " "
+                      << "lockmode = " << static_cast<int>(t.lock_mode_) << " "
+                      << "txn_id = " << t.txn_id_ << std::endl;
+        }
+        
+        std::cout << "lockrequestqueue 2 :" << " "
+                  << "writing = " << lock_table_[blk2].writing_ << " "
+                  << "shared_count = " << lock_table_[blk2].shared_count_ << std::endl;
+        for (auto t:lock_table_[blk2].request_queue_) {
+            std::cout << "      granted = " << t.granted_ << " "
+                      << "lockmode = " << static_cast<int>(t.lock_mode_) << " "
+                      << "txn_id = " << t.txn_id_ << std::endl;
+        }
+        std::cout << std::endl;
+    }
     
     /**
     * @brief we should deal deadlock correspond to different protocol

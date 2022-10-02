@@ -65,6 +65,8 @@ memory
 -
 unordered_map
 -
+iostream
+-
 map
 -
 
@@ -180,12 +182,6 @@ iostream
 unordered_map
 -
 
-/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency_manager.cc
-concurrency/transaction.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/transaction.h
-concurrency/concurrency_manager.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/concurrency_manager.h
-
 /home/asuka/workbench/project/SimpleDB/src/concurrency/lock_manager.cc
 concurrency/lock_manager.h
 /home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/lock_manager.h
@@ -195,30 +191,6 @@ config/type.h
 /home/asuka/workbench/project/SimpleDB/src/concurrency/config/type.h
 concurrency/transaction.h
 /home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/transaction.h
-iostream
--
-
-/home/asuka/workbench/project/SimpleDB/src/concurrency/transaction.cc
-concurrency/transaction.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/transaction.h
-
-/home/asuka/workbench/project/SimpleDB/src/recovery/setint_record.cc
-recovery/log_record.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/recovery/log_record.h
-concurrency/transaction.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/concurrency/transaction.h
-memory
--
-iostream
--
-
-/home/asuka/workbench/project/SimpleDB/src/recovery/setstring_record.cc
-recovery/log_record.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/recovery/log_record.h
-concurrency/transaction.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/concurrency/transaction.h
-memory
--
 iostream
 -
 

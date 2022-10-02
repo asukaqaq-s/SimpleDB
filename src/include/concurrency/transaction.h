@@ -120,6 +120,8 @@ public:
     int BlockSize();
     
     int AvialableBuffers();
+
+    static Transaction* TransactionLookUp(txn_id_t txn_id);
     
 
 public: // todo
