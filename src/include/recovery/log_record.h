@@ -11,6 +11,7 @@
 #include "file/block_id.h"
 #include "file/page.h"
 #include "log/log_manager.h"
+#include "config/macro.h"
 
 namespace SimpleDB {
 
@@ -75,10 +76,12 @@ public:
     }
 
     void SetPrevLSN(lsn_t lsn) {
+        SIMPLEDB_ASSERT(is_clr_ != true, "SetPrevLSN when CLR");
         prev_lsn_ = lsn;
     }
 
     lsn_t GetPrevLSN() {
+        SIMPLEDB_ASSERT(is_clr_ != true, "GetPrevLSN when CLR");
         return prev_lsn_;
     }
     
@@ -178,6 +181,16 @@ public:
     SetIntRecord(txn_id_t txn_id,  BlockId block, 
                     int offset, int old_value, int new_value);
     
+    // void SetUndoNext(lsn_t lsn) {
+    //     SIMPLEDB_ASSERT(is_clr_ == true, "SetUndoNext when normal log");
+    //     prev_lsn_ = lsn;
+    // }
+    
+    // lsn_t GetUndoNext() {
+    //     SIMPLEDB_ASSERT(is_clr_ == true, "GetUndoNext when normal log");
+    //     return prev_lsn_;
+    // }
+
     int RecordSize() override {
         return record_size_;
     }
@@ -228,6 +241,16 @@ public:
     SetStringRecord(txn_id_t txn_id,  BlockId block, 
                     int offset, std::string old_string, std::string new_string);
     
+    // void SetUndoNext(lsn_t lsn) {
+    //     SIMPLEDB_ASSERT(is_clr_ == true, "SetUndoNext when normal log");
+    //     prev_lsn_ = lsn;
+    // }
+    
+    // lsn_t GetUndoNext() {
+    //     SIMPLEDB_ASSERT(is_clr_ == true, "GetUndoNext when normal log");
+    //     return prev_lsn_;
+    // }
+
     int RecordSize() override {
         return record_size_;
     }

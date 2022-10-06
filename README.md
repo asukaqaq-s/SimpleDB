@@ -23,6 +23,18 @@ Schedule
 - Indexing(todo)
 
 
+## important todo
+
+- asynchronous IO in LogManager
+
+- ARIES: Currently, the recovery mechanism still uses non-fuzzy checkpoint.I will update it to ARIES and FUZZY-checkpoint soon.
+
+- DeadLock: Currently, I haven't dealt with how to resolve a deadlock problem.I will update it to WOUND-WAIT or WAIT-DIE.
+
+- TablePage: we should support variable length tuple.Currently, we just implement slotted page on fixed-length tuple.
+
+
+
 ## reference
 
 **lecture**: 

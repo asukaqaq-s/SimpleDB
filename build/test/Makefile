@@ -183,6 +183,21 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 # Convenience name for target.
+test/CMakeFiles/table_page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_page_test.dir/rule
+.PHONY : test/CMakeFiles/table_page_test.dir/rule
+
+# Convenience name for target.
+table_page_test: test/CMakeFiles/table_page_test.dir/rule
+
+.PHONY : table_page_test
+
+# fast build rule for target.
+table_page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/build
+.PHONY : table_page_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/recovery_manager_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/recovery_manager_test.dir/rule
 .PHONY : test/CMakeFiles/recovery_manager_test.dir/rule
@@ -301,6 +316,21 @@ transaction_test: test/CMakeFiles/transaction_test.dir/rule
 transaction_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
 .PHONY : transaction_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/table_scan_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_scan_test.dir/rule
+.PHONY : test/CMakeFiles/table_scan_test.dir/rule
+
+# Convenience name for target.
+table_scan_test: test/CMakeFiles/table_scan_test.dir/rule
+
+.PHONY : table_scan_test
+
+# fast build rule for target.
+table_scan_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_scan_test.dir/build.make test/CMakeFiles/table_scan_test.dir/build
+.PHONY : table_scan_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/concurrency_test.dir/rule:
@@ -647,6 +677,60 @@ log/log_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.s
 .PHONY : log/log_test.cc.s
 
+record/table_page_test.o: record/table_page_test.cc.o
+
+.PHONY : record/table_page_test.o
+
+# target to build an object file
+record/table_page_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/record/table_page_test.cc.o
+.PHONY : record/table_page_test.cc.o
+
+record/table_page_test.i: record/table_page_test.cc.i
+
+.PHONY : record/table_page_test.i
+
+# target to preprocess a source file
+record/table_page_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/record/table_page_test.cc.i
+.PHONY : record/table_page_test.cc.i
+
+record/table_page_test.s: record/table_page_test.cc.s
+
+.PHONY : record/table_page_test.s
+
+# target to generate assembly for a file
+record/table_page_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/record/table_page_test.cc.s
+.PHONY : record/table_page_test.cc.s
+
+record/table_scan_test.o: record/table_scan_test.cc.o
+
+.PHONY : record/table_scan_test.o
+
+# target to build an object file
+record/table_scan_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_scan_test.dir/build.make test/CMakeFiles/table_scan_test.dir/record/table_scan_test.cc.o
+.PHONY : record/table_scan_test.cc.o
+
+record/table_scan_test.i: record/table_scan_test.cc.i
+
+.PHONY : record/table_scan_test.i
+
+# target to preprocess a source file
+record/table_scan_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_scan_test.dir/build.make test/CMakeFiles/table_scan_test.dir/record/table_scan_test.cc.i
+.PHONY : record/table_scan_test.cc.i
+
+record/table_scan_test.s: record/table_scan_test.cc.s
+
+.PHONY : record/table_scan_test.s
+
+# target to generate assembly for a file
+record/table_scan_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_scan_test.dir/build.make test/CMakeFiles/table_scan_test.dir/record/table_scan_test.cc.s
+.PHONY : record/table_scan_test.cc.s
+
 recovery/log_record_test.o: recovery/log_record_test.cc.o
 
 .PHONY : recovery/log_record_test.o
@@ -710,9 +794,10 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
+	@echo "... show-tests"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... show-tests"
+	@echo "... table_page_test"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
 	@echo "... main"
@@ -722,6 +807,7 @@ help:
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
 	@echo "... test"
+	@echo "... table_scan_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... page_test"
@@ -758,6 +844,12 @@ help:
 	@echo "... log/log_test.o"
 	@echo "... log/log_test.i"
 	@echo "... log/log_test.s"
+	@echo "... record/table_page_test.o"
+	@echo "... record/table_page_test.i"
+	@echo "... record/table_page_test.s"
+	@echo "... record/table_scan_test.o"
+	@echo "... record/table_scan_test.i"
+	@echo "... record/table_scan_test.s"
 	@echo "... recovery/log_record_test.o"
 	@echo "... recovery/log_record_test.i"
 	@echo "... recovery/log_record_test.s"

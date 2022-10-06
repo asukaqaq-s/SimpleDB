@@ -3,6 +3,7 @@
 
 #include "concurrency/transaction.h"
 
+
 namespace SimpleDB {
 
 TransactionMap Transaction::txn_map;
@@ -94,15 +95,24 @@ void Transaction::Unpin(const BlockId &block) {
 }
 
 int Transaction::GetInt(const BlockId &block, int offset) {
+    // we should acquire lock before pinning a buffer
     concurrency_manager_->LockShared(block);
     Buffer *buffer = buffers_->GetBuffer(block);
-    return buffer->contents()->GetInt(offset);
+    // mutex 
+    buffer->RLock();
+    auto res = buffer->contents()->GetInt(offset);
+    buffer->RUnlock();
+    return res;
 }
 
 std::string Transaction::GetString(const BlockId &block, int offset) {
     concurrency_manager_->LockShared(block);
     Buffer *buffer = buffers_->GetBuffer(block);
-    return buffer->contents()->GetString(offset);
+    // mutex 
+    buffer->RLock();
+    auto res = buffer->contents()->GetString(offset);
+    buffer->RUnlock();
+    return res;
 }
 
 void Transaction::SetInt
@@ -110,6 +120,10 @@ void Transaction::SetInt
     concurrency_manager_->LockExclusive(block);
     Buffer *buffer = buffers_->GetBuffer(block);
     lsn_t lsn = INVALID_LSN;
+
+    // we shuold receive writer lock before writing a log
+    buffer->WLock();
+
     // first, write log
     if (is_log) {
         lsn = recovery_manager_->SetIntLogRec(buffer, offset, new_value);
@@ -118,6 +132,8 @@ void Transaction::SetInt
     Page* page = buffer->contents();
     page->SetInt(offset, new_value);
     buffer->SetModified(txn_id_, lsn);
+
+    buffer->WUnlock();
 }
 
 void Transaction::SetString
@@ -125,6 +141,10 @@ void Transaction::SetString
     concurrency_manager_->LockExclusive(block);
     Buffer *buffer = buffers_->GetBuffer(block);
     lsn_t lsn = INVALID_LSN;
+
+    // we shuold receive writer lock before writing a log
+    buffer->WLock();
+
     // first, write log
     if (is_log) {
         lsn = recovery_manager_->SetStringLogRec(buffer, offset, new_value);
@@ -133,16 +153,20 @@ void Transaction::SetString
     Page *page = buffer->contents();
     page->SetString(offset, new_value);
     buffer->SetModified(txn_id_, lsn);
+
+    buffer->WUnlock();
 }
 
 int Transaction::GetFileSize(std::string file_name) {
     BlockId dummy_block(file_name, END_OF_FILE);
+
     concurrency_manager_->LockShared(dummy_block);
     return file_manager_->Length(file_name);
 }
 
 BlockId Transaction::Append(std::string file_name) {
     BlockId dummy_block(file_name, END_OF_FILE);
+    
     concurrency_manager_->LockExclusive(dummy_block);
     return file_manager_->Append(file_name);
 }

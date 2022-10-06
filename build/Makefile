@@ -246,6 +246,19 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 #=============================================================================
+# Target rules for targets named table_page_test
+
+# Build rule for target.
+table_page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 table_page_test
+.PHONY : table_page_test
+
+# fast build rule for target.
+table_page_test/fast:
+	$(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/build
+.PHONY : table_page_test/fast
+
+#=============================================================================
 # Target rules for targets named recovery_manager_test
 
 # Build rule for target.
@@ -350,6 +363,19 @@ transaction_test/fast:
 .PHONY : transaction_test/fast
 
 #=============================================================================
+# Target rules for targets named table_scan_test
+
+# Build rule for target.
+table_scan_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 table_scan_test
+.PHONY : table_scan_test
+
+# fast build rule for target.
+table_scan_test/fast:
+	$(MAKE) -f test/CMakeFiles/table_scan_test.dir/build.make test/CMakeFiles/table_scan_test.dir/build
+.PHONY : table_scan_test/fast
+
+#=============================================================================
 # Target rules for targets named concurrency_test
 
 # Build rule for target.
@@ -433,6 +459,7 @@ help:
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
 	@echo "... show-tests"
+	@echo "... table_page_test"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
 	@echo "... main"
@@ -441,6 +468,7 @@ help:
 	@echo "... buffer_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
+	@echo "... table_scan_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... page_test"

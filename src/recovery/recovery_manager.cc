@@ -111,6 +111,10 @@ void RecoveryManager::Recover() {
     // keep track of what txn we need to undo,txn -> last lsn
     std::unique_ptr<std::unordered_map<txn_id_t, lsn_t>> active_txn
                 = std::make_unique<std::unordered_map<txn_id_t, lsn_t>>();
+
+    // std::unique_ptr<std::map<BlockId, lsn_t>> dirty_page_table
+    //             = std::make_unique<std::map<BlockId, lsn_t>>();
+
     int checkpoint_pos = DoRecoverScan();
     // redo any log after checkpoint 
     DoRecoverRedo(active_txn.get(), checkpoint_pos);

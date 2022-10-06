@@ -8,6 +8,7 @@
 #include "file/file_manager.h"
 #include "log/log_manager.h"
 #include "buffer/lru_replace.h"
+#include "config/rw_latch.h"
 
 namespace SimpleDB {
 
@@ -81,6 +82,16 @@ public:
     // because of AssignBlock, we don't need to this function
     bool IsDirty() { return trx_num_ != -1; }
 
+    
+    // avoid multiple transaction access at the same time
+    void RLock() { latch.RLock(); }
+    
+    void RUnlock() { latch.RUnlock(); }
+
+    void WLock() { latch.WLock(); }
+
+    void WUnlock() { latch.WUnlock(); }
+
 private:
     
     // shared filemanager
@@ -97,6 +108,11 @@ private:
     txn_id_t trx_num_{INVALID_TXN_ID};
     // the LSN of the most recent log record.
     lsn_t lsn_{INVALID_LSN};
+    // because we need different transaction isolation level
+    // Despite having a buffer lock, it is still needed different 
+    // transaction work at the same time.so we should need to a
+    // reader writer latch
+    ReaderWriterLatch latch;
 };
 
 

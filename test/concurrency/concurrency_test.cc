@@ -94,13 +94,11 @@ void run_D(FileManager &fM, LogManager &lM, BufferManager &bM) {
     txD->Pin(blk1);
     txD->Pin(blk2);
     std::this_thread::sleep_for(1000ms);
-    std::cout   << "Tx " << txD->GetTxnID() << ": request xlock 1" << std::endl;
+    std::cout   << "Tx " << txD->GetTxnID() << ": request slock 1" << std::endl;
     ;
     txD->GetInt(blk2, 0);
-    
-    std::cout   << "Tx " << txD->GetTxnID() << ": receive xlock 1" << std::endl;
     std::this_thread::sleep_for(1500ms);
-    std::cout   << "Tx " << txD->GetTxnID() << ": request slock 2" << std::endl;
+    std::cout   << "Tx " << txD->GetTxnID() << ": update slock 1" << std::endl;
     txD->SetInt(blk2, 0, 0, false);
     
     txD->Commit();

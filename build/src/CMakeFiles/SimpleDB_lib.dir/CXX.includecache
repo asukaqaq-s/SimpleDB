@@ -19,6 +19,8 @@ log/log_manager.h
 ../src/include/buffer/log/log_manager.h
 buffer/lru_replace.h
 ../src/include/buffer/buffer/lru_replace.h
+config/rw_latch.h
+../src/include/buffer/config/rw_latch.h
 
 ../src/include/buffer/lru_replace.h
 config/type.h
@@ -88,8 +90,20 @@ iostream
 mutex
 -
 
+../src/include/config/field_type.h
+config/macro.h
+../src/include/config/config/macro.h
+
 ../src/include/config/macro.h
 assert.h
+-
+
+../src/include/config/rw_latch.h
+mutex
+-
+condition_variable
+-
+climits
 -
 
 ../src/include/config/type.h
@@ -152,6 +166,42 @@ config/type.h
 recovery/log_record.h
 ../src/include/log/recovery/log_record.h
 
+../src/include/record/layout.h
+record/schema.h
+../src/include/record/record/schema.h
+file/page.h
+../src/include/record/file/page.h
+
+../src/include/record/rid.h
+string
+-
+
+../src/include/record/schema.h
+config/field_type.h
+../src/include/record/config/field_type.h
+config/macro.h
+../src/include/record/config/macro.h
+vector
+-
+string
+-
+algorithm
+-
+map
+-
+
+../src/include/record/table_page.h
+concurrency/transaction.h
+../src/include/record/concurrency/transaction.h
+record/layout.h
+../src/include/record/record/layout.h
+
+../src/include/record/table_scan.h
+record/table_page.h
+../src/include/record/record/table_page.h
+record/rid.h
+../src/include/record/record/rid.h
+
 ../src/include/recovery/log_record.h
 memory
 -
@@ -171,6 +221,8 @@ file/page.h
 ../src/include/recovery/file/page.h
 log/log_manager.h
 ../src/include/recovery/log/log_manager.h
+config/macro.h
+../src/include/recovery/config/macro.h
 
 ../src/include/recovery/recovery_manager.h
 buffer/buffer_manager.h
@@ -182,15 +234,7 @@ iostream
 unordered_map
 -
 
-/home/asuka/workbench/project/SimpleDB/src/concurrency/lock_manager.cc
-concurrency/lock_manager.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/lock_manager.h
-config/macro.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/config/macro.h
-config/type.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/config/type.h
-concurrency/transaction.h
-/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/transaction.h
-iostream
--
+/home/asuka/workbench/project/SimpleDB/src/record/table_scan.cc
+record/table_scan.h
+/home/asuka/workbench/project/SimpleDB/src/record/record/table_scan.h
 

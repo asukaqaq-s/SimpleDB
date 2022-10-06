@@ -23,9 +23,9 @@ LogManager::LogManager(FileManager* file_manager, std::string log_file_name) :
 
 void LogManager::Flush() {
     
-    for(auto t : *(*log_buffer_).content()) {
-        // std::cout << t << std::flush;
-    }
+    // for(auto t : *(*log_buffer_).content()) {
+    //     // std::cout << t << std::flush;
+    // }
     
     file_manager_->WriteLog(log_file_name_, log_count_, *log_buffer_);
     // clear log_count_ after writelog

@@ -41,9 +41,10 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/strip.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/local.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/rebuild_cache.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/edit_cache.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/table_page_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/recovery_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir
@@ -53,6 +54,7 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/table_scan_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/concurrency_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/page_test.dir

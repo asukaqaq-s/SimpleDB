@@ -156,7 +156,7 @@ private:
     // 2pl lock stage
     LockStage stage_{LockStage::GROWING};
     // isolation level
-    IsoLationLevel isolation_level_{IsoLationLevel::READ_COMMITED};    
+    IsoLationLevel isolation_level_{IsoLationLevel::SERIALIZABLE};    
     // transactionstate
     TransactionState state_{TransactionState::RUNNING};
 

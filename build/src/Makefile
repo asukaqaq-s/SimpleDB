@@ -452,6 +452,60 @@ log/log_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s
 .PHONY : log/log_manager.cc.s
 
+record/table_page.o: record/table_page.cc.o
+
+.PHONY : record/table_page.o
+
+# target to build an object file
+record/table_page.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o
+.PHONY : record/table_page.cc.o
+
+record/table_page.i: record/table_page.cc.i
+
+.PHONY : record/table_page.i
+
+# target to preprocess a source file
+record/table_page.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.i
+.PHONY : record/table_page.cc.i
+
+record/table_page.s: record/table_page.cc.s
+
+.PHONY : record/table_page.s
+
+# target to generate assembly for a file
+record/table_page.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.s
+.PHONY : record/table_page.cc.s
+
+record/table_scan.o: record/table_scan.cc.o
+
+.PHONY : record/table_scan.o
+
+# target to build an object file
+record/table_scan.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o
+.PHONY : record/table_scan.cc.o
+
+record/table_scan.i: record/table_scan.cc.i
+
+.PHONY : record/table_scan.i
+
+# target to preprocess a source file
+record/table_scan.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.i
+.PHONY : record/table_scan.cc.i
+
+record/table_scan.s: record/table_scan.cc.s
+
+.PHONY : record/table_scan.s
+
+# target to generate assembly for a file
+record/table_scan.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.s
+.PHONY : record/table_scan.cc.s
+
 recovery/log_record.o: recovery/log_record.cc.o
 
 .PHONY : recovery/log_record.o
@@ -604,6 +658,12 @@ help:
 	@echo "... log/log_manager.o"
 	@echo "... log/log_manager.i"
 	@echo "... log/log_manager.s"
+	@echo "... record/table_page.o"
+	@echo "... record/table_page.i"
+	@echo "... record/table_page.s"
+	@echo "... record/table_scan.o"
+	@echo "... record/table_scan.i"
+	@echo "... record/table_scan.s"
 	@echo "... recovery/log_record.o"
 	@echo "... recovery/log_record.i"
 	@echo "... recovery/log_record.s"
