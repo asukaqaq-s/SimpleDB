@@ -71,6 +71,31 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/metadata/index_manager.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/metadata/index_manager.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/metadata/metadata_manager.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/metadata/metadata_manager.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/metadata/stat_manager.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/metadata/stat_manager.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/metadata/table_manager.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/metadata/table_manager.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/metadata/view_manager.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/metadata/view_manager.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o -c /home/asuka/workbench/project/SimpleDB/src/record/table_page.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/src/record/table_page.cc"
 },
@@ -108,6 +133,11 @@
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/recovery_manager_test.dir/recovery/recovery_manager_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/recovery/recovery_manager_test.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/test/recovery/recovery_manager_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/metadata/metadata_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/metadata/metadata_test.cc"
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",

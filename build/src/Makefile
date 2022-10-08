@@ -452,6 +452,141 @@ log/log_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s
 .PHONY : log/log_manager.cc.s
 
+metadata/index_manager.o: metadata/index_manager.cc.o
+
+.PHONY : metadata/index_manager.o
+
+# target to build an object file
+metadata/index_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o
+.PHONY : metadata/index_manager.cc.o
+
+metadata/index_manager.i: metadata/index_manager.cc.i
+
+.PHONY : metadata/index_manager.i
+
+# target to preprocess a source file
+metadata/index_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.i
+.PHONY : metadata/index_manager.cc.i
+
+metadata/index_manager.s: metadata/index_manager.cc.s
+
+.PHONY : metadata/index_manager.s
+
+# target to generate assembly for a file
+metadata/index_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.s
+.PHONY : metadata/index_manager.cc.s
+
+metadata/metadata_manager.o: metadata/metadata_manager.cc.o
+
+.PHONY : metadata/metadata_manager.o
+
+# target to build an object file
+metadata/metadata_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o
+.PHONY : metadata/metadata_manager.cc.o
+
+metadata/metadata_manager.i: metadata/metadata_manager.cc.i
+
+.PHONY : metadata/metadata_manager.i
+
+# target to preprocess a source file
+metadata/metadata_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.i
+.PHONY : metadata/metadata_manager.cc.i
+
+metadata/metadata_manager.s: metadata/metadata_manager.cc.s
+
+.PHONY : metadata/metadata_manager.s
+
+# target to generate assembly for a file
+metadata/metadata_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.s
+.PHONY : metadata/metadata_manager.cc.s
+
+metadata/stat_manager.o: metadata/stat_manager.cc.o
+
+.PHONY : metadata/stat_manager.o
+
+# target to build an object file
+metadata/stat_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o
+.PHONY : metadata/stat_manager.cc.o
+
+metadata/stat_manager.i: metadata/stat_manager.cc.i
+
+.PHONY : metadata/stat_manager.i
+
+# target to preprocess a source file
+metadata/stat_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.i
+.PHONY : metadata/stat_manager.cc.i
+
+metadata/stat_manager.s: metadata/stat_manager.cc.s
+
+.PHONY : metadata/stat_manager.s
+
+# target to generate assembly for a file
+metadata/stat_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.s
+.PHONY : metadata/stat_manager.cc.s
+
+metadata/table_manager.o: metadata/table_manager.cc.o
+
+.PHONY : metadata/table_manager.o
+
+# target to build an object file
+metadata/table_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o
+.PHONY : metadata/table_manager.cc.o
+
+metadata/table_manager.i: metadata/table_manager.cc.i
+
+.PHONY : metadata/table_manager.i
+
+# target to preprocess a source file
+metadata/table_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.i
+.PHONY : metadata/table_manager.cc.i
+
+metadata/table_manager.s: metadata/table_manager.cc.s
+
+.PHONY : metadata/table_manager.s
+
+# target to generate assembly for a file
+metadata/table_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.s
+.PHONY : metadata/table_manager.cc.s
+
+metadata/view_manager.o: metadata/view_manager.cc.o
+
+.PHONY : metadata/view_manager.o
+
+# target to build an object file
+metadata/view_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o
+.PHONY : metadata/view_manager.cc.o
+
+metadata/view_manager.i: metadata/view_manager.cc.i
+
+.PHONY : metadata/view_manager.i
+
+# target to preprocess a source file
+metadata/view_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.i
+.PHONY : metadata/view_manager.cc.i
+
+metadata/view_manager.s: metadata/view_manager.cc.s
+
+.PHONY : metadata/view_manager.s
+
+# target to generate assembly for a file
+metadata/view_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.s
+.PHONY : metadata/view_manager.cc.s
+
 record/table_page.o: record/table_page.cc.o
 
 .PHONY : record/table_page.o
@@ -658,6 +793,21 @@ help:
 	@echo "... log/log_manager.o"
 	@echo "... log/log_manager.i"
 	@echo "... log/log_manager.s"
+	@echo "... metadata/index_manager.o"
+	@echo "... metadata/index_manager.i"
+	@echo "... metadata/index_manager.s"
+	@echo "... metadata/metadata_manager.o"
+	@echo "... metadata/metadata_manager.i"
+	@echo "... metadata/metadata_manager.s"
+	@echo "... metadata/stat_manager.o"
+	@echo "... metadata/stat_manager.i"
+	@echo "... metadata/stat_manager.s"
+	@echo "... metadata/table_manager.o"
+	@echo "... metadata/table_manager.i"
+	@echo "... metadata/table_manager.s"
+	@echo "... metadata/view_manager.o"
+	@echo "... metadata/view_manager.i"
+	@echo "... metadata/view_manager.s"
 	@echo "... record/table_page.o"
 	@echo "... record/table_page.i"
 	@echo "... record/table_page.s"

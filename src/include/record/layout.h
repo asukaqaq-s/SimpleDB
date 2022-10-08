@@ -15,6 +15,8 @@ class Layout {
 
 public:
 
+    Layout() = default;
+
     /**
     * @brief this constuctor creates a layout object from a schema.
     * this constructor is used then a table is created.It determines

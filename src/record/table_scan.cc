@@ -29,9 +29,11 @@ bool TableScan::NextTuple() {
     while (current_slot_ < 0) {
         if (AtLastBlock()) // at last tuple
             return false;
+
         MoveToBlock(table_page_->GetBlock().BlockNum() + 1);
         current_slot_ = table_page_->NextTuple(current_slot_);
     }
+
     return true;
 }
 

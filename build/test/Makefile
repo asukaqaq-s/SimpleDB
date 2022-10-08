@@ -168,21 +168,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/show-tests.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
-.PHONY : test/CMakeFiles/show-tests.dir/rule
-
-# Convenience name for target.
-show-tests: test/CMakeFiles/show-tests.dir/rule
-
-.PHONY : show-tests
-
-# fast build rule for target.
-show-tests/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
-.PHONY : show-tests/fast
-
-# Convenience name for target.
 test/CMakeFiles/table_page_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_page_test.dir/rule
 .PHONY : test/CMakeFiles/table_page_test.dir/rule
@@ -196,6 +181,21 @@ table_page_test: test/CMakeFiles/table_page_test.dir/rule
 table_page_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/build
 .PHONY : table_page_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/show-tests.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
+.PHONY : test/CMakeFiles/show-tests.dir/rule
+
+# Convenience name for target.
+show-tests: test/CMakeFiles/show-tests.dir/rule
+
+.PHONY : show-tests
+
+# fast build rule for target.
+show-tests/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
+.PHONY : show-tests/fast
 
 # Convenience name for target.
 test/CMakeFiles/recovery_manager_test.dir/rule:
@@ -226,6 +226,21 @@ unittests: test/CMakeFiles/unittests.dir/rule
 unittests/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
 .PHONY : unittests/fast
+
+# Convenience name for target.
+test/CMakeFiles/metadata_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
+.PHONY : test/CMakeFiles/metadata_test.dir/rule
+
+# Convenience name for target.
+metadata_test: test/CMakeFiles/metadata_test.dir/rule
+
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/main.dir/rule:
@@ -677,6 +692,33 @@ log/log_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.s
 .PHONY : log/log_test.cc.s
 
+metadata/metadata_test.o: metadata/metadata_test.cc.o
+
+.PHONY : metadata/metadata_test.o
+
+# target to build an object file
+metadata/metadata_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.o
+.PHONY : metadata/metadata_test.cc.o
+
+metadata/metadata_test.i: metadata/metadata_test.cc.i
+
+.PHONY : metadata/metadata_test.i
+
+# target to preprocess a source file
+metadata/metadata_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.i
+.PHONY : metadata/metadata_test.cc.i
+
+metadata/metadata_test.s: metadata/metadata_test.cc.s
+
+.PHONY : metadata/metadata_test.s
+
+# target to generate assembly for a file
+metadata/metadata_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
+.PHONY : metadata/metadata_test.cc.s
+
 record/table_page_test.o: record/table_page_test.cc.o
 
 .PHONY : record/table_page_test.o
@@ -794,12 +836,13 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
-	@echo "... show-tests"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... table_page_test"
+	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
+	@echo "... metadata_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
@@ -844,6 +887,9 @@ help:
 	@echo "... log/log_test.o"
 	@echo "... log/log_test.i"
 	@echo "... log/log_test.s"
+	@echo "... metadata/metadata_test.o"
+	@echo "... metadata/metadata_test.i"
+	@echo "... metadata/metadata_test.s"
 	@echo "... record/table_page_test.o"
 	@echo "... record/table_page_test.i"
 	@echo "... record/table_page_test.s"

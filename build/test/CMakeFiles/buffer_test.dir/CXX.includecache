@@ -19,6 +19,8 @@ log/log_manager.h
 ../src/include/buffer/log/log_manager.h
 buffer/lru_replace.h
 ../src/include/buffer/buffer/lru_replace.h
+config/rw_latch.h
+../src/include/buffer/config/rw_latch.h
 
 ../src/include/buffer/lru_replace.h
 config/type.h
@@ -28,6 +30,18 @@ unordered_map
 mutex
 -
 list
+-
+
+../src/include/config/macro.h
+assert.h
+-
+
+../src/include/config/rw_latch.h
+mutex
+-
+condition_variable
+-
+climits
 -
 
 ../src/include/config/type.h
@@ -109,6 +123,8 @@ file/page.h
 ../src/include/recovery/file/page.h
 log/log_manager.h
 ../src/include/recovery/log/log_manager.h
+config/macro.h
+../src/include/recovery/config/macro.h
 
 /home/asuka/workbench/project/SimpleDB/test/buffer/buffer_test.cc
 buffer/buffer_manager.h

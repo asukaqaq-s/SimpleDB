@@ -233,19 +233,6 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
-# Target rules for targets named show-tests
-
-# Build rule for target.
-show-tests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 show-tests
-.PHONY : show-tests
-
-# fast build rule for target.
-show-tests/fast:
-	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
-.PHONY : show-tests/fast
-
-#=============================================================================
 # Target rules for targets named table_page_test
 
 # Build rule for target.
@@ -257,6 +244,19 @@ table_page_test: cmake_check_build_system
 table_page_test/fast:
 	$(MAKE) -f test/CMakeFiles/table_page_test.dir/build.make test/CMakeFiles/table_page_test.dir/build
 .PHONY : table_page_test/fast
+
+#=============================================================================
+# Target rules for targets named show-tests
+
+# Build rule for target.
+show-tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 show-tests
+.PHONY : show-tests
+
+# fast build rule for target.
+show-tests/fast:
+	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
+.PHONY : show-tests/fast
 
 #=============================================================================
 # Target rules for targets named recovery_manager_test
@@ -283,6 +283,19 @@ unittests: cmake_check_build_system
 unittests/fast:
 	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
 .PHONY : unittests/fast
+
+#=============================================================================
+# Target rules for targets named metadata_test
+
+# Build rule for target.
+metadata_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
 
 #=============================================================================
 # Target rules for targets named main
@@ -458,10 +471,11 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
-	@echo "... show-tests"
 	@echo "... table_page_test"
+	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
+	@echo "... metadata_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"

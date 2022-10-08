@@ -83,7 +83,6 @@ void TablePage::MarkDeleteTuple(int slot) {
 int TablePage::SearchTuple(int slot, TupleStatus flag) {
     slot ++;
     while (IsValidTuple(slot)) {
-        
         int tuple_offset = GetTupleOffset(slot);
         // if tuple_offset != 0, flag != 0
         // or tuple_offset == 0, flag == 0

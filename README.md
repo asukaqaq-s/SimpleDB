@@ -14,13 +14,16 @@ Schedule
 - BufferManager(completed in 9/23/2022)
 - Recover by WAL(completed in 1/10/2022)
 - Transaction by 2pl(completed in 1/10/2022)
-- Record Manager(todo)
-- Metadata Manager(todo)
+- Record Manager(completed in 5/10/2022)
+- Metadata Manager(completed in 7/10/2022)
 - Query(todo)
 - Parsing(todo)
 - Planning(todo)
 - JDBC(todo)
 - Indexing(todo)
+- Materialization and Sorting(todo)
+- Effective buffer Utilization(todo)
+- Query Optimization(todo)
 
 
 ## important todo
@@ -31,9 +34,15 @@ Schedule
 
 - DeadLock: Currently, I haven't dealt with how to resolve a deadlock problem.I will update it to WOUND-WAIT or WAIT-DIE.
 
-- TablePage: we should support variable length tuple.Currently, we just implement slotted page on fixed-length tuple.
+- TablePage: 
+    
+    - we should support variable length tuple.Currently, we just implement slotted page on fixed-length tuple.
+    - of course, i think support char、varchar、blob type is necessary.
 
+- StatManager: 
 
+    - Can we make a background transaction or a transaction which ioslation level is "READ UNCOMMITED ?" 
+    - Can we maintain more informations which help planner working
 
 ## reference
 

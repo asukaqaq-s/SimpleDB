@@ -90,6 +90,10 @@ iostream
 mutex
 -
 
+../src/include/config/config.h
+string
+-
+
 ../src/include/config/field_type.h
 config/macro.h
 ../src/include/config/config/macro.h
@@ -166,6 +170,40 @@ config/type.h
 recovery/log_record.h
 ../src/include/log/recovery/log_record.h
 
+../src/include/metadata/index_manager.h
+metadata/table_manager.h
+../src/include/metadata/metadata/table_manager.h
+metadata/stat_manager.h
+../src/include/metadata/metadata/stat_manager.h
+
+../src/include/metadata/metadata_manager.h
+metadata/table_manager.h
+../src/include/metadata/metadata/table_manager.h
+metadata/view_manager.h
+../src/include/metadata/metadata/view_manager.h
+metadata/stat_manager.h
+../src/include/metadata/metadata/stat_manager.h
+metadata/index_manager.h
+../src/include/metadata/metadata/index_manager.h
+memory
+-
+
+../src/include/metadata/stat_manager.h
+metadata/table_manager.h
+../src/include/metadata/metadata/table_manager.h
+mutex
+-
+
+../src/include/metadata/table_manager.h
+record/table_scan.h
+../src/include/metadata/record/table_scan.h
+config/config.h
+../src/include/metadata/config/config.h
+
+../src/include/metadata/view_manager.h
+metadata/table_manager.h
+../src/include/metadata/metadata/table_manager.h
+
 ../src/include/record/layout.h
 record/schema.h
 ../src/include/record/record/schema.h
@@ -234,7 +272,11 @@ iostream
 unordered_map
 -
 
-/home/asuka/workbench/project/SimpleDB/src/record/table_scan.cc
-record/table_scan.h
-/home/asuka/workbench/project/SimpleDB/src/record/record/table_scan.h
+/home/asuka/workbench/project/SimpleDB/src/metadata/index_manager.cc
+metadata/index_manager.h
+/home/asuka/workbench/project/SimpleDB/src/metadata/metadata/index_manager.h
+
+/home/asuka/workbench/project/SimpleDB/src/metadata/metadata_manager.cc
+metadata/metadata_manager.h
+/home/asuka/workbench/project/SimpleDB/src/metadata/metadata/metadata_manager.h
 

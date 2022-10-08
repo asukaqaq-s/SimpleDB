@@ -4,6 +4,8 @@
 test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o
  ../src/include/buffer/buffer_manager.h
  ../src/include/buffer/lru_replace.h
+ ../src/include/config/macro.h
+ ../src/include/config/rw_latch.h
  ../src/include/config/type.h
  ../src/include/file/block_id.h
  ../src/include/file/file_manager.h

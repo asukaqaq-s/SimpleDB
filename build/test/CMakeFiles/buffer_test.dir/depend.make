@@ -3,6 +3,8 @@
 
 test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/buffer/buffer_manager.h
 test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/buffer/lru_replace.h
+test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/config/macro.h
+test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/config/rw_latch.h
 test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/config/type.h
 test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/file/block_id.h
 test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o: ../src/include/file/file_manager.h
