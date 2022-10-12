@@ -228,6 +228,21 @@ unittests/fast:
 .PHONY : unittests/fast
 
 # Convenience name for target.
+test/CMakeFiles/product_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/product_test.dir/rule
+.PHONY : test/CMakeFiles/product_test.dir/rule
+
+# Convenience name for target.
+product_test: test/CMakeFiles/product_test.dir/rule
+
+.PHONY : product_test
+
+# fast build rule for target.
+product_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/build
+.PHONY : product_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/metadata_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
 .PHONY : test/CMakeFiles/metadata_test.dir/rule
@@ -271,6 +286,21 @@ buffer_manager_test: test/CMakeFiles/buffer_manager_test.dir/rule
 buffer_manager_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
 .PHONY : buffer_manager_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/scan_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/scan_test.dir/rule
+.PHONY : test/CMakeFiles/scan_test.dir/rule
+
+# Convenience name for target.
+scan_test: test/CMakeFiles/scan_test.dir/rule
+
+.PHONY : scan_test
+
+# fast build rule for target.
+scan_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/scan_test.dir/build.make test/CMakeFiles/scan_test.dir/build
+.PHONY : scan_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/file_test.dir/rule:
@@ -719,6 +749,60 @@ metadata/metadata_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
 .PHONY : metadata/metadata_test.cc.s
 
+query/product_test.o: query/product_test.cc.o
+
+.PHONY : query/product_test.o
+
+# target to build an object file
+query/product_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/query/product_test.cc.o
+.PHONY : query/product_test.cc.o
+
+query/product_test.i: query/product_test.cc.i
+
+.PHONY : query/product_test.i
+
+# target to preprocess a source file
+query/product_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/query/product_test.cc.i
+.PHONY : query/product_test.cc.i
+
+query/product_test.s: query/product_test.cc.s
+
+.PHONY : query/product_test.s
+
+# target to generate assembly for a file
+query/product_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/query/product_test.cc.s
+.PHONY : query/product_test.cc.s
+
+query/scan_test.o: query/scan_test.cc.o
+
+.PHONY : query/scan_test.o
+
+# target to build an object file
+query/scan_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/scan_test.dir/build.make test/CMakeFiles/scan_test.dir/query/scan_test.cc.o
+.PHONY : query/scan_test.cc.o
+
+query/scan_test.i: query/scan_test.cc.i
+
+.PHONY : query/scan_test.i
+
+# target to preprocess a source file
+query/scan_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/scan_test.dir/build.make test/CMakeFiles/scan_test.dir/query/scan_test.cc.i
+.PHONY : query/scan_test.cc.i
+
+query/scan_test.s: query/scan_test.cc.s
+
+.PHONY : query/scan_test.s
+
+# target to generate assembly for a file
+query/scan_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/scan_test.dir/build.make test/CMakeFiles/scan_test.dir/query/scan_test.cc.s
+.PHONY : query/scan_test.cc.s
+
 record/table_page_test.o: record/table_page_test.cc.o
 
 .PHONY : record/table_page_test.o
@@ -842,9 +926,11 @@ help:
 	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
+	@echo "... product_test"
 	@echo "... metadata_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"
+	@echo "... scan_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... lru_replacer_test"
@@ -890,6 +976,12 @@ help:
 	@echo "... metadata/metadata_test.o"
 	@echo "... metadata/metadata_test.i"
 	@echo "... metadata/metadata_test.s"
+	@echo "... query/product_test.o"
+	@echo "... query/product_test.i"
+	@echo "... query/product_test.s"
+	@echo "... query/scan_test.o"
+	@echo "... query/scan_test.i"
+	@echo "... query/scan_test.s"
 	@echo "... record/table_page_test.o"
 	@echo "... record/table_page_test.i"
 	@echo "... record/table_page_test.s"

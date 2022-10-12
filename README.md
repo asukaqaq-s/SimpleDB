@@ -44,6 +44,10 @@ Schedule
     - Can we make a background transaction or a transaction which ioslation level is "READ UNCOMMITED ?" 
     - Can we maintain more informations which help planner working
 
+- Query:
+
+    - not only ==, we should also implement <,>,!=,- and so on
+
 ## reference
 
 **lecture**: 

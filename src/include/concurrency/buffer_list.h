@@ -6,7 +6,7 @@
 #include "config/macro.h"
 
 #include <map>
-#include <list>
+#include <vector>
 #include <algorithm>
 #include <iostream>
 
@@ -35,10 +35,10 @@ public:
     * @param block the disk block
     */
     void Pin(const BlockId &block) {
+
         Buffer *buffer = buffer_manager_->Pin(block);
         buffers_[block] = buffer;
-        pins_.push_back(block);
-        
+        pins_.emplace_back(block);
         // note that: A block can store(pinned) 
         // several times and have several object in list
     }
@@ -48,7 +48,7 @@ public:
     * @param block a reference to the disk block
     */
     void Unpin(const BlockId &block) {
-
+        
         SIMPLEDB_ASSERT(buffers_.find(block) != buffers_.end(),
                         "unpin error");
 
@@ -90,7 +90,7 @@ private:
 
     std::map<BlockId,Buffer*> buffers_;
     
-    std::list<BlockId> pins_;
+    std::vector<BlockId> pins_;
 
     BufferManager *buffer_manager_;
 };

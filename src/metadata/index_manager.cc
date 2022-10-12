@@ -97,7 +97,7 @@ void IndexManager::CreateIndex(std::string index_name,
                                Transaction *txn) {
     TableScan index_table_scan(txn, INDEX_CATCH, idx_table_layout_);
 
-    index_table_scan.NextFreeTuple();
+    index_table_scan.Insert();
     
     index_table_scan.SetString("index_name", index_name);
     index_table_scan.SetString("table_name", table_name);
@@ -113,7 +113,7 @@ std::map<std::string, IndexInfo> IndexManager::GetIndexInfo
     std::map<std::string, IndexInfo> res;
     
 
-    while (index_table_scan.NextTuple()) {
+    while (index_table_scan.Next()) {
         if (index_table_scan.GetString("table_name")
             == table_name) {
             auto index_name = index_table_scan.GetString("index_name");

@@ -52,7 +52,7 @@ void TableManager::CreateTable(const std::string &table_name,
 
     // insert into tcat table
     // just for the table
-    tcat_table_scan.NextFreeTuple();
+    tcat_table_scan.Insert();
     tcat_table_scan.SetString("table_name", table_name);
     tcat_table_scan.SetInt("slot_size", new_layout.GetTupleSize());
     tcat_table_scan.Close();
@@ -60,7 +60,7 @@ void TableManager::CreateTable(const std::string &table_name,
     // insert into fcat table
     // each field of the table     
     for (auto field_name : schema.GetFields()) {
-        fcat_table_scan.NextFreeTuple();
+        fcat_table_scan.Insert();
         fcat_table_scan.SetString("table_name", table_name);
         fcat_table_scan.SetString("field_name", field_name);
         fcat_table_scan.SetInt("field_type", schema.GetType(field_name));
@@ -84,7 +84,7 @@ Layout TableManager::GetLayout(const std::string &table_name,
     std::map<std::string, int> map_offset;
 
     // retrieve a tuple size
-    while (tcat_table_scan.NextTuple()) {
+    while (tcat_table_scan.Next()) {
         if (tcat_table_scan.GetString("table_name")
             == table_name) {
             tuple_size = tcat_table_scan.GetInt("slot_size");
@@ -94,7 +94,7 @@ Layout TableManager::GetLayout(const std::string &table_name,
     tcat_table_scan.Close();
         
     // retrieve each field infomations
-    while (fcat_table_scan.NextTuple()) {
+    while (fcat_table_scan.Next()) {
         if (fcat_table_scan.GetString("table_name")
             == table_name) {
             

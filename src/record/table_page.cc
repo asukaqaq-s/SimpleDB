@@ -10,7 +10,9 @@
 
 namespace SimpleDB {
 
-TablePage::TablePage(Transaction *txn, BlockId block, Layout layout) :
+TablePage::TablePage(Transaction *txn, 
+                     const BlockId &block, 
+                     const Layout &layout) :
     txn_(txn), block_(block), layout_(layout) {
     txn->Pin(block);
 }
@@ -43,23 +45,25 @@ bool TablePage::IsValidTuple(int slot) {
     return slot < tuple_count;
 }
 
-int TablePage::GetInt(int slot, std::string field_name) {
+int TablePage::GetInt(int slot, const std::string &field_name) {
     int field_pos = GetTupleOffset(slot) + layout_.GetOffset(field_name);
     return txn_->GetInt(block_, field_pos);
 }
 
-std::string TablePage::GetString(int slot, std::string field_name) {
+std::string TablePage::GetString(int slot, const std::string &field_name) {
     int field_pos = GetTupleOffset(slot) + layout_.GetOffset(field_name);
     return txn_->GetString(block_, field_pos);
 }
 
-void TablePage::SetInt(int slot, std::string field_name, int val) {
+void TablePage::SetInt(int slot, const std::string &field_name, int val) {
     int field_pos = GetTupleOffset(slot) + layout_.GetOffset(field_name);
     SIMPLEDB_ASSERT(field_pos != 0, "Field Position is zero");
     txn_->SetInt(block_, field_pos, val, true);
 }
 
-void TablePage::SetString(int slot, std::string field_name, std::string val) {
+void TablePage::SetString(int slot, 
+                          const std::string &field_name, 
+                          const std::string &val) {
     int field_pos = GetTupleOffset(slot) + layout_.GetOffset(field_name);
     
     SIMPLEDB_ASSERT(field_pos != 0, "Field Position is zero");
@@ -81,6 +85,11 @@ void TablePage::MarkDeleteTuple(int slot) {
 }
 
 int TablePage::SearchTuple(int slot, TupleStatus flag) {
+    
+    // std::cout << "slot = " << slot 
+    //           << " freespace = " 
+    //           << GetFreeSpacePtr() << std::endl; 
+    
     slot ++;
     while (IsValidTuple(slot)) {
         int tuple_offset = GetTupleOffset(slot);
@@ -89,6 +98,7 @@ int TablePage::SearchTuple(int slot, TupleStatus flag) {
         if (flag ^ IsDeleted(tuple_offset)) {
             return slot;
         }
+        
         slot ++;
     }
     return -1;

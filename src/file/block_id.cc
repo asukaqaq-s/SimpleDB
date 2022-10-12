@@ -12,16 +12,16 @@ bool operator == (const BlockId &lobj, const BlockId &robj) {
 
 bool operator != (const BlockId &lobj, const BlockId &robj) {
     if(lobj == robj) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 }
 
 bool operator < (const BlockId &lobj, const BlockId &robj) {
     if(lobj.file_name_ == robj.file_name_) {
         return lobj.block_num_ < robj.block_num_;
-    } else if(lobj.block_num_ == robj.block_num_) {
+    } else {
         return lobj.file_name_ < robj.file_name_;
     }
     return false;
@@ -30,7 +30,7 @@ bool operator < (const BlockId &lobj, const BlockId &robj) {
 bool operator > (const BlockId &lobj, const BlockId &robj) {
     if(lobj.file_name_ == robj.file_name_) {
         return lobj.block_num_ > robj.block_num_;
-    } else if(robj.block_num_ == lobj.block_num_) {
+    } else {
         return lobj.file_name_ > robj.file_name_;
     }
     return false;
@@ -53,8 +53,10 @@ bool operator >= (const BlockId &lobj, const BlockId &robj) {
 }
 
 BlockId& BlockId::operator= (const BlockId &obj) {
-    block_num_ = obj.block_num_;
-    file_name_ = obj.file_name_;
+    if (this != &obj) {
+        block_num_ = obj.block_num_;
+        file_name_ = obj.file_name_;
+    }
     return *this;
 }
 
@@ -67,7 +69,8 @@ int BlockId::BlockNum() const {
 }
 
 bool BlockId::equals(const BlockId &obj) const {
-    return obj == *this;
+    return obj.file_name_ == file_name_ &&
+           obj.block_num_ == block_num_;
 }
 
 std::string BlockId::to_string() const {

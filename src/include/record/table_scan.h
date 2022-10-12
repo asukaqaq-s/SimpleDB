@@ -3,20 +3,23 @@
 
 #include "record/table_page.h"
 #include "record/rid.h"
+#include "query/update_scan.h"
 
 namespace SimpleDB {
     
-class TableScan {
+class TableScan : public UpdateScan{
 
 public:
 
     TableScan(Transaction *txn, std::string table_name, Layout layout);
 
+    ~TableScan() override{}
+
     /**
     * @brief positioning to the first 
     * tuple of this table
     */
-    void FirstTuple();
+    void FirstTuple() override;
 
     /**
     * @brief positioning to the next
@@ -25,21 +28,28 @@ public:
     * until another record is found.
     * @return whether it was successful
     */
-    bool NextTuple();
+    bool Next() override;
 
     /**
     * @brief apply to the current record
     * Get a integer value from the specified field
     * @param field_name the specified field
     */
-    int GetInt(std::string field_name);
+    int GetInt(const std::string &field_name) override;
 
     /**
     * @brief apply to the current record
     * Get a string value from the specified field
     * @param field_name the specified field
     */
-    std::string GetString(std::string field_name);
+    std::string GetString(const std::string &field_name) override;
+
+    /**
+    * @brief apply to the current record
+    * Get a constant object from the spefied field
+    * @param field_name the specified field
+    */
+    Constant GetVal(const std::string &field_name) override;
 
     /**
     * @brief apply to the current record
@@ -47,7 +57,16 @@ public:
     * @param field_name the specified field
     * @param val
     */
-    void SetInt(std::string field_name, int val);
+    void SetInt(const std::string &field_name, int val) override;
+ 
+    /**
+    * @brief apply to the current record
+    * store an string at the specified field
+    * @param field_name the specified field
+    * @param val
+    */
+    void SetString(const std::string &field_name, 
+                   const std::string &val) override;
 
     /**
     * @brief apply to the current record
@@ -55,12 +74,13 @@ public:
     * @param field_name the specified field
     * @param val
     */
-    void SetString(std::string field_name, std::string val);
+    void SetVal(const std::string &field_name, 
+                const Constant &val) override;
 
     /**
     * @brief 
     */
-    bool HasField(std::string field_name);
+    bool HasField(const std::string &field_name) override;
     
     /**
     * @brief unpinn current block 
@@ -74,23 +94,23 @@ public:
     * to insert the record in the existing blocks of the file, 
     * it appends a new block to the file and inserts the record there.
     */
-    void NextFreeTuple();
+    void Insert() override;
 
     /**
     * @brief delete current tuple by setting 
     * its flag to empty
     */
-    void DeleteTuple();
+    void Remove() override;
 
     /**
     * @brief Move to the specified rid
     */
-    void MoveToRid(RID rid);
+    void MoveToRid(const RID &rid) override;
 
     /**
     * @brief return the currently rid
     */
-    RID GetRid();
+    RID GetRid() override;
 
 private:
     

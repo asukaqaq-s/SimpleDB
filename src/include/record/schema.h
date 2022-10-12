@@ -8,6 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <map>
+#include <iostream>
 
 namespace SimpleDB {
 
@@ -105,17 +106,17 @@ public:
 
     std::vector<std::string> GetFields() const { return fields_;}
 
-    bool HasField(std::string field_name) { 
+    bool HasField(const std::string &field_name) const { 
         return std::find(fields_.begin(), fields_.end(), field_name) 
                 !=  fields_.end();
     }
     
-    FieldType GetType(std::string field_name) const {
+    FieldType GetType(const std::string &field_name) const {
         SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
         return info_.at(field_name).type_;
     }
     
-    int GetLength(std::string field_name) const {
+    int GetLength(const std::string &field_name) const {
         SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
         return info_.at(field_name).length_;
     }

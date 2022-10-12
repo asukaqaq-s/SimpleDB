@@ -45,7 +45,7 @@ void StatManager::RefreshStatistics(Transaction *txn) {
     // clear the call times
     num_calls_ = 0;
     
-    while (tcat_table_scan.NextTuple()) {
+    while (tcat_table_scan.Next()) {
         auto table_name = tcat_table_scan.GetString("table_name");
         auto layout = table_mgr_->GetLayout(table_name, txn);
         auto statinfo = CalculateStat(table_name, layout, txn);
@@ -68,7 +68,7 @@ StatInfo StatManager::CalculateStat(const std::string &table_name,
     std::map<std::string, int> distinict_val;
     TableScan table_scan(txn, table_name, layout);
 
-    while (table_scan.NextTuple()) {
+    while (table_scan.Next()) {
         block_nums = table_scan.GetRid().GetBlockNum() + 1;
         tuple_nums ++;
         // todo

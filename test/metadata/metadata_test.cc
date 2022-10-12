@@ -73,7 +73,7 @@ TEST(MetaManagerTest, SimpleTest) {
     TableScan ts(txn.get(), mytable, layout);
     for (int i = 0;i < 50;i ++ ) {
         std::uniform_int_distribution<unsigned> k(0, 50);
-        ts.NextFreeTuple();
+        ts.Insert();
         int n = k(engine);
         ts.SetInt("A", n);
         ts.SetString("B", "rec" + std::to_string(n));

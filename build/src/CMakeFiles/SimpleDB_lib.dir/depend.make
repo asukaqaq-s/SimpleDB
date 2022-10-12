@@ -119,6 +119,9 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/log/
 src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/metadata/index_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/metadata/stat_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/metadata/table_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/query/update_scan.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/record/layout.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o: ../src/include/record/schema.h
@@ -149,6 +152,9 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/m
 src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/metadata/stat_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/metadata/table_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/metadata/view_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/query/update_scan.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/record/layout.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o: ../src/include/record/schema.h
@@ -176,6 +182,9 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/log/l
 src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/metadata/stat_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/metadata/table_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/query/update_scan.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/record/layout.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o: ../src/include/record/schema.h
@@ -202,6 +211,9 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/file
 src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/metadata/table_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/query/update_scan.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/record/layout.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o: ../src/include/record/schema.h
@@ -229,6 +241,9 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/log/l
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/metadata/table_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/metadata/view_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/query/update_scan.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/record/layout.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/record/schema.h
@@ -237,6 +252,50 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recor
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recovery/log_record.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recovery/recovery_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/metadata/view_manager.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/config/field_type.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/query/expression.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/query/predicate.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/query/term.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/record/schema.h
+src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/query/predicate.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.o: ../src/include/query/product_scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.o: ../src/query/product_scan.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o: ../src/include/query/project_scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o: ../src/query/project_scan.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/config/field_type.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/expression.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/predicate.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/select_scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/term.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/query/update_scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/record/rid.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/include/record/schema.h
+src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o: ../src/query/select_scan.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/config/field_type.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/query/expression.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/query/term.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/include/record/schema.h
+src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o: ../src/query/term.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o: ../src/include/buffer/lru_replace.h
@@ -275,6 +334,9 @@ src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/file/file
 src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/query/update_scan.h
 src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/record/layout.h
 src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o: ../src/include/record/schema.h

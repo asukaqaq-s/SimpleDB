@@ -18,9 +18,9 @@ public:
     RID(int block_number, int slot) :
         block_number_(block_number), slot_(slot) {}
     
-    int GetBlockNum() { return block_number_; }
+    int GetBlockNum() const { return block_number_; }
 
-    int GetSlot() { return slot_; }
+    int GetSlot() const { return slot_; }
 
     bool operator == (const RID& obj) const {
         return block_number_ == obj.block_number_ &&

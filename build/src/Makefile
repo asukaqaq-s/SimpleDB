@@ -587,6 +587,141 @@ metadata/view_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.s
 .PHONY : metadata/view_manager.cc.s
 
+query/predicate.o: query/predicate.cc.o
+
+.PHONY : query/predicate.o
+
+# target to build an object file
+query/predicate.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o
+.PHONY : query/predicate.cc.o
+
+query/predicate.i: query/predicate.cc.i
+
+.PHONY : query/predicate.i
+
+# target to preprocess a source file
+query/predicate.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.i
+.PHONY : query/predicate.cc.i
+
+query/predicate.s: query/predicate.cc.s
+
+.PHONY : query/predicate.s
+
+# target to generate assembly for a file
+query/predicate.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.s
+.PHONY : query/predicate.cc.s
+
+query/product_scan.o: query/product_scan.cc.o
+
+.PHONY : query/product_scan.o
+
+# target to build an object file
+query/product_scan.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.o
+.PHONY : query/product_scan.cc.o
+
+query/product_scan.i: query/product_scan.cc.i
+
+.PHONY : query/product_scan.i
+
+# target to preprocess a source file
+query/product_scan.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.i
+.PHONY : query/product_scan.cc.i
+
+query/product_scan.s: query/product_scan.cc.s
+
+.PHONY : query/product_scan.s
+
+# target to generate assembly for a file
+query/product_scan.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/product_scan.cc.s
+.PHONY : query/product_scan.cc.s
+
+query/project_scan.o: query/project_scan.cc.o
+
+.PHONY : query/project_scan.o
+
+# target to build an object file
+query/project_scan.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o
+.PHONY : query/project_scan.cc.o
+
+query/project_scan.i: query/project_scan.cc.i
+
+.PHONY : query/project_scan.i
+
+# target to preprocess a source file
+query/project_scan.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.i
+.PHONY : query/project_scan.cc.i
+
+query/project_scan.s: query/project_scan.cc.s
+
+.PHONY : query/project_scan.s
+
+# target to generate assembly for a file
+query/project_scan.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.s
+.PHONY : query/project_scan.cc.s
+
+query/select_scan.o: query/select_scan.cc.o
+
+.PHONY : query/select_scan.o
+
+# target to build an object file
+query/select_scan.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o
+.PHONY : query/select_scan.cc.o
+
+query/select_scan.i: query/select_scan.cc.i
+
+.PHONY : query/select_scan.i
+
+# target to preprocess a source file
+query/select_scan.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.i
+.PHONY : query/select_scan.cc.i
+
+query/select_scan.s: query/select_scan.cc.s
+
+.PHONY : query/select_scan.s
+
+# target to generate assembly for a file
+query/select_scan.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.s
+.PHONY : query/select_scan.cc.s
+
+query/term.o: query/term.cc.o
+
+.PHONY : query/term.o
+
+# target to build an object file
+query/term.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o
+.PHONY : query/term.cc.o
+
+query/term.i: query/term.cc.i
+
+.PHONY : query/term.i
+
+# target to preprocess a source file
+query/term.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.i
+.PHONY : query/term.cc.i
+
+query/term.s: query/term.cc.s
+
+.PHONY : query/term.s
+
+# target to generate assembly for a file
+query/term.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.s
+.PHONY : query/term.cc.s
+
 record/table_page.o: record/table_page.cc.o
 
 .PHONY : record/table_page.o
@@ -808,6 +943,21 @@ help:
 	@echo "... metadata/view_manager.o"
 	@echo "... metadata/view_manager.i"
 	@echo "... metadata/view_manager.s"
+	@echo "... query/predicate.o"
+	@echo "... query/predicate.i"
+	@echo "... query/predicate.s"
+	@echo "... query/product_scan.o"
+	@echo "... query/product_scan.i"
+	@echo "... query/product_scan.s"
+	@echo "... query/project_scan.o"
+	@echo "... query/project_scan.i"
+	@echo "... query/project_scan.s"
+	@echo "... query/select_scan.o"
+	@echo "... query/select_scan.i"
+	@echo "... query/select_scan.s"
+	@echo "... query/term.o"
+	@echo "... query/term.i"
+	@echo "... query/term.s"
 	@echo "... record/table_page.o"
 	@echo "... record/table_page.i"
 	@echo "... record/table_page.s"

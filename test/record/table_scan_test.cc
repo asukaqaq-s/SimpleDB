@@ -55,7 +55,7 @@ TEST(TableScanTest, SimpleTest1) {
     // return ;
     for (int i=0; i< 50;  i++) {
         std::uniform_int_distribution<unsigned> k(0, 50);
-        ts.NextFreeTuple();
+        ts.Insert();
         int n = k(engine);
         ts.SetInt("A", n);
         ts.SetString("B", "rec" + std::to_string(n));
@@ -67,14 +67,14 @@ TEST(TableScanTest, SimpleTest1) {
       int count = 0;
       ts.FirstTuple();
 
-    while (ts.NextTuple()) {
+    while (ts.Next()) {
         int a = ts.GetInt("A");
         std::string b = ts.GetString("B");
         if (a < 25) {
             count++;
             std::cout << "slot " + ts.GetRid().ToString() + ": {" + std::to_string(a) + ", " + 
             b + "}" << std::endl;
-            ts.DeleteTuple();    
+            ts.Remove();    
         }
     }
 
@@ -83,7 +83,7 @@ TEST(TableScanTest, SimpleTest1) {
     std::cout << "Here are the remaining records." << std::endl;
 
       ts.FirstTuple();
-      while (ts.NextTuple()) {
+      while (ts.Next()) {
          int a = ts.GetInt("A");
          std::string b = ts.GetString("B");
             std::cout << "slot " + ts.GetRid().ToString() + ": {" + std::to_string(a) + ", " + b + "}" << std::endl;

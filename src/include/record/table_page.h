@@ -43,7 +43,9 @@ public:
     * @param block the corresponding block
     * @param layout the format of a record
     */
-    TablePage(Transaction *txn, BlockId block, Layout layout);
+    TablePage(Transaction *txn, 
+              const BlockId &block, 
+              const Layout &layout);
 
     /**
     * @brief we just init tuple_count and free_space_ptr
@@ -58,7 +60,8 @@ public:
     * @param field_name the name of the field in slot
     * @return the integer stored in that field 
     */
-    int GetInt(int slot, std::string field_name);
+    int GetInt(int slot, 
+               const std::string &field_name);
 
     /**
     * @brief return the string value stored for
@@ -67,7 +70,8 @@ public:
     * @param field_name the name of the field in slot
     * @return the string stored in that field 
     */
-    std::string GetString(int slot, std::string field_name);
+    std::string GetString(int slot, 
+                          const std::string &field_name);
 
     /**
     * @brief store an integer at the specified field
@@ -75,7 +79,9 @@ public:
     * @param field_name the name of the field
     * @param val the integer value stored in that field
     */
-    void SetInt(int slot, std::string field_name, int val);
+    void SetInt(int slot, 
+                const std::string &field_name, 
+                int val);
 
     /**
     * @brief store an string at the specified field
@@ -83,7 +89,9 @@ public:
     * @param field_name the name of the field
     * @param val the string value stored in that field
     */
-    void SetString(int slot, std::string field_name, std::string val);
+    void SetString(int slot, 
+                   const std::string &field_name, 
+                   const std::string &val);
 
     /**
     * @brief Complete the delete a tuple

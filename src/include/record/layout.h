@@ -58,7 +58,13 @@ public:
     * @return the offset of that field within a record
     */
     int GetOffset(std::string field_name) { 
-        SIMPLEDB_ASSERT(offsets_.find(field_name) != offsets_.end(), "");
+        
+        if (offsets_.find(field_name) == offsets_.end()) {
+            std::string cmd = "can not find field " + field_name;
+            std::cerr << cmd << std::endl;
+            SIMPLEDB_ASSERT(false, "");
+        }
+
         return offsets_.at(field_name);
     }
 

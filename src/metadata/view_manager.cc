@@ -37,7 +37,7 @@ void ViewManager::CreateView(const std::string &view_name,
     Layout view_layout = table_mgr_->GetLayout("view_catch", txn);
     TableScan view_table_scan(txn, "view_catch", view_layout);
 
-    view_table_scan.NextFreeTuple();
+    view_table_scan.Insert();
     // --------------------------------
     // | view_name | view_definitions |
     // --------------------------------
@@ -53,7 +53,7 @@ std::string ViewManager::GetViewDef(const std::string &view_name,
     TableScan view_table_scan(txn, "view_catch", view_layout);
     std::string view_def;
 
-    while (view_table_scan.NextTuple()) {
+    while (view_table_scan.Next()) {
         std::string now_view_name = view_table_scan.GetString("view_name");
         
         if (view_name == now_view_name) {

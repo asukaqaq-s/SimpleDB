@@ -285,6 +285,19 @@ unittests/fast:
 .PHONY : unittests/fast
 
 #=============================================================================
+# Target rules for targets named product_test
+
+# Build rule for target.
+product_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 product_test
+.PHONY : product_test
+
+# fast build rule for target.
+product_test/fast:
+	$(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/build
+.PHONY : product_test/fast
+
+#=============================================================================
 # Target rules for targets named metadata_test
 
 # Build rule for target.
@@ -322,6 +335,19 @@ buffer_manager_test: cmake_check_build_system
 buffer_manager_test/fast:
 	$(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
 .PHONY : buffer_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named scan_test
+
+# Build rule for target.
+scan_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 scan_test
+.PHONY : scan_test
+
+# fast build rule for target.
+scan_test/fast:
+	$(MAKE) -f test/CMakeFiles/scan_test.dir/build.make test/CMakeFiles/scan_test.dir/build
+.PHONY : scan_test/fast
 
 #=============================================================================
 # Target rules for targets named file_test
@@ -475,9 +501,11 @@ help:
 	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
+	@echo "... product_test"
 	@echo "... metadata_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"
+	@echo "... scan_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... lru_replacer_test"
