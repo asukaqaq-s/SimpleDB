@@ -246,6 +246,19 @@ table_page_test/fast:
 .PHONY : table_page_test/fast
 
 #=============================================================================
+# Target rules for targets named tokenizer_test
+
+# Build rule for target.
+tokenizer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tokenizer_test
+.PHONY : tokenizer_test
+
+# fast build rule for target.
+tokenizer_test/fast:
+	$(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
+.PHONY : tokenizer_test/fast
+
+#=============================================================================
 # Target rules for targets named show-tests
 
 # Build rule for target.
@@ -498,6 +511,7 @@ help:
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
 	@echo "... table_page_test"
+	@echo "... tokenizer_test"
 	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"

@@ -84,6 +84,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "_deps/googletest-build/googletest/CMakeFiles/gtest.dir/DependInfo.cmake"
   "src/CMakeFiles/SimpleDB_lib.dir/DependInfo.cmake"
   "test/CMakeFiles/table_page_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/tokenizer_test.dir/DependInfo.cmake"
   "test/CMakeFiles/show-tests.dir/DependInfo.cmake"
   "test/CMakeFiles/recovery_manager_test.dir/DependInfo.cmake"
   "test/CMakeFiles/unittests.dir/DependInfo.cmake"

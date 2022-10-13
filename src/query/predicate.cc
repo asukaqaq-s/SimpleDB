@@ -68,7 +68,7 @@ std::string Predicate::EquatesWithField(const std::string &field_name) const {
     return "";
 }
 
-std::string Predicate::ToString() {
+std::string Predicate::ToString() const {
     std::string res;
     int cnt = 0;
     

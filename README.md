@@ -16,7 +16,7 @@ Schedule
 - Transaction by 2pl(completed in 1/10/2022)
 - Record Manager(completed in 5/10/2022)
 - Metadata Manager(completed in 7/10/2022)
-- Query(todo)
+- Query(completed in 12/10/2022)
 - Parsing(todo)
 - Planning(todo)
 - JDBC(todo)

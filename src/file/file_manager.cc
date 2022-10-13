@@ -36,7 +36,7 @@ void FileManager::Read(const BlockId &block, Page &page) {
     int block_number = block.BlockNum();
     int offset = block_number * block_size_;
     auto file_io = GetFile(file_name);
-    uint32_t read_count;
+    int read_count;
 
     // call the GetFileSize func everytime?
     // TODO: we need to cache it
@@ -84,7 +84,7 @@ void FileManager::Write(const BlockId &block, Page &page) {
 void FileManager::ReadLog(const std::string &log_name, int offset, Page &page) {
     std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
     auto log_io = GetLogFile(log_name);
-    uint32_t read_count;
+    int read_count;
 
     if(offset > GetFileSize(log_name)) {
         std::cerr << "read past end of file" << std::endl;

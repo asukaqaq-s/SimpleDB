@@ -79,9 +79,9 @@ main_EXTERNAL_OBJECTS =
 
 test/main: test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o
 test/main: test/CMakeFiles/main.dir/build.make
-test/main: lib/libgtest_main.a
+test/main: lib/libgtest_maind.a
 test/main: src/libSimpleDB_lib.a
-test/main: lib/libgtest.a
+test/main: lib/libgtestd.a
 test/main: test/CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable main"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)

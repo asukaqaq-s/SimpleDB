@@ -183,6 +183,21 @@ table_page_test/fast:
 .PHONY : table_page_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/tokenizer_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tokenizer_test.dir/rule
+.PHONY : test/CMakeFiles/tokenizer_test.dir/rule
+
+# Convenience name for target.
+tokenizer_test: test/CMakeFiles/tokenizer_test.dir/rule
+
+.PHONY : tokenizer_test
+
+# fast build rule for target.
+tokenizer_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
+.PHONY : tokenizer_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/show-tests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
 .PHONY : test/CMakeFiles/show-tests.dir/rule
@@ -749,6 +764,33 @@ metadata/metadata_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
 .PHONY : metadata/metadata_test.cc.s
 
+parse/tokenizer_test.o: parse/tokenizer_test.cc.o
+
+.PHONY : parse/tokenizer_test.o
+
+# target to build an object file
+parse/tokenizer_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/parse/tokenizer_test.cc.o
+.PHONY : parse/tokenizer_test.cc.o
+
+parse/tokenizer_test.i: parse/tokenizer_test.cc.i
+
+.PHONY : parse/tokenizer_test.i
+
+# target to preprocess a source file
+parse/tokenizer_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/parse/tokenizer_test.cc.i
+.PHONY : parse/tokenizer_test.cc.i
+
+parse/tokenizer_test.s: parse/tokenizer_test.cc.s
+
+.PHONY : parse/tokenizer_test.s
+
+# target to generate assembly for a file
+parse/tokenizer_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/parse/tokenizer_test.cc.s
+.PHONY : parse/tokenizer_test.cc.s
+
 query/product_test.o: query/product_test.cc.o
 
 .PHONY : query/product_test.o
@@ -923,6 +965,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... table_page_test"
+	@echo "... tokenizer_test"
 	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
@@ -976,6 +1019,9 @@ help:
 	@echo "... metadata/metadata_test.o"
 	@echo "... metadata/metadata_test.i"
 	@echo "... metadata/metadata_test.s"
+	@echo "... parse/tokenizer_test.o"
+	@echo "... parse/tokenizer_test.i"
+	@echo "... parse/tokenizer_test.s"
 	@echo "... query/product_test.o"
 	@echo "... query/product_test.i"
 	@echo "... query/product_test.s"

@@ -75,7 +75,7 @@ public:
     /**
     * debugging
     */
-    std::string ToString();
+    std::string ToString() const;
 private:
 
     std::list<Term> terms_;

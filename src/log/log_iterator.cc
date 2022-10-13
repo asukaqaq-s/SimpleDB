@@ -63,7 +63,7 @@ std::vector<char> LogIterator::CurrentRecord() {
     
     // special case
     // the size of free space less than sizeof(int) 
-    if(buffer_offset_ + sizeof(int) > buffer_size_) {
+    if(buffer_offset_ + static_cast<int>(sizeof(int)) > buffer_size_) {
         MoveToRecord(file_offset_);
     }
     

@@ -105,7 +105,7 @@ void Page::PrintPage(int mode) {
     if(mode == 0) {
         int size = GetInt(0);
         printf("size = %d\n", size);
-        for(int i = 0;i < buffer_page_->size() - 4;i ++) {
+        for(int i = 0;i < static_cast<int>(buffer_page_->size() - 4);i ++) {
             printf("%c", (*buffer_page_)[i]);
         }
         printf("\n");

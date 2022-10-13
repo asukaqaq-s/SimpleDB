@@ -79,9 +79,9 @@ log_test_EXTERNAL_OBJECTS =
 
 test/log_test: test/CMakeFiles/log_test.dir/log/log_test.cc.o
 test/log_test: test/CMakeFiles/log_test.dir/build.make
-test/log_test: lib/libgtest_main.a
+test/log_test: lib/libgtest_maind.a
 test/log_test: src/libSimpleDB_lib.a
-test/log_test: lib/libgtest.a
+test/log_test: lib/libgtestd.a
 test/log_test: test/CMakeFiles/log_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable log_test"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/log_test.dir/link.txt --verbose=$(VERBOSE)

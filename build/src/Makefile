@@ -587,6 +587,60 @@ metadata/view_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.s
 .PHONY : metadata/view_manager.cc.s
 
+parse/stream_reader.o: parse/stream_reader.cc.o
+
+.PHONY : parse/stream_reader.o
+
+# target to build an object file
+parse/stream_reader.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o
+.PHONY : parse/stream_reader.cc.o
+
+parse/stream_reader.i: parse/stream_reader.cc.i
+
+.PHONY : parse/stream_reader.i
+
+# target to preprocess a source file
+parse/stream_reader.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.i
+.PHONY : parse/stream_reader.cc.i
+
+parse/stream_reader.s: parse/stream_reader.cc.s
+
+.PHONY : parse/stream_reader.s
+
+# target to generate assembly for a file
+parse/stream_reader.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.s
+.PHONY : parse/stream_reader.cc.s
+
+parse/stream_tokenizer.o: parse/stream_tokenizer.cc.o
+
+.PHONY : parse/stream_tokenizer.o
+
+# target to build an object file
+parse/stream_tokenizer.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o
+.PHONY : parse/stream_tokenizer.cc.o
+
+parse/stream_tokenizer.i: parse/stream_tokenizer.cc.i
+
+.PHONY : parse/stream_tokenizer.i
+
+# target to preprocess a source file
+parse/stream_tokenizer.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.i
+.PHONY : parse/stream_tokenizer.cc.i
+
+parse/stream_tokenizer.s: parse/stream_tokenizer.cc.s
+
+.PHONY : parse/stream_tokenizer.s
+
+# target to generate assembly for a file
+parse/stream_tokenizer.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.s
+.PHONY : parse/stream_tokenizer.cc.s
+
 query/predicate.o: query/predicate.cc.o
 
 .PHONY : query/predicate.o
@@ -943,6 +997,12 @@ help:
 	@echo "... metadata/view_manager.o"
 	@echo "... metadata/view_manager.i"
 	@echo "... metadata/view_manager.s"
+	@echo "... parse/stream_reader.o"
+	@echo "... parse/stream_reader.i"
+	@echo "... parse/stream_reader.s"
+	@echo "... parse/stream_tokenizer.o"
+	@echo "... parse/stream_tokenizer.i"
+	@echo "... parse/stream_tokenizer.s"
 	@echo "... query/predicate.o"
 	@echo "... query/predicate.i"
 	@echo "... query/predicate.s"

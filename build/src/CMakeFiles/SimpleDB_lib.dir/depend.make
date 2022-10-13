@@ -253,6 +253,14 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recov
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recovery/recovery_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/metadata/view_manager.cc
 
+src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/include/parse/stream_reader.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/parse/stream_reader.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o: ../src/include/parse/stream_reader.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o: ../src/include/parse/stream_tokenizer.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o: ../src/parse/stream_tokenizer.cc
+
 src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/config/field_type.h
 src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o: ../src/include/query/constant.h
