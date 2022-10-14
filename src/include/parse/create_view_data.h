@@ -9,7 +9,7 @@
 
 namespace SimpleDB {
     
-class CreateViewData {
+class CreateViewData : public Object{
 
 public:
     
@@ -18,6 +18,10 @@ public:
         : view_name_(view_name), query_data_(std::move(query_data)) {}
 
     
+    int GetOP() override {
+        return Object::CREATEVIEW;
+    }
+
     /**
     * @brief return the name of the new view
     */
@@ -30,6 +34,13 @@ public:
     */
     std::string GetViewDef() const {
         return query_data_->ToString();
+    }
+
+    std::string ToString() override {
+        std::stringstream s;
+        s << "view_name_ = " << view_name_ << " "
+          << "view_def = " << query_data_->ToString() << std::endl;
+        return s.str();
     }
 
 private:

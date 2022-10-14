@@ -47,6 +47,7 @@ Schedule
 - Query:
 
     - not only ==, we should also implement <,>,!=,- and so on
+    - not only 'and', we should also implement 'or', 'not'
 
 ## reference
 

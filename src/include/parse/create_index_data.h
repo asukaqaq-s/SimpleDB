@@ -11,7 +11,9 @@ public:
 
     CreateIndexData(const std::string &index_name,
                     const std::string &table_name,
-                    const std::string &field_name);
+                    const std::string &field_name)
+        : index_name_(index_name), table_name_(table_name),
+          field_name_(field_name) {}
     
     int GetOP() override {
         return Object::CREATEINDEX;
@@ -36,6 +38,14 @@ public:
     */
     std::string GetFieldName() const {
         return field_name_;
+    }
+
+    std::string ToString() override {
+        std::stringstream s;
+        s << "index_name_ = " << index_name_ << " "
+          << "table_name_ = " << table_name_ << " "
+          << "field_name_ = " << field_name_ << std::endl;
+        return s.str();
     }
 
 

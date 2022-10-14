@@ -8,15 +8,14 @@
 
 namespace SimpleDB {
 
-class QueryData {
+class QueryData{
     
 public:
 
     QueryData(const std::vector<std::string> &fields, 
               const std::set<std::string> &tables,
               const Predicate &pred) :
-              fields_(fields_), tables_(tables), pred_(pred) {}
-
+              fields_(fields), tables_(tables), pred_(pred) {}
 
 
     std::vector<std::string> GetFields() const {
@@ -31,7 +30,7 @@ public:
         return pred_;
     }
 
-    std::string ToString() {
+    std::string ToString()  {
         std::string res = "select ";
         
         for (const auto &s: fields_) {
@@ -43,7 +42,7 @@ public:
         res += " from ";
 
         for (const auto &s: tables_) {
-            res += ", ";
+            res += s + ", ";
         }
         
         // remove final comma and space :", "

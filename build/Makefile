@@ -311,6 +311,19 @@ product_test/fast:
 .PHONY : product_test/fast
 
 #=============================================================================
+# Target rules for targets named parser_test
+
+# Build rule for target.
+parser_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 parser_test
+.PHONY : parser_test
+
+# fast build rule for target.
+parser_test/fast:
+	$(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/build
+.PHONY : parser_test/fast
+
+#=============================================================================
 # Target rules for targets named metadata_test
 
 # Build rule for target.
@@ -516,6 +529,7 @@ help:
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
 	@echo "... product_test"
+	@echo "... parser_test"
 	@echo "... metadata_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"

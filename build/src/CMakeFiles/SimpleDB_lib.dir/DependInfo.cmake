@@ -19,6 +19,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/asuka/workbench/project/SimpleDB/src/metadata/stat_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/metadata/table_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/metadata/view_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/parse/lexer.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/parse/parser.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/parse/stream_reader.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/parse/stream_tokenizer.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/query/predicate.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o"

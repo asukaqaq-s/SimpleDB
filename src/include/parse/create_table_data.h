@@ -20,8 +20,9 @@ public:
     /**
     * @brief Saves the table name and schema
     */
-    CreateTableData(const std::string &table_name_,
-                    const Schema &sch_);
+    CreateTableData(const std::string &table_name,
+                    const Schema &sch)
+        : table_name_(table_name), sch_(sch) {}
 
     /**
     * @brief return the name of the new table
@@ -35,6 +36,12 @@ public:
     */
     Schema GetSchema() const {
         return sch_;
+    }
+
+    std::string ToString() override {
+        std::stringstream s;
+        s << "table_name_ = " << table_name_ << std::endl;
+        return s.str();
     }
 
 private:

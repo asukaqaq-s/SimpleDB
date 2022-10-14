@@ -2,7 +2,7 @@
 #define OBJECT_H
 
 #include <fstream>
-
+#include <sstream>
 
 namespace SimpleDB {
 
@@ -26,6 +26,8 @@ public:
     virtual ~Object() = default;
 
     virtual int GetOP() = 0;
+
+    virtual std::string ToString() = 0;
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Object::Operation &op) {

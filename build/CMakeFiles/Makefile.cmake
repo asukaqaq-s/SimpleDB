@@ -89,6 +89,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "test/CMakeFiles/recovery_manager_test.dir/DependInfo.cmake"
   "test/CMakeFiles/unittests.dir/DependInfo.cmake"
   "test/CMakeFiles/product_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/parser_test.dir/DependInfo.cmake"
   "test/CMakeFiles/metadata_test.dir/DependInfo.cmake"
   "test/CMakeFiles/main.dir/DependInfo.cmake"
   "test/CMakeFiles/buffer_manager_test.dir/DependInfo.cmake"

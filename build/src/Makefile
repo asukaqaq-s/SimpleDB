@@ -587,6 +587,60 @@ metadata/view_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.s
 .PHONY : metadata/view_manager.cc.s
 
+parse/lexer.o: parse/lexer.cc.o
+
+.PHONY : parse/lexer.o
+
+# target to build an object file
+parse/lexer.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o
+.PHONY : parse/lexer.cc.o
+
+parse/lexer.i: parse/lexer.cc.i
+
+.PHONY : parse/lexer.i
+
+# target to preprocess a source file
+parse/lexer.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.i
+.PHONY : parse/lexer.cc.i
+
+parse/lexer.s: parse/lexer.cc.s
+
+.PHONY : parse/lexer.s
+
+# target to generate assembly for a file
+parse/lexer.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.s
+.PHONY : parse/lexer.cc.s
+
+parse/parser.o: parse/parser.cc.o
+
+.PHONY : parse/parser.o
+
+# target to build an object file
+parse/parser.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o
+.PHONY : parse/parser.cc.o
+
+parse/parser.i: parse/parser.cc.i
+
+.PHONY : parse/parser.i
+
+# target to preprocess a source file
+parse/parser.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.i
+.PHONY : parse/parser.cc.i
+
+parse/parser.s: parse/parser.cc.s
+
+.PHONY : parse/parser.s
+
+# target to generate assembly for a file
+parse/parser.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.s
+.PHONY : parse/parser.cc.s
+
 parse/stream_reader.o: parse/stream_reader.cc.o
 
 .PHONY : parse/stream_reader.o
@@ -997,6 +1051,12 @@ help:
 	@echo "... metadata/view_manager.o"
 	@echo "... metadata/view_manager.i"
 	@echo "... metadata/view_manager.s"
+	@echo "... parse/lexer.o"
+	@echo "... parse/lexer.i"
+	@echo "... parse/lexer.s"
+	@echo "... parse/parser.o"
+	@echo "... parse/parser.i"
+	@echo "... parse/parser.s"
 	@echo "... parse/stream_reader.o"
 	@echo "... parse/stream_reader.i"
 	@echo "... parse/stream_reader.s"

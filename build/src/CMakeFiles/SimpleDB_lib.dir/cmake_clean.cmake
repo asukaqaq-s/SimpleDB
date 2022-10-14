@@ -14,6 +14,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o"
+  "CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o"
+  "CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o"

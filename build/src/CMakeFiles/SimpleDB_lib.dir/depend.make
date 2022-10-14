@@ -253,6 +253,34 @@ src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recov
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/include/recovery/recovery_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o: ../src/metadata/view_manager.cc
 
+src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o: ../src/include/parse/lexer.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o: ../src/include/parse/stream_reader.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o: ../src/include/parse/stream_tokenizer.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o: ../src/parse/lexer.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/config/field_type.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/create_index_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/create_table_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/create_view_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/delete_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/insert_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/lexer.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/modify_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/object.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/parser.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/query_data.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/stream_reader.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/parse/stream_tokenizer.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/query/constant.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/query/expression.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/query/predicate.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/query/scan.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/query/term.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/include/record/schema.h
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/parse/parser.cc
+
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/include/parse/stream_reader.h
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/parse/stream_reader.cc

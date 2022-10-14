@@ -258,6 +258,21 @@ product_test/fast:
 .PHONY : product_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/parser_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/parser_test.dir/rule
+.PHONY : test/CMakeFiles/parser_test.dir/rule
+
+# Convenience name for target.
+parser_test: test/CMakeFiles/parser_test.dir/rule
+
+.PHONY : parser_test
+
+# fast build rule for target.
+parser_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/build
+.PHONY : parser_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/metadata_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
 .PHONY : test/CMakeFiles/metadata_test.dir/rule
@@ -764,6 +779,33 @@ metadata/metadata_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
 .PHONY : metadata/metadata_test.cc.s
 
+parse/parser_test.o: parse/parser_test.cc.o
+
+.PHONY : parse/parser_test.o
+
+# target to build an object file
+parse/parser_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/parse/parser_test.cc.o
+.PHONY : parse/parser_test.cc.o
+
+parse/parser_test.i: parse/parser_test.cc.i
+
+.PHONY : parse/parser_test.i
+
+# target to preprocess a source file
+parse/parser_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/parse/parser_test.cc.i
+.PHONY : parse/parser_test.cc.i
+
+parse/parser_test.s: parse/parser_test.cc.s
+
+.PHONY : parse/parser_test.s
+
+# target to generate assembly for a file
+parse/parser_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/parse/parser_test.cc.s
+.PHONY : parse/parser_test.cc.s
+
 parse/tokenizer_test.o: parse/tokenizer_test.cc.o
 
 .PHONY : parse/tokenizer_test.o
@@ -970,6 +1012,7 @@ help:
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
 	@echo "... product_test"
+	@echo "... parser_test"
 	@echo "... metadata_test"
 	@echo "... main"
 	@echo "... buffer_manager_test"
@@ -1019,6 +1062,9 @@ help:
 	@echo "... metadata/metadata_test.o"
 	@echo "... metadata/metadata_test.i"
 	@echo "... metadata/metadata_test.s"
+	@echo "... parse/parser_test.o"
+	@echo "... parse/parser_test.i"
+	@echo "... parse/parser_test.s"
 	@echo "... parse/tokenizer_test.o"
 	@echo "... parse/tokenizer_test.i"
 	@echo "... parse/tokenizer_test.s"

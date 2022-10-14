@@ -49,6 +49,7 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/recovery_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/product_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/parser_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
