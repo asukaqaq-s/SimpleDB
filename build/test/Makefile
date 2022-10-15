@@ -408,6 +408,21 @@ table_scan_test/fast:
 .PHONY : table_scan_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/planner_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/planner_test.dir/rule
+.PHONY : test/CMakeFiles/planner_test.dir/rule
+
+# Convenience name for target.
+planner_test: test/CMakeFiles/planner_test.dir/rule
+
+.PHONY : planner_test
+
+# fast build rule for target.
+planner_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/planner_test.dir/build.make test/CMakeFiles/planner_test.dir/build
+.PHONY : planner_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/concurrency_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/concurrency_test.dir/rule
 .PHONY : test/CMakeFiles/concurrency_test.dir/rule
@@ -833,6 +848,33 @@ parse/tokenizer_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/parse/tokenizer_test.cc.s
 .PHONY : parse/tokenizer_test.cc.s
 
+plan/planner_test.o: plan/planner_test.cc.o
+
+.PHONY : plan/planner_test.o
+
+# target to build an object file
+plan/planner_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/planner_test.dir/build.make test/CMakeFiles/planner_test.dir/plan/planner_test.cc.o
+.PHONY : plan/planner_test.cc.o
+
+plan/planner_test.i: plan/planner_test.cc.i
+
+.PHONY : plan/planner_test.i
+
+# target to preprocess a source file
+plan/planner_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/planner_test.dir/build.make test/CMakeFiles/planner_test.dir/plan/planner_test.cc.i
+.PHONY : plan/planner_test.cc.i
+
+plan/planner_test.s: plan/planner_test.cc.s
+
+.PHONY : plan/planner_test.s
+
+# target to generate assembly for a file
+plan/planner_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/planner_test.dir/build.make test/CMakeFiles/planner_test.dir/plan/planner_test.cc.s
+.PHONY : plan/planner_test.cc.s
+
 query/product_test.o: query/product_test.cc.o
 
 .PHONY : query/product_test.o
@@ -1023,6 +1065,7 @@ help:
 	@echo "... transaction_test"
 	@echo "... test"
 	@echo "... table_scan_test"
+	@echo "... planner_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... page_test"
@@ -1068,6 +1111,9 @@ help:
 	@echo "... parse/tokenizer_test.o"
 	@echo "... parse/tokenizer_test.i"
 	@echo "... parse/tokenizer_test.s"
+	@echo "... plan/planner_test.o"
+	@echo "... plan/planner_test.i"
+	@echo "... plan/planner_test.s"
 	@echo "... query/product_test.o"
 	@echo "... query/product_test.i"
 	@echo "... query/product_test.s"

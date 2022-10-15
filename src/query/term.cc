@@ -2,6 +2,7 @@
 #define TERM_CC
 
 #include "query/term.h"
+#include "plan/plan.h"
 
 namespace SimpleDB {
 
@@ -12,7 +13,44 @@ bool Term::IsSatisfied(Scan *s) const {
     return lhs_val == rhs_val;
 }
 
+int Term::ReductionFactor(Plan* plan) {
+    // have 4 cases:
+    // 1. lhs is fieldname, rhs is fieldname
+    // 2. lhs is fieldname, rhs is constant
+    // 3. lhs is constant, rhs is fieldname
+    // 4. lhs is constant, rhs is constant
+    // a constant we not need to access block
+    // wheras a field we should access block
+
+    std::string lhs_name, rhs_name;
+
+    if (lhs_.IsFieldName() && rhs_.IsFieldName()) {
+        lhs_name = lhs_.AsFieldName();
+        rhs_name = lhs_.AsFieldName();
+        return std::max(plan->GetDistinctVals(lhs_name),
+                        plan->GetDistinctVals(rhs_name));
+    }
+    else if (lhs_.IsFieldName()) {
+        lhs_name = lhs_.AsFieldName();
+        return plan->GetDistinctVals(lhs_name);
+    }
+    else if (rhs_.IsFieldName()) {
+        rhs_name = rhs_.AsFieldName();
+        return plan->GetDistinctVals(rhs_name);
+    }
+
+    // two constant equal, we don't need to access any blocks
+    if (lhs_.AsConstant() == rhs_.AsConstant())
+        return 1;
+    else {
+        // two constant equal, the sql statement error
+        return INT32_MAX;
+    }
+    
+}
+
 Constant Term::EquatesWithConstant(
+
     const std::string &field_name) const {
     if (lhs_.IsFieldName() && 
         lhs_.AsFieldName() == field_name &&

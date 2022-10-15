@@ -695,6 +695,87 @@ parse/stream_tokenizer.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.s
 .PHONY : parse/stream_tokenizer.cc.s
 
+plan/basic_update_planner.o: plan/basic_update_planner.cc.o
+
+.PHONY : plan/basic_update_planner.o
+
+# target to build an object file
+plan/basic_update_planner.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/basic_update_planner.cc.o
+.PHONY : plan/basic_update_planner.cc.o
+
+plan/basic_update_planner.i: plan/basic_update_planner.cc.i
+
+.PHONY : plan/basic_update_planner.i
+
+# target to preprocess a source file
+plan/basic_update_planner.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/basic_update_planner.cc.i
+.PHONY : plan/basic_update_planner.cc.i
+
+plan/basic_update_planner.s: plan/basic_update_planner.cc.s
+
+.PHONY : plan/basic_update_planner.s
+
+# target to generate assembly for a file
+plan/basic_update_planner.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/basic_update_planner.cc.s
+.PHONY : plan/basic_update_planner.cc.s
+
+plan/better_query_planner.o: plan/better_query_planner.cc.o
+
+.PHONY : plan/better_query_planner.o
+
+# target to build an object file
+plan/better_query_planner.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/better_query_planner.cc.o
+.PHONY : plan/better_query_planner.cc.o
+
+plan/better_query_planner.i: plan/better_query_planner.cc.i
+
+.PHONY : plan/better_query_planner.i
+
+# target to preprocess a source file
+plan/better_query_planner.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/better_query_planner.cc.i
+.PHONY : plan/better_query_planner.cc.i
+
+plan/better_query_planner.s: plan/better_query_planner.cc.s
+
+.PHONY : plan/better_query_planner.s
+
+# target to generate assembly for a file
+plan/better_query_planner.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/better_query_planner.cc.s
+.PHONY : plan/better_query_planner.cc.s
+
+plan/planner.o: plan/planner.cc.o
+
+.PHONY : plan/planner.o
+
+# target to build an object file
+plan/planner.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/planner.cc.o
+.PHONY : plan/planner.cc.o
+
+plan/planner.i: plan/planner.cc.i
+
+.PHONY : plan/planner.i
+
+# target to preprocess a source file
+plan/planner.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/planner.cc.i
+.PHONY : plan/planner.cc.i
+
+plan/planner.s: plan/planner.cc.s
+
+.PHONY : plan/planner.s
+
+# target to generate assembly for a file
+plan/planner.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/plan/planner.cc.s
+.PHONY : plan/planner.cc.s
+
 query/predicate.o: query/predicate.cc.o
 
 .PHONY : query/predicate.o
@@ -1063,6 +1144,15 @@ help:
 	@echo "... parse/stream_tokenizer.o"
 	@echo "... parse/stream_tokenizer.i"
 	@echo "... parse/stream_tokenizer.s"
+	@echo "... plan/basic_update_planner.o"
+	@echo "... plan/basic_update_planner.i"
+	@echo "... plan/basic_update_planner.s"
+	@echo "... plan/better_query_planner.o"
+	@echo "... plan/better_query_planner.i"
+	@echo "... plan/better_query_planner.s"
+	@echo "... plan/planner.o"
+	@echo "... plan/planner.i"
+	@echo "... plan/planner.s"
 	@echo "... query/predicate.o"
 	@echo "... query/predicate.i"
 	@echo "... query/predicate.s"

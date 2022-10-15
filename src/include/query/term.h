@@ -5,7 +5,7 @@
 
 namespace SimpleDB {
 
-
+class Plan;
 /**
 * @brief A term is a comparison between two expression
 */
@@ -32,7 +32,15 @@ public:
     */
     bool IsSatisfied(Scan *s) const;
 
-    // int ReductionFactor(Plan plan)
+    /**
+    * @brief Calculate the extent to which selecting on 
+    * the term reduces the number of records output by a 
+    * query.For example if the reduction factor is 2, then 
+    * the term cuts the size of the output in half.
+    * @param p the query's plan
+    * @return the integer reduction factor.
+    */
+    int ReductionFactor(Plan* plan);
     
     /**
     * @brief determine if this term is of the form "F=c" or "c=F"

@@ -441,6 +441,19 @@ table_scan_test/fast:
 .PHONY : table_scan_test/fast
 
 #=============================================================================
+# Target rules for targets named planner_test
+
+# Build rule for target.
+planner_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 planner_test
+.PHONY : planner_test
+
+# fast build rule for target.
+planner_test/fast:
+	$(MAKE) -f test/CMakeFiles/planner_test.dir/build.make test/CMakeFiles/planner_test.dir/build
+.PHONY : planner_test/fast
+
+#=============================================================================
 # Target rules for targets named concurrency_test
 
 # Build rule for target.
@@ -539,6 +552,7 @@ help:
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
 	@echo "... table_scan_test"
+	@echo "... planner_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... page_test"

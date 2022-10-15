@@ -1,7 +1,8 @@
-#ifndef DELETA_DATA_H
+#ifndef DELETE_DATA_H
 #define DELETE_DATA_H
 
 #include "query/predicate.h"
+#include "parse/object.h"
 
 namespace SimpleDB {
 

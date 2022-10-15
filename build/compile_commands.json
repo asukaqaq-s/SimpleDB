@@ -116,6 +116,21 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/plan/basic_update_planner.cc.o -c /home/asuka/workbench/project/SimpleDB/src/plan/basic_update_planner.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/plan/basic_update_planner.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/plan/better_query_planner.cc.o -c /home/asuka/workbench/project/SimpleDB/src/plan/better_query_planner.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/plan/better_query_planner.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/plan/planner.cc.o -c /home/asuka/workbench/project/SimpleDB/src/plan/planner.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/plan/planner.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o -c /home/asuka/workbench/project/SimpleDB/src/query/predicate.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/src/query/predicate.cc"
 },
@@ -238,6 +253,11 @@
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/table_scan_test.dir/record/table_scan_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/record/table_scan_test.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/test/record/table_scan_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/planner_test.dir/plan/planner_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/plan/planner_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/plan/planner_test.cc"
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",

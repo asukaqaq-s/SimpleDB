@@ -6,7 +6,9 @@
 namespace SimpleDB {
 
 SelectScan::SelectScan(const std::shared_ptr<Scan> &scan, 
-    const Predicate &pred) : scan_(scan), pred_(pred) {}
+    const Predicate &pred) : scan_(scan), pred_(pred) {
+    FirstTuple();
+}
 
 // implemented scan 
 

@@ -27,6 +27,7 @@ void TableScan::FirstTuple() {
 }
 
 bool TableScan::Next() {
+    
     current_slot_ = table_page_->NextTuple(current_slot_);
     while (current_slot_ < 0) {
         if (AtLastBlock()) // at last tuple
@@ -93,6 +94,7 @@ void TableScan::Insert() {
         }
         current_slot_ = table_page_->NextEmptyTuple(current_slot_);
     }
+    
 }
 
 void TableScan::Remove() {

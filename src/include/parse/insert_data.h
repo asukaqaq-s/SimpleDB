@@ -2,6 +2,7 @@
 #define INSERT_DATA_H
 
 #include "query/constant.h"
+#include "parse/object.h"
 
 #include <vector>
 

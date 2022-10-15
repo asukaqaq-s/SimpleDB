@@ -2,6 +2,7 @@
 #define QUERY_DATA_H
 
 #include "query/predicate.h"
+#include "parse/object.h"
 
 #include <vector>
 #include <set>

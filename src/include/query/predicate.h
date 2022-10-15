@@ -2,6 +2,7 @@
 #define PREDICATE_H
 
 #include "query/term.h"
+#include "plan/plan.h"
 
 #include <list>
 
@@ -33,7 +34,15 @@ public:
     */
     bool IsSatisfied(Scan *s);
 
-    // reductionFactor(Plan p)
+    /**
+    * @brief Calculate the extent to which selecting on 
+    * the predicate reduces the number of records output 
+    * by a query.For example if the reduction factor is 2, 
+    * then the predicate cuts the size of the output in half.
+    * @param p the query's plan
+    * @return the integer reduction factor.
+    */
+    int reductionFactor(Plan *p);
 
     /**
     * @brief return the subpredicate that applies to

@@ -60,6 +60,7 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/table_scan_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/planner_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/concurrency_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/page_test.dir

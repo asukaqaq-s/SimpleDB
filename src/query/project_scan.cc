@@ -11,7 +11,9 @@ namespace SimpleDB {
 ProjectScan::ProjectScan(
     const std::shared_ptr<Scan> &scan, 
     const std::vector<std::string> &field_list)
-    : scan_(scan), field_list_(field_list) {}
+    : scan_(scan), field_list_(field_list) {
+    FirstTuple();
+}
 
 void ProjectScan::FirstTuple() {
     scan_->FirstTuple();

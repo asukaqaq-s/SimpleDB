@@ -17,7 +17,7 @@ Schedule
 - Record Manager(completed in 5/10/2022)
 - Metadata Manager(completed in 7/10/2022)
 - Query(completed in 12/10/2022)
-- Parsing(todo)
+- Parsing(completed in 14/10/2022)
 - Planning(todo)
 - JDBC(todo)
 - Indexing(todo)
@@ -48,6 +48,18 @@ Schedule
 
     - not only ==, we should also implement <,>,!=,- and so on
     - not only 'and', we should also implement 'or', 'not'
+    - support computation, sorting, grouping, nextsing, renaming
+
+- Update:
+  
+    - we should support drop table
+    - can we support change database?
+  
+- Planner:
+
+    - planner should support big table query so that filter more early
+    - planner should have more efficient optimize.
+  
 
 ## reference
 

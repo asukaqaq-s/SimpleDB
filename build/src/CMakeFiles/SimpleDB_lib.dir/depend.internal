@@ -274,6 +274,7 @@ src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o
  ../src/include/parse/query_data.h
  ../src/include/parse/stream_reader.h
  ../src/include/parse/stream_tokenizer.h
+ ../src/include/plan/plan.h
  ../src/include/query/constant.h
  ../src/include/query/expression.h
  ../src/include/query/predicate.h
@@ -289,9 +290,159 @@ src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o
  ../src/include/parse/stream_reader.h
  ../src/include/parse/stream_tokenizer.h
  /home/asuka/workbench/project/SimpleDB/src/parse/stream_tokenizer.cc
+src/CMakeFiles/SimpleDB_lib.dir/plan/basic_update_planner.cc.o
+ ../src/include/buffer/buffer_manager.h
+ ../src/include/buffer/lru_replace.h
+ ../src/include/concurrency/buffer_list.h
+ ../src/include/concurrency/concurrency_manager.h
+ ../src/include/concurrency/lock_manager.h
+ ../src/include/concurrency/transaction.h
+ ../src/include/config/config.h
+ ../src/include/config/field_type.h
+ ../src/include/config/macro.h
+ ../src/include/config/rw_latch.h
+ ../src/include/config/type.h
+ ../src/include/file/block_id.h
+ ../src/include/file/file_manager.h
+ ../src/include/file/page.h
+ ../src/include/log/log_iterator.h
+ ../src/include/log/log_manager.h
+ ../src/include/metadata/index_manager.h
+ ../src/include/metadata/metadata_manager.h
+ ../src/include/metadata/stat_manager.h
+ ../src/include/metadata/table_manager.h
+ ../src/include/metadata/view_manager.h
+ ../src/include/parse/create_index_data.h
+ ../src/include/parse/create_table_data.h
+ ../src/include/parse/create_view_data.h
+ ../src/include/parse/delete_data.h
+ ../src/include/parse/insert_data.h
+ ../src/include/parse/modify_data.h
+ ../src/include/parse/object.h
+ ../src/include/parse/query_data.h
+ ../src/include/plan/basic_update_planner.h
+ ../src/include/plan/plan.h
+ ../src/include/plan/select_plan.h
+ ../src/include/plan/table_plan.h
+ ../src/include/plan/update_planner.h
+ ../src/include/query/constant.h
+ ../src/include/query/expression.h
+ ../src/include/query/predicate.h
+ ../src/include/query/scan.h
+ ../src/include/query/select_scan.h
+ ../src/include/query/term.h
+ ../src/include/query/update_scan.h
+ ../src/include/record/layout.h
+ ../src/include/record/rid.h
+ ../src/include/record/schema.h
+ ../src/include/record/table_page.h
+ ../src/include/record/table_scan.h
+ ../src/include/recovery/log_record.h
+ ../src/include/recovery/recovery_manager.h
+ /home/asuka/workbench/project/SimpleDB/src/plan/basic_update_planner.cc
+src/CMakeFiles/SimpleDB_lib.dir/plan/better_query_planner.cc.o
+ ../src/include/buffer/buffer_manager.h
+ ../src/include/buffer/lru_replace.h
+ ../src/include/concurrency/buffer_list.h
+ ../src/include/concurrency/concurrency_manager.h
+ ../src/include/concurrency/lock_manager.h
+ ../src/include/concurrency/transaction.h
+ ../src/include/config/config.h
+ ../src/include/config/field_type.h
+ ../src/include/config/macro.h
+ ../src/include/config/rw_latch.h
+ ../src/include/config/type.h
+ ../src/include/file/block_id.h
+ ../src/include/file/file_manager.h
+ ../src/include/file/page.h
+ ../src/include/log/log_iterator.h
+ ../src/include/log/log_manager.h
+ ../src/include/metadata/index_manager.h
+ ../src/include/metadata/metadata_manager.h
+ ../src/include/metadata/stat_manager.h
+ ../src/include/metadata/table_manager.h
+ ../src/include/metadata/view_manager.h
+ ../src/include/parse/create_index_data.h
+ ../src/include/parse/create_table_data.h
+ ../src/include/parse/create_view_data.h
+ ../src/include/parse/delete_data.h
+ ../src/include/parse/insert_data.h
+ ../src/include/parse/lexer.h
+ ../src/include/parse/modify_data.h
+ ../src/include/parse/object.h
+ ../src/include/parse/parser.h
+ ../src/include/parse/query_data.h
+ ../src/include/parse/stream_reader.h
+ ../src/include/parse/stream_tokenizer.h
+ ../src/include/plan/better_query_planner.h
+ ../src/include/plan/plan.h
+ ../src/include/plan/product_plan.h
+ ../src/include/plan/project_plan.h
+ ../src/include/plan/query_planner.h
+ ../src/include/plan/select_plan.h
+ ../src/include/plan/table_plan.h
+ ../src/include/query/constant.h
+ ../src/include/query/expression.h
+ ../src/include/query/predicate.h
+ ../src/include/query/product_scan.h
+ ../src/include/query/project_scan.h
+ ../src/include/query/scan.h
+ ../src/include/query/select_scan.h
+ ../src/include/query/term.h
+ ../src/include/query/update_scan.h
+ ../src/include/record/layout.h
+ ../src/include/record/rid.h
+ ../src/include/record/schema.h
+ ../src/include/record/table_page.h
+ ../src/include/record/table_scan.h
+ ../src/include/recovery/log_record.h
+ ../src/include/recovery/recovery_manager.h
+ /home/asuka/workbench/project/SimpleDB/src/plan/better_query_planner.cc
+src/CMakeFiles/SimpleDB_lib.dir/plan/planner.cc.o
+ ../src/include/buffer/buffer_manager.h
+ ../src/include/buffer/lru_replace.h
+ ../src/include/concurrency/buffer_list.h
+ ../src/include/concurrency/concurrency_manager.h
+ ../src/include/concurrency/lock_manager.h
+ ../src/include/concurrency/transaction.h
+ ../src/include/config/field_type.h
+ ../src/include/config/macro.h
+ ../src/include/config/rw_latch.h
+ ../src/include/config/type.h
+ ../src/include/file/block_id.h
+ ../src/include/file/file_manager.h
+ ../src/include/file/page.h
+ ../src/include/log/log_iterator.h
+ ../src/include/log/log_manager.h
+ ../src/include/parse/create_index_data.h
+ ../src/include/parse/create_table_data.h
+ ../src/include/parse/create_view_data.h
+ ../src/include/parse/delete_data.h
+ ../src/include/parse/insert_data.h
+ ../src/include/parse/lexer.h
+ ../src/include/parse/modify_data.h
+ ../src/include/parse/object.h
+ ../src/include/parse/parser.h
+ ../src/include/parse/query_data.h
+ ../src/include/parse/stream_reader.h
+ ../src/include/parse/stream_tokenizer.h
+ ../src/include/plan/plan.h
+ ../src/include/plan/planner.h
+ ../src/include/plan/query_planner.h
+ ../src/include/plan/update_planner.h
+ ../src/include/query/constant.h
+ ../src/include/query/expression.h
+ ../src/include/query/predicate.h
+ ../src/include/query/scan.h
+ ../src/include/query/term.h
+ ../src/include/record/schema.h
+ ../src/include/recovery/log_record.h
+ ../src/include/recovery/recovery_manager.h
+ /home/asuka/workbench/project/SimpleDB/src/plan/planner.cc
 src/CMakeFiles/SimpleDB_lib.dir/query/predicate.cc.o
  ../src/include/config/field_type.h
  ../src/include/config/macro.h
+ ../src/include/plan/plan.h
  ../src/include/query/constant.h
  ../src/include/query/expression.h
  ../src/include/query/predicate.h
@@ -314,6 +465,7 @@ src/CMakeFiles/SimpleDB_lib.dir/query/project_scan.cc.o
 src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o
  ../src/include/config/field_type.h
  ../src/include/config/macro.h
+ ../src/include/plan/plan.h
  ../src/include/query/constant.h
  ../src/include/query/expression.h
  ../src/include/query/predicate.h
@@ -327,6 +479,7 @@ src/CMakeFiles/SimpleDB_lib.dir/query/select_scan.cc.o
 src/CMakeFiles/SimpleDB_lib.dir/query/term.cc.o
  ../src/include/config/field_type.h
  ../src/include/config/macro.h
+ ../src/include/plan/plan.h
  ../src/include/query/constant.h
  ../src/include/query/expression.h
  ../src/include/query/scan.h

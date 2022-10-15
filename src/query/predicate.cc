@@ -18,6 +18,15 @@ bool Predicate::IsSatisfied(Scan *s) {
     return true;
 }
 
+int Predicate::reductionFactor(Plan *p) {
+    int factor = 1;
+    for (Term &t : terms_) {
+        factor *= t.ReductionFactor(p);
+    }
+    return factor;
+}
+
+
 Predicate Predicate::SelectSubPred(const Schema& schema) {
     Predicate res;
     for (const auto &t : terms_) {
