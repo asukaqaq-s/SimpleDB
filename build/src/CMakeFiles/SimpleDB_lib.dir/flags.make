@@ -6,5 +6,5 @@ CXX_FLAGS =  -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attrib
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include 
+CXX_INCLUDES = -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party 
 

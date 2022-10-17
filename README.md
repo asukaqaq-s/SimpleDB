@@ -18,7 +18,7 @@ Schedule
 - Metadata Manager(completed in 7/10/2022)
 - Query(completed in 12/10/2022)
 - Parsing(completed in 14/10/2022)
-- Planning(todo)
+- Planning(completed in 15/10/2022)
 - JDBC(todo)
 - Indexing(todo)
 - Materialization and Sorting(todo)
@@ -39,10 +39,13 @@ Schedule
     - we should support variable length tuple.Currently, we just implement slotted page on fixed-length tuple.
     - of course, i think support char、varchar、blob type is necessary.
 
-- StatManager: 
+
+- Metadata: 
 
     - Can we make a background transaction or a transaction which ioslation level is "READ UNCOMMITED ?" 
     - Can we maintain more informations which help planner working
+    - secury manager to ensure user permissions
+
 
 - Query:
 
@@ -59,7 +62,8 @@ Schedule
 
     - planner should support big table query so that filter more early
     - planner should have more efficient optimize.
-  
+    - planner should verify correntness
+
 
 ## reference
 

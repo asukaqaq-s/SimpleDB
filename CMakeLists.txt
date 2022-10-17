@@ -32,6 +32,7 @@ enable_testing()
 
 include_directories(${PROJECT_SOURCE_DIR}/src/include)
 include_directories(${PROJECT_SOURCE_DIR}/test/include)
+include_directories(${PROJECT_SOURCE_DIR}/third_party)
 include_directories(BEFORE src)
 
 add_subdirectory(src)

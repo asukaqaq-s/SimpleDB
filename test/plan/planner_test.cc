@@ -36,7 +36,6 @@ TEST(PLANTEST, PLANTEST1) {
     std::unique_ptr<Transaction> tx = std::make_unique<Transaction>(&fm, &lm, &bm); 
 
     std::unique_ptr<MetadataManager> mdm = std::make_unique<MetadataManager>(true, tx.get());
-    std::unique_ptr<Transaction> txn = std::make_unique<Transaction>(&fm, &lm, &bm); 
     std::unique_ptr<QueryPlanner> q1 = std::make_unique<BetterQueryPlanner>(mdm.get());
     std::unique_ptr<UpdatePlanner> q2 = std::make_unique<BasicUpdatePlanner>(mdm.get());
 
@@ -136,7 +135,6 @@ TEST(PLANTEST, PLANTEST2) {
     std::unique_ptr<Transaction> tx = std::make_unique<Transaction>(&fm, &lm, &bm); 
 
     std::unique_ptr<MetadataManager> mdm = std::make_unique<MetadataManager>(true, tx.get());
-    std::unique_ptr<Transaction> txn = std::make_unique<Transaction>(&fm, &lm, &bm); 
     std::unique_ptr<QueryPlanner> q1 = std::make_unique<BetterQueryPlanner>(mdm.get());
     std::unique_ptr<UpdatePlanner> q2 = std::make_unique<BasicUpdatePlanner>(mdm.get());
 

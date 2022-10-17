@@ -68,7 +68,7 @@ int BasicUpdatePlanner::ExecuteModify
 
 int BasicUpdatePlanner::ExecuteCreateTable
 (CreateTableData *data, Transaction *txn) {
-    std::cout << "table name = " << data->GetTableName() << std::endl;
+    // std::cout << "table name = " << data->GetTableName() << std::endl;
     mdm_->CreateTable(data->GetTableName(), data->GetSchema(), txn);
     return 0;
 }

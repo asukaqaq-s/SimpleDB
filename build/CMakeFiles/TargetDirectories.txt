@@ -41,6 +41,7 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/strip.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/local.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/rebuild_cache.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/edit_cache.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/table_page_test.dir
@@ -48,14 +49,13 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/recovery_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/product_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/parser_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/scan_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/product_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/parser_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir

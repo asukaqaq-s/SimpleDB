@@ -12,6 +12,16 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/asuka/workbench/project/SimpleDB/src/file/block_id.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/file/file_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/file/page.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/connection_adapter.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/connection_adapter.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/driver_adapter.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/driver_adapter.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/embedded/embedded_connect.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_connect.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/embedded/embedded_driver.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_driver.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/embedded/embedded_metadata.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_metadata.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/embedded/embedded_resultset.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_resultset.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/embedded/embedded_statement.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_statement.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/resultset_adapter.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_adapter.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/resultset_metadata_adapter.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_metadata_adapter.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/jdbc/statement_adapter.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/jdbc/statement_adapter.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/log/log_iterator.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/log/log_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/metadata/index_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o"
@@ -37,6 +47,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/asuka/workbench/project/SimpleDB/src/recovery/recovery_manager.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/recovery/setint_record.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/recovery/setint_record.cc.o"
   "/home/asuka/workbench/project/SimpleDB/src/recovery/setstring_record.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/server/simpledb.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/server/simpledb.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/src/server/simpledb_shell.cc" "/home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir/server/simpledb_shell.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -45,6 +57,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../src"
   "../src/include"
   "../test/include"
+  "../third_party"
   )
 
 # Targets to which this target links.

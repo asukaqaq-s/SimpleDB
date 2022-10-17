@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <assert.h>
+#include <iostream>
 
 #include "config/type.h"
 #include "file/block_id.h"

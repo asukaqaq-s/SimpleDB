@@ -15,9 +15,10 @@ namespace SimpleDB {
 FileManager::FileManager(const std::string &db_directory, int block_size) : 
     directory_name_(db_directory),block_size_(block_size) {
     std::string cmd;
-    
+
     // check whether the file exist
     is_new_ = (access(directory_name_.c_str(), 0) != 0); /* non-exist */
+
     if(is_new_) { /* create */
         mkdir(directory_name_.c_str(), 0777);
     }

@@ -12,7 +12,7 @@ namespace SimpleDB {
    
 
 TEST(tx, transaction_test) {
-
+    return;
   char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -82,6 +82,43 @@ TEST(tx, transaction_test) {
 
     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
+}
+
+TEST(txxx, transaction_test) {
+
+  char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "simpledb/asuka:123456@123";
+    std::string cmd;
+    std::string log_file_name = "simpledb.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+    
+    std::unique_ptr<BufferManager> buffer_manager 
+        = std::make_unique<BufferManager>(file_manager.get(), log_manager.get(), 10);
+
+    auto tx1 = std::make_unique<Transaction>(file_manager.get(), log_manager.get(), buffer_manager.get());
+    LogIterator logit = log_manager->Iterator();
+
+    while (logit.HasNextRecord()) {
+        std::cout << logit.GetLogOffset() << "  " << std::flush;
+        auto vec = logit.CurrentRecord();
+        std::cout << vec.size() << "  " << std::flush;
+        auto logrec = LogRecord::DeserializeFrom(vec);
+        // std::cout << logrec->ToString() << std::endl;
+        
+        logit.NextRecord();
+    }
+
+    
+    
+
+
 }
 
 }

@@ -233,6 +233,19 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
+# Target rules for targets named main
+
+# Build rule for target.
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
+
+# fast build rule for target.
+main/fast:
+	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+#=============================================================================
 # Target rules for targets named table_page_test
 
 # Build rule for target.
@@ -298,58 +311,6 @@ unittests/fast:
 .PHONY : unittests/fast
 
 #=============================================================================
-# Target rules for targets named product_test
-
-# Build rule for target.
-product_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 product_test
-.PHONY : product_test
-
-# fast build rule for target.
-product_test/fast:
-	$(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/build
-.PHONY : product_test/fast
-
-#=============================================================================
-# Target rules for targets named parser_test
-
-# Build rule for target.
-parser_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 parser_test
-.PHONY : parser_test
-
-# fast build rule for target.
-parser_test/fast:
-	$(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/build
-.PHONY : parser_test/fast
-
-#=============================================================================
-# Target rules for targets named metadata_test
-
-# Build rule for target.
-metadata_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
-.PHONY : metadata_test
-
-# fast build rule for target.
-metadata_test/fast:
-	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
-
-#=============================================================================
-# Target rules for targets named main
-
-# Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 main
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
-.PHONY : main/fast
-
-#=============================================================================
 # Target rules for targets named buffer_manager_test
 
 # Build rule for target.
@@ -400,6 +361,45 @@ buffer_test: cmake_check_build_system
 buffer_test/fast:
 	$(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
 .PHONY : buffer_test/fast
+
+#=============================================================================
+# Target rules for targets named product_test
+
+# Build rule for target.
+product_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 product_test
+.PHONY : product_test
+
+# fast build rule for target.
+product_test/fast:
+	$(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/build
+.PHONY : product_test/fast
+
+#=============================================================================
+# Target rules for targets named metadata_test
+
+# Build rule for target.
+metadata_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+#=============================================================================
+# Target rules for targets named parser_test
+
+# Build rule for target.
+parser_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 parser_test
+.PHONY : parser_test
+
+# fast build rule for target.
+parser_test/fast:
+	$(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/build
+.PHONY : parser_test/fast
 
 #=============================================================================
 # Target rules for targets named lru_replacer_test
@@ -536,19 +536,19 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
+	@echo "... main"
 	@echo "... table_page_test"
 	@echo "... tokenizer_test"
 	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
-	@echo "... product_test"
-	@echo "... parser_test"
-	@echo "... metadata_test"
-	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... scan_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
+	@echo "... product_test"
+	@echo "... metadata_test"
+	@echo "... parser_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
 	@echo "... table_scan_test"

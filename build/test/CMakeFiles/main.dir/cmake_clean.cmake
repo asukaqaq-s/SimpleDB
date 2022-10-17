@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/main.dir/arbitrarily_test/main.cc.o"
+  "CMakeFiles/main.dir/server/main.cc.o"
   "main"
   "main.pdb"
   "main[1]_tests.cmake"

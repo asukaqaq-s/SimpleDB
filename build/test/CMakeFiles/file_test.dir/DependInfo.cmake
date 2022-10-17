@@ -13,6 +13,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../src"
   "../src/include"
   "../test/include"
+  "../third_party"
   "_deps/googletest-src/googletest/include"
   "_deps/googletest-src/googletest"
   )

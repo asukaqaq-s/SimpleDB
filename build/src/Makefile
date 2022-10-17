@@ -398,6 +398,276 @@ file/page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 .PHONY : file/page.cc.s
 
+jdbc/connection_adapter.o: jdbc/connection_adapter.cc.o
+
+.PHONY : jdbc/connection_adapter.o
+
+# target to build an object file
+jdbc/connection_adapter.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/connection_adapter.cc.o
+.PHONY : jdbc/connection_adapter.cc.o
+
+jdbc/connection_adapter.i: jdbc/connection_adapter.cc.i
+
+.PHONY : jdbc/connection_adapter.i
+
+# target to preprocess a source file
+jdbc/connection_adapter.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/connection_adapter.cc.i
+.PHONY : jdbc/connection_adapter.cc.i
+
+jdbc/connection_adapter.s: jdbc/connection_adapter.cc.s
+
+.PHONY : jdbc/connection_adapter.s
+
+# target to generate assembly for a file
+jdbc/connection_adapter.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/connection_adapter.cc.s
+.PHONY : jdbc/connection_adapter.cc.s
+
+jdbc/driver_adapter.o: jdbc/driver_adapter.cc.o
+
+.PHONY : jdbc/driver_adapter.o
+
+# target to build an object file
+jdbc/driver_adapter.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/driver_adapter.cc.o
+.PHONY : jdbc/driver_adapter.cc.o
+
+jdbc/driver_adapter.i: jdbc/driver_adapter.cc.i
+
+.PHONY : jdbc/driver_adapter.i
+
+# target to preprocess a source file
+jdbc/driver_adapter.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/driver_adapter.cc.i
+.PHONY : jdbc/driver_adapter.cc.i
+
+jdbc/driver_adapter.s: jdbc/driver_adapter.cc.s
+
+.PHONY : jdbc/driver_adapter.s
+
+# target to generate assembly for a file
+jdbc/driver_adapter.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/driver_adapter.cc.s
+.PHONY : jdbc/driver_adapter.cc.s
+
+jdbc/embedded/embedded_connect.o: jdbc/embedded/embedded_connect.cc.o
+
+.PHONY : jdbc/embedded/embedded_connect.o
+
+# target to build an object file
+jdbc/embedded/embedded_connect.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_connect.cc.o
+.PHONY : jdbc/embedded/embedded_connect.cc.o
+
+jdbc/embedded/embedded_connect.i: jdbc/embedded/embedded_connect.cc.i
+
+.PHONY : jdbc/embedded/embedded_connect.i
+
+# target to preprocess a source file
+jdbc/embedded/embedded_connect.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_connect.cc.i
+.PHONY : jdbc/embedded/embedded_connect.cc.i
+
+jdbc/embedded/embedded_connect.s: jdbc/embedded/embedded_connect.cc.s
+
+.PHONY : jdbc/embedded/embedded_connect.s
+
+# target to generate assembly for a file
+jdbc/embedded/embedded_connect.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_connect.cc.s
+.PHONY : jdbc/embedded/embedded_connect.cc.s
+
+jdbc/embedded/embedded_driver.o: jdbc/embedded/embedded_driver.cc.o
+
+.PHONY : jdbc/embedded/embedded_driver.o
+
+# target to build an object file
+jdbc/embedded/embedded_driver.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_driver.cc.o
+.PHONY : jdbc/embedded/embedded_driver.cc.o
+
+jdbc/embedded/embedded_driver.i: jdbc/embedded/embedded_driver.cc.i
+
+.PHONY : jdbc/embedded/embedded_driver.i
+
+# target to preprocess a source file
+jdbc/embedded/embedded_driver.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_driver.cc.i
+.PHONY : jdbc/embedded/embedded_driver.cc.i
+
+jdbc/embedded/embedded_driver.s: jdbc/embedded/embedded_driver.cc.s
+
+.PHONY : jdbc/embedded/embedded_driver.s
+
+# target to generate assembly for a file
+jdbc/embedded/embedded_driver.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_driver.cc.s
+.PHONY : jdbc/embedded/embedded_driver.cc.s
+
+jdbc/embedded/embedded_metadata.o: jdbc/embedded/embedded_metadata.cc.o
+
+.PHONY : jdbc/embedded/embedded_metadata.o
+
+# target to build an object file
+jdbc/embedded/embedded_metadata.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_metadata.cc.o
+.PHONY : jdbc/embedded/embedded_metadata.cc.o
+
+jdbc/embedded/embedded_metadata.i: jdbc/embedded/embedded_metadata.cc.i
+
+.PHONY : jdbc/embedded/embedded_metadata.i
+
+# target to preprocess a source file
+jdbc/embedded/embedded_metadata.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_metadata.cc.i
+.PHONY : jdbc/embedded/embedded_metadata.cc.i
+
+jdbc/embedded/embedded_metadata.s: jdbc/embedded/embedded_metadata.cc.s
+
+.PHONY : jdbc/embedded/embedded_metadata.s
+
+# target to generate assembly for a file
+jdbc/embedded/embedded_metadata.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_metadata.cc.s
+.PHONY : jdbc/embedded/embedded_metadata.cc.s
+
+jdbc/embedded/embedded_resultset.o: jdbc/embedded/embedded_resultset.cc.o
+
+.PHONY : jdbc/embedded/embedded_resultset.o
+
+# target to build an object file
+jdbc/embedded/embedded_resultset.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_resultset.cc.o
+.PHONY : jdbc/embedded/embedded_resultset.cc.o
+
+jdbc/embedded/embedded_resultset.i: jdbc/embedded/embedded_resultset.cc.i
+
+.PHONY : jdbc/embedded/embedded_resultset.i
+
+# target to preprocess a source file
+jdbc/embedded/embedded_resultset.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_resultset.cc.i
+.PHONY : jdbc/embedded/embedded_resultset.cc.i
+
+jdbc/embedded/embedded_resultset.s: jdbc/embedded/embedded_resultset.cc.s
+
+.PHONY : jdbc/embedded/embedded_resultset.s
+
+# target to generate assembly for a file
+jdbc/embedded/embedded_resultset.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_resultset.cc.s
+.PHONY : jdbc/embedded/embedded_resultset.cc.s
+
+jdbc/embedded/embedded_statement.o: jdbc/embedded/embedded_statement.cc.o
+
+.PHONY : jdbc/embedded/embedded_statement.o
+
+# target to build an object file
+jdbc/embedded/embedded_statement.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_statement.cc.o
+.PHONY : jdbc/embedded/embedded_statement.cc.o
+
+jdbc/embedded/embedded_statement.i: jdbc/embedded/embedded_statement.cc.i
+
+.PHONY : jdbc/embedded/embedded_statement.i
+
+# target to preprocess a source file
+jdbc/embedded/embedded_statement.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_statement.cc.i
+.PHONY : jdbc/embedded/embedded_statement.cc.i
+
+jdbc/embedded/embedded_statement.s: jdbc/embedded/embedded_statement.cc.s
+
+.PHONY : jdbc/embedded/embedded_statement.s
+
+# target to generate assembly for a file
+jdbc/embedded/embedded_statement.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/embedded/embedded_statement.cc.s
+.PHONY : jdbc/embedded/embedded_statement.cc.s
+
+jdbc/resultset_adapter.o: jdbc/resultset_adapter.cc.o
+
+.PHONY : jdbc/resultset_adapter.o
+
+# target to build an object file
+jdbc/resultset_adapter.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_adapter.cc.o
+.PHONY : jdbc/resultset_adapter.cc.o
+
+jdbc/resultset_adapter.i: jdbc/resultset_adapter.cc.i
+
+.PHONY : jdbc/resultset_adapter.i
+
+# target to preprocess a source file
+jdbc/resultset_adapter.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_adapter.cc.i
+.PHONY : jdbc/resultset_adapter.cc.i
+
+jdbc/resultset_adapter.s: jdbc/resultset_adapter.cc.s
+
+.PHONY : jdbc/resultset_adapter.s
+
+# target to generate assembly for a file
+jdbc/resultset_adapter.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_adapter.cc.s
+.PHONY : jdbc/resultset_adapter.cc.s
+
+jdbc/resultset_metadata_adapter.o: jdbc/resultset_metadata_adapter.cc.o
+
+.PHONY : jdbc/resultset_metadata_adapter.o
+
+# target to build an object file
+jdbc/resultset_metadata_adapter.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_metadata_adapter.cc.o
+.PHONY : jdbc/resultset_metadata_adapter.cc.o
+
+jdbc/resultset_metadata_adapter.i: jdbc/resultset_metadata_adapter.cc.i
+
+.PHONY : jdbc/resultset_metadata_adapter.i
+
+# target to preprocess a source file
+jdbc/resultset_metadata_adapter.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_metadata_adapter.cc.i
+.PHONY : jdbc/resultset_metadata_adapter.cc.i
+
+jdbc/resultset_metadata_adapter.s: jdbc/resultset_metadata_adapter.cc.s
+
+.PHONY : jdbc/resultset_metadata_adapter.s
+
+# target to generate assembly for a file
+jdbc/resultset_metadata_adapter.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/resultset_metadata_adapter.cc.s
+.PHONY : jdbc/resultset_metadata_adapter.cc.s
+
+jdbc/statement_adapter.o: jdbc/statement_adapter.cc.o
+
+.PHONY : jdbc/statement_adapter.o
+
+# target to build an object file
+jdbc/statement_adapter.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/statement_adapter.cc.o
+.PHONY : jdbc/statement_adapter.cc.o
+
+jdbc/statement_adapter.i: jdbc/statement_adapter.cc.i
+
+.PHONY : jdbc/statement_adapter.i
+
+# target to preprocess a source file
+jdbc/statement_adapter.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/statement_adapter.cc.i
+.PHONY : jdbc/statement_adapter.cc.i
+
+jdbc/statement_adapter.s: jdbc/statement_adapter.cc.s
+
+.PHONY : jdbc/statement_adapter.s
+
+# target to generate assembly for a file
+jdbc/statement_adapter.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/jdbc/statement_adapter.cc.s
+.PHONY : jdbc/statement_adapter.cc.s
+
 log/log_iterator.o: log/log_iterator.cc.o
 
 .PHONY : log/log_iterator.o
@@ -1073,6 +1343,60 @@ recovery/setstring_record.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/setstring_record.cc.s
 .PHONY : recovery/setstring_record.cc.s
 
+server/simpledb.o: server/simpledb.cc.o
+
+.PHONY : server/simpledb.o
+
+# target to build an object file
+server/simpledb.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/server/simpledb.cc.o
+.PHONY : server/simpledb.cc.o
+
+server/simpledb.i: server/simpledb.cc.i
+
+.PHONY : server/simpledb.i
+
+# target to preprocess a source file
+server/simpledb.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/server/simpledb.cc.i
+.PHONY : server/simpledb.cc.i
+
+server/simpledb.s: server/simpledb.cc.s
+
+.PHONY : server/simpledb.s
+
+# target to generate assembly for a file
+server/simpledb.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/server/simpledb.cc.s
+.PHONY : server/simpledb.cc.s
+
+server/simpledb_shell.o: server/simpledb_shell.cc.o
+
+.PHONY : server/simpledb_shell.o
+
+# target to build an object file
+server/simpledb_shell.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/server/simpledb_shell.cc.o
+.PHONY : server/simpledb_shell.cc.o
+
+server/simpledb_shell.i: server/simpledb_shell.cc.i
+
+.PHONY : server/simpledb_shell.i
+
+# target to preprocess a source file
+server/simpledb_shell.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/server/simpledb_shell.cc.i
+.PHONY : server/simpledb_shell.cc.i
+
+server/simpledb_shell.s: server/simpledb_shell.cc.s
+
+.PHONY : server/simpledb_shell.s
+
+# target to generate assembly for a file
+server/simpledb_shell.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/server/simpledb_shell.cc.s
+.PHONY : server/simpledb_shell.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1111,6 +1435,36 @@ help:
 	@echo "... file/page.o"
 	@echo "... file/page.i"
 	@echo "... file/page.s"
+	@echo "... jdbc/connection_adapter.o"
+	@echo "... jdbc/connection_adapter.i"
+	@echo "... jdbc/connection_adapter.s"
+	@echo "... jdbc/driver_adapter.o"
+	@echo "... jdbc/driver_adapter.i"
+	@echo "... jdbc/driver_adapter.s"
+	@echo "... jdbc/embedded/embedded_connect.o"
+	@echo "... jdbc/embedded/embedded_connect.i"
+	@echo "... jdbc/embedded/embedded_connect.s"
+	@echo "... jdbc/embedded/embedded_driver.o"
+	@echo "... jdbc/embedded/embedded_driver.i"
+	@echo "... jdbc/embedded/embedded_driver.s"
+	@echo "... jdbc/embedded/embedded_metadata.o"
+	@echo "... jdbc/embedded/embedded_metadata.i"
+	@echo "... jdbc/embedded/embedded_metadata.s"
+	@echo "... jdbc/embedded/embedded_resultset.o"
+	@echo "... jdbc/embedded/embedded_resultset.i"
+	@echo "... jdbc/embedded/embedded_resultset.s"
+	@echo "... jdbc/embedded/embedded_statement.o"
+	@echo "... jdbc/embedded/embedded_statement.i"
+	@echo "... jdbc/embedded/embedded_statement.s"
+	@echo "... jdbc/resultset_adapter.o"
+	@echo "... jdbc/resultset_adapter.i"
+	@echo "... jdbc/resultset_adapter.s"
+	@echo "... jdbc/resultset_metadata_adapter.o"
+	@echo "... jdbc/resultset_metadata_adapter.i"
+	@echo "... jdbc/resultset_metadata_adapter.s"
+	@echo "... jdbc/statement_adapter.o"
+	@echo "... jdbc/statement_adapter.i"
+	@echo "... jdbc/statement_adapter.s"
 	@echo "... log/log_iterator.o"
 	@echo "... log/log_iterator.i"
 	@echo "... log/log_iterator.s"
@@ -1186,6 +1540,12 @@ help:
 	@echo "... recovery/setstring_record.o"
 	@echo "... recovery/setstring_record.i"
 	@echo "... recovery/setstring_record.s"
+	@echo "... server/simpledb.o"
+	@echo "... server/simpledb.i"
+	@echo "... server/simpledb.s"
+	@echo "... server/simpledb_shell.o"
+	@echo "... server/simpledb_shell.i"
+	@echo "... server/simpledb_shell.s"
 .PHONY : help
 
 

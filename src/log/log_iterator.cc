@@ -71,6 +71,8 @@ std::vector<char> LogIterator::CurrentRecord() {
     // a record spanned two pages
     record_size = read_buf_->GetInt(buffer_offset_);
     need_size = record_size + sizeof(int);
+    
+    
     if (need_size + buffer_offset_ > buffer_size_) {
         MoveToRecord(file_offset_);
     }

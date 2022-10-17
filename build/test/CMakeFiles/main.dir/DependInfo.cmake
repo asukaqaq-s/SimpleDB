@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/asuka/workbench/project/SimpleDB/test/arbitrarily_test/main.cc" "/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o"
+  "/home/asuka/workbench/project/SimpleDB/test/server/main.cc" "/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/main.dir/server/main.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -13,6 +13,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../src"
   "../src/include"
   "../test/include"
+  "../third_party"
   "_deps/googletest-src/googletest/include"
   "_deps/googletest-src/googletest"
   )

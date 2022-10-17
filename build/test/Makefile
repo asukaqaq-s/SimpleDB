@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+test/CMakeFiles/main.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/rule
+.PHONY : test/CMakeFiles/main.dir/rule
+
+# Convenience name for target.
+main: test/CMakeFiles/main.dir/rule
+
+.PHONY : main
+
+# fast build rule for target.
+main/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+# Convenience name for target.
 test/CMakeFiles/table_page_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_page_test.dir/rule
 .PHONY : test/CMakeFiles/table_page_test.dir/rule
@@ -243,66 +258,6 @@ unittests/fast:
 .PHONY : unittests/fast
 
 # Convenience name for target.
-test/CMakeFiles/product_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/product_test.dir/rule
-.PHONY : test/CMakeFiles/product_test.dir/rule
-
-# Convenience name for target.
-product_test: test/CMakeFiles/product_test.dir/rule
-
-.PHONY : product_test
-
-# fast build rule for target.
-product_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/build
-.PHONY : product_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/parser_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/parser_test.dir/rule
-.PHONY : test/CMakeFiles/parser_test.dir/rule
-
-# Convenience name for target.
-parser_test: test/CMakeFiles/parser_test.dir/rule
-
-.PHONY : parser_test
-
-# fast build rule for target.
-parser_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/build
-.PHONY : parser_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/metadata_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
-.PHONY : test/CMakeFiles/metadata_test.dir/rule
-
-# Convenience name for target.
-metadata_test: test/CMakeFiles/metadata_test.dir/rule
-
-.PHONY : metadata_test
-
-# fast build rule for target.
-metadata_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/main.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/rule
-.PHONY : test/CMakeFiles/main.dir/rule
-
-# Convenience name for target.
-main: test/CMakeFiles/main.dir/rule
-
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
-.PHONY : main/fast
-
-# Convenience name for target.
 test/CMakeFiles/buffer_manager_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_manager_test.dir/rule
 .PHONY : test/CMakeFiles/buffer_manager_test.dir/rule
@@ -361,6 +316,51 @@ buffer_test: test/CMakeFiles/buffer_test.dir/rule
 buffer_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
 .PHONY : buffer_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/product_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/product_test.dir/rule
+.PHONY : test/CMakeFiles/product_test.dir/rule
+
+# Convenience name for target.
+product_test: test/CMakeFiles/product_test.dir/rule
+
+.PHONY : product_test
+
+# fast build rule for target.
+product_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/product_test.dir/build.make test/CMakeFiles/product_test.dir/build
+.PHONY : product_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/metadata_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
+.PHONY : test/CMakeFiles/metadata_test.dir/rule
+
+# Convenience name for target.
+metadata_test: test/CMakeFiles/metadata_test.dir/rule
+
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/parser_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/parser_test.dir/rule
+.PHONY : test/CMakeFiles/parser_test.dir/rule
+
+# Convenience name for target.
+parser_test: test/CMakeFiles/parser_test.dir/rule
+
+.PHONY : parser_test
+
+# fast build rule for target.
+parser_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/parser_test.dir/build.make test/CMakeFiles/parser_test.dir/build
+.PHONY : parser_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/lru_replacer_test.dir/rule:
@@ -496,33 +496,6 @@ log_test: test/CMakeFiles/log_test.dir/rule
 log_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
 .PHONY : log_test/fast
-
-arbitrarily_test/main.o: arbitrarily_test/main.cc.o
-
-.PHONY : arbitrarily_test/main.o
-
-# target to build an object file
-arbitrarily_test/main.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o
-.PHONY : arbitrarily_test/main.cc.o
-
-arbitrarily_test/main.i: arbitrarily_test/main.cc.i
-
-.PHONY : arbitrarily_test/main.i
-
-# target to preprocess a source file
-arbitrarily_test/main.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/arbitrarily_test/main.cc.i
-.PHONY : arbitrarily_test/main.cc.i
-
-arbitrarily_test/main.s: arbitrarily_test/main.cc.s
-
-.PHONY : arbitrarily_test/main.s
-
-# target to generate assembly for a file
-arbitrarily_test/main.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/arbitrarily_test/main.cc.s
-.PHONY : arbitrarily_test/main.cc.s
 
 buffer/buffer_manager_test.o: buffer/buffer_manager_test.cc.o
 
@@ -1037,6 +1010,33 @@ recovery/recovery_manager_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_manager_test.dir/build.make test/CMakeFiles/recovery_manager_test.dir/recovery/recovery_manager_test.cc.s
 .PHONY : recovery/recovery_manager_test.cc.s
 
+server/main.o: server/main.cc.o
+
+.PHONY : server/main.o
+
+# target to build an object file
+server/main.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/server/main.cc.o
+.PHONY : server/main.cc.o
+
+server/main.i: server/main.cc.i
+
+.PHONY : server/main.i
+
+# target to preprocess a source file
+server/main.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/server/main.cc.i
+.PHONY : server/main.cc.i
+
+server/main.s: server/main.cc.s
+
+.PHONY : server/main.s
+
+# target to generate assembly for a file
+server/main.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/server/main.cc.s
+.PHONY : server/main.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1046,6 +1046,7 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
+	@echo "... main"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... table_page_test"
@@ -1053,14 +1054,13 @@ help:
 	@echo "... show-tests"
 	@echo "... recovery_manager_test"
 	@echo "... unittests"
-	@echo "... product_test"
-	@echo "... parser_test"
-	@echo "... metadata_test"
-	@echo "... main"
 	@echo "... buffer_manager_test"
 	@echo "... scan_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
+	@echo "... product_test"
+	@echo "... metadata_test"
+	@echo "... parser_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
 	@echo "... test"
@@ -1072,9 +1072,6 @@ help:
 	@echo "... list_install_components"
 	@echo "... log_record_test"
 	@echo "... log_test"
-	@echo "... arbitrarily_test/main.o"
-	@echo "... arbitrarily_test/main.i"
-	@echo "... arbitrarily_test/main.s"
 	@echo "... buffer/buffer_manager_test.o"
 	@echo "... buffer/buffer_manager_test.i"
 	@echo "... buffer/buffer_manager_test.s"
@@ -1132,6 +1129,9 @@ help:
 	@echo "... recovery/recovery_manager_test.o"
 	@echo "... recovery/recovery_manager_test.i"
 	@echo "... recovery/recovery_manager_test.s"
+	@echo "... server/main.o"
+	@echo "... server/main.i"
+	@echo "... server/main.s"
 .PHONY : help
 
 

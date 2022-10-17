@@ -57,27 +57,27 @@ include test/CMakeFiles/main.dir/progress.make
 # Include the compile flags for this target's objects.
 include test/CMakeFiles/main.dir/flags.make
 
-test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o: test/CMakeFiles/main.dir/flags.make
-test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o: ../test/arbitrarily_test/main.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/arbitrarily_test/main.cc.o -c /home/asuka/workbench/project/SimpleDB/test/arbitrarily_test/main.cc
+test/CMakeFiles/main.dir/server/main.cc.o: test/CMakeFiles/main.dir/flags.make
+test/CMakeFiles/main.dir/server/main.cc.o: ../test/server/main.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/main.dir/server/main.cc.o"
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/server/main.cc.o -c /home/asuka/workbench/project/SimpleDB/test/server/main.cc
 
-test/CMakeFiles/main.dir/arbitrarily_test/main.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/arbitrarily_test/main.cc.i"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/test/arbitrarily_test/main.cc > CMakeFiles/main.dir/arbitrarily_test/main.cc.i
+test/CMakeFiles/main.dir/server/main.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/server/main.cc.i"
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/test/server/main.cc > CMakeFiles/main.dir/server/main.cc.i
 
-test/CMakeFiles/main.dir/arbitrarily_test/main.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/arbitrarily_test/main.cc.s"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/test/arbitrarily_test/main.cc -o CMakeFiles/main.dir/arbitrarily_test/main.cc.s
+test/CMakeFiles/main.dir/server/main.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/server/main.cc.s"
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/test/server/main.cc -o CMakeFiles/main.dir/server/main.cc.s
 
 # Object files for target main
 main_OBJECTS = \
-"CMakeFiles/main.dir/arbitrarily_test/main.cc.o"
+"CMakeFiles/main.dir/server/main.cc.o"
 
 # External object files for target main
 main_EXTERNAL_OBJECTS =
 
-test/main: test/CMakeFiles/main.dir/arbitrarily_test/main.cc.o
+test/main: test/CMakeFiles/main.dir/server/main.cc.o
 test/main: test/CMakeFiles/main.dir/build.make
 test/main: lib/libgtest_maind.a
 test/main: src/libSimpleDB_lib.a
