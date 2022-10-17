@@ -71,7 +71,6 @@ void FileManager::Write(const BlockId &block, Page &page) {
     int block_number = block.BlockNum();
     int offset = block_number * block_size_;
     auto file_io = GetFile(file_name);
-    
     file_io->seekp(offset, std::ios::beg);
     file_io->write(&((*page.content())[0]), block_size_);
     if(file_io->bad()) {
@@ -111,9 +110,14 @@ void FileManager::ReadLog(const std::string &log_name, int offset, Page &page) {
 }
 
 void FileManager::WriteLog(const std::string &log_name, int size, Page &page) {
+    if (size == 0) {
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
     auto log_io = GetLogFile(log_name);
     log_io->write(&((*page.content())[0]), size);
+
     if(log_io->bad()) {
         throw std::runtime_error("I/O error when write a log");
     }
@@ -191,7 +195,9 @@ std::shared_ptr<std::fstream> FileManager::GetLogFile(const std::string &log_nam
         }
     }
     // file is not opened
-    log_io->open(file_path, std::ios::binary | std::ios::in | std::ios::out);
+    // we should open this file with app mode
+    log_io->open(file_path, std::ios::binary | std::ios::in | 
+                            std::ios::out | std::ios::app);
     if(!log_io->is_open()) { /* the file is not created */
         // clear bad statu to ensure that normally operation
         log_io->clear();

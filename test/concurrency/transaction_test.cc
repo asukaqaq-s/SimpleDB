@@ -103,12 +103,12 @@ TEST(txxx, transaction_test) {
         = std::make_unique<BufferManager>(file_manager.get(), log_manager.get(), 10);
 
     auto tx1 = std::make_unique<Transaction>(file_manager.get(), log_manager.get(), buffer_manager.get());
-    LogIterator logit = log_manager->Iterator();
+    LogIterator logit = log_manager->Iterator(4077);
 
     while (logit.HasNextRecord()) {
-        std::cout << logit.GetLogOffset() << "  " << std::flush;
+        // std::cout << logit.GetLogOffset() << "  " << std::flush;
         auto vec = logit.CurrentRecord();
-        std::cout << vec.size() << "  " << std::flush;
+        // std::cout << vec.size() << "  " << std::flush;
         auto logrec = LogRecord::DeserializeFrom(vec);
         // std::cout << logrec->ToString() << std::endl;
         
@@ -116,8 +116,6 @@ TEST(txxx, transaction_test) {
     }
 
     
-    
-
 
 }
 

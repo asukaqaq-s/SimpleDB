@@ -19,7 +19,7 @@ Schedule
 - Query(completed in 12/10/2022)
 - Parsing(completed in 14/10/2022)
 - Planning(completed in 15/10/2022)
-- JDBC(todo)
+- JDBC(completed in 17/10/2022)
 - Indexing(todo)
 - Materialization and Sorting(todo)
 - Effective buffer Utilization(todo)
