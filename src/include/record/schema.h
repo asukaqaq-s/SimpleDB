@@ -1,7 +1,7 @@
 #ifndef SCHEMA_H
 #define SCHEMA_H
 
-#include "config/field_type.h"
+#include "type/typeid.h"
 #include "config/macro.h"
 
 #include <vector>
@@ -15,7 +15,8 @@ namespace SimpleDB {
 /**
 * @brief the name and type of each field
 * A schema can be thought of as a list of 
-* triples of the form [fieldname, type, length]. 
+* triples of the form [fieldname, type, length].
+* we will need a schema object to calulate offset in layout 
 */
 class Schema {
 
@@ -28,17 +29,21 @@ class FieldInfo {
 
 public:
     FieldInfo() = default;
-    FieldInfo(FieldType type, int length) : 
+    FieldInfo(TypeID type, int length) : 
         type_(type), length_(length) {} 
 
-    FieldInfo & operator =(const FieldInfo &p) {
+    FieldInfo& operator =(const FieldInfo &p) {
         type_ = p.type_;
         length_ = p.length_;
         return  *this;
     }
 
-    FieldType type_;
-    int length_;    
+    TypeID type_;
+
+    // for string type, length_ means the maxsize
+    // of the field
+    int length_;
+    
 };
 
 public:
@@ -55,7 +60,7 @@ public:
     * @param type the type of the field, according to the constants in simpledb
     * @param length the conceptual length of a string field
     */
-    void AddField(std::string field_name, FieldType type, int length) {
+    void AddField(const std::string &field_name, TypeID type, int length) {
         fields_.emplace_back(field_name);
         info_[field_name] = FieldInfo(type, length);     
     }
@@ -65,8 +70,17 @@ public:
     * the method AddIntField gives intergers a length value of 0,
     * @param field_name the name of the field
     */
-    void AddIntField(std::string field_name) {
-        AddField(field_name, FieldType::INTEGER, 0);
+    void AddIntField(const std::string &field_name) {
+        AddField(field_name, TypeID::INTEGER, 0);
+    }
+
+    /**
+    * @brief because the size of double field is unnecessary
+    * the method AddDemField gives decimals a length value of 0,
+    * @param field_name the name of the field
+    */
+    void AddDemField(const std::string &field_name) {
+        AddField(field_name, TypeID::DECIMAL, 0);
     }
 
     /**
@@ -74,8 +88,12 @@ public:
     * @param field_name the name of the field
     * @param length the number of chars in the varchar definition
     */
-    void AddStringField(std::string field_name, int length) {
-        AddField(field_name, FieldType::VARCHAR, length);
+    void AddStrField(std::string field_name, int length) {
+        AddField(field_name, TypeID::CHAR, length);
+    }
+
+    void AddVarStrField(std::string field_name, int length) {
+        AddField(field_name, TypeID::VARCHAR, length);
     }
 
     /**
@@ -86,7 +104,7 @@ public:
     * @param schema the other schema
     */
     void AddSameField(std::string field_name, const Schema &schema) {
-        FieldType type = schema.GetType(field_name);
+        TypeID type = schema.GetType(field_name);
         int length = schema.GetLength(field_name);
         AddField(field_name, type, length);
     }
@@ -103,22 +121,57 @@ public:
         }
     }
 
-
-    std::vector<std::string> GetFields() const { return fields_;}
+    std::vector<std::string> GetFields() const { 
+        return fields_;
+    }
 
     bool HasField(const std::string &field_name) const { 
         return std::find(fields_.begin(), fields_.end(), field_name) 
                 !=  fields_.end();
     }
     
-    FieldType GetType(const std::string &field_name) const {
+    TypeID GetType(const std::string &field_name) const {
         SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
         return info_.at(field_name).type_;
     }
-    
+
+    /**
+    * @brief the method will get the maxsize of string type 
+    */
     int GetLength(const std::string &field_name) const {
         SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
         return info_.at(field_name).length_;
+    }
+
+    /**
+    * @brief the method will be called by layout object for calc
+    * the fix-len size
+    */
+    int GetFixLength(const std::string &field_name) const {
+        SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
+        auto type = info_.at(field_name).type_;
+
+        if (type == TypeID::VARCHAR) {
+            return sizeof(int);
+        } else {
+            switch (type)
+            {
+            case TypeID::CHAR:
+                return info_.at(field_name).length_;
+                break;
+            
+            case TypeID::INTEGER:
+                return sizeof(int);
+                break;
+            
+            case TypeID::DECIMAL:
+                return sizeof(double);
+                break;
+                
+            default:
+                SIMPLEDB_ASSERT(false, "");
+            }
+        }
     }
 
 private:

@@ -78,10 +78,12 @@ lsn_t LogManager::AppendLogRecord(LogRecord &log_record) {
     }
     
     lastest_lsn_ ++; 
+    
     // now, The lastestlsn corresponds to the current log
     log_record.SetLsn(lastest_lsn_); 
     auto log_record_vector = log_record.Serializeto();
     log_buffer_->SetBytes(start_address, *log_record_vector);
+
     // update log file size and log_count_
     log_file_size_ += need_size;
     log_count_ += need_size;
@@ -102,11 +104,18 @@ lsn_t LogManager::AppendLogWithOffset(LogRecord &log_record,int *offset) {
     }
     
     lastest_lsn_ ++; 
+    
     // now, The lastestlsn corresponds to the current log
     log_record.SetLsn(lastest_lsn_);
     auto log_record_vector = log_record.Serializeto();
     log_buffer_->SetBytes(start_address, *log_record_vector);
+    
+    // update offset 
     *offset = log_file_size_;
+    if (log_record.GetRecordType() == LogRecordType::CHECKPOINTEND) {
+        SetMasterLsnOffset(*offset);
+    }
+
     // update log file size and log_count_
     log_file_size_ += need_size;
     log_count_ += need_size;
@@ -130,6 +139,31 @@ LogIterator LogManager::Iterator(int offset) {
     
     // return the specifed log stores in log file
     return LogIterator(file_manager_, log_file_name_, offset);
+}
+
+void LogManager::SetMasterLsnOffset(int offset) {
+    auto byte_array = std::make_shared<std::vector<char>> (4);
+    Page chkpt_page(byte_array);
+    chkpt_page.SetInt(0, offset);
+
+    file_manager_->Write(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
+
+    // debug purpose
+    file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
+    SIMPLEDB_ASSERT(chkpt_page.GetInt(0) == offset, "write chkpt log error");
+}
+
+int LogManager::GetMasterLsnOffset() {
+
+    if (file_manager_->GetFileSize(SIMPLEDB_CHKPT_FILE_NAME) == 0) {
+        // file not exist, means have not written a checkpoint
+        return -1;
+    }
+
+    auto byte_array = std::make_shared<std::vector<char>> (4);
+    Page chkpt_page(byte_array);
+    file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
+    return chkpt_page.GetInt(0);
 }
 
 } // namespace SimpleDB

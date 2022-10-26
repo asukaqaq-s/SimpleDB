@@ -24,8 +24,7 @@ public:
     * @param schema the schema of the table's records
     */    
     Layout(Schema schema) : schema_(schema) {
-        // leave space for the empty/inuse flag
-        int pos = sizeof(int);    
+        int pos = 0;
         auto fields_ = schema.GetFields();
         
         // remember that we don't need to pad it
@@ -33,8 +32,13 @@ public:
             offsets_[field_name] = pos;
             pos += LengthInBytes(field_name);
         }
-        tuple_size_ = pos;
+        size_ = pos;
     } 
+
+    int GetFieldCount() const {
+        SIMPLEDB_ASSERT(offsets_.size() == schema_.GetFields().size(), "");
+        return offsets_.size();
+    }
 
     /**
     * Create a Layout object from the specified metadata.
@@ -46,10 +50,10 @@ public:
     * @param recordlen the already-calculated length of each record
     */
     Layout(Schema schema, std::map<std::string, int> offsets, int size) 
-        : schema_(schema), offsets_(offsets), tuple_size_(size) {}
+        : schema_(schema), offsets_(offsets), size_(size) {}
 
     
-    Schema GetSchema() { return schema_;}
+    Schema GetSchema() const { return schema_;}
     
     /**
     * @brief return the offset of a specified field within a record
@@ -57,7 +61,7 @@ public:
     * @param field_name the name of the field
     * @return the offset of that field within a record
     */
-    int GetOffset(std::string field_name) { 
+    int GetOffset(std::string field_name) const { 
         
         if (offsets_.find(field_name) == offsets_.end()) {
             std::string cmd = "can not find field " + field_name;
@@ -68,21 +72,42 @@ public:
         return offsets_.at(field_name);
     }
 
+    int GetLength() const { return size_; }
 
-    int GetTupleSize() { return tuple_size_; }
+
+private:
 
     /**
     * @brief Get the space which how many bytes is needed
-    * to store this type in the page
+    * to store this type.
+    * we just need 4-byte to store the varchar type in layout
+    * and actually data will be stored in the end of tuple
     * @param field_name the name of the field
     */
     int LengthInBytes(std::string field_name) {
-        FieldType type = schema_.GetType(field_name);
-        if (type == FieldType::INTEGER) {
-            return sizeof(int);
-        } else {
-            return Page::MaxLength(schema_.GetLength(field_name));
+        TypeID type = schema_.GetType(field_name);
+        
+        switch(type) {
+        case TypeID::INVALID:
+            break;
+
+        case TypeID::CHAR:
+            return Page::MaxLength(schema_.GetFixLength(field_name));
+            break;
+        
+        case TypeID::INTEGER:
+        case TypeID::DECIMAL:
+            return schema_.GetFixLength(field_name);
+            break;
+        
+        case TypeID::VARCHAR:
+            return schema_.GetFixLength(field_name);
+            break;
+        
+        default:
+            break;
         }
+
         return 0;
     }
 
@@ -94,7 +119,7 @@ private:
     // map fieldname to the offset of field in this record/tuple
     std::map<std::string, int> offsets_;
     // the size of this tuple
-    int tuple_size_;
+    int size_;
 
 };
 

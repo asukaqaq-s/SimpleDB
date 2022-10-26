@@ -1,114 +1,439 @@
-
+#include "log/log_iterator.h"
+#include "log/log_manager.h"
 #include "recovery/log_record.h"
-#include "buffer/buffer_manager.h"
 #include "gtest/gtest.h"
+
+#include <iostream>
+#include <memory>
+#include <random>
+#include <string>
+#include <cstring>
+#include <algorithm>
 
 namespace SimpleDB {
 
-TEST(LogRecordTest, SetIntTest) {
-    return;
-    BlockId block("txt1.txt", 0);
-    SetIntRecord origin_record(3, block, 80, 122, 0222);
-    auto copy_record = origin_record;
+Tuple GetRandomTuple() {
+    
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(1, 100); // uniform distribution
+    
+    int size  = distrib(engine);
+    std::vector<char> q;
 
-    copy_record.SetCLR();
-    origin_record.SetPrevLSN(100);
-    origin_record.SetLsn(200);
-    // std::cout << origin_record.ToString() << std::endl;
-    // std::cout << copy_record.ToString() << std::endl;
-    EXPECT_NE(copy_record, origin_record); 
-    
-    auto byte_array = origin_record.Serializeto();
-    auto page = LogRecord::DeserializeFrom(*byte_array);
-    EXPECT_EQ(page->GetLsn(),200);
-    EXPECT_EQ(*(static_cast<SetIntRecord*>(page.get())), origin_record);
-    
-    // std::cout << origin_record.ToString() << std::endl;
-    // std::cout << page->ToString() << std::endl;
+    for (int i = 0; i < size;i ++) {
+        std::uniform_int_distribution<> distrib('0', '9'); // uniform distribution
+        q.push_back(distrib(engine));
+    }
 
-    std::shared_ptr<Page> p = std::make_shared<Page>(byte_array);
-    SetIntRecord test_record(p.get());
-    
-    EXPECT_EQ(test_record, origin_record);
+    return Tuple(q);
 
 }
 
-TEST(LogRecordTest, SetStringTest) {
 
-    BlockId block("txt1.txt", 0);
-    SetStringRecord origin_record(3, block, 80, "12223", "445562");
+TEST(LogRecordTest, InsertLogTest1) {
 
-    auto copy_record = origin_record;
-
-    copy_record.SetCLR();
-    origin_record.SetPrevLSN(100);
-    origin_record.SetLsn(200);
-    // std::cout << origin_record.ToString() << std::endl;
-    // std::cout << copy_record.ToString() << std::endl;
-    EXPECT_NE(copy_record, origin_record); 
-    
-    auto byte_array = origin_record.Serializeto();
-    auto page = LogRecord::DeserializeFrom(*byte_array);
-    EXPECT_EQ(page->GetLsn(),200);
-    EXPECT_EQ(*(static_cast<SetStringRecord*>(page.get())), origin_record);
-    
-    // std::cout << origin_record.ToString() << std::endl;
-    // std::cout << page->ToString() << std::endl;
-
-    std::shared_ptr<Page> p = std::make_shared<Page>(byte_array);
-    SetStringRecord test_record(p.get());
-    
-    EXPECT_EQ(test_record, origin_record);
-
-}
-
-TEST(LogRecordTest, LogRecordTest)  {
     char buf[100];
     std::string local_path = getcwd(buf, 100);
-    std::string directory_path = local_path + "/test_directory";
-    int block_size = 4 * 1024;
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
 
-    std::string cmd1 = "rm -rf " + directory_path;
-    
-    system(cmd1.c_str());
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
 
-    std::string file_name = "test1.txt";
-    BlockId test_block = BlockId(file_name, 0);
-    FileManager fm(directory_path, block_size);
-    LogManager lm(&fm, "log.log");
-    BufferManager bm(&fm, &lm, 10);
-    auto buffer = bm.NewPage(file_name);
-    // return;
-    // std::unique_ptr<Transaction> tx1 = std::make_unique<Transaction>(&fm, &lm, &bm);
-    int MAXTIME = 10000;
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
     
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    int min = -1e9,max = 1e9;
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+
+    // produce log record
     
-    BlockId block("txt1.txt", 0);
-    SetIntRecord log_record(3, block, 80, 122, 0222);
-    auto log_vec = *log_record.Serializeto();
-    log_record.SetPrevLSN(100);
-    log_record.SetLsn(200);
+    std::map<int,int> mp;
+
+    std::vector<char> log_record_vec;
+    std::vector<InsertRecord> log_record_array;
+
+    for(int i = 0;i < 1000;i ++) {
+        int rid_x = distrib(engine),rid_y = distrib(engine);
+        // ----------------------------------
+        // | produce a random insert record |
+        // ----------------------------------
+        auto log_record = InsertRecord(1, test_file, RID(rid_x, rid_y), GetRandomTuple());
+        
+        
+        log_record_array.push_back(log_record);
+        log_record_vec = *log_record.Serializeto();
+        auto log_record_tmp = LogRecord::DeserializeFrom(log_record_vec);
+        auto tmp = dynamic_cast<InsertRecord*> (log_record_tmp.get());
+        // std::cout << "tmp =          " << tmp->ToString() << std::endl;
+        // std::cout << "log =          " << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record);
+
+        // auto log_record = SetIntRecord(1, BlockId("text1.txt", 0), 10, old_value, new_value);
+        log_manager->Append(log_record_vec);
+    }    
     
-    for (int i = 0;i < MAXTIME;i ++) {
-        lm.AppendLogRecord(log_record);
+    auto log_iter_main = log_manager->Iterator();
+    int i = 0;
+    while(log_iter_main.HasNextRecord()) {
+        auto byte_array1 = log_iter_main.CurrentRecord();
+        
+        // static_cast<InsertRecord*>
+        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
+        auto tmp = dynamic_cast<InsertRecord*> (log_record_tmp.get());
+        // std::cout << tmp->ToString() << std::endl;
+        // std::cout << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record_array[i]);
+
+        i ++;
+        log_iter_main.NextRecord();
     }
-    int cnt = 0;
-    auto logit = lm.Iterator();
-    while (logit.HasNextRecord()) {
-        auto vec = logit.CurrentRecord();
-        auto record = LogRecord::DeserializeFrom(vec);
-        record->SetLsn(MAXTIME - 1);
-        EXPECT_EQ(record->ToString(), log_record.ToString());
-        logit.NextRecord();
-        cnt ++;
-    }
 
-    EXPECT_EQ(cnt, MAXTIME);
-    
 
-    std::string cmd2 = "rm -rf " + directory_path;
-    
-    system(cmd2.c_str());
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
 }
+
+
+TEST(LogRecordTest, DeleteLogTest1) {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    int min = -1e9,max = 1e9;
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+
+    // produce log record
+    
+    std::map<int,int> mp;
+
+    std::vector<char> log_record_vec;
+    std::vector<DeleteRecord> log_record_array;
+
+    for(int i = 0;i < 1000;i ++) {
+        int rid_x = distrib(engine),rid_y = distrib(engine);
+        // ----------------------------------
+        // | produce a random insert record |
+        // ----------------------------------
+        // int offset;
+        auto log_record = DeleteRecord(1, test_file, RID(rid_x, rid_y), GetRandomTuple());
+        
+        
+        log_record_array.push_back(log_record);
+        log_record_vec = *log_record.Serializeto();
+        auto log_record_tmp = LogRecord::DeserializeFrom(log_record_vec);
+        auto tmp = dynamic_cast<DeleteRecord*> (log_record_tmp.get());
+        // std::cout << "tmp =          " << tmp->ToString() << std::endl;
+        // std::cout << "log =          " << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record);
+
+        // auto log_record = SetIntRecord(1, BlockId("text1.txt", 0), 10, old_value, new_value);
+        log_manager->Append(log_record_vec);
+        // mp[i] = offset;
+    }    
+    
+    auto log_iter_main = log_manager->Iterator();
+    int i = 0;
+    while(log_iter_main.HasNextRecord()) {
+        auto byte_array1 = log_iter_main.CurrentRecord();
+        
+        // static_cast<InsertRecord*>
+        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
+        auto tmp = dynamic_cast<DeleteRecord*> (log_record_tmp.get());
+        // std::cout << tmp->ToString() << std::endl;
+        // std::cout << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record_array[i]);
+
+        i ++;
+        log_iter_main.NextRecord();
+    }
+
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+}
+
+TEST(LogRecordTest, UpdateLogTest1) {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    int min = -1e9,max = 1e9;
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+
+    // produce log record
+    
+    std::map<int,int> mp;
+
+    std::vector<char> log_record_vec;
+    std::vector<UpdateRecord> log_record_array;
+
+    for(int i = 0;i < 1000;i ++) {
+        int rid_x = distrib(engine),rid_y = distrib(engine);
+        // ----------------------------------
+        // | produce a random insert record |
+        // ----------------------------------
+        // int offset;
+        auto log_record = UpdateRecord(1, test_file, RID(rid_x, rid_y), GetRandomTuple(), GetRandomTuple());
+        
+        
+        log_record_array.push_back(log_record);
+        log_record_vec = *log_record.Serializeto();
+        auto log_record_tmp = LogRecord::DeserializeFrom(log_record_vec);
+        auto tmp = dynamic_cast<UpdateRecord*> (log_record_tmp.get());
+        // std::cout << "tmp =          " << tmp->ToString() << std::endl;
+        // std::cout << "log =          " << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record);
+
+        // auto log_record = SetIntRecord(1, BlockId("text1.txt", 0), 10, old_value, new_value);
+        log_manager->Append(log_record_vec);
+        // mp[i] = offset;
+    }    
+    
+    auto log_iter_main = log_manager->Iterator();
+    int i = 0;
+    while(log_iter_main.HasNextRecord()) {
+        auto byte_array1 = log_iter_main.CurrentRecord();
+        
+        // static_cast<InsertRecord*>
+        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
+        auto tmp = dynamic_cast<UpdateRecord*> (log_record_tmp.get());
+        // std::cout << tmp->ToString() << std::endl;
+        // std::cout << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record_array[i]);
+
+        i ++;
+        log_iter_main.NextRecord();
+    }
+
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+}
+
+TEST(LogRecordTest, InitPageLogTest1) {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    int min = -1e9,max = 1e9;
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+
+    // produce log record
+    
+    std::map<int,int> mp;
+
+    std::vector<char> log_record_vec;
+    std::vector<InitPageRecord> log_record_array;
+
+    for(int i = 0;i < 1000;i ++) {
+        int x = distrib(engine);
+        // ----------------------------------
+        // | produce a random insert record |
+        // ----------------------------------
+        // int offset;
+        auto log_record = InitPageRecord(1, test_file, x);
+        
+        log_record_array.push_back(log_record);
+        log_record_vec = *log_record.Serializeto();
+        auto log_record_tmp = LogRecord::DeserializeFrom(log_record_vec);
+        auto tmp = dynamic_cast<InitPageRecord*> (log_record_tmp.get());
+        // std::cout << "tmp =          " << tmp->ToString() << std::endl;
+        // std::cout << "log =          " << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record);
+
+        // auto log_record = SetIntRecord(1, BlockId("text1.txt", 0), 10, old_value, new_value);
+        log_manager->Append(log_record_vec);
+        // mp[i] = offset;
+    }    
+    
+    auto log_iter_main = log_manager->Iterator();
+    int i = 0;
+    while(log_iter_main.HasNextRecord()) {
+        auto byte_array1 = log_iter_main.CurrentRecord();
+        
+        // static_cast<InsertRecord*>
+        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
+        auto tmp = dynamic_cast<InitPageRecord*> (log_record_tmp.get());
+        // std::cout << tmp->ToString() << std::endl;
+        // std::cout << log_record_.ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record_array[i]);
+
+        i ++;
+        log_iter_main.NextRecord();
+    }
+
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+}
+
+
+
+TEST(LogRecordTest, ChkptEndLogTest1) {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    int min = -1e9,max = 1e9;
+    std::random_device seed; // get ramdom seed
+	std::ranlux48 engine(seed());
+    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+
+    //////////// produce txn map ///////////
+    
+    
+
+
+    // produce log record
+    
+    std::map<int,int> mp;
+
+    std::vector<char> log_record_vec;
+    std::vector<ChkptEndRecord> log_record_array;
+
+    int log_num = 10;
+    int mp_num = 10;
+
+    for(int i = 0;i < log_num;i ++) {
+
+        std::map<txn_id_t, TxTableEntry> txn_mp;
+
+        for (int j = 0;j < mp_num;j ++) {
+            int x = distrib(engine);
+            int y = distrib(engine);
+            txn_mp[x] = {y, TxStatus::U};
+        }
+
+        //////////// produce dp map ////////////
+        
+        std::map<BlockId, lsn_t> dp_mp;
+
+        for (int j = 0;j < mp_num;j ++) {
+            int x = distrib(engine);
+            int y = distrib(engine);
+            dp_mp[BlockId(test_file, x)] = y;
+        }
+
+        auto log_record = ChkptEndRecord(txn_mp, dp_mp);
+        
+        log_record_array.push_back(log_record);
+        log_record_vec = *log_record.Serializeto();
+        auto log_record_tmp = LogRecord::DeserializeFrom(log_record_vec);
+        auto tmp = dynamic_cast<ChkptEndRecord*> (log_record_tmp.get());
+        EXPECT_EQ(*tmp, log_record_array[i]);
+        log_manager->Append(log_record_vec);
+    }    
+    
+    auto log_iter_main = log_manager->Iterator();
+    int i = 0;
+    while(log_iter_main.HasNextRecord()) {
+        auto byte_array1 = log_iter_main.CurrentRecord();
+        
+        // static_cast<InsertRecord*>
+        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
+        auto tmp = dynamic_cast<ChkptEndRecord*> (log_record_tmp.get());
+        // std::cout << tmp->ToString() << std::endl;
+        // std::cout << log_record_.ToString() << std::endl;
+        std::cout << "tmp  " << std::endl;
+        std::cout << tmp->ToString() << std::endl;
+        std::cout << "log_record  " << std::endl;
+        std::cout << log_record_array[i].ToString() << std::endl;
+
+        EXPECT_EQ(*tmp, log_record_array[i]);
+
+        i ++;
+        log_iter_main.NextRecord();
+    }
+
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+}
+
 
 } // namespace SimpleDB

@@ -13,15 +13,13 @@
 namespace SimpleDB {
 
 
+class RecoveryManager;
+
 class Buffer {
     
 public:
 
-    explicit Buffer(FileManager *fm, LogManager *lm)
-    : file_manager_(fm), log_manager_(lm) {
-        contents_ = 
-            std::make_unique<Page> (file_manager_->BlockSize());           
-    }
+    explicit Buffer(FileManager *fm, RecoveryManager *rm);
     
     /**
     * @brief 
@@ -33,40 +31,22 @@ public:
     /**
     * @brief 
     */
-    void SetModified(txn_id_t trx_num, int lsn) {
-        trx_num_ = trx_num;
-        if(lsn >= 0) {
-            lsn_ = lsn;
-        }
-    }
+    void SetModified(txn_id_t txn_id, int lsn);
 
     bool IsPinned() { return pin_ > 0; } 
 
-    int ModifyingTrx() { return trx_num_; }
+    int ModifyingTrx() { return txn_id_; }
 
     /**
     * @brief assign a new block, 
     * and change its modifying trx 
     */
-    void AssignBlock(BlockId blk) {
-        flush(); /* through calling flush func in AssignBlock, in 
-                    bufferpool pin a page, we don't need to care 
-                    about wirting dirty page to disk*/
-        block_ = blk;
-        file_manager_->Read(block_, *contents_);
-        pin_ = 0; 
-    }
+    void AssignBlock(BlockId blk);
 
     /**
     * @brief usually be used to commit a transaction
     */
-    void flush() {
-        if (trx_num_ >= 0) {
-            log_manager_->Flush(lsn_);
-            file_manager_->Write(block_, *contents_);
-            trx_num_ = -1;
-        }
-    }
+    void flush();
 
     void pin() { pin_++; }
     
@@ -79,10 +59,10 @@ public:
     int GetPinCount() { return pin_; }
     
     // for debugging purpose
-    // because of AssignBlock, we don't need to this function
-    bool IsDirty() { return trx_num_ != -1; }
+    // because of AssignBlock method, we don't need to this function maybe.
+    bool IsDirty() { return txn_id_ != -1; }
 
-    
+
     // avoid multiple transaction access at the same time
     void RLock() { latch.RLock(); }
     
@@ -97,7 +77,7 @@ private:
     // shared filemanager
     FileManager* file_manager_;
     // shared logmanager
-    LogManager* log_manager_;
+    RecoveryManager* recovery_manager_;
     // buffer content
     std::unique_ptr<Page> contents_;
      
@@ -105,9 +85,11 @@ private:
     
     int pin_ = 0;
     // if trx_num != -1, means the page is a dirty_page
-    txn_id_t trx_num_{INVALID_TXN_ID};
+    txn_id_t txn_id_{INVALID_TXN_ID};
     // the LSN of the most recent log record.
     lsn_t lsn_{INVALID_LSN};
+
+    // read write latch
     // because we need different transaction isolation level
     // Despite having a buffer lock, it is still needed different 
     // transaction work at the same time.so we should need to a
@@ -133,7 +115,7 @@ public:
     * Since we use the buffer class to encapsulate reads and writes, 
     * it is not needed filemanager and logmanager stores in Buffermanager
     */
-    explicit BufferManager(FileManager *fm, LogManager *lm, int buffer_nums);
+    explicit BufferManager(FileManager *fm, RecoveryManager *rm, int buffer_nums);
     
     /**
     * @return the number of avaiable (unused, unpinned) buffers.

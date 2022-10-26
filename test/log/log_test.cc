@@ -350,60 +350,7 @@ TEST(LogManagerTest, FixSizeLogTest) {
 
 
 TEST(LogTest, LogIteratorMixTest) {
-    char buf[100];
-    std::string local_path = getcwd(buf, 100);
-    std::string test_dir = local_path + "/" + "test_dir";
-    std::string cmd;
-    std::string log_file_name = "log.log";
-    std::string log_file_path = test_dir + "/" + log_file_name;
-    std::unique_ptr<FileManager> file_manager 
-        = std::make_unique<FileManager>(test_dir, 4096);
-    
-    std::unique_ptr<LogManager> log_manager 
-        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
-
-
-    int min = -1e9,max = 1e9;
-    std::random_device seed; // get ramdom seed
-	std::ranlux48 engine(seed());
-    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
-
-    // produce log record
-    
-    std::map<int,int> mp;
-
-    for(int i = 0;i < 1000;i ++) {
-        int new_value = distrib(engine);
-        int old_value = distrib(engine);
-        int offset;
-        auto log_record = SetIntRecord(1, BlockId("text1.txt", 0), 10, old_value, new_value);
-        log_manager->AppendLogWithOffset(log_record, &offset);
-        
-        mp[i] = offset;
-    }    
-    
-    auto log_iter_main = log_manager->Iterator();
-    int i = 0;
-    while(log_iter_main.HasNextRecord()) {
-        auto byte_array1 = log_iter_main.CurrentRecord();
-        
-        auto log_iter_branch = log_manager->Iterator(mp[i]);
-        
-        auto byte_array2 = log_iter_branch.CurrentRecord();
-
-        EXPECT_EQ(byte_array1, byte_array2);
-
-        auto byte_array3 = log_iter_branch.MoveToRecord(mp[i]);
-        
-        EXPECT_EQ(byte_array1, byte_array3);
-
-        i ++;
-        log_iter_main.NextRecord();
-    }
-
-
-     cmd = "rm -rf " + test_dir;
-    system(cmd.c_str());
+    return ;
 }
 
 

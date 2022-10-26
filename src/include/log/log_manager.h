@@ -84,6 +84,10 @@ public:
     
     void SetLastestLsn(lsn_t lsn) { lastest_lsn_.store(lsn); }
 
+    void SetMasterLsnOffset(int offset);
+
+    int GetMasterLsnOffset();
+
 private:
     
     /**

@@ -7,6 +7,7 @@
 #include "file/file_manager.h"
 #include "file/page.h"
 #include "gtest/gtest.h"
+#include "recovery/recovery_manager.h"
 
 #include <execinfo.h>
 #include <iostream>
@@ -79,7 +80,8 @@ TEST(BufferTest, Simpletest1) {
 
     FileManager *fm = new FileManager(directory_path, block_size);
     LogManager *lm = new LogManager(fm, "buffertest.log");
-    BufferManager *bfm = new BufferManager(fm, lm, 5);
+    RecoveryManager *rm = new RecoveryManager(lm);
+    BufferManager *bfm = new BufferManager(fm, rm, 10);
     
     int pin_times = 10;
     int const_be_buffered = 2;
@@ -143,7 +145,8 @@ TEST(BufferPoolManagerTest, BinaryDataTest) {
 
     FileManager *fm = new FileManager(directory_path, block_size);
     LogManager *lm = new LogManager(fm, "buffertest.log");
-    BufferManager *bfm = new BufferManager(fm, lm, buffer_pool_size);
+    RecoveryManager *rm = new RecoveryManager(lm);
+    BufferManager *bfm = new BufferManager(fm, rm, buffer_pool_size);
 
     auto *page0 = bfm->NewPage(file_name);
     auto data_ = page0->contents()->content();
@@ -198,7 +201,8 @@ TEST(BufferPoolManagerTest, ConcurrencyWriteTest) {
     for(int run = 0; run < num_runs; run++) {
         FileManager *fm = new FileManager(directory_path, block_size);
         LogManager *lm = new LogManager(fm, "buffertest.log");
-        BufferManager *bpm = new BufferManager(fm, lm, buffer_pool_size);
+        RecoveryManager *rm = new RecoveryManager(lm);
+        BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
 
         std::vector<std::thread> threads;
         
@@ -284,7 +288,8 @@ TEST(BufferPoolManagerTest, ConcurrencyTest) {
     for(int run = 0; run < num_runs; run++) {
         FileManager *fm = new FileManager(directory_path, block_size);
         LogManager *lm = new LogManager(fm, "buffertest.log");
-        BufferManager *bpm = new BufferManager(fm, lm, buffer_pool_size);
+        RecoveryManager *rm = new RecoveryManager(lm);
+        BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
 
         std::vector<std::thread> threads;
         
@@ -355,7 +360,9 @@ TEST(BufferPoolManagerTest, ConcurrencyPinTest) {
     for(int run = 0; run < num_runs; run++) {
         FileManager *fm = new FileManager(directory_path, block_size);
         LogManager *lm = new LogManager(fm, "buffertest.log");
-        BufferManager *bpm = new BufferManager(fm, lm, buffer_pool_size);
+        RecoveryManager *rm = new RecoveryManager(lm);
+        BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
+
 
         std::vector<std::thread> threads;
         std::map<BlockId, int> count_;
@@ -437,7 +444,9 @@ TEST(BufferPoolManagerTest, OneProcessVictimTest) {
     for(int run = 0; run < num_runs; run++) {
         FileManager *fm = new FileManager(directory_path, block_size);
         LogManager *lm = new LogManager(fm, "buffertest.log");
-        BufferManager *bpm = new BufferManager(fm, lm, buffer_pool_size);
+        RecoveryManager *rm = new RecoveryManager(lm);
+        BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
+
 
         std::vector<std::thread> threads;
         std::map<BlockId, int> count_;
@@ -535,7 +544,9 @@ TEST(BufferPoolManagerTest, ConcurrencyVictimTest) {
     for(int run = 0; run < num_runs; run++) {
         FileManager *fm = new FileManager(directory_path, block_size);
         LogManager *lm = new LogManager(fm, "buffertest.log");
-        BufferManager *bpm = new BufferManager(fm, lm, buffer_pool_size);
+        RecoveryManager *rm = new RecoveryManager(lm);
+        BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
+
         
         std::vector<std::thread> threads;
         std::map<BlockId, int> count_;

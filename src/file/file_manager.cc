@@ -228,6 +228,11 @@ int FileManager::GetFileSize(const std::string &file_name) {
     return success == 0 ? static_cast<int> (stat_buf.st_size) : 0;
 }
 
+void FileManager::SetFileSize(const std::string &file_name, int block_num) {
+    std::string file_path = directory_name_ + "/" + file_name;
+    truncate(file_path.c_str(), block_num * block_size_);
+}
+
 } // namespace SimpleDB
 
 #endif

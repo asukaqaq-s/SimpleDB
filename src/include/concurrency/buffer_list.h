@@ -40,7 +40,7 @@ public:
         buffers_[block] = buffer;
         pins_.emplace_back(block);
         // note that: A block can store(pinned) 
-        // several times and have several object in list
+        // several times and have several objects in list
     }
 
     /**
@@ -58,7 +58,7 @@ public:
         
         // find the block in pins_, because a block can store serveral times
         // we just unpin once and delete the block once
-        // don't use list.remove(), it will delete all object of this block
+        // don't use list.remove(), it will delete all objects of this block
         auto iter = std::find(pins_.begin(), pins_.end(), block);
         if (iter != pins_.end()) {
             pins_.erase(iter);
@@ -75,6 +75,7 @@ public:
     /**
     * @brief
     * Unpin any buffers still pinned by this transaction.
+    * it usually be used when the transaction end.
     */
     void UnpinAll() {
         for (auto block : pins_) {
@@ -88,8 +89,13 @@ public:
 
 private:
 
+    // we also can use a container: map buffer 
+    // to {buffer *, int times} insteal of a map and a vector
+    // every unpin ops, times --
+    // every pin ops, times ++
+
     std::map<BlockId,Buffer*> buffers_;
-    
+    // serially stored in heap memory
     std::vector<BlockId> pins_;
 
     BufferManager *buffer_manager_;

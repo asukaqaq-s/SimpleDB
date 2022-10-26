@@ -95,33 +95,83 @@ void Page::SetString(int offset, const std::string &str) {
     SetBytes(offset, byte_array);
 }
 
+double Page::GetDec(int offset) const {
+    char* page_offset;
+    double res;
+    
+    if(offset + sizeof(double) > buffer_page_->size()) { 
+        // overflow
+        throw std::runtime_error("Page overflow when GetInt");
+    }
+    // no overflow
+    page_offset = &(*buffer_page_)[offset];
+    res = *(reinterpret_cast<double *>(page_offset));
+    return res;
+}
+
+void Page::SetDec(int offset,double n) {
+    char* page_offset;
+    
+    if(offset + sizeof(int) > buffer_page_->size()) { 
+        // overflow
+        throw std::runtime_error("Page overflow when SetInt");
+    }
+    // no overflow
+    page_offset = &(*buffer_page_)[offset];
+    *(reinterpret_cast<double *>(page_offset)) = n;
+}
+
+void Page::SetValue(int offset, Constant val) {
+    int type = val.GetTypeID();
+    
+    switch(type) {
+    
+    case TypeID::CHAR:
+    case TypeID::VARCHAR:
+        SetString(offset, val.AsString());
+        break;
+        
+    case TypeID::DECIMAL:
+        SetDec(offset, val.AsDouble());
+        break;
+    
+    case TypeID::INTEGER:
+        SetInt(offset, val.AsInt());
+        break;
+    
+    default:
+        SIMPLEDB_ASSERT(false, "");
+        break;
+    }
+}
+
+Constant Page::GetValue(int offset,TypeID type) {
+    switch(type) {
+    
+    case TypeID::CHAR:
+    case TypeID::VARCHAR:
+        return Constant(GetString(offset));
+        break;
+        
+    case TypeID::DECIMAL:
+        return Constant(GetDec(offset));
+        break;
+    
+    case TypeID::INTEGER:
+        return Constant(GetInt(offset));
+        break;
+    
+    default:
+        SIMPLEDB_ASSERT(false, "");
+        break;
+    }
+}
+
+
 std::shared_ptr<std::vector<char>> Page::content() {
     return buffer_page_;
 }
 
-void Page::PrintPage(int mode) {
-// mode 0: Getint
-    printf("Print a Page :\n");
-    if(mode == 0) {
-        int size = GetInt(0);
-        printf("size = %d\n", size);
-        for(int i = 0;i < static_cast<int>(buffer_page_->size() - 4);i ++) {
-            printf("%c", (*buffer_page_)[i]);
-        }
-        printf("\n");
-    }
-    else if(mode == 1) { /* log page */
-        int boundary = GetInt(0);
-        std::cout << "boundary = " << boundary << std::endl;
-        for(int i = boundary;i < 4096;) {
-            auto vec = GetBytes(i);
-            for(auto t:vec)
-                std::cout << t << std::flush;
-            std::cout << std::endl;
-            i += sizeof(int) + vec.size();
-        }
-    }
-}
 
 } // namespace SimpleDB
 

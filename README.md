@@ -26,6 +26,10 @@ Schedule
 - Query Optimization(todo)
 
 
+## Development process
+
+- A most simplest Database which support all features before JDBC and JDBC. 
+
 ## important todo
 
 - asynchronous IO in LogManager

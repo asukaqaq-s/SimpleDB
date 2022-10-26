@@ -8,6 +8,7 @@
 #include "file/file_manager.h"
 #include "file/page.h"
 #include "gtest/gtest.h"
+#include "recovery/recovery_manager.h"
 
 #include <execinfo.h>
 #include <iostream>
@@ -44,7 +45,8 @@ TEST(BufferManagerTest, Simpletest1) {
     
     FileManager *fm = new FileManager(directory_path, block_size);
     LogManager *lm = new LogManager(fm, "buffertest.log");
-    BufferManager *bfm = new BufferManager(fm, lm, buffer_pool_size);
+    RecoveryManager *rm = new RecoveryManager(lm);
+    BufferManager *bfm = new BufferManager(fm, rm, buffer_pool_size);
     
     int pin_times = 10;
     int const_be_buffered = 2;
@@ -116,7 +118,8 @@ TEST(BufferManagerTest, VictimTest) {
     
     FileManager *fm = new FileManager(directory_path, block_size);
     LogManager *lm = new LogManager(fm, "buffertest.log");
-    BufferManager *bfm = new BufferManager(fm, lm, buffer_pool_size);
+    RecoveryManager *rm = new RecoveryManager(lm);
+    BufferManager *bfm = new BufferManager(fm, rm, buffer_pool_size);
     
     int pin_times = 10;
     int const_be_buffered = 2;

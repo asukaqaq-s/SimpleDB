@@ -1,19 +1,53 @@
 #ifndef BUFFER_MANAGER_CC
 #define BUFFER_MANAGER_CC
 
+#include "recovery/recovery_manager.h"
 #include "buffer/buffer_manager.h"
 #include "config/macro.h"
 
 #include <iostream>
 
 namespace SimpleDB {
+    
+
+Buffer::Buffer(FileManager *fm, RecoveryManager *rm)
+    : file_manager_(fm), recovery_manager_(rm) {
+    contents_ = std::make_unique<Page> (file_manager_->BlockSize());           
+}
+
+void Buffer::AssignBlock(BlockId blk) {
+    flush(); /* through calling flush func in AssignBlock, when 
+                bufferpool pin a page, we don't need to care 
+                about wirting dirty page to disk*/
+    block_ = blk;
+    file_manager_->Read(block_, *contents_);
+    pin_ = 0; 
+}
+
+void Buffer::SetModified(txn_id_t txn_id, int lsn) {
+    txn_id_ = txn_id;
+    if(lsn >= 0) {
+        lsn_ = lsn;
+    }
+}
+
+void Buffer::flush() {
+    if (txn_id_ >= 0) {
+        // remember write ahead log
+        recovery_manager_->FlushBlock(block_, lsn_);
+        file_manager_->Write(block_, *contents_);
+        txn_id_ = INVALID_TXN_ID;
+    }
+}
+
+
 
 // free_list_, replacer_, page_table_, available_num_, buffer_pool_
-BufferManager::BufferManager(FileManager *fm, LogManager *lm, int buffer_nums) {
+BufferManager::BufferManager(FileManager *fm, RecoveryManager *rm, int buffer_nums) {
     file_manager_ = fm;
     available_num_ = buffer_nums;
     for(int i = 0;i < buffer_nums;i ++) {
-        auto buffer = std::make_unique<Buffer>(fm, lm);
+        auto buffer = std::make_unique<Buffer>(fm, rm);
         buffer_pool_.emplace_back(std::move(buffer));
         free_list_.push_back(i); /* At the beginning, all buffer is unused */
     }

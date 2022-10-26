@@ -14,6 +14,7 @@ namespace SimpleDB {
 class RID {
 
 public:
+    RID() { block_number_ = 0, slot_ = 0;}
 
     RID(int block_number, int slot) :
         block_number_(block_number), slot_(slot) {}
@@ -21,6 +22,10 @@ public:
     int GetBlockNum() const { return block_number_; }
 
     int GetSlot() const { return slot_; }
+
+    void SetBlockNum(int block_num) { block_number_ = block_num; }
+
+    void SetSlot(int slot) { slot_ = slot; }
 
     bool operator == (const RID& obj) const {
         return block_number_ == obj.block_number_ &&

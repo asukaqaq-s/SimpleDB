@@ -3,89 +3,44 @@
 
 #include "record/table_page.h"
 #include "record/rid.h"
-#include "query/update_scan.h"
+#include "type/constant.h"
+#include "record/rid.h"
+// #include "query/update_scan.h"
 
 namespace SimpleDB {
     
-class TableScan : public UpdateScan{
+class TableScan {
 
 public:
 
     TableScan(Transaction *txn, std::string table_name, Layout layout);
 
-    ~TableScan() override{}
+    ~TableScan() {}
 
     /**
     * @brief positioning to the first 
     * tuple of this table
     */
-    void FirstTuple() override;
+    void FirstTuple();
 
     /**
-    * @brief positioning to the next
-    * tuple of this table file
-    * will read succeeding blocks in the file
-    * until another record is found.
+    * @brief positioning to the next tuple of this table file
+    * will read succeeding blocks in the file until another 
+    * record is found.
+    * @param tuple data
     * @return whether it was successful
     */
-    bool Next() override;
+    bool Next();
 
-    /**
-    * @brief apply to the current record
-    * Get a integer value from the specified field
-    * @param field_name the specified field
-    */
-    int GetInt(const std::string &field_name) override;
+    void NextInsert(const Tuple &tuple);
+    
 
-    /**
-    * @brief apply to the current record
-    * Get a string value from the specified field
-    * @param field_name the specified field
-    */
-    std::string GetString(const std::string &field_name) override;
-
-    /**
-    * @brief apply to the current record
-    * Get a constant object from the spefied field
-    * @param field_name the specified field
-    */
-    Constant GetVal(const std::string &field_name) override;
-
-    /**
-    * @brief apply to the current record
-    * store an integer at the specified field
-    * @param field_name the specified field
-    * @param val
-    */
-    void SetInt(const std::string &field_name, int val) override;
- 
-    /**
-    * @brief apply to the current record
-    * store an string at the specified field
-    * @param field_name the specified field
-    * @param val
-    */
-    void SetString(const std::string &field_name, 
-                   const std::string &val) override;
-
-    /**
-    * @brief apply to the current record
-    * store an string at the specified field
-    * @param field_name the specified field
-    * @param val
-    */
-    void SetVal(const std::string &field_name, 
-                const Constant &val) override;
+    bool GetTuple(Tuple *tuple);
 
     /**
     * @brief 
     */
-    bool HasField(const std::string &field_name) override;
-    
-    /**
-    * @brief unpinn current block 
-    */
-    void Close();
+    bool HasField(const std::string &field_name);
 
     /**
     * @brief find the unused slot in this table file
@@ -94,23 +49,35 @@ public:
     * to insert the record in the existing blocks of the file, 
     * it appends a new block to the file and inserts the record there.
     */
-    void Insert() override;
+    bool Insert(const Tuple &tuple);
 
     /**
     * @brief delete current tuple by setting 
     * its flag to empty
     */
-    void Remove() override;
+    void Delete();
+
+    /**
+    * @brief update the specified tuple
+    * if we can not update it in this tuple, we should abort this txn
+    */
+    bool Update(const Tuple &new_tuple);
 
     /**
     * @brief Move to the specified rid
     */
-    void MoveToRid(const RID &rid) override;
+    void MoveToRid(const RID &rid);
 
     /**
     * @brief return the currently rid
     */
-    RID GetRid() override;
+    inline RID GetRid() {
+        return rid_;
+    }
+
+    inline BlockId GetBlock() {
+        return BlockId(file_name_, rid_.GetBlockNum());
+    }
 
 private:
     
@@ -133,14 +100,12 @@ private:
 private:
     
     Transaction *txn_;
-
-    std::unique_ptr<TablePage> table_page_;
     
     std::string file_name_;
     
     Layout layout_;
-    
-    int current_slot_;
+
+    RID rid_;
 };
 
 

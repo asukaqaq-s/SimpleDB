@@ -1,6 +1,9 @@
 #ifndef PAGE_H
 #define PAGE_H
 
+#include "type/constant.h"
+#include "config/rw_latch.h"
+
 #include <memory>
 #include <vector>
 
@@ -8,8 +11,7 @@ namespace SimpleDB {
 
 /**
 * @brief 
-* a page corresponds to a disk-block
-* a page is just 8b-size, and have a pointer that points to Page's content in heap 
+* a page corresponds to a disk-block and stored in memory 
 */
 class Page
 {
@@ -86,6 +88,37 @@ public:
     void SetString(int offset, const std::string &str);
 
     /**
+    * @brief Get a decimal from
+    * 
+    * @param offset
+    */
+    double GetDec(int offset) const;
+
+    /**
+    * @brief Set a decimal to page_[offset]
+    * 
+    * @param offset
+    * @param str 
+    */
+    void SetDec(int offset, double decimal);
+
+    /**
+    * @brief a general and more convenient way to read
+    * data to page
+    * @param offset
+    * @param constant 
+    */
+    void SetValue(int offset, Constant val);
+
+    /**
+    * @brief a general and more convenient way to write
+    * data from page
+    * @param offset
+    * @param constant
+    */
+    Constant GetValue(int offset,TypeID type);
+
+    /**
     * @brief calculates the maximum size of blobs
     *   depends on which characters, UTF, ASCII ...
     * 
@@ -101,13 +134,14 @@ public:
     */
     std::shared_ptr<std::vector<char>> content();
 
-    /**
-    * @brief for debugging purpose
-    * 
-    * @param mode print mode
-    */
-    void PrintPage(int mode);
+    int GetSize() { return buffer_page_->size(); }
+
+    char *GetRawDataPtr() { return &(*buffer_page_)[0]; }
+
+
+    
 private:
+
     // Page's content, stored in heap
     std::shared_ptr<std::vector<char>> buffer_page_;
 };

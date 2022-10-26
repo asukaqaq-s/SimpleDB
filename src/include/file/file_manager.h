@@ -96,6 +96,8 @@ public:
         return GetFileSize(file_name) / block_size_;
     }
 
+    void SetFileSize(const std::string &file_name, int block_num);
+
 private:
 
     /**

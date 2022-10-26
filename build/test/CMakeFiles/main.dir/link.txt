@@ -1,1 +1,0 @@
-/usr/bin/c++   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   CMakeFiles/main.dir/server/main.cc.o  -o main  ../lib/libgtest_maind.a ../src/libSimpleDB_lib.a ../lib/libgtestd.a -lpthread 

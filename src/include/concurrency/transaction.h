@@ -53,7 +53,7 @@ class Transaction {
 
 public:
 
-    Transaction(FileManager *fm, LogManager *lm, BufferManager *bm);
+    Transaction(FileManager *fm, BufferManager *bm, RecoveryManager *rm);
     
     ~Transaction();
 
@@ -69,7 +69,7 @@ public:
     * Undo any modified values and flush a rollback record to the log
     * release all locks, and unpin any pinned buffers.
     */
-    void RollBack();
+    void Abort();
     
     /**
     * @brief go through the log, redo any log after checkpoints
@@ -83,7 +83,7 @@ public:
 
     /**
     * @brief Pin the specified block
-    * The transaction manages the buffer for the client.
+    * and not require the lock of this block
     * 
     * @param block a reference to the disk block
     */
@@ -97,23 +97,28 @@ public:
     void Unpin(const BlockId &block);
 
     /**
-    * @brief return the integer value stored at the specified
-    * offset of the specified block.
+    * @brief read the tuple from the specified block
     * 
-    * @param block a reference to a disk block
-    * @param offset the byte offset within the block
-    * @return the integer stored at that offset
+    * @param file_name
+    * @param rid 
+    * @return the tuple stored at that rid
     */
-    int GetInt(const BlockId &block, int offset);
-    
-    
-    void SetInt(const BlockId &block, int offset, int new_value,bool is_log);
+    Buffer* GetBuffer(const std::string &file_name,
+                      const RID &rid, 
+                      LockMode lock_mode);
 
-    void SetString(const BlockId &block, int offset, std::string new_value, bool is_log);
-    
-    std::string GetString(const BlockId &block, int offset);
-    
+    /**
+    * @brief txn object does not modify page,
+    * in this method we just acquire lock, write
+    * log and get buffer
+    */
+
     int GetFileSize(std::string file_name);
+
+    /**
+    * @brief this method usually be used when reduce file size
+    */
+    void SetFileSize(std::string file_name, int size);
 
     BlockId Append(std::string file_name);
 
@@ -123,6 +128,7 @@ public:
 
     static Transaction* TransactionLookUp(txn_id_t txn_id);
     
+    RecoveryManager* GetRecoveryMgr() { return recovery_manager_; }
 
 public: // todo
 
@@ -137,22 +143,33 @@ private:
     static txn_id_t NextTxnID();
 
 private:
-    
+    // global transaction map
+    // cuncur_manager use it to get the corresponding transaction
     static TransactionMap txn_map;
+    
     // which be used to append file or get file size
+    // to solve Phantom Read
     const int END_OF_FILE = -1;
+    
     // unique concurrency manager
     std::unique_ptr<ConcurrencyManager> concurrency_manager_;
-    // unique recovery manager
-    std::unique_ptr<RecoveryManager> recovery_manager_;
+    // buffser list for remembering all pinned buffer
+    std::unique_ptr<BufferList> buffers_;
+
+
+    
     // shard filemanager
     FileManager *file_manager_;
     // shared buffermanager
     BufferManager *buffer_manager_;
+
+    // shared recovery manager
+    // this is different from SimpleDB-origin
+    RecoveryManager* recovery_manager_;
+    
+
     // to identify transaction
     txn_id_t txn_id_;
-    // buffser list for remembering all pinned buffer
-    std::unique_ptr<BufferList> buffers_;
     // 2pl lock stage
     LockStage stage_{LockStage::GROWING};
     // isolation level
