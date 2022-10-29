@@ -113,34 +113,44 @@ TEST(TransactionTest, SimpleRecoveryTest) {
     Layout layout;
 
     auto ts1 = TableScan(tx1.get(), test_file, layout);
-    ts1.FirstTuple();
+    ts1.Begin();
 
     for (int i = 0;i < 10000;i ++) {
-        ts1.NextInsert(tuple1);
-        ts1.Insert(tuple1);
+        ts1.Insert(tuple1, nullptr);
+
+        Tuple tuple;
+        ts1.GetTuple(&tuple);
+        EXPECT_EQ(tuple1, tuple);
     }
 
-    ts1.FirstTuple();
+    ts1.Begin();
     for (int i = 0;i < 10000;i ++) {
         ts1.Next();
         if (i % 2) {
             ts1.Update(tuple2);
+
+            Tuple tuple;
+            ts1.GetTuple(&tuple);
+            EXPECT_EQ(tuple2, tuple);
         }
         else {
             ts1.Update(tuple3);
+
+            Tuple tuple;
+            ts1.GetTuple(&tuple);
+            EXPECT_EQ(tuple3, tuple);
         }
     }
     
     tx1->Commit();
 
     auto ts2 = TableScan(tx2.get(), test_file, layout);
-    ts2.FirstTuple();
+    ts2.Begin();
     for (int i = 0;i < 10000;i ++) {
-        ts2.NextInsert(tuple1);
-        ts2.Insert(tuple1);
+        ts2.Insert(tuple1, nullptr);
     }
 
-    ts2.FirstTuple();
+    ts2.Begin();
     for (int i = 0;i < 10000;i ++) {
         ts2.Next();
 
@@ -169,7 +179,7 @@ TEST(TransactionTest, SimpleRecoveryTest) {
     tx2->Recovery();
     // tx2->Commit();
     // auto ts3 = TableScan(tx3.get(), test_file, layout);
-    ts2.FirstTuple();
+    ts2.Begin();
 
     for (int i = 0;i < 10000;i ++) {
         ts2.Next();

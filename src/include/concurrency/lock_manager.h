@@ -2,7 +2,9 @@
 #define LOCK_MANAGER_H
 
 #include "config/type.h"
+#include "config/config.h"
 #include "file/block_id.h"
+
 
 #include <condition_variable>
 #include <list>
@@ -18,14 +20,6 @@ class Transaction;
 enum class LockMode {
     SHARED = 1, // for read purpose
     EXCLUSIVE, // for write purpose
-};
-
-enum class DeadLockResolveRrotocol {
-    INVALID = 0,
-    DO_NOTHING,
-    DL_DETECT,
-    WAIT_DIE,
-    WOUND_WAIT,
 };
 
 enum class LockStage {
@@ -47,11 +41,10 @@ enum class IsoLationLevel {
     SERIALIZABLE,
 };
 
-
 /**
 * @brief SimpleDB has a global lock manager which each transactions
 * acquire shared lock(s lock) and executive lock(x lock).
-* Every transactions should read and write block after acquiring the corresponding lock.
+* Every transactions must acquiring the corresponding lock before read and write block.
 * If a transaction requests a lock that causes a conflict with an
 * existing lock, then that transaction is placed on a wait list.
 * There is only one wait list for all blocks.
@@ -69,7 +62,7 @@ class LockManager {
             txn_id_(txn_id), lock_mode_(lock_mode) {}
         
         txn_id_t txn_id_;
-        
+
         LockMode lock_mode_;
         
         bool granted_{false};
@@ -94,39 +87,58 @@ public:
 
     ~LockManager() = default;
 
+    /**
+    * @brief acquire a s-lock
+    */
     bool LockShared(Transaction *txn, const BlockId &block);
 
+    /**
+    * @brief acquire a x-lock
+    */
     bool LockExclusive(Transaction *txn, const BlockId &block);
     
+    /**
+    * @brief upgrade s-lock to x-lock
+    */
     bool LockUpgrade(Transaction *txn, const BlockId &block);
 
+    /**
+    * @brief release a lock
+    */
     bool UnLock(Transaction *txn, const BlockId &block);
 
 private:
 
-    void PrintLockTable(BlockId block) {
-        BlockId blk1(block.FileName(), 1);
-        BlockId blk2(block.FileName(), 2);
+    /**
+    * @brief this method is be used to erase a 
+    */
+    bool UnLockImp(Transaction *txn, 
+                   LockRequestQueue* queue, 
+                   const BlockId &block);
+
+    void PrintLockTable() {
+        // BlockId blk1(item.file_name_, 1);
+        // BlockId blk2(item.file_name_, 2);
+
+
         std::cout << std::endl;
         std::cout << "[Print Lock Table] " << std::endl;
-        std::cout << "lockrequestqueue 1 :" << " "
-                  << "writing = " << lock_table_[blk1].writing_ << " "
-                  << "shared_count = " << lock_table_[blk1].shared_count_ << std::endl;
-        for (auto t:lock_table_[blk1].request_queue_) {
-            std::cout << "      granted = " << t.granted_ << " "
-                      << "lockmode = " << static_cast<int>(t.lock_mode_) << " "
-                      << "txn_id = " << t.txn_id_ << std::endl;
-        }
         
-        std::cout << "lockrequestqueue 2 :" << " "
-                  << "writing = " << lock_table_[blk2].writing_ << " "
-                  << "shared_count = " << lock_table_[blk2].shared_count_ << std::endl;
-        for (auto t:lock_table_[blk2].request_queue_) {
-            std::cout << "      granted = " << t.granted_ << " "
-                      << "lockmode = " << static_cast<int>(t.lock_mode_) << " "
-                      << "txn_id = " << t.txn_id_ << std::endl;
+        int cnt = 0;
+        for (auto &queue:lock_table_) {
+            std::cout << "lock_request_queue  " << ++cnt << ": "
+                      << "writing = " << queue.second.writing_ << " "
+                      << "shared_count = " << queue.second.shared_count_ << std::endl;
+            
+            for (auto &t:queue.second.request_queue_) {
+                std::cout << "    granted = " << t.granted_ << " "
+                          << "lockmode = " << static_cast<int> (t.lock_mode_) << " "
+                          << "txn_id = " << t.txn_id_ << std::endl;
+            }
         }
+
         std::cout << std::endl;
+        
     }
     
     /**
@@ -135,10 +147,7 @@ private:
     * @param txn the transaction for requesting block
     * @param block requested block
     */
-    bool DeadLockDeal(Transaction *txn, const BlockId &block);
-
-    bool WaitTooLong(
-    std::chrono::time_point<std::chrono::high_resolution_clock> start);
+    void DeadLockPrevent(Transaction *txn, LockRequestQueue* request_queue, const BlockId &block);
 
 private:
     
@@ -147,7 +156,7 @@ private:
     // lock table for lock requests
     std::map<BlockId, LockRequestQueue> lock_table_;
     // dead lock deal protocol
-    DeadLockResolveRrotocol protocol_{DeadLockResolveRrotocol::INVALID};
+    DeadLockResolveProtocol protocol_{GLOBAL_DEAD_LOCK_DEAL_PROTOCOL};
     
     std::chrono::milliseconds wait_max_time_{10000};
     

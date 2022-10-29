@@ -85,6 +85,8 @@ public:
         buffers_.clear();
         pins_.clear();
     }
+
+    int BufferPoolAvailSize() { return buffer_manager_->available(); }
     
 
 private:

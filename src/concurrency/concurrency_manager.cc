@@ -9,26 +9,25 @@ namespace SimpleDB {
 LockManager ConcurrencyManager::lock_manager;
 
 bool ConcurrencyManager::HasSLock(const BlockId &block) {
-    bool res = held_locks_.find(block) != held_locks_.end();
-    if(res) {
-        return held_locks_[block] == LockMode::SHARED;
-    } else 
-        return false;
+    return (lock_set_->find(block) != lock_set_->end()) &&
+            lock_set_->at(block) == LockMode::SHARED;
 }
 
 bool ConcurrencyManager::HasXLock(const BlockId &block) {
-    bool res = held_locks_.find(block) != held_locks_.end();
-    if(res) {
-        return held_locks_[block] == LockMode::EXCLUSIVE;
-    } else 
-        return false;
+    return (lock_set_->find(block) != lock_set_->end()) &&
+            lock_set_->at(block) == LockMode::EXCLUSIVE;
 }
 
 
 void ConcurrencyManager::LockShared(const BlockId &block) {
+    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_UNCOMMITED) {
+        // this isolation level don't need to acquire slock
+        return;
+    }
+
     if (!HasSLock(block) && !HasXLock(block)) {
         lock_manager.LockShared(txn_, block);
-        held_locks_[block] = LockMode::SHARED;
+        (*lock_set_)[block] = LockMode::SHARED;
     }
 }
 
@@ -36,16 +35,33 @@ void ConcurrencyManager::LockExclusive(const BlockId &block) {
     if (!HasXLock(block)) {
         
         if(HasSLock(block)) {
-            // if this txn has shared lock, we just need to update it 
+            // if this txn has shared lock, we just need to upgrade it 
             lock_manager.LockUpgrade(txn_, block);   
         } else {
             // if this txn has not lock, we need to acquire xlock directly
             lock_manager.LockExclusive(txn_, block);
         }
-        held_locks_[block] = LockMode::EXCLUSIVE;
+
+        (*lock_set_)[block] = LockMode::EXCLUSIVE;
     }
 }
-    
+
+
+void ConcurrencyManager::ReleaseOne(const BlockId &block) {
+
+    if (HasXLock(block)) {
+        // we can't release a x-block in growing phase 
+        // even if this txn's isolation level is read committed
+        return;
+    }
+
+    if (HasSLock(block)) {
+        lock_manager.UnLock(txn_, block);
+    } else {
+        SIMPLEDB_ASSERT(false, "");
+    }
+}
+
 /**
 * @brief because we use strong 2pl concurrency strategy
 * so we should release all lock when commit or abort
@@ -53,10 +69,12 @@ void ConcurrencyManager::LockExclusive(const BlockId &block) {
 */
 void ConcurrencyManager::Release() {
     txn_->SetLockStage(LockStage::SHRINKING);
-    for (auto t:held_locks_) {
+
+    for (auto t:*lock_set_) {
         lock_manager.UnLock(txn_, t.first);
     }
-    held_locks_.clear();
+
+    assert(lock_set_->empty());
 }
 
 } // namespace SimpleDB

@@ -67,9 +67,10 @@ void UpdateRecord::Redo(Transaction *txn) {
     Tuple old_tuple;
     Tuple new_tuple;
     BlockId blk(file_name_, rid_.GetBlockNum());
-    txn->Pin(blk);
-    Buffer *buffer = txn->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), blk);
+    
+    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(blk);
+    auto table_page = TablePage(buffer->contents(), blk);
     
     buffer->WLock();
 
@@ -94,9 +95,10 @@ void UpdateRecord::Undo(Transaction *txn, lsn_t lsn) {
     Tuple old_tuple;
     Tuple new_tuple;
     BlockId blk(file_name_, rid_.GetBlockNum());
-    txn->Pin(blk);
-    Buffer *buffer = txn->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), blk);
+
+    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(blk);
+    auto table_page = TablePage(buffer->contents(), blk);
 
     buffer->WLock();
 

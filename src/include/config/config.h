@@ -15,6 +15,16 @@ static const std::string SIMPLEDB_LOG_FILE_NAME = "simpledb.log";
 // store checkpoint_end_record's lsn
 static const std::string SIMPLEDB_CHKPT_FILE_NAME = "checkpoint.log";
 
+
+enum DeadLockResolveProtocol {
+    DO_NOTHING,
+    WOUND_WAIT,
+    WAIT_DIE,
+    DL_DETECT,
+};
+
+static const DeadLockResolveProtocol GLOBAL_DEAD_LOCK_DEAL_PROTOCOL = WOUND_WAIT;
+
 } // namespace SimpleDB
 
 #endif

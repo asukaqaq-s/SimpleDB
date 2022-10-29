@@ -36,6 +36,8 @@ Schedule
 
 - ARIES: Currently, the recovery mechanism still uses non-fuzzy checkpoint.I will update it to ARIES and FUZZY-checkpoint soon.
 
+- Concurrency: implement rid-level locking is diffculty, because we should solve with phantom read problem.
+
 - DeadLock: Currently, I haven't dealt with how to resolve a deadlock problem.I will update it to WOUND-WAIT or WAIT-DIE.
 
 - TablePage: 

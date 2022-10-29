@@ -59,6 +59,7 @@ src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o
  ../src/include/concurrency/lock_manager.h
  ../src/include/concurrency/transaction.h
  ../src/include/config/config.h
+ ../src/include/config/exception.h
  ../src/include/config/macro.h
  ../src/include/config/rw_latch.h
  ../src/include/config/type.h

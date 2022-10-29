@@ -18,40 +18,53 @@ TableScan::TableScan(Transaction *txn, std::string table_name, Layout layout)
     }
 }
 
-void TableScan::FirstTuple() {
+void TableScan::Begin() {
     MoveToBlock(0);
 }
 
 bool TableScan::Next() {
-    // move to the next tuple    
-    txn_->Pin(GetBlock());
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::SHARED);
-    auto table_page = TablePage(txn_, buffer->contents(), GetBlock());
-    // because of different txns can read 
-    // at the same time, so we should use this latch
+
+    txn_->AcquireLock(GetBlock(), LockMode::SHARED);
+    Buffer *buffer = txn_->GetBuffer(GetBlock());
+    auto table_page = TablePage(buffer->contents(), GetBlock());
+    
+    // because of different txns can read/write 
+    // at the same time, so we should use this latch to protect content
     buffer->RLock();
 
     // find the next tuple's rid
     if (!table_page.GetNextTupleRid(&rid_)) {
         while(rid_.GetSlot() == -1) {
 
+            // if this txn's isolation level is rc, means we need to acquire
+            // s-block but don't need to grant it until txn terminated
+            if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED) {
+                txn_->ReleaseLock(BlockId(file_name_, rid_.GetBlockNum()));
+            }
+
             // remember that unlock and unpin before return
             buffer->RUnlock();
             txn_->Unpin(GetBlock());
 
+            // not the next block
             if (AtLastBlock()) {
                 return false;
             }
 
+            // move to the next block and update infor
             MoveToBlock(rid_.GetBlockNum() + 1);
-            txn_->Pin(GetBlock());
-            buffer = txn_->GetBuffer(file_name_, rid_, LockMode::SHARED);
-            table_page = TablePage(txn_, buffer->contents(), GetBlock());
+            txn_->AcquireLock(GetBlock(), LockMode::SHARED);
+            buffer = txn_->GetBuffer(GetBlock());
+            table_page = TablePage(buffer->contents(), GetBlock());
 
             // acquire next tuple again
             buffer->RLock();
             table_page.GetNextTupleRid(&rid_);
         }
+    }
+
+    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED) {
+        txn_->ReleaseLock(BlockId(file_name_, rid_.GetBlockNum()));
     }
 
     buffer->RUnlock();
@@ -65,54 +78,66 @@ bool TableScan::HasField(const std::string &field_name) {
 }
 
 
+void TableScan::Insert(const Tuple &tuple, RID *rid) {
 
-void TableScan::NextInsert(const Tuple &tuple) {
-    // a optimization is we use nextinsert and insert two methods to
-    // finish a insert operations, because in some blocks which can't 
-    // inserted, we don't need to x-lock, just acquire s-lock in these
-    // blocks and acuqire x-lock in aim-block
-
-    // move to the next empty tuple    
-    txn_->Pin(GetBlock());
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::SHARED);
-    auto table_page = TablePage(txn_, buffer->contents(), GetBlock());
+    txn_->AcquireLock(GetBlock(), LockMode::EXCLUSIVE);
+    Buffer *buffer = txn_->GetBuffer(GetBlock());
+    auto table_page = TablePage(buffer->contents(), GetBlock());
     // because of different txns can read 
     // at the same time, so we should use this latch
-    buffer->RLock();
+    buffer->WLock();
     
-    // find the next tuple's rid
-    if (!table_page.GetNextEmptyRid(&rid_, tuple)) {
-        while(rid_.GetSlot() == -1) {
-            buffer->RUnlock();
-            txn_->Unpin(GetBlock());
-
-            // this is different from method 'Next'
-            // if can't find, we shall append a new block
-            if (AtLastBlock()) {
-                MoveToNewBlock();
-            }
-            else {
-                MoveToBlock(rid_.GetBlockNum() + 1);
-            }
+    while (!table_page.Insert(&rid_, tuple)) {
+        // if we insert fail, try to move to the next block
+        buffer->WUnlock();
+        if (AtLastBlock()) {
             
-            txn_->Pin(GetBlock());
-            buffer = txn_->GetBuffer(file_name_, rid_, LockMode::SHARED);
-            table_page = TablePage(txn_, buffer->contents(), GetBlock());
-            buffer->RLock();
+            // create a new block
+            MoveToNewBlock();
 
-            // acquire next tuple again
-            table_page.GetNextEmptyRid(&rid_, tuple);
+            // since we have granted x-lock in this new block
+            // don't need to acquire any lock again
+            buffer = txn_->GetBuffer(GetBlock());
+            table_page = TablePage(buffer->contents(), GetBlock());
+
+            buffer->WLock();
+        }
+        else {
+            MoveToBlock(rid_.GetBlockNum() + 1);
+            
+            // should we acquire x-lock in this block?
+            // even if we can't insert it?
+            // i think it's a stupid way....
+            // may be we can acquire lock in tablepage instead of tablescan
+            txn_->AcquireLock(GetBlock(), LockMode::EXCLUSIVE);
+            buffer = txn_->GetBuffer(GetBlock());
+            table_page = TablePage(buffer->contents(), GetBlock());
+
+            buffer->WLock();
         }
     }
     
-    buffer->RUnlock();
+    // if insert successfully, we should write a log to disk
+    {
+        auto rm = txn_->GetRecoveryMgr();
+        lsn_t lsn = rm->InsertLogRec(txn_, file_name_, rid_, tuple, false);
+        table_page.SetPageLsn(lsn);
+        buffer->SetModified(txn_->GetTxnID(), lsn);
+    }
+
+    buffer->WUnlock();
     txn_->Unpin(GetBlock());
+
+    if (rid != nullptr) {
+        *rid = rid_;
+    }
 }
 
 bool TableScan::GetTuple(Tuple *tuple) {
-    txn_->Pin(GetBlock());
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::SHARED);
-    auto table_page = TablePage(txn_, buffer->contents(), GetBlock());
+
+    txn_->AcquireLock(GetBlock(), LockMode::SHARED);
+    Buffer *buffer = txn_->GetBuffer(GetBlock());
+    auto table_page = TablePage(buffer->contents(), GetBlock());
     bool res = true;
 
     buffer->RLock();
@@ -121,26 +146,34 @@ bool TableScan::GetTuple(Tuple *tuple) {
         res = false;
     }
 
+    // if this txn's isolation level is rc, means we need to acquire
+    // s-block but don't need to grant it until txn terminated
+    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED) {
+        txn_->ReleaseLock(BlockId(file_name_, rid_.GetBlockNum()));
+    }
+
     buffer->RUnlock();
     txn_->Unpin(GetBlock());
     
     return res;
 }
 
-bool TableScan::Insert(const Tuple &tuple) {
-    // insert the tuple to this block
-    txn_->Pin(GetBlock());
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn_, buffer->contents(), GetBlock());
+bool TableScan::InsertWithRid(const Tuple &tuple, const RID &rid) {
+    
+    // update rid
+    MoveToRid(rid);
+    
+    // acquire lock before get buffer
+    txn_->AcquireLock(GetBlock(), LockMode::EXCLUSIVE);
+    Buffer *buffer = txn_->GetBuffer(GetBlock());
+    auto table_page = TablePage(buffer->contents(), GetBlock());
     bool res = true;
 
     buffer->WLock();
     
-    // since we have acquired s-lock in this lock before
-    // then not any txns can modify this block
+
     if (!table_page.InsertWithRID(rid_, tuple)) {
         res = false;
-        SIMPLEDB_ASSERT(false, "concurrency error");
     }
     
 
@@ -152,21 +185,24 @@ bool TableScan::Insert(const Tuple &tuple) {
         buffer->SetModified(txn_->GetTxnID(), lsn);
     }
 
-    buffer->WUnlock();
     // why we must unpin here instead of more early?
+    buffer->WUnlock();
     txn_->Unpin(GetBlock());
     return res;    
 }
 
 void TableScan::Delete() {
-    txn_->Pin(GetBlock());
     Tuple tuple;
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn_, buffer->contents(), GetBlock());
+
+    txn_->AcquireLock(GetBlock(), LockMode::EXCLUSIVE);
+    Buffer *buffer = txn_->GetBuffer(GetBlock());
+    auto table_page = TablePage(buffer->contents(), GetBlock());
     bool res = true;
 
     buffer->WLock();
 
+    // since we have received s-lock in this block when Next method
+    // other txns can't delete this tuple
     if (!table_page.Delete(rid_, &tuple)) {
         res = false;
         SIMPLEDB_ASSERT(false, "concurrency error");
@@ -187,10 +223,11 @@ void TableScan::Delete() {
 
 
 bool TableScan::Update(const Tuple &new_tuple) {
-    txn_->Pin(GetBlock());
     Tuple old_tuple;
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn_, buffer->contents(), GetBlock());
+
+    txn_->AcquireLock(GetBlock(), LockMode::EXCLUSIVE);
+    Buffer *buffer = txn_->GetBuffer(GetBlock());
+    auto table_page = TablePage(buffer->contents(), GetBlock());
     bool res = true;
 
     buffer->WLock();
@@ -241,11 +278,11 @@ void TableScan::MoveToNewBlock() {
     rid_.SetSlot(-1);
 
     // init page
-    txn_->Pin(block);
-    Buffer *buffer = txn_->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn_, buffer->contents(), block);
-    buffer->WLock();
+    txn_->AcquireLock(block, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn_->GetBuffer(block);
+    auto table_page = TablePage(buffer->contents(), block);
 
+    buffer->WLock();
     table_page.InitPage();
 
     // write a initpage log to disk

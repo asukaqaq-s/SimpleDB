@@ -79,9 +79,9 @@ buffer_test_EXTERNAL_OBJECTS =
 
 test/buffer_test: test/CMakeFiles/buffer_test.dir/buffer/buffer_test.cc.o
 test/buffer_test: test/CMakeFiles/buffer_test.dir/build.make
-test/buffer_test: lib/libgtest_main.a
+test/buffer_test: lib/libgtest_maind.a
 test/buffer_test: src/libSimpleDB_lib.a
-test/buffer_test: lib/libgtest.a
+test/buffer_test: lib/libgtestd.a
 test/buffer_test: test/CMakeFiles/buffer_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable buffer_test"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/buffer_test.dir/link.txt --verbose=$(VERBOSE)

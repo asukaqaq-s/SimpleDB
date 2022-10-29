@@ -21,7 +21,7 @@ public:
     * @brief positioning to the first 
     * tuple of this table
     */
-    void FirstTuple();
+    void Begin();
 
     /**
     * @brief positioning to the next tuple of this table file
@@ -32,7 +32,13 @@ public:
     */
     bool Next();
 
-    void NextInsert(const Tuple &tuple);
+    /**
+    * @brief insert a tuple without sepcifie which rid and modify rid.
+    * 
+    * @param tuple 
+    * @param rid 
+    */
+    void Insert(const Tuple &tuple, RID *rid);
     
 
     bool GetTuple(Tuple *tuple);
@@ -49,7 +55,7 @@ public:
     * to insert the record in the existing blocks of the file, 
     * it appends a new block to the file and inserts the record there.
     */
-    bool Insert(const Tuple &tuple);
+    bool InsertWithRid(const Tuple &tuple, const RID &rid);
 
     /**
     * @brief delete current tuple by setting 

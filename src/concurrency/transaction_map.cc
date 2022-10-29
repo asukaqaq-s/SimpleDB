@@ -31,9 +31,9 @@ bool TransactionMap::IsTransactionAlive(txn_id_t txn_id) {
 
 Transaction* TransactionMap::GetTransaction(txn_id_t txn_id) {
     std::lock_guard<std::mutex> latch(latch_);
-    if (IsTransactionAlive(txn_id))
-        return txn_map_[txn_id];
-    else return NULL;
+
+    SIMPLEDB_ASSERT(txn_map_.find(txn_id) != txn_map_.end(), "");
+    return txn_map_[txn_id];
 }
 
 txn_id_t TransactionMap::GetNextTransactionID() {

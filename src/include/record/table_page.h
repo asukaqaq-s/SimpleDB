@@ -42,8 +42,7 @@ public:
     * @param block the corresponding block
     * @param layout the format of a record
     */
-    TablePage(Transaction *txn,
-              Page* data,
+    TablePage(Page* data,
               const BlockId &block);
 
     /**
@@ -91,7 +90,8 @@ public:
     * @param old_tuple
     * @param new_tuple which be updated
     */
-    bool Update(const RID &rid, Tuple *old_tuple, 
+    bool Update(const RID &rid, 
+                Tuple *old_tuple, 
                 const Tuple &new_tuple);
 
 
@@ -139,7 +139,8 @@ private:
     }
 
     inline int GetTupleCount() {
-        return data_->GetInt(TUPLE_COUNT_OFFSET);
+        int res = data_->GetInt(TUPLE_COUNT_OFFSET);
+        return res;
     }
 
     inline void SetFreeSpacePtr(int new_ptr) {

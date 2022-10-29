@@ -53,10 +53,14 @@ concurrency/lock_manager.h
 ../src/include/concurrency/concurrency/lock_manager.h
 map
 -
+set
+-
 
 ../src/include/concurrency/lock_manager.h
 config/type.h
 ../src/include/concurrency/config/type.h
+config/config.h
+../src/include/concurrency/config/config.h
 file/block_id.h
 ../src/include/concurrency/file/block_id.h
 condition_variable
@@ -93,6 +97,12 @@ mutex
 ../src/include/config/config.h
 string
 -
+
+../src/include/config/exception.h
+iostream
+-
+config/type.h
+../src/include/config/config/type.h
 
 ../src/include/config/macro.h
 assert.h
@@ -250,19 +260,15 @@ string
 
 ../src/include/type/typeid.h
 
-/home/asuka/workbench/project/SimpleDB/src/recovery/recovery_manager.cc
-recovery/recovery_manager.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/recovery/recovery_manager.h
+/home/asuka/workbench/project/SimpleDB/src/concurrency/lock_manager.cc
+concurrency/lock_manager.h
+/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/lock_manager.h
+config/config.h
+/home/asuka/workbench/project/SimpleDB/src/concurrency/config/config.h
+config/exception.h
+/home/asuka/workbench/project/SimpleDB/src/concurrency/config/exception.h
 config/macro.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/config/macro.h
+/home/asuka/workbench/project/SimpleDB/src/concurrency/config/macro.h
 concurrency/transaction.h
-/home/asuka/workbench/project/SimpleDB/src/recovery/concurrency/transaction.h
-map
--
-set
--
-iostream
--
-queue
--
+/home/asuka/workbench/project/SimpleDB/src/concurrency/concurrency/transaction.h
 

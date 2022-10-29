@@ -5,14 +5,13 @@
 
 namespace SimpleDB {
 
-TablePage::TablePage(Transaction *txn, Page* data, const BlockId &block) 
+TablePage::TablePage(Page* data, const BlockId &block) 
         : data_(data), block_(block) {
     SIMPLEDB_ASSERT(data != nullptr, "");
 }
 
 
 void TablePage::InitPage() {
-    
     SetFreeSpacePtr(data_->GetSize());
     SetTupleCount(0);
 }
@@ -47,34 +46,43 @@ bool TablePage::Insert(RID *rid, const Tuple &tuple) {
     int free_space_size = GetFreeSpaceRemaining();
     int need_size = Page::MaxLength(tuple.GetSize());
 
+    // check if we can insert this tuple
     if (free_space_size < need_size) {
         return false;
     }
 
-    *rid = RID(block_.BlockNum(), -1);
-    
-    RID next_rid = *rid;
-    
-    // find empty rid and try to insert it
-    while (GetNextEmptyRid(&next_rid, tuple)) {
-        if (InsertWithRID(next_rid, tuple)) {
-            *rid = next_rid;
-            return true;
+    // find a empty tuple, inserting any empty tuple is the same
+    // we don't care about it 
+    int tuple_count = GetTupleCount();
+    int i;
+    for (i = 0;i < tuple_count; i ++) {
+        if (IsDeleted(GetTupleOffset(i))) {
+            break;
         }
     }
-
-    // we can not find a empty rid
-    // create a new one
-    need_size += sizeof(int);
-    next_rid.SetSlot(next_rid.GetSlot() + 1);
-    if (need_size <= GetFreeSpaceRemaining()) {
-        if (InsertWithRID(next_rid, tuple)) {
-            *rid = next_rid;
-            return true;
-        }
+    
+    // Consider a situation where there are no empty tuples
+    // check if can insert it again
+    if (i == tuple_count && 
+        free_space_size < need_size + SLOT_SIZE) {
+        return false;
+    }
+    
+    // if we create a new slot
+    if (i == tuple_count) {
+        SetTupleCount(tuple_count + 1);
     }
 
-    return false;
+    SetFreeSpacePtr(GetFreeSpacePtr() - need_size);
+    SetTupleOffset(i, GetFreeSpacePtr());
+    data_->SetBytes(GetTupleOffset(i), *tuple.GetData());
+
+    // set rid
+    if (rid != nullptr) {
+        *rid = RID(block_.BlockNum(), i);
+    }
+
+    return true;
 }
 
 bool TablePage::InsertWithRID(const RID &rid, const Tuple &tuple) {
@@ -177,7 +185,8 @@ bool TablePage::Delete(const RID &rid, Tuple *tuple) {
     return true;
 }
 
-bool TablePage::Update(const RID &rid, 
+bool TablePage::Update(
+                       const RID &rid, 
                        Tuple *old_tuple, 
                        const Tuple &new_tuple) {
     SIMPLEDB_ASSERT(rid.GetBlockNum() == block_.BlockNum(), 

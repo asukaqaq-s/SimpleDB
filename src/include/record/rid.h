@@ -27,6 +27,32 @@ public:
 
     void SetSlot(int slot) { slot_ = slot; }
 
+    bool operator < (const RID& obj) const {
+        if (block_number_ == obj.block_number_) {
+            return slot_ < obj.slot_;
+        }
+        return block_number_ < obj.block_number_;
+    }
+
+    bool operator > (const RID& obj) const {
+        if (block_number_ == obj.block_number_) {
+            return slot_ > obj.slot_;
+        }
+        return block_number_ > obj.block_number_;
+    }
+
+    bool operator <= (const RID& obj) const {
+        return *this < obj || *this == obj;
+    }
+
+    bool operator >= (const RID& obj) const {
+        return *this > obj || *this == obj;
+    }
+
+    bool operator != (const RID& obj) const {
+        return !(obj == *this);
+    }
+
     bool operator == (const RID& obj) const {
         return block_number_ == obj.block_number_ &&
                slot_ == obj.slot_;

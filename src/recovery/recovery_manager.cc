@@ -16,6 +16,7 @@ namespace SimpleDB
 RecoveryManager::RecoveryManager(LogManager *lm) : log_manager_(lm) {}
 
 void RecoveryManager::Begin(Transaction *txn) {
+    
     int log_offset;
     txn_id_t txn_id = txn->GetTxnID();
     lsn_t last_lsn;
@@ -31,6 +32,7 @@ void RecoveryManager::Begin(Transaction *txn) {
 }
 
 void RecoveryManager::Commit(Transaction *txn) {
+    
     // not need to flush buffer immediately
     // but need to flush the commit log record immediately
     txn_id_t txn_id = txn->GetTxnID();
@@ -54,6 +56,7 @@ void RecoveryManager::Commit(Transaction *txn) {
 }
 
 void RecoveryManager::Abort(Transaction *txn) {
+    
     // not need to flush buffer immediately
     // and not need to flush log immediately
     int offset;
@@ -101,6 +104,7 @@ lsn_t RecoveryManager::InsertLogRec(Transaction *txn,
                                     const RID &rid,
                                     const Tuple &tuple,
                                     bool is_clr) {
+    
     int offset;
     txn_id_t txn_id = txn->GetTxnID();
     lsn_t last_lsn = GetLastLsn(txn_id);
@@ -129,6 +133,7 @@ lsn_t RecoveryManager::DeleteLogRec(Transaction *txn,
                                     const RID &rid,
                                     const Tuple &tuple,
                                     bool is_clr) {
+    
     int offset;
     txn_id_t txn_id = txn->GetTxnID();
     lsn_t last_lsn = GetLastLsn(txn_id);
@@ -158,6 +163,7 @@ lsn_t RecoveryManager::UpdateLogRec(Transaction *txn,
                                     const Tuple &old_tuple,
                                     const Tuple &new_tuple,
                                     bool is_clr) {
+    
     // update is same to insert and delete
     int offset;
     txn_id_t txn_id = txn->GetTxnID();
@@ -187,6 +193,7 @@ lsn_t RecoveryManager::InitPageLogRec(Transaction *txn,
                                       const std::string file_name,
                                       int block_numer,
                                       bool is_clr) {
+    
     int offset;
     txn_id_t txn_id = txn->GetTxnID();
     lsn_t last_lsn = GetLastLsn(txn_id);
@@ -215,9 +222,10 @@ void RecoveryManager::FlushBlock(BlockId block, lsn_t lsn) {
     
     // SIMPLEDB_ASSERT(lsn >= GetEarlistLsn(block), "logic error");
 
+    
     // bacause we have written the block to disk, the block isn't dirty
     // so we should erase it from dp_table_
-    dp_table_.erase(block);
+    RemoveEarlistLsn(block);
 }
 
 
@@ -401,6 +409,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
 }
 
 void RecoveryManager::Recover(Transaction *txn) {
+    
     DoAnalyze();
     if (DoRedo(txn) == false) {
         return;
@@ -468,7 +477,7 @@ void RecoveryManager::DoAnalyze() {
         // if this txn had terminated before crash, we should erase it.
         // we don't need to undo it and just need to redo it.
         if (log_record_type == LogRecordType::TXNEND) {
-            tx_table_.erase(log_txn_id);
+            RemoveTableEntry(log_txn_id);
         }
         
         BlockId block;
@@ -817,7 +826,8 @@ void RecoveryManager::TxnEnd(txn_id_t txn_id) {
     auto txn_end_record = TxnEndRecord(txn_id);
     txn_end_record.SetPrevLSN(GetLastLsn(txn_id));
     log_manager_->AppendLogRecord(txn_end_record);
-    tx_table_.erase(txn_id);
+
+    RemoveTableEntry(txn_id);
 }
 
 

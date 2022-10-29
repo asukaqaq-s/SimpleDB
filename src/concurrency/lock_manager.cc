@@ -2,80 +2,89 @@
 #define LOCK_MANAGER_CC
 
 #include "concurrency/lock_manager.h"
+#include "config/config.h"
+#include "config/exception.h"
 #include "config/macro.h"
-#include "config/type.h"
-
 #include "concurrency/transaction.h"
 
-#include <iostream>
 
 namespace SimpleDB {
 
 // note that, because SimpleDB use Rigorous 2PL concurrency strategy
 // so it will not happen cascading aborts.
 // we don't need to care about it, just need to deal with deadlock.
-// it will  three case:
-// 1. acuqire
 
 bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
 
-    SIMPLEDB_ASSERT(txn->stage_ != LockStage::SHRINKING,
-                    "Acquire lock when shrink phase");
     
-    // read uncommitted doesn't need shared lock
-    if (txn->isolation_level_ == IsoLationLevel::READ_UNCOMMITED) {
-        SIMPLEDB_ASSERT(false, 
-            "trying to acquire shared lock on read uncommitted isolation level");
-    }
+    // check if growing phase
+    SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
+                    "acquire lock when shrink");
+    
+    // check if isolation level correct
+    SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
+                    "isolation level read_uncommitted don't need acquire lock");
 
-
-    // if can not find the block, 
-    // we should construct a new request queue into it
+    // if lock_request_queue is not exist, we should create one
     if (lock_table_.find(block) == lock_table_.end()) {
-        lock_table_.emplace(std::piecewise_construct, std::forward_as_tuple(block), std::forward_as_tuple());
+        lock_table_.emplace(std::piecewise_construct, 
+                            std::forward_as_tuple(block), 
+                            std::forward_as_tuple());
     }
+
+    // traverse the lock_request_queue, this request should not exist
+    auto lock_request_queue = &lock_table_[block];
+    auto request_queue = &lock_request_queue->request_queue_;
+    auto it = lock_request_queue->request_queue_.begin();
+    for (;it != request_queue->end(); it ++) {
+        if (it->txn_id_ == txn->GetTxnID()) {
+            break;
+        }
+    }
+
+    SIMPLEDB_ASSERT(it == request_queue->end(), "request not exist");
     
-    SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(),
-                    "Fail to create a new request queue in lock_table");
-
-    // push the new txn in lock_reuqest_queue
-    // save this txn until unlock    
-    auto *lock_request_queue = &lock_table_[block];
-    lock_request_queue->request_queue_.emplace_back(
-        LockRequest(txn->txn_id_, LockMode::SHARED));
-
+    // insert request into queue
+    request_queue->emplace_back(LockRequest(txn->GetTxnID(), LockMode::SHARED));
+    
+    
+    // find new_inserted request object, it must is in 
+    // the end of queue, because we have a latch.
     // note that, we can not use std::rbegin in here
     // because it is unthread-safe, maybe happen error.
-    auto it = std::prev(lock_request_queue->request_queue_.end());
+    it = std::prev(lock_request_queue->request_queue_.end());
     
-    // if a txn is writing, it must wait until unlock
-    auto start = std::chrono::high_resolution_clock::now();
-    while (lock_request_queue->writing_ &&
-           !WaitTooLong(start)) {
-        lock_request_queue->wait_cv_.wait_for(latch, std::chrono::milliseconds(max_time_));
-    }
-
-    // if can not acquire a shared lock
+    
+    // if have other writers, we can't received s-lock
+    // wait until writers release lock or kill this writer(WOUND_WAIT)
     if (lock_request_queue->writing_) {
-        throw std::runtime_error("Wait too long when acquire shared-lock");
+        DeadLockPrevent(txn, lock_request_queue, block);
+        
+        // according to WOUND_WAIT protocol
+        // wait until abort or not have writers
+        lock_request_queue->wait_cv_.wait(latch, 
+            [txn, lock_request_queue, it]() {
+                return txn->IsAborted() ||
+                       !lock_request_queue->writing_;
+            });
     }
-    // According to different deadlock deal strategy
-    // will rollback this transaction
-    // return false if this transaction rollback
-    // if (txn->state_ == TransactionState::ABORTED) {
-    // lock_request_queue->request_queue_->erase(it);
-    //     return false;
-    // }
 
-    // update necessary meta data
-    lock_request_queue->shared_count_ ++;
+    // if this txn is aborted, this request which not 
+    // granted lock should be moved out the queue
+    if (txn->IsAborted()) {
+        request_queue->erase(it);
+        throw TransactionAbortException(txn->GetTxnID(), "acquire s-lock error");
+    }
+
+
+    // current, we have received this lock successfully.
+    // update some necessary informations
     it->granted_ = true;
+    lock_request_queue->shared_count_ ++;
+    assert(it->lock_mode_ == LockMode::SHARED);
+    assert(lock_request_queue->writing_ == false);
     
-    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " request slock in block" << block.BlockNum() << std::endl;
-    // PrintLockTable(block);
-
-    // return true if this transaction acquire the lock
     return true;
 }
 
@@ -83,245 +92,318 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
 bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
 
-    SIMPLEDB_ASSERT(txn->stage_ != LockStage::SHRINKING,
-                    "Acquire lock when shrink phase");
     
-    // if can not find the block, 
-    // we should construct a new request queue into it
+     // check if growing phase
+    SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
+                    "acquire lock when shrink");
+    
+    // check if isolation level correct
+    SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
+                    "isolation level read_uncommitted don't need acquire lock");
+
+    // if lock_request_queue is not exist, we should create one
     if (lock_table_.find(block) == lock_table_.end()) {
         lock_table_.emplace(std::piecewise_construct, 
-        std::forward_as_tuple(block), std::forward_as_tuple());
+                            std::forward_as_tuple(block), 
+                            std::forward_as_tuple());
     }
-    
-    SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(),
-                    "Fail to create a new request queue in lock_table");
-    
-    // push the new txn in lock_reuqest_queue
-    // save this txn until unlock
-    auto *lock_request_queue = &lock_table_[block];
-    lock_request_queue->request_queue_.emplace_back(
-            txn->txn_id_, LockMode::EXCLUSIVE);
-    
-    // the iterator points to the new request
-    // because we use latch to protect lock manager
-    // so, this will not happen to logical error
-    auto it = std::prev(lock_request_queue->request_queue_.end());
-    
-    // If there are others transactions has xlock or slock
-    // this transactions will wait until acquire xlock
-    auto start = std::chrono::high_resolution_clock::now();
-    while ((lock_request_queue->writing_ ||
-           lock_request_queue->shared_count_ > 0) &&
-           !WaitTooLong(start)) {
-        lock_request_queue->wait_cv_.wait_for(latch, std::chrono::milliseconds(max_time_));
-    }
-    
-    // if can not acquire a exclusive lock
-    if (lock_request_queue->writing_ || 
-        lock_request_queue->shared_count_ > 0) {
-        // current, we just do nothing.TODO
-        throw std::runtime_error(
-            "Wait too long when acquire exclusive-lock"
-        );
-    }
-    
-    // we should abort this transaction 
-    // if (txn->state_ == TransactionState::ABORTED) {
-    //    lock_request_queue->request_queue_->erase(it);
-    //    return false;
-    // }
-    
-    // if we acquire the x lock, means no transactions has shared lock
-    lock_request_queue->shared_count_ = 0;
-    lock_request_queue->writing_ = true;
-    it->granted_ = true;
-    
-    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " request xlock in block" << block.BlockNum() << std::endl;
-    // PrintLockTable(block);
-    
-    return true;
-}
 
-
-
-// lock update should 
-// 1. not writing in this block
-// 2. not other transactions share this block
-bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
-    std::unique_lock<std::mutex> latch(latch_);
-    
-    SIMPLEDB_ASSERT(txn->stage_ != LockStage::SHRINKING, 
-                    "update lock when shrinking phase");
-    
-    SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(),
-                    "update lock when not acquire shared lock");
-
-    auto *lock_request_queue = &lock_table_[block];
-    
-    // go through the queue to find this transaction
+    // traverse the lock_request_queue, this request should not exist
+    auto lock_request_queue = &lock_table_[block];
+    auto request_queue = &lock_request_queue->request_queue_;
     auto it = lock_request_queue->request_queue_.begin();
-    for (;it != lock_request_queue->request_queue_.end();it++) {
+    for (;it != request_queue->end(); it ++) {
         if (it->txn_id_ == txn->GetTxnID()) {
             break;
         }
     }
-    
-    // simple test whether have logical error
-    if (it == lock_request_queue->request_queue_.end()) {
-        SIMPLEDB_ASSERT(false, "logical error");
-    }
-    if ((it->granted_ = false) ||
-        (it->lock_mode_ != LockMode::SHARED)) {
-        SIMPLEDB_ASSERT(false, "logical error");      
-    }
-    
-    // update data before wait for 
-    it->lock_mode_ = LockMode::EXCLUSIVE;
-    it->granted_ = false;
-    lock_request_queue->shared_count_ --;
 
-    auto start = std::chrono::high_resolution_clock::now();
-    while ((lock_request_queue->writing_ ||
-           lock_request_queue->shared_count_ > 0) &&
-           !WaitTooLong(start)) {
-        lock_request_queue->wait_cv_.wait_for(latch, wait_max_time_);
-    }
-    
+
+    // why this txn request must not exist?
+    // because we think transaction is a single-thread in simpledb
+    // txn acquire x-lock means it doesn't have s-lock before
+    // and if not receive s-lock, the txn will be blocked until receive it
+    SIMPLEDB_ASSERT(it == request_queue->end(), "request not exist");
+
+
+    request_queue->emplace_back(LockRequest(txn->GetTxnID(), LockMode::EXCLUSIVE));
+
+    // can't use rbegin
+    it = std::prev(lock_request_queue->request_queue_.end());
+
     if (lock_request_queue->writing_ ||
         lock_request_queue->shared_count_ > 0) {
-        throw std::runtime_error(
-        "Wait too long when update exclusive-lock");
+        
+        DeadLockPrevent(txn, lock_request_queue, block);
+        lock_request_queue->wait_cv_.wait(latch, 
+            [txn, lock_request_queue, it]() {
+                return  txn->IsAborted() ||
+                       (lock_request_queue->shared_count_ == 0 &&
+                        lock_request_queue->writing_ &&
+                        it->granted_ == true);
+            });
     }
 
+
+    // remove the wait_request of the aborted txn
+    if (txn->IsAborted()) {
+        request_queue->erase(it);
+        throw TransactionAbortException(txn->GetTxnID(), "acquire x-lock error");
+    }
+
+
+    // current, we have received x-lock successfully
+    // this txn may not be blocked, so we should update writting_ and granted
     it->granted_ = true;
     lock_request_queue->writing_ = true;
-    lock_request_queue->shared_count_ = 0;
-
-    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " request update in block" << block.BlockNum() << std::endl;
-    // PrintLockTable(block);
+    assert(lock_request_queue->shared_count_ == 0);
+    assert(it->txn_id_ == txn->GetTxnID());
+    assert(it->lock_mode_ == LockMode::EXCLUSIVE);
+    
 
     return true;
 }
 
 
-bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
+bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
-    
-    SIMPLEDB_ASSERT(txn->stage_ != LockStage::GROWING,
-                    "Unlock when Growing phase");
 
+    // check if growing phase
+    SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
+                    "acquire lock when shrink");
+    
+    // check if isolation level correct
+    SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
+                    "isolation level read_uncommitted don't need acquire lock");
+    
+
+    // this lock_queue should exist
+    SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(), "logic error");
     auto lock_request_queue = &lock_table_[block];
+    auto request_queue = &lock_request_queue->request_queue_;
     auto it = lock_request_queue->request_queue_.begin();
-    for (;it != lock_request_queue->request_queue_.end();it ++) {
-        if(it->txn_id_ == txn->txn_id_) {
+    for (;it != request_queue->end(); it ++) {
+        if (it->txn_id_ == txn->GetTxnID()) {
             break;
         }
     }
 
-    if (it == lock_request_queue->request_queue_.end()) {
-        SIMPLEDB_ASSERT(false, "release a non-exist lock");
+
+    SIMPLEDB_ASSERT(it != request_queue->end(), "request must exist");
+    SIMPLEDB_ASSERT(it->lock_mode_ == LockMode::SHARED, "can't upgrade x-lock");
+    SIMPLEDB_ASSERT(it->txn_id_ == txn->GetTxnID(), "txn_id not match");
+    SIMPLEDB_ASSERT(it->granted_ == true, "txn  should grant this lock");
+    SIMPLEDB_ASSERT(lock_request_queue->writing_ == false &&
+                    lock_request_queue->shared_count_ > 0, "logic error");
+    
+    // update infor
+    it->granted_ = false;
+    it->lock_mode_ = LockMode::EXCLUSIVE;
+    lock_request_queue->shared_count_ --;
+    
+
+    // if have other other readers
+    // it is not possible to have a writer holding a x-lock
+    if (lock_request_queue->shared_count_ > 0) {
+        DeadLockPrevent(txn, lock_request_queue, block);
+        lock_request_queue->wait_cv_.wait(latch, 
+            [txn, lock_request_queue, it]() {
+                return txn->IsAborted() ||
+                       (it->granted_ &&
+                        lock_request_queue->writing_ &&
+                        lock_request_queue->shared_count_ == 0);
+            });  
+    }
+
+    
+
+    // remove the wait_request of the aborted txn
+    if (txn->IsAborted()) {
+        request_queue->erase(it);
+        throw TransactionAbortException(txn->GetTxnID(), "acquire x-lock error");
+    }
+
+
+    // current, we have received x-lock successfully
+    // this txn may not be blocked, so we should update writting_ and granted
+    it->granted_ = true;
+    lock_request_queue->writing_ = true;
+    assert(lock_request_queue->shared_count_ == 0);
+    assert(it->txn_id_ == txn->GetTxnID());
+    assert(it->lock_mode_ == LockMode::EXCLUSIVE);
+    txn->GetLockSet()->emplace(block, LockMode::EXCLUSIVE);
+
+    return true;
+}
+
+bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
+    std::unique_lock<std::mutex> latch(latch_);
+
+    // check if shrinking phase
+    if (txn->GetIsolationLevel() != IsoLationLevel::READ_COMMITED) {
+        SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::SHRINKING, 
+                        "acquire lock when shrink");
     }
     
-    SIMPLEDB_ASSERT(it->granted_, 
-        "the transaction does't have lock before unlock");
-    
-    bool should_notify = false;
-    // if current lock is exlusive lock
-    // or any shared lock about this lock all released
-    // we should notify the waiting transactions
-    if (it->lock_mode_ == LockMode::EXCLUSIVE) {
-        SIMPLEDB_ASSERT(
-            lock_request_queue->shared_count_ == 0, 
-            "unlock error");
-        
-        lock_request_queue->writing_ = false;
-        should_notify = true;
-    } else {
-        SIMPLEDB_ASSERT(
-            !lock_request_queue->writing_,
-            "unlock error");
+    // check if isolation level correct
+    SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
+                    "isolation level read_uncommitted don't need acquire lock");  
 
-        lock_request_queue->shared_count_ --;
-        if (lock_request_queue->shared_count_ == 0) {
-            should_notify = true;
-        }
+    // this lock_queue should exist
+    SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(), "logic error");
+    auto lock_request_queue = &lock_table_[block];
 
-    }
-    
-    // std::cout << "should_notify = " << should_notify << " "
-    //           << "lockmode = " << static_cast<int>(it->lock_mode_) << "  "
-    //           << "shared_count = " << lock_request_queue->shared_count_ << " "
-    //           << "writring = " << lock_request_queue->writing_ << " " 
-    //           << "block_num = " << block.BlockNum() << std::endl;
-    
-    // std::cout << "TX " << std::to_string(txn->GetTxnID()) << " release block" << block.BlockNum() << std::endl;
-    // PrintLockTable(block);
+    // just call UnLockImp method to update infor
+    UnLockImp(txn, lock_request_queue, block);
 
-    lock_request_queue->request_queue_.erase(it);
-    // notifly all transactions in wait list
-    // rescheduled by themselves
-    if(should_notify) {
-        lock_request_queue->wait_cv_.notify_all();
-    }
-    
     return true;
 }
 
 
-bool LockManager::WaitTooLong(std::chrono::time_point<std::chrono::
-high_resolution_clock> start) {
-    auto end = std::chrono::high_resolution_clock::now(); 
-    double elapsed = std::chrono::duration_cast<std::chrono::milliseconds>
-        (end - start).count();
-    
-    return elapsed > max_time_;
-}
+bool LockManager::UnLockImp(Transaction *txn, 
+                            LockRequestQueue* lock_request_queue, 
+                            const BlockId &block) {
 
-// TODO:
-// TODO:
-// ....
-bool LockManager::DeadLockDeal(Transaction *txn, const BlockId &block) {
 
-    SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(),
-                    "deadlockdeal: request block which not lock");
-    
-    auto *lock_request_queue = &lock_table_[block];
-    
-    // Traverse the request queue to find the 
-    // transaction that hold the lock
+    auto request_queue = &lock_request_queue->request_queue_;
     auto it = lock_request_queue->request_queue_.begin();
-    for (;it != lock_request_queue->request_queue_.end();it ++) {
-        if (it->granted_ == true) {
-            break;        
+    for (;it != request_queue->end(); it ++) {
+        if (it->txn_id_ == txn->GetTxnID()) {
+            break;
+        }
+    }
+
+    SIMPLEDB_ASSERT(it != request_queue->end(), "request must exist");
+
+
+    SIMPLEDB_ASSERT(it->granted_, "is not granting this lock");
+    
+    bool should_notify = false;
+    
+
+    if (it->lock_mode_ == LockMode::EXCLUSIVE) {
+        assert(lock_request_queue->shared_count_ == 0);
+        it->granted_ = false;
+        lock_request_queue->writing_ = false;
+        should_notify = true;
+    }
+    else {
+        assert(lock_request_queue->writing_ == false);
+        it->granted_ = false;
+        lock_request_queue->shared_count_ --;
+    
+        if (lock_request_queue->shared_count_ == 0) {
+            should_notify = true;
         }
     }
     
-    // this case should not happen
-    SIMPLEDB_ASSERT(it == lock_request_queue->request_queue_.end(),
-                    "No transaction hold the block");
 
-    // Transaction *hold_lock_txn = Transaction::TransactionLookUp(it->txn_id_);
+    // remove this request
+    lock_request_queue->request_queue_.erase(it);
+    
+    // In WOUND_WAIT, we can only manually allocate x-locks by ourselves 
+    // and cannot automatically let transactions compete for x-locks to 
+    // avoid deadlock.we always allocate lock to request which not grant locks  
+    // but for s-lock, can automatically let txns compete for s-locks
+    if (should_notify && request_queue->size()) {
+        auto it_tmp = request_queue->begin();
+        SIMPLEDB_ASSERT(it_tmp->granted_ == false, "");
 
-    // according to global transaction map, we can use txn_id to lockup
-    // a pointer that points to its transaction
-    // following, we can view txn_id as timestamp, because it is monotonic increment
-    if (protocol_ == DeadLockResolveRrotocol::DO_NOTHING) {
-        // do nothing, just test
-        std::cout << "Test dead lock deal" << std::endl;
-    } else if (protocol_ == DeadLockResolveRrotocol::WAIT_DIE) {
-        // inpreemptive
-        // if hold_lock_txn.txn_id > this.txn_id, this txn wait.
-        // if hold_lock_txn.txn_id < this.txn_id, this txn rollback and restart
-
-    } else if (protocol_ == DeadLockResolveRrotocol::WOUND_WAIT) {
-        // preemptive
-        // if hold_lock_txn.txn_id < this.txn_id, this txn wait
-        // if hold_lock_txn.txn_id > this.txn_id, hold_lock_txn rollback and restart
-
+        if (it_tmp->lock_mode_ == LockMode::EXCLUSIVE) {   
+            it_tmp->granted_ = true;
+            lock_request_queue->writing_ = true;
+        }
     }
-    return false;
+
+    // should the txn which should_abort is true should notify other txns?
+    // It stands to reason that the lock should be passed to the caller of 
+    // deadlockprevent
+    if (should_notify) {
+        lock_request_queue->wait_cv_.notify_all();
+    }
+
+    
+    // remove this lock in the lock_set of txn
+    txn->GetLockSet()->erase(block); 
+
+    return true;
+}
+
+void LockManager::DeadLockPrevent(Transaction *txn, 
+                                  LockRequestQueue* lock_request_queue, 
+                                  const BlockId &block) {
+    
+    // find the lockmode of txn
+    LockMode lock_mode;
+    auto it_origin = lock_request_queue->request_queue_.begin();
+    for (; it_origin != lock_request_queue->request_queue_.end(); it_origin++) {
+        if (it_origin->txn_id_ == txn->GetTxnID()) {
+            lock_mode = it_origin->lock_mode_;
+            break;
+        }
+    }
+
+    assert(it_origin != lock_request_queue->request_queue_.end());
+
+    
+    // check if we should notify txn
+    // if a txn is aborted, this value is set
+    bool should_notify = false;
+
+    // the older the txn_id, the younger the txn's age 
+    // if lock_mode is executive, we should abort any requests which txn_id
+    // is over than txn->txn_id_.
+    // if lock_mode is shared, we just need to abort any x-lock quests which
+    // txn_id is over than txn_txn_id_
+    auto it = lock_request_queue->request_queue_.begin();
+    for (;it != lock_request_queue->request_queue_.end();) {
+        bool should_abort = false;
+
+        if (it->txn_id_ > txn->GetTxnID()) {        
+            if (lock_mode == LockMode::SHARED && 
+                it->lock_mode_ == LockMode::EXCLUSIVE) {
+                should_abort = true;
+            }
+            if (lock_mode == LockMode::EXCLUSIVE) {
+                should_abort = true;
+            }
+        }
+
+        auto old_it = it;
+        it ++;
+        
+        if (should_abort) {
+            txn->TransactionLookUp(old_it->txn_id_)->SetAborted();
+            should_notify = true;
+        }
+
+        if (should_abort && old_it->granted_) {
+            UnLockImp(txn->TransactionLookUp(old_it->txn_id_), lock_request_queue, block);
+        }
+        
+    }
+
+    // allocate lock to the first free-txn
+    if (!lock_request_queue->writing_ &&
+        !lock_request_queue->shared_count_ &&
+        lock_request_queue->request_queue_.size()) {
+        auto it_tmp = lock_request_queue->request_queue_.begin();
+        assert(it_tmp->granted_ == false);
+
+        if (it_tmp->lock_mode_ == LockMode::EXCLUSIVE) {
+            it_tmp->granted_ = true;
+            lock_request_queue->writing_ = true;
+        }
+    }
+
+    // awake up the aborted txns
+    if (should_notify) {
+        lock_request_queue->wait_cv_.notify_all();
+    }
+    
 }
 
 } // namespace SimpleDB
+
 
 #endif

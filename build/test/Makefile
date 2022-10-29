@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+test/CMakeFiles/recovery_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/recovery_test.dir/rule
+.PHONY : test/CMakeFiles/recovery_test.dir/rule
+
+# Convenience name for target.
+recovery_test: test/CMakeFiles/recovery_test.dir/rule
+
+.PHONY : recovery_test
+
+# fast build rule for target.
+recovery_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
+.PHONY : recovery_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/show-tests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
 .PHONY : test/CMakeFiles/show-tests.dir/rule
@@ -181,6 +196,36 @@ show-tests: test/CMakeFiles/show-tests.dir/rule
 show-tests/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
 .PHONY : show-tests/fast
+
+# Convenience name for target.
+test/CMakeFiles/transaction_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/transaction_test.dir/rule
+.PHONY : test/CMakeFiles/transaction_test.dir/rule
+
+# Convenience name for target.
+transaction_test: test/CMakeFiles/transaction_test.dir/rule
+
+.PHONY : transaction_test
+
+# fast build rule for target.
+transaction_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
+.PHONY : transaction_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/lru_replacer_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
+.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
+
+# Convenience name for target.
+lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
+
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/unittests.dir/rule:
@@ -243,6 +288,21 @@ buffer_test/fast:
 .PHONY : buffer_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/concurrency_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/concurrency_test.dir/rule
+.PHONY : test/CMakeFiles/concurrency_test.dir/rule
+
+# Convenience name for target.
+concurrency_test: test/CMakeFiles/concurrency_test.dir/rule
+
+.PHONY : concurrency_test
+
+# fast build rule for target.
+concurrency_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
+.PHONY : concurrency_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/file_manager_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
 .PHONY : test/CMakeFiles/file_manager_test.dir/rule
@@ -258,34 +318,19 @@ file_manager_test/fast:
 .PHONY : file_manager_test/fast
 
 # Convenience name for target.
-test/CMakeFiles/lru_replacer_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
-.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
+test/CMakeFiles/lock_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lock_manager_test.dir/rule
+.PHONY : test/CMakeFiles/lock_manager_test.dir/rule
 
 # Convenience name for target.
-lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
+lock_manager_test: test/CMakeFiles/lock_manager_test.dir/rule
 
-.PHONY : lru_replacer_test
+.PHONY : lock_manager_test
 
 # fast build rule for target.
-lru_replacer_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/transaction_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/transaction_test.dir/rule
-.PHONY : test/CMakeFiles/transaction_test.dir/rule
-
-# Convenience name for target.
-transaction_test: test/CMakeFiles/transaction_test.dir/rule
-
-.PHONY : transaction_test
-
-# fast build rule for target.
-transaction_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
-.PHONY : transaction_test/fast
+lock_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/build
+.PHONY : lock_manager_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/page_test.dir/rule:
@@ -346,21 +391,6 @@ log_test: test/CMakeFiles/log_test.dir/rule
 log_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
 .PHONY : log_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/recovery_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/recovery_test.dir/rule
-.PHONY : test/CMakeFiles/recovery_test.dir/rule
-
-# Convenience name for target.
-recovery_test: test/CMakeFiles/recovery_test.dir/rule
-
-.PHONY : recovery_test
-
-# fast build rule for target.
-recovery_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
-.PHONY : recovery_test/fast
 
 buffer/buffer_manager_test.o: buffer/buffer_manager_test.cc.o
 
@@ -442,6 +472,60 @@ buffer/lru_replacer_test.s: buffer/lru_replacer_test.cc.s
 buffer/lru_replacer_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/buffer/lru_replacer_test.cc.s
 .PHONY : buffer/lru_replacer_test.cc.s
+
+concurrency/concurrency_test.o: concurrency/concurrency_test.cc.o
+
+.PHONY : concurrency/concurrency_test.o
+
+# target to build an object file
+concurrency/concurrency_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/concurrency/concurrency_test.cc.o
+.PHONY : concurrency/concurrency_test.cc.o
+
+concurrency/concurrency_test.i: concurrency/concurrency_test.cc.i
+
+.PHONY : concurrency/concurrency_test.i
+
+# target to preprocess a source file
+concurrency/concurrency_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/concurrency/concurrency_test.cc.i
+.PHONY : concurrency/concurrency_test.cc.i
+
+concurrency/concurrency_test.s: concurrency/concurrency_test.cc.s
+
+.PHONY : concurrency/concurrency_test.s
+
+# target to generate assembly for a file
+concurrency/concurrency_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/concurrency/concurrency_test.cc.s
+.PHONY : concurrency/concurrency_test.cc.s
+
+concurrency/lock_manager_test.o: concurrency/lock_manager_test.cc.o
+
+.PHONY : concurrency/lock_manager_test.o
+
+# target to build an object file
+concurrency/lock_manager_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/concurrency/lock_manager_test.cc.o
+.PHONY : concurrency/lock_manager_test.cc.o
+
+concurrency/lock_manager_test.i: concurrency/lock_manager_test.cc.i
+
+.PHONY : concurrency/lock_manager_test.i
+
+# target to preprocess a source file
+concurrency/lock_manager_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/concurrency/lock_manager_test.cc.i
+.PHONY : concurrency/lock_manager_test.cc.i
+
+concurrency/lock_manager_test.s: concurrency/lock_manager_test.cc.s
+
+.PHONY : concurrency/lock_manager_test.s
+
+# target to generate assembly for a file
+concurrency/lock_manager_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/concurrency/lock_manager_test.cc.s
+.PHONY : concurrency/lock_manager_test.cc.s
 
 file/file_manager_test.o: file/file_manager_test.cc.o
 
@@ -670,21 +754,23 @@ help:
 	@echo "... install"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... recovery_test"
 	@echo "... show-tests"
+	@echo "... transaction_test"
+	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... test"
+	@echo "... concurrency_test"
 	@echo "... file_manager_test"
-	@echo "... lru_replacer_test"
-	@echo "... transaction_test"
+	@echo "... lock_manager_test"
 	@echo "... page_test"
 	@echo "... table_test"
 	@echo "... list_install_components"
 	@echo "... log_record_test"
 	@echo "... log_test"
-	@echo "... recovery_test"
 	@echo "... buffer/buffer_manager_test.o"
 	@echo "... buffer/buffer_manager_test.i"
 	@echo "... buffer/buffer_manager_test.s"
@@ -694,6 +780,12 @@ help:
 	@echo "... buffer/lru_replacer_test.o"
 	@echo "... buffer/lru_replacer_test.i"
 	@echo "... buffer/lru_replacer_test.s"
+	@echo "... concurrency/concurrency_test.o"
+	@echo "... concurrency/concurrency_test.i"
+	@echo "... concurrency/concurrency_test.s"
+	@echo "... concurrency/lock_manager_test.o"
+	@echo "... concurrency/lock_manager_test.i"
+	@echo "... concurrency/lock_manager_test.s"
 	@echo "... file/file_manager_test.o"
 	@echo "... file/file_manager_test.i"
 	@echo "... file/file_manager_test.s"

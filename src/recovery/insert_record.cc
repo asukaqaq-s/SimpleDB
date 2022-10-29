@@ -57,9 +57,10 @@ InsertRecord::InsertRecord(txn_id_t txn,
 void InsertRecord::Redo(Transaction *txn) {
     // redo this operation but not logs
     BlockId blk(file_name_, rid_.GetBlockNum());
-    txn->Pin(blk);
-    Buffer *buffer = txn->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), blk);
+
+    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(blk);
+    auto table_page = TablePage(buffer->contents(), blk);
 
     buffer->WLock();
     
@@ -92,10 +93,9 @@ void InsertRecord::Undo(Transaction *txn, lsn_t lsn) {
     Tuple old_tuple;
 
     // we must pin block before getbuffer
-    txn->Pin(blk);
-
-    Buffer *buffer = txn->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), blk);
+    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(blk);
+    auto table_page = TablePage(buffer->contents(), blk);
     
     buffer->WLock();
 

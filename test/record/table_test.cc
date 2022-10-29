@@ -116,12 +116,12 @@ TEST(TableTest, TablePageTest) {
     std::vector<RID> lost_vec;
 
     for (int i = 0;i < round;i ++) {
-        ts.NextInsert(tuple_test);
-        ts.Insert(tuple_test);
+        RID rid;
+        ts.Insert(tuple_test, &rid);
         rid_vec.push_back(ts.GetRid());
     }
 
-    ts.FirstTuple();
+    ts.Begin();
     
     for (int i = 0;i < round;i ++) {
         ts.Next();
@@ -131,7 +131,7 @@ TEST(TableTest, TablePageTest) {
         EXPECT_EQ(t, tuple_test);
     }
 
-    ts.FirstTuple();
+    ts.Begin();
 
     for (int i = 0;i < round;i ++) {
         ts.Next();
@@ -143,7 +143,7 @@ TEST(TableTest, TablePageTest) {
         }
     }
 
-    ts.FirstTuple();
+    ts.Begin();
     while (ts.Next()) {
         if (find(std::to_string(ts.GetRid().GetSlot()), '8')) {
             ts.Update(tuple_test2);
@@ -153,7 +153,7 @@ TEST(TableTest, TablePageTest) {
         }
     }    
 
-    ts.FirstTuple();
+    ts.Begin();
     while (ts.Next()) {
         if (find(std::to_string(ts.GetRid().GetSlot()), '7')) {
             ts.Update(tuple_test3);
@@ -163,11 +163,11 @@ TEST(TableTest, TablePageTest) {
         }
     }
 
-    ts.FirstTuple();
+    ts.Begin();
     
     for (int i = 0;i < 5;i ++) {
-        ts.NextInsert(tuple_test);
-        ts.Insert(tuple_test);
+        RID rid;
+        ts.Insert(tuple_test, &rid);
         ts.GetTuple(&tuple_get);
         EXPECT_EQ(tuple_test, tuple_get);
         EXPECT_EQ(lost_vec[i], ts.GetRid());
@@ -242,15 +242,15 @@ TEST(TableTest, RandomTableTest) {
     std::vector<RID> rid_vec;
     std::vector<Tuple> tuple_array;
     std::vector<RID> empty_rid_vec;
-     ts.FirstTuple();
+     ts.Begin();
     for (int i = 0;i < round;i ++) {
         tuple_array.push_back(GetRandomTuple());
-        ts.NextInsert(tuple_array[i]);
-        ts.Insert(tuple_array[i]);
+        RID rid;
+        ts.Insert(tuple_array[i], &rid);
         rid_vec.push_back(ts.GetRid());
     }
 
-    ts.FirstTuple();
+    ts.Begin();
     
     for (int i = 0;i < round;i ++) {
         ts.Next();
@@ -260,7 +260,7 @@ TEST(TableTest, RandomTableTest) {
         EXPECT_EQ(t, tuple_array[i]);
     }
 
-    ts.FirstTuple();
+    ts.Begin();
     int cnt = 0;
     for (int i = 0;i < round;i ++) {
         ts.Next();
@@ -273,17 +273,17 @@ TEST(TableTest, RandomTableTest) {
         }
     }
     
-    ts.FirstTuple();
+    ts.Begin();
     // find 
     for (auto t:empty_rid_vec) {
         std::cout << "find one " << t.ToString() << std::endl;
         auto tuple = FindTupleRID(tuple_array, t);
-        ts.NextInsert(tuple);
+        // ts.NextInsert(tuple);
 
     }
 
 
-    ts.FirstTuple();
+    ts.Begin();
     while (ts.Next()) {
         if (find(std::to_string(ts.GetRid().GetSlot()), '8')) {
             Tuple random_tuple = GetRandomTuple();
@@ -299,7 +299,7 @@ TEST(TableTest, RandomTableTest) {
         }
     }    
 
-    // ts.FirstTuple();
+    // ts.Begin();
     // while (ts.Next()) {
     //     if (find(std::to_string(ts.GetRid().GetSlot()), '7')) {
     //         ts.Update(tuple_test3);

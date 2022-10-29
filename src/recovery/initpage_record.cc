@@ -50,20 +50,20 @@ void InitPageRecord::Redo(Transaction *txn) {
     }
 
     SIMPLEDB_ASSERT(txn->Append(file_name_) == block, "logic error");
-    txn->Pin(block);
     
     // since we have obtained x-lock in end-of-file
     // should we get x-lock in this new-block ?
     // or because isolation level rr, we just get s-lock here?
-    // maybe the first case is right
-    Buffer *buffer = txn->GetBuffer(file_name_, RID(block_number_, -1), LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), block);
+    txn->AcquireLock(block, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(block);
+    auto table_page = TablePage(buffer->contents(), block);
     buffer->WLock();
 
     table_page.InitPage();
 
     table_page.SetPageLsn(lsn_);
     buffer->SetModified(txn_id_, lsn_);
+    
     buffer->WUnlock();
     txn->Unpin(block);
 }

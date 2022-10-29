@@ -58,6 +58,7 @@ src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/co
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/concurrency/lock_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/config.h
+src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/exception.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/rw_latch.h
 src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o: ../src/include/config/type.h

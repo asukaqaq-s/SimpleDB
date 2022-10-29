@@ -44,8 +44,10 @@ private:
 
 
 /**
-* @brief * Provide transaction management for clients, 
+* @brief Provide transaction management for clients, 
 * which contains the context required for transaction execution
+* in transaction object, we can't do actually operations and just
+* obtain a buffer object or obtain a global-lock in the specified block
 */
 class Transaction {
 
@@ -54,6 +56,8 @@ class Transaction {
 public:
 
     Transaction(FileManager *fm, BufferManager *bm, RecoveryManager *rm);
+
+    Transaction(FileManager *fm, BufferManager *bm, RecoveryManager *rm, txn_id_t id);
     
     ~Transaction();
 
@@ -82,14 +86,6 @@ public:
     void Recovery();
 
     /**
-    * @brief Pin the specified block
-    * and not require the lock of this block
-    * 
-    * @param block a reference to the disk block
-    */
-    void Pin(const BlockId &block);
-    
-    /**
     * @brief Unpin the specified block.
     * 
     * @param block a reference to the disk block
@@ -97,48 +93,99 @@ public:
     void Unpin(const BlockId &block);
 
     /**
-    * @brief read the tuple from the specified block
+    * @brief return a buffer which exists in buffer_pool
     * 
+    * @param block
+    * @return the buffer 
+    */
+    Buffer* GetBuffer(const BlockId& block);
+
+    /**
+    * @brief acquire the specified lock of block
+    * 
+    * @param lock_mode 
+    */
+    void AcquireLock(const BlockId &block, LockMode lock_mode);
+
+
+    /**
+    * @brief release s-lock of block
+    * 
+    * @param block
+    */
+    void ReleaseLock(const BlockId &block);
+
+
+    /**
+    * @brief Get file size and obtain the s-lock of file
+    *
     * @param file_name
-    * @param rid 
-    * @return the tuple stored at that rid
+    * @return file's size
     */
-    Buffer* GetBuffer(const std::string &file_name,
-                      const RID &rid, 
-                      LockMode lock_mode);
+    int GetFileSize(const std::string &file_name);
 
     /**
-    * @brief txn object does not modify page,
-    * in this method we just acquire lock, write
-    * log and get buffer
+    * @brief Set file size and obtain the x-lock of file
+    * we usually use this method to reduce the size of file
+    * this method usually be used when undo phase
     */
-
-    int GetFileSize(std::string file_name);
+    void SetFileSize(const std::string &file_name, int size);
 
     /**
-    * @brief this method usually be used when reduce file size
+    * @brief Set file size and obtain the x-lock of file
+    * we usually use this method to increase the size of file
     */
-    void SetFileSize(std::string file_name, int size);
+    BlockId Append(const std::string &file_name);
 
-    BlockId Append(std::string file_name);
-
+    /**
+    * @brief return the size of block
+    */
     int BlockSize();
     
+    /**
+    * @brief return how many avialable buffers in bufferpool
+    */
     int AvialableBuffers();
 
     static Transaction* TransactionLookUp(txn_id_t txn_id);
     
     RecoveryManager* GetRecoveryMgr() { return recovery_manager_; }
 
-public: // todo
+public:
 
-    void SetTxnState(TransactionState txn_state) {state_ = txn_state;}
+    inline void SetTxnState(TransactionState txn_state) { state_ = txn_state;}
 
-    void SetLockStage(LockStage lks) {stage_ = lks;}
+    inline TransactionState GetTxnState() { return state_; }
 
-    txn_id_t GetTxnID() { return txn_id_;}
+    inline void SetLockStage(LockStage lks) { stage_ = lks;}
+
+    inline LockStage GetLockStage() { return stage_; }
+
+    inline txn_id_t GetTxnID() { return txn_id_; }
+
+    inline void SetAborted() { state_ = TransactionState::ABORTED; }
+    
+    inline bool IsAborted() { return state_ == TransactionState::ABORTED; }
+
+    // Isolation level only for read operations, not for
+    // write operations. So, unlike deadlock deal protocols
+    // we can tolerate with different txns have different isolation levels
+    // in SimpleDB, the default isolation level is Serializable
+    inline void SetIsolationLevel(IsoLationLevel level) { isolation_level_ = level; }
+
+    inline IsoLationLevel GetIsolationLevel() { return isolation_level_; }
+
+    std::map<BlockId, LockMode>* GetLockSet() { 
+        return concurrency_manager_->lock_set_.get(); 
+    }
+    
+
 
 private:
+
+    // which be used to append file or get file size
+    // to solve Phantom Read
+    static constexpr int END_OF_FILE = -1;
 
     static txn_id_t NextTxnID();
 
@@ -147,21 +194,13 @@ private:
     // cuncur_manager use it to get the corresponding transaction
     static TransactionMap txn_map;
     
-    // which be used to append file or get file size
-    // to solve Phantom Read
-    const int END_OF_FILE = -1;
-    
     // unique concurrency manager
     std::unique_ptr<ConcurrencyManager> concurrency_manager_;
     // buffser list for remembering all pinned buffer
     std::unique_ptr<BufferList> buffers_;
 
-
-    
     // shard filemanager
     FileManager *file_manager_;
-    // shared buffermanager
-    BufferManager *buffer_manager_;
 
     // shared recovery manager
     // this is different from SimpleDB-origin

@@ -233,6 +233,19 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
+# Target rules for targets named recovery_test
+
+# Build rule for target.
+recovery_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 recovery_test
+.PHONY : recovery_test
+
+# fast build rule for target.
+recovery_test/fast:
+	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
+.PHONY : recovery_test/fast
+
+#=============================================================================
 # Target rules for targets named show-tests
 
 # Build rule for target.
@@ -244,6 +257,32 @@ show-tests: cmake_check_build_system
 show-tests/fast:
 	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
 .PHONY : show-tests/fast
+
+#=============================================================================
+# Target rules for targets named transaction_test
+
+# Build rule for target.
+transaction_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 transaction_test
+.PHONY : transaction_test
+
+# fast build rule for target.
+transaction_test/fast:
+	$(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
+.PHONY : transaction_test/fast
+
+#=============================================================================
+# Target rules for targets named lru_replacer_test
+
+# Build rule for target.
+lru_replacer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
 
 #=============================================================================
 # Target rules for targets named unittests
@@ -298,6 +337,19 @@ buffer_test/fast:
 .PHONY : buffer_test/fast
 
 #=============================================================================
+# Target rules for targets named concurrency_test
+
+# Build rule for target.
+concurrency_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 concurrency_test
+.PHONY : concurrency_test
+
+# fast build rule for target.
+concurrency_test/fast:
+	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
+.PHONY : concurrency_test/fast
+
+#=============================================================================
 # Target rules for targets named file_manager_test
 
 # Build rule for target.
@@ -311,30 +363,17 @@ file_manager_test/fast:
 .PHONY : file_manager_test/fast
 
 #=============================================================================
-# Target rules for targets named lru_replacer_test
+# Target rules for targets named lock_manager_test
 
 # Build rule for target.
-lru_replacer_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
-.PHONY : lru_replacer_test
+lock_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lock_manager_test
+.PHONY : lock_manager_test
 
 # fast build rule for target.
-lru_replacer_test/fast:
-	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
-
-#=============================================================================
-# Target rules for targets named transaction_test
-
-# Build rule for target.
-transaction_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 transaction_test
-.PHONY : transaction_test
-
-# fast build rule for target.
-transaction_test/fast:
-	$(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
-.PHONY : transaction_test/fast
+lock_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/build
+.PHONY : lock_manager_test/fast
 
 #=============================================================================
 # Target rules for targets named page_test
@@ -388,19 +427,6 @@ log_test/fast:
 	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
 .PHONY : log_test/fast
 
-#=============================================================================
-# Target rules for targets named recovery_test
-
-# Build rule for target.
-recovery_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 recovery_test
-.PHONY : recovery_test
-
-# fast build rule for target.
-recovery_test/fast:
-	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
-.PHONY : recovery_test/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -419,19 +445,21 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
+	@echo "... recovery_test"
 	@echo "... show-tests"
+	@echo "... transaction_test"
+	@echo "... lru_replacer_test"
 	@echo "... unittests"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
+	@echo "... concurrency_test"
 	@echo "... file_manager_test"
-	@echo "... lru_replacer_test"
-	@echo "... transaction_test"
+	@echo "... lock_manager_test"
 	@echo "... page_test"
 	@echo "... table_test"
 	@echo "... log_record_test"
 	@echo "... log_test"
-	@echo "... recovery_test"
 .PHONY : help
 
 

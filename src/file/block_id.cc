@@ -21,19 +21,15 @@ bool operator != (const BlockId &lobj, const BlockId &robj) {
 bool operator < (const BlockId &lobj, const BlockId &robj) {
     if(lobj.file_name_ == robj.file_name_) {
         return lobj.block_num_ < robj.block_num_;
-    } else {
-        return lobj.file_name_ < robj.file_name_;
     }
-    return false;
+    return lobj.file_name_ < robj.file_name_;
 }
 
 bool operator > (const BlockId &lobj, const BlockId &robj) {
     if(lobj.file_name_ == robj.file_name_) {
         return lobj.block_num_ > robj.block_num_;
-    } else {
-        return lobj.file_name_ > robj.file_name_;
-    }
-    return false;
+    }        
+    return lobj.file_name_ > robj.file_name_;
 }
 
 bool operator <= (const BlockId &lobj, const BlockId &robj) {

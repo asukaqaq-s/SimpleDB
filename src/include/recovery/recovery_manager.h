@@ -174,6 +174,13 @@ private:
         tx_table_[txn_id] = tte;
     }
 
+    inline void RemoveTableEntry(txn_id_t txn_id) {
+        std::lock_guard<std::mutex> latch(latch_);
+        tx_table_.erase(txn_id);
+    }
+
+// 
+
     inline lsn_t GetEarlistLsn(const BlockId &block) {
         std::lock_guard<std::mutex> latch(latch_);
         if (dp_table_.find(block) == dp_table_.end()) {
@@ -187,6 +194,11 @@ private:
         if (dp_table_.find(block) == dp_table_.end()) {
             dp_table_[block] = lsn;
         }
+    }
+
+    inline void RemoveEarlistLsn(const BlockId &block) {
+        std::lock_guard<std::mutex> latch(latch_);
+        dp_table_.erase(block);
     }
 
 

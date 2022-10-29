@@ -57,9 +57,10 @@ void DeleteRecord::Redo(Transaction *txn) {
     // do this operation but not logs
     BlockId blk(file_name_, rid_.GetBlockNum());
     Tuple old_tuple;
-    txn->Pin(blk);
-    Buffer *buffer = txn->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), blk);
+
+    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(blk);
+    auto table_page = TablePage(buffer->contents(), blk);
     buffer->WLock();
 
     // if this log has redone, we can't redo again
@@ -86,9 +87,10 @@ void DeleteRecord::Undo(Transaction *txn, lsn_t lsn) {
     // do this operation but not logs
     // log will be written by recovery_manager
     BlockId blk(file_name_, rid_.GetBlockNum());
-    txn->Pin(blk);
-    Buffer *buffer = txn->GetBuffer(file_name_, rid_, LockMode::EXCLUSIVE);
-    auto table_page = TablePage(txn, buffer->contents(), blk);
+
+    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
+    Buffer *buffer = txn->GetBuffer(blk);
+    auto table_page = TablePage(buffer->contents(), blk);
     buffer->WLock();
 
     // if table_page's last lsn >= lsn
