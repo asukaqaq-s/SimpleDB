@@ -182,6 +182,33 @@ SimpleDB_lib/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/build
 .PHONY : SimpleDB_lib/fast
 
+buffer/buffer.o: buffer/buffer.cc.o
+
+.PHONY : buffer/buffer.o
+
+# target to build an object file
+buffer/buffer.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.o
+.PHONY : buffer/buffer.cc.o
+
+buffer/buffer.i: buffer/buffer.cc.i
+
+.PHONY : buffer/buffer.i
+
+# target to preprocess a source file
+buffer/buffer.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.i
+.PHONY : buffer/buffer.cc.i
+
+buffer/buffer.s: buffer/buffer.cc.s
+
+.PHONY : buffer/buffer.s
+
+# target to generate assembly for a file
+buffer/buffer.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.s
+.PHONY : buffer/buffer.cc.s
+
 buffer/buffer_manager.o: buffer/buffer_manager.cc.o
 
 .PHONY : buffer/buffer_manager.o
@@ -236,33 +263,6 @@ buffer/lru_replace.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.s
 .PHONY : buffer/lru_replace.cc.s
 
-concurrency/concurrency_manager.o: concurrency/concurrency_manager.cc.o
-
-.PHONY : concurrency/concurrency_manager.o
-
-# target to build an object file
-concurrency/concurrency_manager.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.o
-.PHONY : concurrency/concurrency_manager.cc.o
-
-concurrency/concurrency_manager.i: concurrency/concurrency_manager.cc.i
-
-.PHONY : concurrency/concurrency_manager.i
-
-# target to preprocess a source file
-concurrency/concurrency_manager.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.i
-.PHONY : concurrency/concurrency_manager.cc.i
-
-concurrency/concurrency_manager.s: concurrency/concurrency_manager.cc.s
-
-.PHONY : concurrency/concurrency_manager.s
-
-# target to generate assembly for a file
-concurrency/concurrency_manager.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/concurrency_manager.cc.s
-.PHONY : concurrency/concurrency_manager.cc.s
-
 concurrency/lock_manager.o: concurrency/lock_manager.cc.o
 
 .PHONY : concurrency/lock_manager.o
@@ -290,32 +290,32 @@ concurrency/lock_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.s
 .PHONY : concurrency/lock_manager.cc.s
 
-concurrency/transaction.o: concurrency/transaction.cc.o
+concurrency/transaction_manager.o: concurrency/transaction_manager.cc.o
 
-.PHONY : concurrency/transaction.o
+.PHONY : concurrency/transaction_manager.o
 
 # target to build an object file
-concurrency/transaction.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.o
-.PHONY : concurrency/transaction.cc.o
+concurrency/transaction_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_manager.cc.o
+.PHONY : concurrency/transaction_manager.cc.o
 
-concurrency/transaction.i: concurrency/transaction.cc.i
+concurrency/transaction_manager.i: concurrency/transaction_manager.cc.i
 
-.PHONY : concurrency/transaction.i
+.PHONY : concurrency/transaction_manager.i
 
 # target to preprocess a source file
-concurrency/transaction.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.i
-.PHONY : concurrency/transaction.cc.i
+concurrency/transaction_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_manager.cc.i
+.PHONY : concurrency/transaction_manager.cc.i
 
-concurrency/transaction.s: concurrency/transaction.cc.s
+concurrency/transaction_manager.s: concurrency/transaction_manager.cc.s
 
-.PHONY : concurrency/transaction.s
+.PHONY : concurrency/transaction_manager.s
 
 # target to generate assembly for a file
-concurrency/transaction.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction.cc.s
-.PHONY : concurrency/transaction.cc.s
+concurrency/transaction_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_manager.cc.s
+.PHONY : concurrency/transaction_manager.cc.s
 
 concurrency/transaction_map.o: concurrency/transaction_map.cc.o
 
@@ -343,6 +343,168 @@ concurrency/transaction_map.s: concurrency/transaction_map.cc.s
 concurrency/transaction_map.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_map.cc.s
 .PHONY : concurrency/transaction_map.cc.s
+
+execution/executors/delete_executor.o: execution/executors/delete_executor.cc.o
+
+.PHONY : execution/executors/delete_executor.o
+
+# target to build an object file
+execution/executors/delete_executor.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/delete_executor.cc.o
+.PHONY : execution/executors/delete_executor.cc.o
+
+execution/executors/delete_executor.i: execution/executors/delete_executor.cc.i
+
+.PHONY : execution/executors/delete_executor.i
+
+# target to preprocess a source file
+execution/executors/delete_executor.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/delete_executor.cc.i
+.PHONY : execution/executors/delete_executor.cc.i
+
+execution/executors/delete_executor.s: execution/executors/delete_executor.cc.s
+
+.PHONY : execution/executors/delete_executor.s
+
+# target to generate assembly for a file
+execution/executors/delete_executor.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/delete_executor.cc.s
+.PHONY : execution/executors/delete_executor.cc.s
+
+execution/expressions/column_value_expression.o: execution/expressions/column_value_expression.cc.o
+
+.PHONY : execution/expressions/column_value_expression.o
+
+# target to build an object file
+execution/expressions/column_value_expression.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/column_value_expression.cc.o
+.PHONY : execution/expressions/column_value_expression.cc.o
+
+execution/expressions/column_value_expression.i: execution/expressions/column_value_expression.cc.i
+
+.PHONY : execution/expressions/column_value_expression.i
+
+# target to preprocess a source file
+execution/expressions/column_value_expression.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/column_value_expression.cc.i
+.PHONY : execution/expressions/column_value_expression.cc.i
+
+execution/expressions/column_value_expression.s: execution/expressions/column_value_expression.cc.s
+
+.PHONY : execution/expressions/column_value_expression.s
+
+# target to generate assembly for a file
+execution/expressions/column_value_expression.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/column_value_expression.cc.s
+.PHONY : execution/expressions/column_value_expression.cc.s
+
+execution/expressions/comparison_expression.o: execution/expressions/comparison_expression.cc.o
+
+.PHONY : execution/expressions/comparison_expression.o
+
+# target to build an object file
+execution/expressions/comparison_expression.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/comparison_expression.cc.o
+.PHONY : execution/expressions/comparison_expression.cc.o
+
+execution/expressions/comparison_expression.i: execution/expressions/comparison_expression.cc.i
+
+.PHONY : execution/expressions/comparison_expression.i
+
+# target to preprocess a source file
+execution/expressions/comparison_expression.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/comparison_expression.cc.i
+.PHONY : execution/expressions/comparison_expression.cc.i
+
+execution/expressions/comparison_expression.s: execution/expressions/comparison_expression.cc.s
+
+.PHONY : execution/expressions/comparison_expression.s
+
+# target to generate assembly for a file
+execution/expressions/comparison_expression.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/comparison_expression.cc.s
+.PHONY : execution/expressions/comparison_expression.cc.s
+
+execution/expressions/conjuction_expression.o: execution/expressions/conjuction_expression.cc.o
+
+.PHONY : execution/expressions/conjuction_expression.o
+
+# target to build an object file
+execution/expressions/conjuction_expression.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/conjuction_expression.cc.o
+.PHONY : execution/expressions/conjuction_expression.cc.o
+
+execution/expressions/conjuction_expression.i: execution/expressions/conjuction_expression.cc.i
+
+.PHONY : execution/expressions/conjuction_expression.i
+
+# target to preprocess a source file
+execution/expressions/conjuction_expression.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/conjuction_expression.cc.i
+.PHONY : execution/expressions/conjuction_expression.cc.i
+
+execution/expressions/conjuction_expression.s: execution/expressions/conjuction_expression.cc.s
+
+.PHONY : execution/expressions/conjuction_expression.s
+
+# target to generate assembly for a file
+execution/expressions/conjuction_expression.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/conjuction_expression.cc.s
+.PHONY : execution/expressions/conjuction_expression.cc.s
+
+execution/expressions/constant_value_expression.o: execution/expressions/constant_value_expression.cc.o
+
+.PHONY : execution/expressions/constant_value_expression.o
+
+# target to build an object file
+execution/expressions/constant_value_expression.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/constant_value_expression.cc.o
+.PHONY : execution/expressions/constant_value_expression.cc.o
+
+execution/expressions/constant_value_expression.i: execution/expressions/constant_value_expression.cc.i
+
+.PHONY : execution/expressions/constant_value_expression.i
+
+# target to preprocess a source file
+execution/expressions/constant_value_expression.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/constant_value_expression.cc.i
+.PHONY : execution/expressions/constant_value_expression.cc.i
+
+execution/expressions/constant_value_expression.s: execution/expressions/constant_value_expression.cc.s
+
+.PHONY : execution/expressions/constant_value_expression.s
+
+# target to generate assembly for a file
+execution/expressions/constant_value_expression.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/constant_value_expression.cc.s
+.PHONY : execution/expressions/constant_value_expression.cc.s
+
+execution/expressions/operator_expression.o: execution/expressions/operator_expression.cc.o
+
+.PHONY : execution/expressions/operator_expression.o
+
+# target to build an object file
+execution/expressions/operator_expression.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/operator_expression.cc.o
+.PHONY : execution/expressions/operator_expression.cc.o
+
+execution/expressions/operator_expression.i: execution/expressions/operator_expression.cc.i
+
+.PHONY : execution/expressions/operator_expression.i
+
+# target to preprocess a source file
+execution/expressions/operator_expression.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/operator_expression.cc.i
+.PHONY : execution/expressions/operator_expression.cc.i
+
+execution/expressions/operator_expression.s: execution/expressions/operator_expression.cc.s
+
+.PHONY : execution/expressions/operator_expression.s
+
+# target to generate assembly for a file
+execution/expressions/operator_expression.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/expressions/operator_expression.cc.s
+.PHONY : execution/expressions/operator_expression.cc.s
 
 file/block_id.o: file/block_id.cc.o
 
@@ -479,6 +641,195 @@ log/log_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.s
 .PHONY : log/log_manager.cc.s
 
+metadata/index_manager.o: metadata/index_manager.cc.o
+
+.PHONY : metadata/index_manager.o
+
+# target to build an object file
+metadata/index_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o
+.PHONY : metadata/index_manager.cc.o
+
+metadata/index_manager.i: metadata/index_manager.cc.i
+
+.PHONY : metadata/index_manager.i
+
+# target to preprocess a source file
+metadata/index_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.i
+.PHONY : metadata/index_manager.cc.i
+
+metadata/index_manager.s: metadata/index_manager.cc.s
+
+.PHONY : metadata/index_manager.s
+
+# target to generate assembly for a file
+metadata/index_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.s
+.PHONY : metadata/index_manager.cc.s
+
+metadata/metadata_manager.o: metadata/metadata_manager.cc.o
+
+.PHONY : metadata/metadata_manager.o
+
+# target to build an object file
+metadata/metadata_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.o
+.PHONY : metadata/metadata_manager.cc.o
+
+metadata/metadata_manager.i: metadata/metadata_manager.cc.i
+
+.PHONY : metadata/metadata_manager.i
+
+# target to preprocess a source file
+metadata/metadata_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.i
+.PHONY : metadata/metadata_manager.cc.i
+
+metadata/metadata_manager.s: metadata/metadata_manager.cc.s
+
+.PHONY : metadata/metadata_manager.s
+
+# target to generate assembly for a file
+metadata/metadata_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/metadata_manager.cc.s
+.PHONY : metadata/metadata_manager.cc.s
+
+metadata/stat_manager.o: metadata/stat_manager.cc.o
+
+.PHONY : metadata/stat_manager.o
+
+# target to build an object file
+metadata/stat_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.o
+.PHONY : metadata/stat_manager.cc.o
+
+metadata/stat_manager.i: metadata/stat_manager.cc.i
+
+.PHONY : metadata/stat_manager.i
+
+# target to preprocess a source file
+metadata/stat_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.i
+.PHONY : metadata/stat_manager.cc.i
+
+metadata/stat_manager.s: metadata/stat_manager.cc.s
+
+.PHONY : metadata/stat_manager.s
+
+# target to generate assembly for a file
+metadata/stat_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.s
+.PHONY : metadata/stat_manager.cc.s
+
+metadata/table_manager.o: metadata/table_manager.cc.o
+
+.PHONY : metadata/table_manager.o
+
+# target to build an object file
+metadata/table_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o
+.PHONY : metadata/table_manager.cc.o
+
+metadata/table_manager.i: metadata/table_manager.cc.i
+
+.PHONY : metadata/table_manager.i
+
+# target to preprocess a source file
+metadata/table_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.i
+.PHONY : metadata/table_manager.cc.i
+
+metadata/table_manager.s: metadata/table_manager.cc.s
+
+.PHONY : metadata/table_manager.s
+
+# target to generate assembly for a file
+metadata/table_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.s
+.PHONY : metadata/table_manager.cc.s
+
+metadata/view_manager.o: metadata/view_manager.cc.o
+
+.PHONY : metadata/view_manager.o
+
+# target to build an object file
+metadata/view_manager.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o
+.PHONY : metadata/view_manager.cc.o
+
+metadata/view_manager.i: metadata/view_manager.cc.i
+
+.PHONY : metadata/view_manager.i
+
+# target to preprocess a source file
+metadata/view_manager.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.i
+.PHONY : metadata/view_manager.cc.i
+
+metadata/view_manager.s: metadata/view_manager.cc.s
+
+.PHONY : metadata/view_manager.s
+
+# target to generate assembly for a file
+metadata/view_manager.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.s
+.PHONY : metadata/view_manager.cc.s
+
+record/table_heap.o: record/table_heap.cc.o
+
+.PHONY : record/table_heap.o
+
+# target to build an object file
+record/table_heap.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o
+.PHONY : record/table_heap.cc.o
+
+record/table_heap.i: record/table_heap.cc.i
+
+.PHONY : record/table_heap.i
+
+# target to preprocess a source file
+record/table_heap.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.i
+.PHONY : record/table_heap.cc.i
+
+record/table_heap.s: record/table_heap.cc.s
+
+.PHONY : record/table_heap.s
+
+# target to generate assembly for a file
+record/table_heap.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.s
+.PHONY : record/table_heap.cc.s
+
+record/table_iterator.o: record/table_iterator.cc.o
+
+.PHONY : record/table_iterator.o
+
+# target to build an object file
+record/table_iterator.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.o
+.PHONY : record/table_iterator.cc.o
+
+record/table_iterator.i: record/table_iterator.cc.i
+
+.PHONY : record/table_iterator.i
+
+# target to preprocess a source file
+record/table_iterator.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.i
+.PHONY : record/table_iterator.cc.i
+
+record/table_iterator.s: record/table_iterator.cc.s
+
+.PHONY : record/table_iterator.s
+
+# target to generate assembly for a file
+record/table_iterator.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.s
+.PHONY : record/table_iterator.cc.s
+
 record/table_page.o: record/table_page.cc.o
 
 .PHONY : record/table_page.o
@@ -505,33 +856,6 @@ record/table_page.s: record/table_page.cc.s
 record/table_page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.s
 .PHONY : record/table_page.cc.s
-
-record/table_scan.o: record/table_scan.cc.o
-
-.PHONY : record/table_scan.o
-
-# target to build an object file
-record/table_scan.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.o
-.PHONY : record/table_scan.cc.o
-
-record/table_scan.i: record/table_scan.cc.i
-
-.PHONY : record/table_scan.i
-
-# target to preprocess a source file
-record/table_scan.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.i
-.PHONY : record/table_scan.cc.i
-
-record/table_scan.s: record/table_scan.cc.s
-
-.PHONY : record/table_scan.s
-
-# target to generate assembly for a file
-record/table_scan.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/record/table_scan.cc.s
-.PHONY : record/table_scan.cc.s
 
 record/tuple.o: record/tuple.cc.o
 
@@ -722,6 +1046,60 @@ recovery/recovery_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.s
 .PHONY : recovery/recovery_manager.cc.s
 
+recovery/redo_log.o: recovery/redo_log.cc.o
+
+.PHONY : recovery/redo_log.o
+
+# target to build an object file
+recovery/redo_log.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.o
+.PHONY : recovery/redo_log.cc.o
+
+recovery/redo_log.i: recovery/redo_log.cc.i
+
+.PHONY : recovery/redo_log.i
+
+# target to preprocess a source file
+recovery/redo_log.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.i
+.PHONY : recovery/redo_log.cc.i
+
+recovery/redo_log.s: recovery/redo_log.cc.s
+
+.PHONY : recovery/redo_log.s
+
+# target to generate assembly for a file
+recovery/redo_log.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.s
+.PHONY : recovery/redo_log.cc.s
+
+recovery/undo_log.o: recovery/undo_log.cc.o
+
+.PHONY : recovery/undo_log.o
+
+# target to build an object file
+recovery/undo_log.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o
+.PHONY : recovery/undo_log.cc.o
+
+recovery/undo_log.i: recovery/undo_log.cc.i
+
+.PHONY : recovery/undo_log.i
+
+# target to preprocess a source file
+recovery/undo_log.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.i
+.PHONY : recovery/undo_log.cc.i
+
+recovery/undo_log.s: recovery/undo_log.cc.s
+
+.PHONY : recovery/undo_log.s
+
+# target to generate assembly for a file
+recovery/undo_log.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.s
+.PHONY : recovery/undo_log.cc.s
+
 recovery/update_record.o: recovery/update_record.cc.o
 
 .PHONY : recovery/update_record.o
@@ -763,24 +1141,42 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... SimpleDB_lib"
+	@echo "... buffer/buffer.o"
+	@echo "... buffer/buffer.i"
+	@echo "... buffer/buffer.s"
 	@echo "... buffer/buffer_manager.o"
 	@echo "... buffer/buffer_manager.i"
 	@echo "... buffer/buffer_manager.s"
 	@echo "... buffer/lru_replace.o"
 	@echo "... buffer/lru_replace.i"
 	@echo "... buffer/lru_replace.s"
-	@echo "... concurrency/concurrency_manager.o"
-	@echo "... concurrency/concurrency_manager.i"
-	@echo "... concurrency/concurrency_manager.s"
 	@echo "... concurrency/lock_manager.o"
 	@echo "... concurrency/lock_manager.i"
 	@echo "... concurrency/lock_manager.s"
-	@echo "... concurrency/transaction.o"
-	@echo "... concurrency/transaction.i"
-	@echo "... concurrency/transaction.s"
+	@echo "... concurrency/transaction_manager.o"
+	@echo "... concurrency/transaction_manager.i"
+	@echo "... concurrency/transaction_manager.s"
 	@echo "... concurrency/transaction_map.o"
 	@echo "... concurrency/transaction_map.i"
 	@echo "... concurrency/transaction_map.s"
+	@echo "... execution/executors/delete_executor.o"
+	@echo "... execution/executors/delete_executor.i"
+	@echo "... execution/executors/delete_executor.s"
+	@echo "... execution/expressions/column_value_expression.o"
+	@echo "... execution/expressions/column_value_expression.i"
+	@echo "... execution/expressions/column_value_expression.s"
+	@echo "... execution/expressions/comparison_expression.o"
+	@echo "... execution/expressions/comparison_expression.i"
+	@echo "... execution/expressions/comparison_expression.s"
+	@echo "... execution/expressions/conjuction_expression.o"
+	@echo "... execution/expressions/conjuction_expression.i"
+	@echo "... execution/expressions/conjuction_expression.s"
+	@echo "... execution/expressions/constant_value_expression.o"
+	@echo "... execution/expressions/constant_value_expression.i"
+	@echo "... execution/expressions/constant_value_expression.s"
+	@echo "... execution/expressions/operator_expression.o"
+	@echo "... execution/expressions/operator_expression.i"
+	@echo "... execution/expressions/operator_expression.s"
 	@echo "... file/block_id.o"
 	@echo "... file/block_id.i"
 	@echo "... file/block_id.s"
@@ -796,12 +1192,30 @@ help:
 	@echo "... log/log_manager.o"
 	@echo "... log/log_manager.i"
 	@echo "... log/log_manager.s"
+	@echo "... metadata/index_manager.o"
+	@echo "... metadata/index_manager.i"
+	@echo "... metadata/index_manager.s"
+	@echo "... metadata/metadata_manager.o"
+	@echo "... metadata/metadata_manager.i"
+	@echo "... metadata/metadata_manager.s"
+	@echo "... metadata/stat_manager.o"
+	@echo "... metadata/stat_manager.i"
+	@echo "... metadata/stat_manager.s"
+	@echo "... metadata/table_manager.o"
+	@echo "... metadata/table_manager.i"
+	@echo "... metadata/table_manager.s"
+	@echo "... metadata/view_manager.o"
+	@echo "... metadata/view_manager.i"
+	@echo "... metadata/view_manager.s"
+	@echo "... record/table_heap.o"
+	@echo "... record/table_heap.i"
+	@echo "... record/table_heap.s"
+	@echo "... record/table_iterator.o"
+	@echo "... record/table_iterator.i"
+	@echo "... record/table_iterator.s"
 	@echo "... record/table_page.o"
 	@echo "... record/table_page.i"
 	@echo "... record/table_page.s"
-	@echo "... record/table_scan.o"
-	@echo "... record/table_scan.i"
-	@echo "... record/table_scan.s"
 	@echo "... record/tuple.o"
 	@echo "... record/tuple.i"
 	@echo "... record/tuple.s"
@@ -823,6 +1237,12 @@ help:
 	@echo "... recovery/recovery_manager.o"
 	@echo "... recovery/recovery_manager.i"
 	@echo "... recovery/recovery_manager.s"
+	@echo "... recovery/redo_log.o"
+	@echo "... recovery/redo_log.i"
+	@echo "... recovery/redo_log.s"
+	@echo "... recovery/undo_log.o"
+	@echo "... recovery/undo_log.i"
+	@echo "... recovery/undo_log.s"
 	@echo "... recovery/update_record.o"
 	@echo "... recovery/update_record.i"
 	@echo "... recovery/update_record.s"

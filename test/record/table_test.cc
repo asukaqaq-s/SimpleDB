@@ -102,7 +102,7 @@ TEST(TableTest, TablePageTest) {
     std::vector<char> test2(15, '2');
     std::vector<char> test3(5, '3');
     Layout layout;
-    TableScan ts(tx.get(), test_file, layout);
+    TableHeap ts(tx.get(), test_file, layout);
 
     Tuple tuple_test(q);
     Tuple tuple_test2(test2);
@@ -233,7 +233,7 @@ TEST(TableTest, RandomTableTest) {
     std::vector<char> test3(5, '3');
     Layout layout;
 
-    TableScan ts(tx.get(), test_file, layout);
+    TableHeap ts(tx.get(), test_file, layout);
 
 
 

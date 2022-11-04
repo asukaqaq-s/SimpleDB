@@ -54,68 +54,6 @@ InsertRecord::InsertRecord(txn_id_t txn,
 }
 
 
-void InsertRecord::Redo(Transaction *txn) {
-    // redo this operation but not logs
-    BlockId blk(file_name_, rid_.GetBlockNum());
-
-    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(blk);
-    auto table_page = TablePage(buffer->contents(), blk);
-
-    buffer->WLock();
-    
-    // if this log has redone, we can't redo again
-    // for avoid logic error which happen in logical-physical scheme.
-    if (table_page.GetPageLsn() >= lsn_) {
-        buffer->WUnlock();
-        txn->Unpin(blk);
-        return;
-    }
-
-    bool res = table_page.InsertWithRID(rid_, tuple_);
-    
-    if (res == false) {
-        SIMPLEDB_ASSERT(false, "logic error");
-    }
-
-    table_page.SetPageLsn(lsn_);
-    buffer->SetModified(txn_id_, lsn_);
-    // redo can not write log
-
-    buffer->WUnlock();
-    txn->Unpin(blk);
-}
-
-void InsertRecord::Undo(Transaction *txn, lsn_t lsn) {
-    // do this operation but not logs
-    // log will be written by recovery_manager
-    BlockId blk(file_name_, rid_.GetBlockNum());
-    Tuple old_tuple;
-
-    // we must pin block before getbuffer
-    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(blk);
-    auto table_page = TablePage(buffer->contents(), blk);
-    
-    buffer->WLock();
-
-    // if table_page's last lsn >= lsn
-    // the corresponding log should be flushed to disk
-    // and this undo method can't be called.
-    SIMPLEDB_ASSERT(table_page.GetPageLsn() < lsn, "logic error");
-
-    table_page.Delete(rid_, &old_tuple);
-    
-    // i think old tuple is equal to tuple_ 
-    SIMPLEDB_ASSERT(old_tuple == tuple_, "logic error");
-    
-    table_page.SetPageLsn(lsn);
-    buffer->SetModified(txn_id_, lsn);
-
-    buffer->WUnlock();
-    txn->Unpin(blk);
-}
-
 std::string InsertRecord::ToString() {
     std::string str = GetHeaderToString();
     str += "file_name = " + file_name_ 

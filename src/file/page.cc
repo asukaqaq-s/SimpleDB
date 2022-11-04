@@ -12,12 +12,12 @@ int Page::GetInt(int offset) const {
     char* page_offset;
     int res;
     
-    if(offset + sizeof(int) > buffer_page_->size()) { 
+    if(offset + sizeof(int) > content_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when GetInt");
     }
     // no overflow
-    page_offset = &(*buffer_page_)[offset];
+    page_offset = &(*content_)[offset];
     res = *(reinterpret_cast<int *>(page_offset));
     return res;
 }
@@ -25,12 +25,12 @@ int Page::GetInt(int offset) const {
 void Page::SetInt(int offset,int n) {
     char* page_offset;
     
-    if(offset + sizeof(int) > buffer_page_->size()) { 
+    if(offset + sizeof(int) > content_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when SetInt");
     }
     // no overflow
-    page_offset = &(*buffer_page_)[offset];
+    page_offset = &(*content_)[offset];
     *(reinterpret_cast<int *>(page_offset)) = n;
 }
 
@@ -45,14 +45,14 @@ std::vector<char> Page::GetBytes(int offset) const {
     int blob_size = GetInt(offset);
     
     // the maximum of access address = sizeof(int) + blob_size + offset
-    if(blob_size + sizeof(int) + offset > buffer_page_->size()) {
+    if(blob_size + sizeof(int) + offset > content_->size()) {
         // overflow
         // printf("blob_size = %d, offset = %d, buffer_page_->size = %d\n",
             // blob_size, offset, buffer_page_->size());
         throw std::runtime_error("Page overflow when GetBytes");
     }
     // no overflow
-    page_offset_begin = &(*buffer_page_)[offset + sizeof(int)];
+    page_offset_begin = &(*content_)[offset + sizeof(int)];
     page_offset_end = page_offset_begin + blob_size;
     
     byte_array.insert(byte_array.end(), page_offset_begin,
@@ -70,12 +70,12 @@ void Page::SetBytes(int offset, const std::vector<char> &byte_array) {
     // set the blob's header 
     SetInt(offset, blob_size);
     // check overflow
-    if(blob_size + sizeof(int) + offset > buffer_page_->size()) {
+    if(blob_size + sizeof(int) + offset > content_->size()) {
         // overflow
         throw std::runtime_error("Page overflow when SetBytes");
     }
     // no overflow
-    page_offset = &(*buffer_page_)[offset + sizeof(int)];
+    page_offset = &(*content_)[offset + sizeof(int)];
 
     std::memcpy(page_offset, &byte_array[0], blob_size);
 }
@@ -99,12 +99,12 @@ double Page::GetDec(int offset) const {
     char* page_offset;
     double res;
     
-    if(offset + sizeof(double) > buffer_page_->size()) { 
+    if(offset + sizeof(double) > content_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when GetInt");
     }
     // no overflow
-    page_offset = &(*buffer_page_)[offset];
+    page_offset = &(*content_)[offset];
     res = *(reinterpret_cast<double *>(page_offset));
     return res;
 }
@@ -112,20 +112,22 @@ double Page::GetDec(int offset) const {
 void Page::SetDec(int offset,double n) {
     char* page_offset;
     
-    if(offset + sizeof(int) > buffer_page_->size()) { 
+    if(offset + sizeof(int) > content_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when SetInt");
     }
     // no overflow
-    page_offset = &(*buffer_page_)[offset];
+    page_offset = &(*content_)[offset];
     *(reinterpret_cast<double *>(page_offset)) = n;
 }
 
-void Page::SetValue(int offset, Constant val) {
+void Page::SetValue(int offset, Value val) {
     int type = val.GetTypeID();
     
     switch(type) {
     
+    // since page object doesn't know the offset of varchar_data
+    // so we don't distinguish with char and varchar.
     case TypeID::CHAR:
     case TypeID::VARCHAR:
         SetString(offset, val.AsString());
@@ -145,20 +147,23 @@ void Page::SetValue(int offset, Constant val) {
     }
 }
 
-Constant Page::GetValue(int offset,TypeID type) {
+Value Page::GetValue(int offset,TypeID type) {
     switch(type) {
     
     case TypeID::CHAR:
+        return Value(GetString(offset), TypeID::CHAR);
+        break;
+
     case TypeID::VARCHAR:
-        return Constant(GetString(offset));
+        return Value(GetString(offset), TypeID::VARCHAR);
         break;
         
     case TypeID::DECIMAL:
-        return Constant(GetDec(offset));
+        return Value(GetDec(offset));
         break;
     
     case TypeID::INTEGER:
-        return Constant(GetInt(offset));
+        return Value(GetInt(offset));
         break;
     
     default:
@@ -169,7 +174,7 @@ Constant Page::GetValue(int offset,TypeID type) {
 
 
 std::shared_ptr<std::vector<char>> Page::content() {
-    return buffer_page_;
+    return content_;
 }
 
 

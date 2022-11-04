@@ -5,13 +5,14 @@
 
 namespace SimpleDB {
 
-TablePage::TablePage(Page* data, const BlockId &block) 
-        : data_(data), block_(block) {
-    SIMPLEDB_ASSERT(data != nullptr, "");
-}
+void TablePage::InitPage(Transaction *txn, RecoveryManager *rm) {
 
+    // write a InitPage log record to logmanager
+    if (rm != nullptr) {
+        lsn_t lsn = rm->InitPageLogRec(txn, block_.FileName(), block_.BlockNum(), false);
+        SetPageLsn(lsn);
+    }
 
-void TablePage::InitPage() {
     SetFreeSpacePtr(data_->GetSize());
     SetTupleCount(0);
 }
@@ -24,6 +25,7 @@ bool TablePage::GetTuple(const RID &rid, Tuple *tuple) {
     int tuple_count = GetTupleCount();
     int slot_number = rid.GetSlot();
 
+
     if (slot_number >= tuple_count) {
         return false;
     }
@@ -35,12 +37,15 @@ bool TablePage::GetTuple(const RID &rid, Tuple *tuple) {
         return false;
     }
 
+
     *tuple = Tuple(data_->GetBytes(tuple_offset));
     tuple->SetRID(rid);
     return true;
 }
 
-bool TablePage::Insert(RID *rid, const Tuple &tuple) {
+bool TablePage::Insert(RID *rid, const Tuple &tuple, 
+                       const std::function<bool(const BlockId &)> &upgrade, 
+                       Transaction *txn, RecoveryManager *rm) {
     SIMPLEDB_ASSERT(tuple.GetSize() > 0, "can not insert a empty tuple");
 
     int free_space_size = GetFreeSpaceRemaining();
@@ -67,8 +72,14 @@ bool TablePage::Insert(RID *rid, const Tuple &tuple) {
         free_space_size < need_size + SLOT_SIZE) {
         return false;
     }
-    
-    // if we create a new slot
+
+    // if we can insert successfully, upgrade s-lock to x-lock 
+    if (upgrade != nullptr && !upgrade(block_)) {
+        SIMPLEDB_ASSERT(false, "upgrade lock error");
+        return false;
+    }
+
+    // create a new slot
     if (i == tuple_count) {
         SetTupleCount(tuple_count + 1);
     }
@@ -82,10 +93,17 @@ bool TablePage::Insert(RID *rid, const Tuple &tuple) {
         *rid = RID(block_.BlockNum(), i);
     }
 
+    if (rm != nullptr) {
+        lsn_t lsn = rm->InsertLogRec(txn, block_.FileName(), *rid, tuple, false);
+        SetPageLsn(lsn);
+    }
+
+
     return true;
 }
 
-bool TablePage::InsertWithRID(const RID &rid, const Tuple &tuple) {
+bool TablePage::InsertWithRID(const RID &rid, const Tuple &tuple,
+                              Transaction *txn, RecoveryManager *rm) {
     SIMPLEDB_ASSERT(rid.GetBlockNum() == block_.BlockNum(), 
                     "block number don't match");
     SIMPLEDB_ASSERT(rid.GetSlot() >= 0, "wrong slot");
@@ -134,10 +152,19 @@ bool TablePage::InsertWithRID(const RID &rid, const Tuple &tuple) {
     
     SetFreeSpacePtr(new_free_space_ptr);
     SetTupleOffset(slot_number, new_free_space_ptr);
+
+
+    if (rm != nullptr) {
+        lsn_t lsn = rm->InsertLogRec(txn, block_.FileName(), rid, tuple, false);
+        SetPageLsn(lsn);
+    }
+
     return true;
 }
 
-bool TablePage::Delete(const RID &rid, Tuple *tuple) {
+bool TablePage::Delete(const RID &rid, Tuple *tuple,
+                       Transaction *txn, RecoveryManager *rm) {
+
     SIMPLEDB_ASSERT(rid.GetBlockNum() == block_.BlockNum(), 
                     "block number don't match");
     SIMPLEDB_ASSERT(rid.GetSlot() >= 0, "wrong slot");
@@ -182,13 +209,18 @@ bool TablePage::Delete(const RID &rid, Tuple *tuple) {
         }
     }
 
+    if (rm != nullptr) {
+        lsn_t lsn = rm->DeleteLogRec(txn, block_.FileName(), rid, *tuple, false);
+        SetPageLsn(lsn);
+    }
+
     return true;
 }
 
-bool TablePage::Update(
-                       const RID &rid, 
+bool TablePage::Update(const RID &rid, 
                        Tuple *old_tuple, 
-                       const Tuple &new_tuple) {
+                       const Tuple &new_tuple,
+                       Transaction *txn, RecoveryManager *rm) {
     SIMPLEDB_ASSERT(rid.GetBlockNum() == block_.BlockNum(), 
                     "block number don't match");
     SIMPLEDB_ASSERT(rid.GetSlot() >= 0, "wrong slot");
@@ -242,6 +274,11 @@ bool TablePage::Update(
             cur_tuple_offset < tuple_offset) {
             SetTupleOffset(i, cur_tuple_offset - change_size);
         }
+    }
+
+    if (rm != nullptr) {
+        lsn_t lsn = rm->UpdateLogRec(txn, block_.FileName(), rid, *old_tuple, new_tuple, false);
+        SetPageLsn(lsn);
     }
 
     return true;

@@ -1,7 +1,7 @@
 #ifndef PAGE_H
 #define PAGE_H
 
-#include "type/constant.h"
+#include "type/value.h"
 #include "config/rw_latch.h"
 
 #include <memory>
@@ -11,7 +11,8 @@ namespace SimpleDB {
 
 /**
 * @brief 
-* a page corresponds to a disk-block and stored in memory 
+* Page provides a wrapper for actual data pages being held in main memory.
+* we can use a page object to bufferpool, log manager and so on.
 */
 class Page
 {
@@ -19,23 +20,16 @@ class Page
 public:
 
     /** 
-    * @brief Constructor
-    *   Commly used to buffer manager
+    * @brief Constructor, Commly used to buffer manager
     * @param block_size 
     */
     Page(int block_size) {
-        buffer_page_ = 
-            std::make_shared<std::vector<char>> (block_size);
+        content_ = std::make_shared<std::vector<char>> (block_size);
     }
     
-    /**
-    * @brief copy-constructor,
-    *   will increasing the reference count
-    *   Commly used to log manager
-    * @param buffer_page
-    */
+
     Page(std::shared_ptr<std::vector<char>> &buffer_page)
-        :buffer_page_(buffer_page) {}
+        :content_(buffer_page) {}
     
     /**
     * @brief Get a int-value from page_[offset]
@@ -108,7 +102,7 @@ public:
     * @param offset
     * @param constant 
     */
-    void SetValue(int offset, Constant val);
+    void SetValue(int offset, Value val);
 
     /**
     * @brief a general and more convenient way to write
@@ -116,17 +110,18 @@ public:
     * @param offset
     * @param constant
     */
-    Constant GetValue(int offset,TypeID type);
+    Value GetValue(int offset,TypeID type);
 
     /**
     * @brief calculates the maximum size of blobs
-    *   depends on which characters, UTF, ASCII ...
+    * depends on which characters, UTF, ASCII ...
     * 
     * @param strlen The number of characters inputed
     * @return sizeof(int) + (strlen * The byte of each character)
     */
     static int MaxLength(int strlen) { return sizeof(int) + strlen; }
     
+
     /**
     * @brief page's content,usually 4kb size. 
     * 
@@ -134,16 +129,33 @@ public:
     */
     std::shared_ptr<std::vector<char>> content();
 
-    int GetSize() { return buffer_page_->size(); }
+    
+    int GetSize() { return content_->size(); }
 
-    char *GetRawDataPtr() { return &(*buffer_page_)[0]; }
+    
+    char *GetRawDataPtr() { return &(*content_)[0]; }
 
+public: // for recovery manager, we can use lsn to get more information
+
+    static constexpr int LSN_OFFSET = 0;
+    static constexpr int PAGE_HEADER_SIZE = sizeof(int);
+
+    inline void SetLsn(lsn_t lsn) {
+        SIMPLEDB_ASSERT(content_->size() >= PAGE_HEADER_SIZE, "error");
+        SetInt(LSN_OFFSET, lsn);
+    }
+
+    inline lsn_t GetLsn() {
+        SIMPLEDB_ASSERT(content_->size() >= PAGE_HEADER_SIZE, "error");
+        return GetInt(LSN_OFFSET);
+    }
+    
 
     
 private:
 
     // Page's content, stored in heap
-    std::shared_ptr<std::vector<char>> buffer_page_;
+    std::shared_ptr<std::vector<char>> content_;
 };
 }
 #endif

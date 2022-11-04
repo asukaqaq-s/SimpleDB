@@ -112,7 +112,7 @@ TEST(TransactionTest, SimpleRALLBACKTest) {
     Tuple tuple_test2(test2);
     Tuple tuple_test3(test3);    
     
-    TableScan ts1(tx1.get(), test_file, layout);
+    TableHeap ts1(tx1.get(), test_file, layout);
     ts1.Begin();
 
 
@@ -125,8 +125,8 @@ TEST(TransactionTest, SimpleRALLBACKTest) {
     // std::cout << "file size = " << tx2->GetFileSize(test_file + ".table") << std::endl;
     
 
-    // TableScan ts2(tx2.get(), test_file, layout);
-    // TableScan ts3(tx3.get(), test_file, layout);
+    // TableHeap ts2(tx2.get(), test_file, layout);
+    // TableHeap ts3(tx3.get(), test_file, layout);
     // ts2.FirstTuple();
     // ts3.FirstTuple();
 
@@ -223,7 +223,7 @@ TEST(TransactionTest, IsolationTest) {
     Tuple tuple_test2(test2);
     Tuple tuple_test3(test3);    
     
-    TableScan ts1(tx1.get(), test_file, layout);
+    TableHeap ts1(tx1.get(), test_file, layout);
     ts1.Begin();
 
 
@@ -234,7 +234,7 @@ TEST(TransactionTest, IsolationTest) {
     std::cout << "file size = " << tx1->GetFileSize(test_file + ".table") << std::endl;
     // return;
     tx2->SetIsolationLevel(IsoLationLevel::READ_UNCOMMITED);
-    TableScan ts2(tx1.get(), test_file, layout);
+    TableHeap ts2(tx1.get(), test_file, layout);
     ts2.Begin();
 
     for (int i = 0;i < 100;i ++) {
@@ -246,8 +246,8 @@ TEST(TransactionTest, IsolationTest) {
     }
 
 
-    // TableScan ts2(tx2.get(), test_file, layout);
-    // TableScan ts3(tx3.get(), test_file, layout);
+    // TableHeap ts2(tx2.get(), test_file, layout);
+    // TableHeap ts3(tx3.get(), test_file, layout);
     // ts2.FirstTuple();
     // ts3.FirstTuple();
 

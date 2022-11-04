@@ -319,7 +319,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            log->Undo(txn, curr_lsn);
+            UndoLog(log_record.get(), curr_lsn);
 
             // 3. update block
             block = BlockId(file_name, rid.GetBlockNum());
@@ -341,7 +341,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            log->Undo(txn, curr_lsn);
+            UndoLog(log_record.get(), curr_lsn);
 
             // 3. update block
             block = BlockId(file_name, rid.GetBlockNum());
@@ -364,7 +364,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            log->Undo(txn, curr_lsn);
+            UndoLog(log_record.get(), curr_lsn);
 
             // 3. update block
             block = BlockId(file_name, rid.GetBlockNum());
@@ -384,7 +384,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            log->Undo(txn, curr_lsn);
+            UndoLog(log_record.get(), curr_lsn);
             
             // 3. update block
 
@@ -534,6 +534,7 @@ bool RecoveryManager::DoRedo(Transaction *txn) {
 
 
     lsn_t min_lsn = INVALID_LSN;
+    lsn_t max_lsn = INVALID_LSN;
 
     /* 1. get the minimal lsn */
     for (auto t:dp_table_) {
@@ -573,6 +574,7 @@ bool RecoveryManager::DoRedo(Transaction *txn) {
         auto log_record = LogRecord::DeserializeFrom(log_record_vec);
         auto log_record_type = log_record->GetRecordType();
         lsn_t log_lsn = log_record->GetLsn();
+        max_lsn = std::max(max_lsn, log_lsn);
         
         BlockId block;
         if (log_record_type == LogRecordType::UPDATE) {
@@ -604,9 +606,9 @@ bool RecoveryManager::DoRedo(Transaction *txn) {
 
             if (log_record_type == LogRecordType::INITPAGE &&
                 log_record->IsCLR()) {
-                log_record->Undo(txn, INVALID_LSN);
+                UndoLog(log_record.get(), INVALID_LSN);
             } else {
-                log_record->Redo(txn);
+                RedoLog(log_record.get());
             } 
         }
 
@@ -625,6 +627,9 @@ bool RecoveryManager::DoRedo(Transaction *txn) {
             TxnEnd(txn_id);
         }
     }
+
+    // reset the lastest lsn in logmanager
+    log_manager_->SetLastestLsn(max_lsn);
 
     return true;
 }
@@ -728,7 +733,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogRecord(*clr_record);
 
                 // 2. undo
-                log->Undo(txn, curr_lsn);
+                UndoLog(log, curr_lsn);
 
                 // 3. update block
                 block = BlockId(file_name, rid.GetBlockNum());
@@ -751,7 +756,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogRecord(*clr_record);
 
                 // 2. undo
-                log->Undo(txn, curr_lsn);
+                UndoLog(log, curr_lsn);
 
                 // 3. update block
                 block = BlockId(file_name, rid.GetBlockNum());
@@ -775,7 +780,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogRecord(*clr_record);
 
                 // 2. undo
-                log->Undo(txn, curr_lsn);
+                UndoLog(log, curr_lsn);
 
                 // 3. update block
                 block = BlockId(file_name, rid.GetBlockNum());
@@ -795,7 +800,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
                 // 2. undo
-                log->Undo(txn, curr_lsn);
+                UndoLog(log, curr_lsn);
                 
                 // 3. update block
 

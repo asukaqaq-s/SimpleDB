@@ -6,6 +6,7 @@
 #include "config/exception.h"
 #include "config/macro.h"
 #include "concurrency/transaction.h"
+#include "concurrency/transaction_manager.h"
 
 
 namespace SimpleDB {
@@ -84,6 +85,7 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
     lock_request_queue->shared_count_ ++;
     assert(it->lock_mode_ == LockMode::SHARED);
     assert(lock_request_queue->writing_ == false);
+    (*txn->GetLockSet())[block] = LockMode::SHARED;
     
     return true;
 }
@@ -159,7 +161,7 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
     assert(lock_request_queue->shared_count_ == 0);
     assert(it->txn_id_ == txn->GetTxnID());
     assert(it->lock_mode_ == LockMode::EXCLUSIVE);
-    
+    (*txn->GetLockSet())[block] = LockMode::EXCLUSIVE;
 
     return true;
 }
@@ -232,6 +234,7 @@ bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
     assert(it->txn_id_ == txn->GetTxnID());
     assert(it->lock_mode_ == LockMode::EXCLUSIVE);
     txn->GetLockSet()->emplace(block, LockMode::EXCLUSIVE);
+    (*txn->GetLockSet())[block] = LockMode::EXCLUSIVE;
 
     return true;
 }
@@ -373,12 +376,12 @@ void LockManager::DeadLockPrevent(Transaction *txn,
         it ++;
         
         if (should_abort) {
-            txn->TransactionLookUp(old_it->txn_id_)->SetAborted();
+            txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_)->SetAborted();
             should_notify = true;
         }
 
         if (should_abort && old_it->granted_) {
-            UnLockImp(txn->TransactionLookUp(old_it->txn_id_), lock_request_queue, block);
+            UnLockImp(txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_), lock_request_queue, block);
         }
         
     }

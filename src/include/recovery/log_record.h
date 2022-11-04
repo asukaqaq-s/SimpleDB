@@ -148,16 +148,6 @@ public:
     virtual std::string ToString() = 0;
 
     /**
-    * @brief 
-    */
-    virtual void Undo(Transaction *txn, lsn_t lsn) = 0;
-    
-    /**
-    * @brief 
-    */
-    virtual void Redo(Transaction *txn) = 0;
-
-    /**
     * @brief turn a logrecord object into the byte-sequence
     * 
     * @return byte-sequence
@@ -229,9 +219,6 @@ public:
         return HEADER_SIZE;
     }
 
-    void Redo(Transaction *txn) override { /* do nothing */ }
-    
-    void Undo(Transaction *txn, lsn_t lsn) override { /* do nothing */ }
 
     std::string ToString() override { return GetHeaderToString(); }
 
@@ -315,9 +302,6 @@ public:
 
     int RecordSize() override;
 
-    void Redo(Transaction *txn) override { /* do nothing */ }
-    
-    void Undo(Transaction *txn, lsn_t lsn) override { /* do nothing */}
 
     std::map<txn_id_t, TxTableEntry> GetTxnTable() {
         return txn_table_;
@@ -392,9 +376,6 @@ public:
         return HEADER_SIZE;
     }
 
-    void Redo(Transaction *txn) override { /* do nothing */ }
-    
-    void Undo(Transaction *txn, lsn_t lsn) override { /* do nothing */}
 
     std::string ToString() override { return GetHeaderToString(); }
 
@@ -438,9 +419,6 @@ public:
         return HEADER_SIZE;
     }
 
-    void Redo(Transaction *txn) override { /* do nothing */ }
-    
-    void Undo(Transaction *txn, lsn_t lsn) override { /* do nothing */}
 
     std::string ToString() override { return GetHeaderToString(); }
 
@@ -485,9 +463,6 @@ public:
         return HEADER_SIZE;
     }
 
-    void Redo(Transaction *txn) override { /* do nothing */ }
-    
-    void Undo(Transaction *txn, lsn_t lsn) override { /* do nothing */}
 
     std::string ToString() override { return GetHeaderToString(); }
 
@@ -531,9 +506,6 @@ public:
         return HEADER_SIZE;
     }
 
-    void Redo(Transaction *txn) override { /* do nothing */ }
-    
-    void Undo(Transaction *txn, lsn_t lsn) override { /* do nothing */}
 
     std::string ToString() override { return GetHeaderToString(); }
 
@@ -585,9 +557,6 @@ public:
         return record_size_;
     }
 
-    void Redo(Transaction *txn) override;
-
-    void Undo(Transaction *txn, lsn_t lsn) override;
 
     std::string ToString() override;
 
@@ -652,9 +621,6 @@ public:
         return record_size_;
     }
 
-    void Redo(Transaction *txn) override;
-
-    void Undo(Transaction *txn, lsn_t lsn) override;
 
     std::string ToString() override;
 
@@ -719,9 +685,6 @@ public:
         return record_size_;
     }
 
-    void Redo(Transaction *txn) override;
-
-    void Undo(Transaction *txn, lsn_t lsn) override;
 
     std::string ToString() override;
 
@@ -795,9 +758,6 @@ public:
         return BlockId(file_name_, block_number_);
     }
 
-    void Redo(Transaction *txn) override;
-
-    void Undo(Transaction *txn, lsn_t lsn) override;
 
     std::string ToString() override;
 

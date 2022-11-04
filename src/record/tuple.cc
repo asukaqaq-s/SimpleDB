@@ -2,6 +2,7 @@
 #define TUPLE_CC
 
 #include "record/tuple.h"
+#include "record/column.h"
 
 #include <cstring>
 #include <sstream>
@@ -14,61 +15,65 @@ Tuple::Tuple(std::vector<char> data) {
     data_ = std::make_unique<Page> (data_ptr);
 }
 
-Tuple::Tuple(std::vector<Constant> values, const Layout &layout) {
+Tuple::Tuple(std::vector<Value> values, const Schema &schema) {
     SIMPLEDB_ASSERT(static_cast<int>(values.size()) == 
-                    layout.GetFieldCount(), "size not match");
+                    schema.GetColumnsCount(), "size not match");
 
-    Schema schema = layout.GetSchema();
-    auto fields = schema.GetFields();
     int array_size = values.size();
 
     for (int i = 0;i < array_size; i++) {
+        auto t = schema.GetColumn(i);
         SIMPLEDB_ASSERT(values[i].GetTypeID() == 
-                        schema.GetType(fields[i]), "type not match");
+                        schema.GetColumn(i).GetType() , "type not match");
     }
 
-    // calculate the size of tuple
-    // for string type, if it's null, the size would be 4
-    // otherwise it's 4 + length
-    size_ = layout.GetLength();
+    // get the size of schema
+    size_ = schema.GetLength();
     
-    // calc the total length of varlen type
-    for (int i = 0;i < static_cast<int>(values.size());i ++) {
+    // get the size of varlen-type's data
+    // by this way, we can get the total size of tuple
+    for (int i = 0;i < array_size;i ++) {
         if (values[i].GetTypeID() != TypeID::VARCHAR) {
             continue;
         }
+
         // we don't store data for null type
         if (values[i].IsNull()) {
             continue;
         }
+
         // size + data
-        size_ += Page::MaxLength(schema.GetLength(fields[i]));
-    } 
+        size_ += Page::MaxLength(values[i].GetLength());
+    }
+
 
     data_ = std::make_unique<Page> (size_);
 
     // serialize values into the tuple
     // store the offset of varlen type
-    int data_offset = layout.GetLength();
+    int data_offset = schema.GetLength();
     for (int i = 0;i < array_size; i++) {
-        int field_offset = layout.GetOffset(fields[i]);
+        
+        // get offset
+        int column_offset = schema.GetColumn(i).GetOffset();
+        
         if (values[i].GetTypeID() != TypeID::VARCHAR) {
             // inline type, is not varlen type
             // just store data
-            data_->SetValue(field_offset, values[i]);
+            data_->SetValue(column_offset, values[i]);
         }
         else {
             // uninline type, is varlen type
             // we should store offset and data
             
             // store offset
-            data_->SetInt(field_offset, data_offset);
+            data_->SetInt(column_offset, data_offset);
             
             // store data
-            data_->SetValue(field_offset, values[i]);
+            data_->SetValue(data_offset, values[i]);
 
             // calc the next offset
-            int max_length = schema.GetLength(fields[i]);
+            int max_length = values[i].GetLength();
             data_offset += Page::MaxLength(max_length);
         }
     }
@@ -90,26 +95,25 @@ Tuple& Tuple::operator=(Tuple other) {
     return *this;
 }
 
-void Tuple::SetValue(const std::string &field_name, 
-                     const Constant& val,
-                     const Layout &layout) {
+void Tuple::SetValue(const std::string &column_name, 
+                     const Value& val,
+                     const Schema &schema) {
+    
     // we should not implement varchar in setvalue
     // because we should consider about changing tuple's size
-    // for varchar type, we use constructor get a new tuple
-    SIMPLEDB_ASSERT(layout.GetSchema().GetType(field_name)
+    // for varchar type, always use constructor to get a new tuple
+    SIMPLEDB_ASSERT(schema.GetColumn(column_name).GetType()
                     == TypeID::VARCHAR, "not implement");
     
-    Schema schema = layout.GetSchema();
-    int offset = layout.GetOffset(field_name);
+    int offset = schema.GetColumn(column_name).GetOffset();
     data_->SetValue(offset, val);
 }
 
-Constant Tuple::GetValue(const std::string &field_name,
-                         const Layout &layout) {
+Value Tuple::GetValue(const std::string &column_name,
+                      const Schema &schema) const {
 
-    Schema schema = layout.GetSchema();
-    int offset = layout.GetOffset(field_name);
-    auto type = schema.GetType(field_name);
+    int offset = schema.GetColumn(column_name).GetOffset();
+    auto type = schema.GetColumn(column_name).GetType();
 
     switch (type)
     {
@@ -119,35 +123,34 @@ Constant Tuple::GetValue(const std::string &field_name,
     case TypeID::CHAR:
     case TypeID::INTEGER:
     case TypeID::DECIMAL:
-        return Constant(data_->GetValue(offset, type));
-        break;
+        return Value(data_->GetValue(offset, type));
     
-    case TypeID::VARCHAR: {
+    case TypeID::VARCHAR: 
+    {
         int data_offset = data_->GetInt(offset);
         SIMPLEDB_ASSERT(data_offset >= 0, "index should pass than 0");
-        return Constant(data_->GetValue(data_offset, type));
-        break;
-        }
-        
+        return Value(data_->GetValue(data_offset, type));
+    }
+    
     default:
         break;
     }
 
     SIMPLEDB_ASSERT(false, "should not happen");
-    return Constant();
+    return Value();
 }
 
 
-std::string Tuple::ToString(const Layout &layout) {
-    auto schema = layout.GetSchema();
+std::string Tuple::ToString(const Schema &schema) {
+    
     std::stringstream s;
     s << "{";
-    for (auto t:schema.GetFields()) {
-        s << "[field = " << t << ","
-          << "offset = " << layout.GetOffset(t) << ","
-          << "type = " << schema.GetType(t) << ","
-          << "length = " << schema.GetLength(t) << ","
-          << "data = " << GetValue(t, layout).to_string() << "], ";
+    for (auto t:schema.GetColumns()) {
+        s << "[field = " << t.GetName() << ","
+          << "offset = " << t.GetOffset() << ","
+          << "type = " << t.GetType() << ","
+          << "length = " << t.GetLength() << ","
+          << "data = " << GetValue(t.GetName(), schema).to_string() << "], ";
     }
     s << "}";
     return s.str();

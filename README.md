@@ -40,6 +40,8 @@ Schedule
 
 - DeadLock: Currently, I haven't dealt with how to resolve a deadlock problem.I will update it to WOUND-WAIT or WAIT-DIE.
 
+- Record: maybe we can only implement schema and stores the information of offset in schema but not layout.
+
 - TablePage: 
     
     - we should support variable length tuple.Currently, we just implement slotted page on fixed-length tuple.

@@ -62,58 +62,6 @@ UpdateRecord::UpdateRecord(txn_id_t txn,
 }
 
 
-void UpdateRecord::Redo(Transaction *txn) {
-    // do this operation but not logs
-    Tuple old_tuple;
-    Tuple new_tuple;
-    BlockId blk(file_name_, rid_.GetBlockNum());
-    
-    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(blk);
-    auto table_page = TablePage(buffer->contents(), blk);
-    
-    buffer->WLock();
-
-    if (table_page.GetPageLsn() >= lsn_) {
-        buffer->WUnlock();
-        txn->Unpin(blk);
-        return;
-    }
-
-    bool res = table_page.Update(rid_, &old_tuple, new_tuple_);
-    SIMPLEDB_ASSERT(res == true && old_tuple_ == old_tuple, "logic error");
-    
-    buffer->SetModified(txn_id_, lsn_);
-    table_page.SetPageLsn(lsn_);
-
-    buffer->WUnlock();
-    txn->Unpin(blk);
-}
-
-void UpdateRecord::Undo(Transaction *txn, lsn_t lsn) {
-    // undo this operation but not logs
-    Tuple old_tuple;
-    Tuple new_tuple;
-    BlockId blk(file_name_, rid_.GetBlockNum());
-
-    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(blk);
-    auto table_page = TablePage(buffer->contents(), blk);
-
-    buffer->WLock();
-
-    SIMPLEDB_ASSERT(table_page.GetPageLsn() < lsn, "");
-    
-    bool res = table_page.Update(rid_, &new_tuple, old_tuple_);
-    SIMPLEDB_ASSERT(res == true && new_tuple_ == new_tuple, "logic error");
-    
-    buffer->SetModified(txn_id_, lsn);
-    table_page.SetPageLsn(lsn);
-    
-    buffer->WUnlock();
-    txn->Unpin(blk);
-}
-
 std::string UpdateRecord::ToString() {
     std::string str = GetHeaderToString();
     str += "file_name = " + file_name_ 

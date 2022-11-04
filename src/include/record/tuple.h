@@ -1,10 +1,9 @@
 #ifndef TUPLE_H
 #define TUPLE_H
 
-#include "record/layout.h"
 #include "record/schema.h"
 #include "record/rid.h"
-#include "type/constant.h"
+#include "type/value.h"
 
 #include <cstring>
 
@@ -15,10 +14,10 @@ namespace SimpleDB {
 * a tuple is a record which stored in database.
 * description of single tuple that stays in memory
 * Tuple format:
-* ----------------------------------------
-* | fixlen type data | varlen type data  |
-* ----------------------------------------
-* for fixlen type, the data of the field will be stored in "fixlen type data"
+* -------------------------------
+* | Schema  | varlen type data  |
+* -------------------------------
+* for the start of tuple, we will store a schema object 
 * for varlen type, in "fixlen type data", we just store the offset of the 
 * field in tuple, the actually data will be stored in the end of tuple. 
 * i.e. for every column, either it contains the corresponding fixed-size 
@@ -34,7 +33,7 @@ public:
 
     Tuple(std::vector<char> data);
 
-    Tuple(std::vector<Constant> values, const Layout &layout);
+    Tuple(std::vector<Value> values, const Schema &schema);
 
     ~Tuple() = default;
 
@@ -47,6 +46,7 @@ public:
         std::swap(rhs.size_, size_);
         std::swap(rid_, rhs.rid_);
     }
+
 
     bool operator ==(const Tuple &rhs) const {
         if (rhs.data_ != nullptr && 
@@ -102,8 +102,8 @@ public:
     * @param layout
     */
     void SetValue(const std::string &field_name, 
-                  const Constant& val,
-                  const Layout &layout);
+                  const Value& val,
+                  const Schema &layout);
 
     /**
     * @brief read a value from tuple
@@ -112,8 +112,8 @@ public:
     * @param val
     * @param layout
     */
-    Constant GetValue(const std::string &field_name,
-                      const Layout &layout);
+    Value GetValue(const std::string &field_name,
+                   const Schema &layout) const;
 
 
     std::string ToString() {
@@ -124,7 +124,7 @@ public:
     /**
     * @brief a more convenient way to get tuple data
     */
-    std::string ToString(const Layout &layout);
+    std::string ToString(const Schema &layout);
 
 private:
     

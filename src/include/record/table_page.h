@@ -2,24 +2,31 @@
 #define TABLE_PAGE_H
 
 #include "concurrency/transaction.h"
-#include "record/layout.h"
+#include "buffer/buffer.h"
 
 namespace SimpleDB {
 
 
 class Transaction;
 
+
 /**
-* @brief sotre a record at a given location in a block
+* @brief 
 * 
+* sotre a record at a given location in a block
+* 
+* Page general Header
+* -------------
+* | PageLsn   |
+* -------------
 * TablePage Header
-* ------------------------------------
-* | free_space_ptr |  tuple_count_   |
-* ------------------------------------
+* ----------------------------------------------
+* | PageLsn | free_space_ptr |  tuple_count_   |
+* ----------------------------------------------
 * Slot 
-* --------------------------------------------
-* | Tuple Start Address Offset  |
-* --------------------------------------------
+* -------------------------------
+* | Tuple Start Address Offset  | 
+* -------------------------------
 * TablePage
 * -----------------------------------------------------
 * | Header | slot 0 | slot 1 | slot 2 | slot 3 | .... |
@@ -27,30 +34,28 @@ class Transaction;
 * -----------------------------------------------------
 * | slot n | free space | tuple 2 | tuple 1 | tuple 0 | 
 * -----------------------------------------------------
+* Tuple
+* ---------------------------
+* | Tuple Size | Tuple Data |
+* ---------------------------
+*
 * When the slot array and tuble array meet, the page is full.
-* In other words, the size of free space less than a tuple's size plus a slot's size(sizeof(int))
+* In other words, if the size of free space less than a tuple's 
+* size plus a slot's size(sizeof(int)), we can't insert a tuple successfully.
 */
-class TablePage {
+class TablePage : public Buffer {
 
 public:
 
     TablePage() = default;
-    /**
-    * @brief 
-    * 
-    * @param txn created by which txn
-    * @param block the corresponding block
-    * @param layout the format of a record
-    */
-    TablePage(Page* data,
-              const BlockId &block);
+
 
     /**
     * @brief we just init tuple_count and free_space_ptr
     * this method shall be called when append a new block in
     * the table file
     */
-    void InitPage();
+    void InitPage(Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
 
     /**
     * @brief read the specified tuple's data
@@ -61,11 +66,15 @@ public:
     */
     bool GetTuple(const RID &rid, Tuple *tuple);
 
+
     /**
     * @brief Without specifying a specific location, 
     * find an empty slot and insert it
     */
-    bool Insert(RID *rid, const Tuple &tuple);
+    bool Insert(RID *rid, const Tuple &tuple, 
+                const std::function<bool(const BlockId &)> &upgrade = nullptr, 
+                Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
+
 
     /**
     * @brief write data to the specified tuple
@@ -73,7 +82,8 @@ public:
     * @param RID
     * @param tuple
     */
-    bool InsertWithRID(const RID &rid, const Tuple &tuple);
+    bool InsertWithRID(const RID &rid, const Tuple &tuple,
+                       Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
 
     /**
     * @brief perform the direct deletion.
@@ -81,7 +91,8 @@ public:
     * @param RID
     * @param tuple the tuple which be deleted
     */
-    bool Delete(const RID &rid, Tuple *tuple);
+    bool Delete(const RID &rid, Tuple *tuple, 
+                Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
     
     /**
     * @brief update a tuple
@@ -92,7 +103,8 @@ public:
     */
     bool Update(const RID &rid, 
                 Tuple *old_tuple, 
-                const Tuple &new_tuple);
+                const Tuple &new_tuple,
+                Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
 
 
     /**
@@ -115,13 +127,11 @@ public:
     */
     bool GetNextEmptyRid(RID *rid, const Tuple &tuple);
 
+
     BlockId GetBlock() const { return block_; }
 
-    lsn_t GetPageLsn() const { return data_->GetInt(PAGE_LSN_OFFSET); }
 
-    void SetPageLsn(lsn_t lsn) { data_->SetInt(PAGE_LSN_OFFSET, lsn); }
-
-    Page* GetData() { return data_; }
+    Page* GetData() { return data_.get(); }
 
 private:
 
@@ -207,12 +217,6 @@ public:
         std::cout << std::endl;
     }
 
-
-private:
-
-    Page *data_{nullptr};
-    
-    BlockId block_;
 
 };
 

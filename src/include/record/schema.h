@@ -3,6 +3,7 @@
 
 #include "type/typeid.h"
 #include "config/macro.h"
+#include "record/column.h"
 
 #include <vector>
 #include <string>
@@ -13,173 +14,130 @@
 namespace SimpleDB {
 
 /**
-* @brief the name and type of each field
-* A schema can be thought of as a list of 
-* triples of the form [fieldname, type, length].
-* we will need a schema object to calulate offset in layout 
-*/
+ * @brief 
+ * table schema, contains the column information of this table.
+ * in schema we also caculate the total length of columns. it is
+ * useful in tuple class.
+ */
 class Schema {
 
 
-/**
-* @brief Field represents a column in a record
-* and FieldInfo contains some infomation about this column
-*/
-class FieldInfo {
-
 public:
-    FieldInfo() = default;
-    FieldInfo(TypeID type, int length) : 
-        type_(type), length_(length) {} 
 
-    FieldInfo& operator =(const FieldInfo &p) {
-        type_ = p.type_;
-        length_ = p.length_;
-        return  *this;
-    }
-
-    TypeID type_;
-
-    // for string type, length_ means the maxsize
-    // of the field
-    int length_;
-    
-};
-
-public:
-    
     Schema() = default;
+
+    Schema(const std::vector<Column> &columns) : columns_(columns) {
+        CaculateSchema();
+    }
     
-    ~Schema() = default;
-
-    /**
-    * @brief Add a field to the schema having a specified 
-    * name, type, and length
-    * If the field type is "INTEGER", then the length value is irrelevant
-    * @param field_name the name of field
-    * @param type the type of the field, according to the constants in simpledb
-    * @param length the conceptual length of a string field
-    */
-    void AddField(const std::string &field_name, TypeID type, int length) {
-        fields_.emplace_back(field_name);
-        info_[field_name] = FieldInfo(type, length);     
+    Schema(const Schema& schema) {
+        AddAllColumns(schema);
     }
 
-    /**
-    * @brief because the size of int field is unnecessary
-    * the method AddIntField gives intergers a length value of 0,
-    * @param field_name the name of the field
-    */
-    void AddIntField(const std::string &field_name) {
-        AddField(field_name, TypeID::INTEGER, 0);
+    
+    Schema(int length, const std::vector<Column> &columns) :
+        length_(length), columns_(columns) {}
+
+
+    void AddSameColumn(const std::string &column_name, const Schema &other) {
+        AddColumn(other.GetColumn(column_name));
     }
 
-    /**
-    * @brief because the size of double field is unnecessary
-    * the method AddDemField gives decimals a length value of 0,
-    * @param field_name the name of the field
-    */
-    void AddDemField(const std::string &field_name) {
-        AddField(field_name, TypeID::DECIMAL, 0);
+
+    void AddColumn(Column column) {
+        column.column_offset_ = length_;
+        length_ += column.GetFixedLength();
+        columns_.push_back(column);
     }
 
-    /**
-    * @brief 
-    * @param field_name the name of the field
-    * @param length the number of chars in the varchar definition
-    */
-    void AddStrField(std::string field_name, int length) {
-        AddField(field_name, TypeID::CHAR, length);
-    }
-
-    void AddVarStrField(std::string field_name, int length) {
-        AddField(field_name, TypeID::VARCHAR, length);
-    }
-
-    /**
-    * @brief Add a field to the shcema having the same
-    * type and length as the corresponding field
-    * in another schema
-    * @param field_name the name of the field
-    * @param schema the other schema
-    */
-    void AddSameField(std::string field_name, const Schema &schema) {
-        TypeID type = schema.GetType(field_name);
-        int length = schema.GetLength(field_name);
-        AddField(field_name, type, length);
-    }
-
-    /**
-    * Add all of the fields in the specified schema
-    * to the current schema.
-    * @param sch the other schema
-    */
-    void AddAllField(const Schema &schema) {
-        auto fields = schema.GetFields();
-        for (auto t:fields) {
-            AddSameField(t, schema);
+    void AddAllColumns(const Schema& schema) {
+        for (auto t:schema.columns_) {
+            columns_.push_back(t);
         }
+        CaculateSchema();
     }
 
-    std::vector<std::string> GetFields() const { 
-        return fields_;
+    int GetLength() const {
+        return length_;
     }
 
-    bool HasField(const std::string &field_name) const { 
-        return std::find(fields_.begin(), fields_.end(), field_name) 
-                !=  fields_.end();
-    }
-    
-    TypeID GetType(const std::string &field_name) const {
-        SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
-        return info_.at(field_name).type_;
-    }
-
-    /**
-    * @brief the method will get the maxsize of string type 
-    */
-    int GetLength(const std::string &field_name) const {
-        SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
-        return info_.at(field_name).length_;
-    }
-
-    /**
-    * @brief the method will be called by layout object for calc
-    * the fix-len size
-    */
-    int GetFixLength(const std::string &field_name) const {
-        SIMPLEDB_ASSERT(info_.find(field_name) != info_.end(), "");
-        auto type = info_.at(field_name).type_;
-
-        if (type == TypeID::VARCHAR) {
-            return sizeof(int);
-        } else {
-            switch (type)
-            {
-            case TypeID::CHAR:
-                return info_.at(field_name).length_;
-                break;
-            
-            case TypeID::INTEGER:
-                return sizeof(int);
-                break;
-            
-            case TypeID::DECIMAL:
-                return sizeof(double);
-                break;
-                
-            default:
-                SIMPLEDB_ASSERT(false, "");
+    inline bool HasColumn(const std::string &column_name) const {
+        int size = columns_.size();
+        for (int i = 0;i < size;i ++) {
+            if (columns_[i].column_name_ == column_name) {
+                return true;
             }
         }
+        return false;
     }
+    
+    inline int GetColumnIdx(const std::string &column_name) const {
+
+        int size = columns_.size();
+        for (int i = 0;i < size;i ++) {
+            if (columns_[i].column_name_ == column_name) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+
+    inline const Column &GetColumn(int index) const {
+        return columns_[index];
+    }
+
+    inline const Column &GetColumn(const std::string &column_name) const {
+        int pos = GetColumnIdx(column_name);
+        SIMPLEDB_ASSERT(pos != -1, "the column_name is not exist");
+        return columns_[pos];
+    }
+
+    inline const std::vector<Column>& GetColumns() const {
+        return columns_;
+    }
+    
+    int GetColumnsCount() const {
+        return columns_.size();
+    }
+
+    bool operator == (const Schema &schema) const {
+        return length_ == schema.length_ &&
+               columns_ == schema.columns_;
+    }
+
+    std::string ToString() {
+        std::stringstream str;
+        int size = columns_.size();
+
+        for (int i = 0;i < size; i++) {
+            str << "column " << i << " "
+                << columns_[i].ToString();
+        }
+        return str.str();
+    }
+    
 
 private:
 
-    // the list of fields name
-    std::vector<std::string> fields_;
-    // map fieldname to field
-    std::map<std::string, FieldInfo> info_;
+    void CaculateSchema() {
+
+        int cur_length = 0;
+        int cnt = 0;
+        for (auto &t:columns_) {
+            t.column_offset_ = cur_length;
+            cur_length += t.GetFixedLength();
+        }
+
+        length_ = cur_length;
+    }
+
+    int length_{0};
+
+    // the list of fields/columns
+    std::vector<Column> columns_;
+
+
 };
 
 } // namespace SimpleDB

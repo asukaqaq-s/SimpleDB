@@ -112,7 +112,7 @@ TEST(TransactionTest, SimpleRecoveryTest) {
     std::uniform_int_distribution<> distrib(min, max); // uniform distribution
     Layout layout;
 
-    auto ts1 = TableScan(tx1.get(), test_file, layout);
+    auto ts1 = TableHeap(tx1.get(), test_file, layout);
     ts1.Begin();
 
     for (int i = 0;i < 10000;i ++) {
@@ -144,7 +144,7 @@ TEST(TransactionTest, SimpleRecoveryTest) {
     
     tx1->Commit();
 
-    auto ts2 = TableScan(tx2.get(), test_file, layout);
+    auto ts2 = TableHeap(tx2.get(), test_file, layout);
     ts2.Begin();
     for (int i = 0;i < 10000;i ++) {
         ts2.Insert(tuple1, nullptr);
@@ -178,7 +178,7 @@ TEST(TransactionTest, SimpleRecoveryTest) {
 
     tx2->Recovery();
     // tx2->Commit();
-    // auto ts3 = TableScan(tx3.get(), test_file, layout);
+    // auto ts3 = TableHeap(tx3.get(), test_file, layout);
     ts2.Begin();
 
     for (int i = 0;i < 10000;i ++) {

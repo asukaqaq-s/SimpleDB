@@ -243,6 +243,21 @@ unittests/fast:
 .PHONY : unittests/fast
 
 # Convenience name for target.
+test/CMakeFiles/metadata_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
+.PHONY : test/CMakeFiles/metadata_test.dir/rule
+
+# Convenience name for target.
+metadata_test: test/CMakeFiles/metadata_test.dir/rule
+
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/buffer_manager_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_manager_test.dir/rule
 .PHONY : test/CMakeFiles/buffer_manager_test.dir/rule
@@ -286,6 +301,21 @@ buffer_test: test/CMakeFiles/buffer_test.dir/rule
 buffer_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
 .PHONY : buffer_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/tuple_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/rule
+.PHONY : test/CMakeFiles/tuple_test.dir/rule
+
+# Convenience name for target.
+tuple_test: test/CMakeFiles/tuple_test.dir/rule
+
+.PHONY : tuple_test
+
+# fast build rule for target.
+tuple_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/concurrency_test.dir/rule:
@@ -635,6 +665,33 @@ log/log_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/log/log_test.cc.s
 .PHONY : log/log_test.cc.s
 
+metadata/metadata_test.o: metadata/metadata_test.cc.o
+
+.PHONY : metadata/metadata_test.o
+
+# target to build an object file
+metadata/metadata_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.o
+.PHONY : metadata/metadata_test.cc.o
+
+metadata/metadata_test.i: metadata/metadata_test.cc.i
+
+.PHONY : metadata/metadata_test.i
+
+# target to preprocess a source file
+metadata/metadata_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.i
+.PHONY : metadata/metadata_test.cc.i
+
+metadata/metadata_test.s: metadata/metadata_test.cc.s
+
+.PHONY : metadata/metadata_test.s
+
+# target to generate assembly for a file
+metadata/metadata_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
+.PHONY : metadata/metadata_test.cc.s
+
 record/table_test.o: record/table_test.cc.o
 
 .PHONY : record/table_test.o
@@ -661,6 +718,33 @@ record/table_test.s: record/table_test.cc.s
 record/table_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/record/table_test.cc.s
 .PHONY : record/table_test.cc.s
+
+record/tuple_test.o: record/tuple_test.cc.o
+
+.PHONY : record/tuple_test.o
+
+# target to build an object file
+record/tuple_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/record/tuple_test.cc.o
+.PHONY : record/tuple_test.cc.o
+
+record/tuple_test.i: record/tuple_test.cc.i
+
+.PHONY : record/tuple_test.i
+
+# target to preprocess a source file
+record/tuple_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/record/tuple_test.cc.i
+.PHONY : record/tuple_test.cc.i
+
+record/tuple_test.s: record/tuple_test.cc.s
+
+.PHONY : record/tuple_test.s
+
+# target to generate assembly for a file
+record/tuple_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/record/tuple_test.cc.s
+.PHONY : record/tuple_test.cc.s
 
 recovery/log_record_test.o: recovery/log_record_test.cc.o
 
@@ -759,10 +843,12 @@ help:
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
+	@echo "... metadata_test"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
 	@echo "... test"
+	@echo "... tuple_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... lock_manager_test"
@@ -798,9 +884,15 @@ help:
 	@echo "... log/log_test.o"
 	@echo "... log/log_test.i"
 	@echo "... log/log_test.s"
+	@echo "... metadata/metadata_test.o"
+	@echo "... metadata/metadata_test.i"
+	@echo "... metadata/metadata_test.s"
 	@echo "... record/table_test.o"
 	@echo "... record/table_test.i"
 	@echo "... record/table_test.s"
+	@echo "... record/tuple_test.o"
+	@echo "... record/tuple_test.i"
+	@echo "... record/tuple_test.s"
 	@echo "... recovery/log_record_test.o"
 	@echo "... recovery/log_record_test.i"
 	@echo "... recovery/log_record_test.s"

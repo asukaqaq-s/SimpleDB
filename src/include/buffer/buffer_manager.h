@@ -8,6 +8,7 @@
 #include "file/file_manager.h"
 #include "log/log_manager.h"
 #include "buffer/lru_replace.h"
+#include "buffer/buffer.h"
 #include "config/rw_latch.h"
 
 namespace SimpleDB {
@@ -15,105 +16,18 @@ namespace SimpleDB {
 
 class RecoveryManager;
 
-class Buffer {
-    
-public:
-
-    explicit Buffer(FileManager *fm, RecoveryManager *rm);
-    
-    /**
-    * @brief 
-    * 
-    * @return content be used to modify
-    */
-    Page* contents() { return contents_.get(); }
-
-    /**
-    * @brief 
-    */
-    void SetModified(txn_id_t txn_id, int lsn);
-
-    bool IsPinned() { return pin_ > 0; } 
-
-    int ModifyingTrx() { return txn_id_; }
-
-    /**
-    * @brief assign a new block, 
-    * and change its modifying trx 
-    */
-    void AssignBlock(BlockId blk);
-
-    /**
-    * @brief usually be used to commit a transaction
-    */
-    void flush();
-
-    void pin() { pin_++; }
-    
-    void unpin() { pin_--; }
-
-    BlockId BlockNum() { return block_;}
-
-    BlockId GetBlockID() { return block_; }
-    
-    int GetPinCount() { return pin_; }
-    
-    // for debugging purpose
-    // because of AssignBlock method, we don't need to this function maybe.
-    bool IsDirty() { return txn_id_ != -1; }
-
-
-    // avoid multiple transaction access at the same time
-    void RLock() { latch.RLock(); }
-    
-    void RUnlock() { latch.RUnlock(); }
-
-    void WLock() { latch.WLock(); }
-
-    void WUnlock() { latch.WUnlock(); }
-
-private:
-    
-    // shared filemanager
-    FileManager* file_manager_;
-    // shared logmanager
-    RecoveryManager* recovery_manager_;
-    // buffer content
-    std::unique_ptr<Page> contents_;
-     
-    BlockId block_;
-    
-    int pin_ = 0;
-    // if trx_num != -1, means the page is a dirty_page
-    txn_id_t txn_id_{INVALID_TXN_ID};
-    // the LSN of the most recent log record.
-    lsn_t lsn_{INVALID_LSN};
-
-    // read write latch
-    // because we need different transaction isolation level
-    // Despite having a buffer lock, it is still needed different 
-    // transaction work at the same time.so we should need to a
-    // reader writer latch
-    ReaderWriterLatch latch;
-};
-
-
-
-
 /**
-* @brief Manages the pinning and unpinning of buffers to blocks.
-* 
-*/
+ * @brief BufferPoolManager reads disk pages to and from its internal buffer pool.
+ */
 class BufferManager {
-    
+
+
 public:
 
     /**
     * @brief 
-    * Creates a buffer manager having the specified number 
-    * of buffer slots.
+    * Creates a buffer manager having the specified numbers of buffer slots.
     * Since we use the buffer class to encapsulate reads and writes, 
-    * it is not needed filemanager and logmanager stores in Buffermanager
     */
     explicit BufferManager(FileManager *fm, RecoveryManager *rm, int buffer_nums);
     
@@ -130,7 +44,7 @@ public:
     * @param block a disk block
     * @return the buffer pinned to taht block 
     */
-    Buffer* Pin(BlockId block);
+    Buffer* PinBlock(BlockId block);
 
     /**
     * @brief Unpins the specified data buffer. If its pin count
@@ -138,23 +52,16 @@ public:
     * 
     * @param buffer the buffer to be unpinned
     */
-    bool Unpin(Buffer *buffer);
+    bool UnpinBlock(Buffer *buffer);
 
     /**
     * @brief another version Unpin
     */
-    bool Unpin(BlockId block);
+    bool UnpinBlock(BlockId block);
 
-    /**
-    * @brief
-    * Flushes the dirty buffers modified by the specified transaction.
-    * @param txnum the transaction's id number
-    */
-    void FlushAll(txn_id_t txn_num);
     
     /**
-    * @brief
-    * Flushes the all dirty buffers 
+    * @brief Flush all dirty buffers 
     */
     void FlushAll();
     
@@ -173,17 +80,15 @@ private:
     /* some heapler functions */
 
     /**
-    * @brief this function can help us find the
-    *  victim frame quickly
+    * @brief this function can help us find the victim frame quickly
     *
     * @return the position of a available buffer in pool 
     */
     frame_id_t VictimHelper();
     
     /**
-    * @brief if a buffer is found, call this function help us
-    * matain data memember
-    *   this function assumes that we successfully find a victim buffer. 
+    * @brief if a buffer is found, call this function help us matain data memember
+    * this function assumes that we successfully find a victim buffer. 
     */
     void PinHelper(frame_id_t frame_id, BlockId block);
 
@@ -203,21 +108,34 @@ private:
     */
     bool WaitTooLong(
         std::chrono::time_point<std::chrono::high_resolution_clock>);
-    
+
+private:
+
+
     // shared file_manager
     FileManager *file_manager_;
+
+    // shared recovery_manager
+    RecoveryManager *recovery_manager_;
+
     // starring role
     std::vector<std::unique_ptr<Buffer>> buffer_pool_;
+
     // unused buffer
     std::list<frame_id_t> free_list_;
+    
     // unpined buffer or unused buffer
     int available_num_;
+    
     // map blockid to frame_id, differ from page_table in os
     std::map<BlockId, frame_id_t> page_table_;
+    
     // replacer algorithm
     std::unique_ptr<LRUReplacer> replacer_;
+    
     // big latch, currently it will protect whole buffer pool manager
     std::mutex latch_;
+    
     // be used to select a victim
     std::condition_variable victim_cv_;
     

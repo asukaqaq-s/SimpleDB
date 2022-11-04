@@ -298,6 +298,19 @@ unittests/fast:
 .PHONY : unittests/fast
 
 #=============================================================================
+# Target rules for targets named metadata_test
+
+# Build rule for target.
+metadata_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+#=============================================================================
 # Target rules for targets named buffer_manager_test
 
 # Build rule for target.
@@ -335,6 +348,19 @@ buffer_test: cmake_check_build_system
 buffer_test/fast:
 	$(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
 .PHONY : buffer_test/fast
+
+#=============================================================================
+# Target rules for targets named tuple_test
+
+# Build rule for target.
+tuple_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
+.PHONY : tuple_test
+
+# fast build rule for target.
+tuple_test/fast:
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
 
 #=============================================================================
 # Target rules for targets named concurrency_test
@@ -450,9 +476,11 @@ help:
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
+	@echo "... metadata_test"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... buffer_test"
+	@echo "... tuple_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... lock_manager_test"

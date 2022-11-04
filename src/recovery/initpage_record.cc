@@ -39,44 +39,6 @@ InitPageRecord::InitPageRecord(txn_id_t txn,
                    sizeof(int);
 }
 
-void InitPageRecord::Redo(Transaction *txn) {
-    BlockId block(file_name_, block_number_);
-
-    if (txn->GetFileSize(file_name_) != block_number_) {
-        // if this file's size < block_number, logic error
-        // if this file's size > block_number, this op has been done
-        SIMPLEDB_ASSERT(txn->GetFileSize(file_name_) > block_number_, "logic error");
-        return;
-    }
-
-    SIMPLEDB_ASSERT(txn->Append(file_name_) == block, "logic error");
-    
-    // since we have obtained x-lock in end-of-file
-    // should we get x-lock in this new-block ?
-    // or because isolation level rr, we just get s-lock here?
-    txn->AcquireLock(block, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(block);
-    auto table_page = TablePage(buffer->contents(), block);
-    buffer->WLock();
-
-    table_page.InitPage();
-
-    table_page.SetPageLsn(lsn_);
-    buffer->SetModified(txn_id_, lsn_);
-    
-    buffer->WUnlock();
-    txn->Unpin(block);
-}
-
-void InitPageRecord::Undo(Transaction *txn, lsn_t lsn) {
-    BlockId block(file_name_, block_number_);
-
-    SIMPLEDB_ASSERT(txn->GetFileSize(file_name_) == block_number_ + 1, "logic error");
-    
-    // since we append a block and init it when initpage
-    // undo this operations is reduce a block of file. 
-    txn->SetFileSize(file_name_, block_number_);
-}
 
 std::string InitPageRecord::ToString() {
     std::string str = GetHeaderToString();

@@ -53,64 +53,6 @@ DeleteRecord::DeleteRecord(txn_id_t txn,
 }
 
 
-void DeleteRecord::Redo(Transaction *txn) {
-    // do this operation but not logs
-    BlockId blk(file_name_, rid_.GetBlockNum());
-    Tuple old_tuple;
-
-    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(blk);
-    auto table_page = TablePage(buffer->contents(), blk);
-    buffer->WLock();
-
-    // if this log has redone, we can't redo again
-    // for avoid logic error which happen in logical-physical scheme.
-    if (table_page.GetPageLsn() >= lsn_) {
-        buffer->WUnlock();
-        txn->Unpin(blk);
-        return;
-    }
-
-    table_page.Delete(rid_, &old_tuple);
-    // I think old_tuple is equal to tuple
-    SIMPLEDB_ASSERT(old_tuple == tuple_, "logic error");
-
-    // update information
-    table_page.SetPageLsn(lsn_);
-    buffer->SetModified(txn_id_, lsn_);
-
-    buffer->WUnlock();
-    txn->Unpin(blk);
-}
-
-void DeleteRecord::Undo(Transaction *txn, lsn_t lsn) {
-    // do this operation but not logs
-    // log will be written by recovery_manager
-    BlockId blk(file_name_, rid_.GetBlockNum());
-
-    txn->AcquireLock(blk, LockMode::EXCLUSIVE);
-    Buffer *buffer = txn->GetBuffer(blk);
-    auto table_page = TablePage(buffer->contents(), blk);
-    buffer->WLock();
-
-    // if table_page's last lsn >= lsn
-    // the corresponding log should be flushed to disk
-    // and this undo method can't be called.
-    SIMPLEDB_ASSERT(table_page.GetPageLsn() < lsn, "");
-
-    bool res = table_page.InsertWithRID(rid_, tuple_);
-    
-    // I think this insert op can't fail
-    SIMPLEDB_ASSERT(res == true, "logical error");
-
-    // update information
-    table_page.SetPageLsn(lsn);
-    buffer->SetModified(txn_id_, lsn);
-    
-    buffer->WUnlock();
-    txn->Unpin(blk);
-}
-
 std::string DeleteRecord::ToString() {
     std::string str = GetHeaderToString();
     str += "file_name = " + file_name_ 

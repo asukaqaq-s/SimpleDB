@@ -11,8 +11,8 @@ enum TypeID {
 
     INVALID = 0,
     INTEGER,
-    CHAR,
     DECIMAL,
+    CHAR,
     VARCHAR,
 };
 

@@ -139,6 +139,11 @@ private: // helper function
 
     void TxnEnd(txn_id_t txn_id);
 
+    void RedoLog(LogRecord *log);
+
+    void UndoLog(LogRecord *log, lsn_t undo_lsn);
+
+
 private: 
 
     inline lsn_t GetLastLsn(txn_id_t txn_id) {
@@ -223,6 +228,8 @@ private:
 
 private:
     
+    // shared filemanager
+    FileManager *file_manager_;
     // shared logmanager
     LogManager *log_manager_;
     // shared buffermanager

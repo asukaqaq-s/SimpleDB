@@ -92,7 +92,7 @@ public:
     *   we can extend the file in this-way
     * p.s The length of the file is always a multiple of 4kb
     */
-    int Length(const std::string &file_name) {
+    int GetFileBlockNum(const std::string &file_name) {
         return GetFileSize(file_name) / block_size_;
     }
 
