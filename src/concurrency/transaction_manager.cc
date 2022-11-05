@@ -7,13 +7,13 @@
 namespace SimpleDB {
 
 std::unique_ptr<Transaction> TransactionManager::Begin
-(IsoLationLevel level = IsoLationLevel::SERIALIZABLE) {
+(IsoLationLevel level) {
     
     // get txn_id
     txn_id_t txn_id = txn_map_->GetNextTransactionID();
-        
+    
     // create a new txn
-    auto txn = std::make_unique<Transaction>(this, txn_id, level);
+    auto txn = std::make_unique<Transaction>(file_manager_, buffer_manager_, lock_mgr_.get(), txn_id, level);
     
     // insert into txn_map
     txn_map_->InsertTransaction(txn.get());
@@ -21,7 +21,8 @@ std::unique_ptr<Transaction> TransactionManager::Begin
     // write a begin log to logmanager
     recovery_mgr_->Begin(txn.get());
 
-    return std::move(txn);
+
+    return txn;
 }
 
 
@@ -39,6 +40,7 @@ void TransactionManager::Commit(Transaction *txn) {
     // free the txn content
     txn_map_->RemoveTransaction(txn);
 }
+
 
 void TransactionManager::Abort(Transaction *txn) {
     txn->SetAborted();
@@ -59,6 +61,9 @@ void TransactionManager::Abort(Transaction *txn) {
 
 
 void TransactionManager::ReleaseAllLocks(Transaction *txn) {
+    // start release lock
+    txn->SetLockStage(LockStage::SHRINKING);
+
     for (auto &t:*txn->GetLockSet()) {
         lock_mgr_->UnLock(txn, t.first);
     }

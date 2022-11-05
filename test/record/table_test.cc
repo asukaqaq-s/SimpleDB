@@ -4,7 +4,8 @@
 #include "buffer/buffer_manager.h"
 #include "gtest/gtest.h"
 #include "recovery/recovery_manager.h"
-#include "record/table_scan.h"
+#include "record/table_heap.h"
+#include "record/table_iterator.h"
 
 #include <iostream>
 #include <memory>
@@ -17,183 +18,10 @@
 
 namespace SimpleDB {
 
-bool find(std::string str, char c) {
-    for (auto t:str) {
-        if (t == c) {
-            return true;
-        }
-    }
-    return false;
-}
-
-Tuple GetRandomTuple() {
-    
-    std::random_device seed; // get ramdom seed
-	std::ranlux48 engine(seed());
-    std::uniform_int_distribution<> distrib(1, 100); // uniform distribution
-    
-    int size  = distrib(engine);
-    std::vector<char> q;
-
-    for (int i = 0; i < size;i ++) {
-        std::uniform_int_distribution<> distrib('0', '9'); // uniform distribution
-        q.push_back(distrib(engine));
-    }
-
-    return Tuple(q);
-
-}
-
-Tuple FindTupleRID(const std::vector<Tuple> &arr, RID rid) {
-    for (auto t:arr) {
-        if (t.GetRID() == rid) {
-            return t;
-        }
-    }
-
-}
-
-
-void ModifyTupleWithRid(std::vector<Tuple> &arr, RID rid, Tuple new_tuple) {
-    for (auto &t:arr) {
-        if (t.GetRID() == rid) {
-            t = new_tuple;
-            return;
-        }
-    }
-}
-
-
 TEST(TableTest, TablePageTest) {
-    char buf[100];
-    std::string local_path = getcwd(buf, 100);
-    std::string test_dir = local_path + "/" + "test_dir";
-    std::string test_file = "test1.txt";
-    std::string cmd;
-    std::cout << local_path << std::endl;
-    cmd = "rm -rf " + test_dir;
-    system(cmd.c_str());
 
-    std::string log_file_name = "log.log";
-    std::string log_file_path = test_dir + "/" + log_file_name;
-    std::unique_ptr<FileManager> file_manager 
-        = std::make_unique<FileManager>(test_dir, 4096);
-    
-    std::unique_ptr<LogManager> log_manager 
-        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
-
-
-    std::unique_ptr<RecoveryManager> rm 
-        = std::make_unique<RecoveryManager>(log_manager.get());
-
-
-    std::unique_ptr<BufferManager> buf_manager
-        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
-
-    std::unique_ptr<Transaction> tx 
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
-
-    int min = -1e9,max = 1e9;
-    std::random_device seed; // get ramdom seed
-	std::ranlux48 engine(seed());
-    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
-
-    std::vector<char> q(10,'1');
-    std::vector<char> test2(15, '2');
-    std::vector<char> test3(5, '3');
-    Layout layout;
-    TableHeap ts(tx.get(), test_file, layout);
-
-    Tuple tuple_test(q);
-    Tuple tuple_test2(test2);
-    Tuple tuple_test3(test3);
-    Tuple tuple_get;
-    
-
-    int round = 1000;
-
-    std::vector<RID> rid_vec;
-    std::vector<RID> lost_vec;
-
-    for (int i = 0;i < round;i ++) {
-        RID rid;
-        ts.Insert(tuple_test, &rid);
-        rid_vec.push_back(ts.GetRid());
-    }
-
-    ts.Begin();
-    
-    for (int i = 0;i < round;i ++) {
-        ts.Next();
-        EXPECT_EQ(rid_vec[i], ts.GetRid());
-        Tuple t;
-        assert(ts.GetTuple(&t) == true);
-        EXPECT_EQ(t, tuple_test);
-    }
-
-    ts.Begin();
-
-    for (int i = 0;i < round;i ++) {
-        ts.Next();
-        
-        if (find(std::to_string(i), '9')) {
-            // std::cout << "be delete" << ts.GetRid().ToString() << std::endl;
-            ts.Delete();
-            lost_vec.push_back(ts.GetRid());
-        }
-    }
-
-    ts.Begin();
-    while (ts.Next()) {
-        if (find(std::to_string(ts.GetRid().GetSlot()), '8')) {
-            ts.Update(tuple_test2);
-            Tuple tuple;
-            ts.GetTuple(&tuple);
-            EXPECT_EQ(tuple, tuple_test2);
-        }
-    }    
-
-    ts.Begin();
-    while (ts.Next()) {
-        if (find(std::to_string(ts.GetRid().GetSlot()), '7')) {
-            ts.Update(tuple_test3);
-            Tuple tuple;
-            ts.GetTuple(&tuple);
-            EXPECT_EQ(tuple, tuple_test3);
-        }
-    }
-
-    ts.Begin();
-    
-    for (int i = 0;i < 5;i ++) {
-        RID rid;
-        ts.Insert(tuple_test, &rid);
-        ts.GetTuple(&tuple_get);
-        EXPECT_EQ(tuple_test, tuple_get);
-        EXPECT_EQ(lost_vec[i], ts.GetRid());
-    }
-
-    tx->Commit();
-    /// 
-    /// @brief print
-    ///   
-    auto log_iter = log_manager->Iterator();
-    while(log_iter.HasNextRecord()) {
-        // auto byte_array1 = log_iter.CurrentRecord();
-        
-        // static_cast<InsertRecord*>
-        // auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
-        // std::cout << log_record_tmp->ToString() << std::endl;
-        log_iter.NextRecord();
-    }
-    
-    
-    cmd = "rm -rf " + test_dir;
-    system(cmd.c_str());
-}
-
-
-TEST(TableTest, RandomTableTest) {
+    // we test insert, update, delete, read in this function
+    // because this is just one pages so don't need to travel the entire file
 
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -212,116 +40,104 @@ TEST(TableTest, RandomTableTest) {
     std::unique_ptr<LogManager> log_manager 
         = std::make_unique<LogManager>(file_manager.get(), log_file_name);
 
-
     std::unique_ptr<RecoveryManager> rm 
         = std::make_unique<RecoveryManager>(log_manager.get());
-
 
     std::unique_ptr<BufferManager> buf_manager
         = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
 
-    std::unique_ptr<Transaction> tx 
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
 
-    int min = 1000,max = 10000;
-    std::random_device seed; // get ramdom seed
-	std::ranlux48 engine(seed());
-    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
+    Schema sch1;
+    std::string test_str = "12345678910";
+    Tuple tuple;
+    std::vector<Value> vec;
+    {
+        sch1.AddColumn(Column("a", TypeID::CHAR, 100));
+        sch1.AddColumn(Column("b", TypeID::INTEGER));
+        sch1.AddColumn(Column("c", TypeID::DECIMAL));
+        sch1.AddColumn(Column("d", TypeID::VARCHAR, 120));
+        sch1.AddColumn(Column("e", TypeID::INTEGER));
 
-    std::vector<char> q(10,'1');
-    std::vector<char> test2(15, '2');
-    std::vector<char> test3(5, '3');
-    Layout layout;
-
-    TableHeap ts(tx.get(), test_file, layout);
-
-
-
-    int round = distrib(engine);
-    round = 100;
-    std::vector<RID> rid_vec;
-    std::vector<Tuple> tuple_array;
-    std::vector<RID> empty_rid_vec;
-     ts.Begin();
-    for (int i = 0;i < round;i ++) {
-        tuple_array.push_back(GetRandomTuple());
-        RID rid;
-        ts.Insert(tuple_array[i], &rid);
-        rid_vec.push_back(ts.GetRid());
-    }
-
-    ts.Begin();
+        
+        vec.push_back(Value(test_str, TypeID::CHAR));
+        vec.push_back(Value(10));
+        vec.push_back(Value(121.0));
+        vec.push_back(Value(test_str, TypeID::VARCHAR));
+        vec.push_back(Value(100));
     
-    for (int i = 0;i < round;i ++) {
-        ts.Next();
-        EXPECT_EQ(rid_vec[i], ts.GetRid());
-        Tuple t;
-        assert(ts.GetTuple(&t) == true);
-        EXPECT_EQ(t, tuple_array[i]);
+        tuple = Tuple(vec, sch1);
     }
 
-    ts.Begin();
-    int cnt = 0;
-    for (int i = 0;i < round;i ++) {
-        ts.Next();
-        char c = '9';
-        if (find(std::to_string(ts.GetRid().GetSlot()), c)) {
-            // std::cout << "be delete" << ts.GetRid().ToString() << std::endl;
-            ts.Delete();
-            cnt++;
-            empty_rid_vec.push_back(ts.GetRid());
+
+    auto *buffer = buf_manager->NewPage(test_file);
+    auto table_page = static_cast<TablePage*>(buffer);
+    table_page->InitPage();
+
+    // test insert
+    RID rid;
+    for (int i = 0;i < 10;i ++) {
+        table_page->Insert(&rid, tuple);
+        EXPECT_EQ(rid.GetSlot(), i);
+    }
+    // std::cout << "--------------------------------------------" << std::endl;
+    // std::cout << "|  After Insert  |" << std::endl;
+    // std::cout << "--------------------------------------------" << std::endl;
+    // std::cout << table_page->ToString(sch1) << std::endl;
+
+    // test read
+    for (int i = 0;i < 10;i ++) {
+        Tuple test_tuple;
+        table_page->GetTuple(RID(0, i), &test_tuple);
+        EXPECT_EQ(test_tuple, tuple);
+    }
+
+    // test delete
+    for (int i = 0;i < 10;i ++) {
+        RID rid(0,i);
+        Tuple tmp_tuple;
+        if (i % 2) {
+            table_page->Delete(rid, &tmp_tuple);
+            EXPECT_EQ(tmp_tuple, tuple);
+            EXPECT_EQ(false, table_page->GetTuple(rid, &tmp_tuple));
         }
     }
-    
-    ts.Begin();
-    // find 
-    for (auto t:empty_rid_vec) {
-        std::cout << "find one " << t.ToString() << std::endl;
-        auto tuple = FindTupleRID(tuple_array, t);
-        // ts.NextInsert(tuple);
 
-    }
+    // std::cout << "--------------------------------------------" << std::endl;
+    // std::cout << "|  After delete  |" << std::endl;
+    // std::cout << "--------------------------------------------" << std::endl;
+    // std::cout << table_page->ToString(sch1) << std::endl;
 
+    // test update
+    for (int i = 0;i < 10;i ++) {
+        RID rid(0,i);
+        Tuple tmp_tuple;
 
-    ts.Begin();
-    while (ts.Next()) {
-        if (find(std::to_string(ts.GetRid().GetSlot()), '8')) {
-            Tuple random_tuple = GetRandomTuple();
-            if (!ts.Update(random_tuple)) {
-                std::cout << "stop" << std::endl;
-                assert(false);
+        if (i % 2 == 0) {
+            // generate a new tuple
+            Tuple new_tuple;
+            {
+                std::vector<Value> vec;
+                std::string test_str = "999999";
+                vec.push_back(Value(test_str, TypeID::CHAR));
+                vec.push_back(Value(110));
+                vec.push_back(Value(31.0));
+                vec.push_back(Value(test_str, TypeID::VARCHAR));
+                vec.push_back(Value(90));
+                new_tuple = Tuple(vec, sch1);
             }
-            Tuple tuple;
-            ts.GetTuple(&tuple);
-            EXPECT_EQ(tuple, random_tuple);
+            
 
-            ModifyTupleWithRid(tuple_array, ts.GetRid(), random_tuple);
+            table_page->Update(rid, &tmp_tuple, new_tuple);
+            EXPECT_EQ(tmp_tuple, tuple);
+            table_page->GetTuple(rid, &tmp_tuple);
+            EXPECT_EQ(tmp_tuple, new_tuple);
         }
-    }    
-
-    // ts.Begin();
-    // while (ts.Next()) {
-    //     if (find(std::to_string(ts.GetRid().GetSlot()), '7')) {
-    //         ts.Update(tuple_test3);
-    //         Tuple tuple;
-    //         ts.GetTuple(&tuple);
-    //         EXPECT_EQ(tuple, tuple_test3);
-    //     }
-    // }
-
-    tx->Commit();
-    /// 
-    /// @brief print
-    ///   
-    auto log_iter = log_manager->Iterator();
-    while(log_iter.HasNextRecord()) {
-        auto byte_array1 = log_iter.CurrentRecord();
-        
-        // static_cast<InsertRecord*>
-        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
-        std::cout << log_record_tmp->ToString() << std::endl;
-        log_iter.NextRecord();
     }
+
+    // print 
+    // std::cout << table_page->ToString(sch1) << std::endl;
+    
+
 
     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
@@ -329,5 +145,329 @@ TEST(TableTest, RandomTableTest) {
 
 
 
+TEST(TableTest, TableHeapTest) {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    std::cout << local_path << std::endl;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+
+
+    // --------------------
+    // make schema
+    // --------------------
+    Schema sch1;
+    std::string test_str = "12345678910";
+    Tuple tuple;
+    std::vector<Value> vec;
+    {
+        sch1.AddColumn(Column("a", TypeID::CHAR, 100));
+        sch1.AddColumn(Column("b", TypeID::INTEGER));
+        sch1.AddColumn(Column("c", TypeID::DECIMAL));
+        sch1.AddColumn(Column("d", TypeID::VARCHAR, 120));
+        sch1.AddColumn(Column("e", TypeID::INTEGER));
+
+        
+        vec.push_back(Value(test_str, TypeID::CHAR));
+        vec.push_back(Value(10));
+        vec.push_back(Value(121.0));
+        vec.push_back(Value(test_str, TypeID::VARCHAR));
+        vec.push_back(Value(100));
+    
+        tuple = Tuple(vec, sch1);
+    }
+
+
+    // --------------------
+    // init
+    // --------------------
+    LockManager lock;
+    Transaction txn(file_manager.get(), buf_manager.get(), &lock,  1);
+    RID rid;
+    auto table_heap = std::make_unique<TableHeap>(&txn, test_file, 
+                      file_manager.get(), rm.get(), buf_manager.get());
+    int insert_tuple_num = 100;
+    for (int i = 0;i < insert_tuple_num;i ++) {
+        table_heap->Insert(&txn, tuple, &rid);
+    }
+
+
+    // --------------------
+    // test scan
+    // --------------------
+    auto table_iter = table_heap->Begin(&txn);
+    int cnt = 0;
+    while (!table_iter.IsEnd()) {
+        Tuple tmp_tuple = table_iter.Get();
+        cnt++;
+        ASSERT_EQ(tmp_tuple.GetRID(), table_iter.GetRID());
+        table_iter++;
+        ASSERT_EQ(tuple, tmp_tuple);
+    }
+    EXPECT_EQ(cnt, insert_tuple_num);
+
+    // ----------------------
+    // test delete or update 
+    // ----------------------
+    std::set<RID> s;
+    table_iter = table_heap->Begin(&txn);
+    cnt = 0;
+    while (!table_iter.IsEnd()) {
+        Tuple tmp_tuple = table_iter.Get();
+        if (cnt % 2) {
+            table_heap->Delete(&txn, tmp_tuple.GetRID());
+        }
+        else {
+            s.insert(tmp_tuple.GetRID());
+        }
+        cnt++;
+        table_iter++;
+    }
+    
+    // after delete, some tuple should not exist
+    cnt = 0;
+    table_iter = table_heap->Begin(&txn);
+    while (!table_iter.IsEnd()) {
+        cnt++;
+        if (s.find(table_iter.GetRID()) == s.end()) {
+            assert(false);
+        }
+        table_iter++;
+    }
+    EXPECT_EQ(cnt, 50);    
+
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+}
+
+
+TEST(TableHeapTest, BasicTest) {
+    const std::string filename = "test.db";
+    const size_t buffer_pool_size = 3;
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+
+
+    auto colA = Column("colA", TypeID::INTEGER);
+    auto colB = Column("colB", TypeID::VARCHAR, 20);
+    auto colC = Column("colC", TypeID::DECIMAL);
+    std::vector<Column> cols;
+    cols.push_back(colA);
+    cols.push_back(colB);
+    cols.push_back(colC);
+    auto schema = Schema(cols);
+
+    auto valueA = Value((20010310));   
+    auto valueB = Value("hello world", TypeID::VARCHAR);                    
+    auto valueC = Value(3.14159);                          
+    std::vector<Value> values{valueA, valueB, valueC};
+
+    auto valueAA = Value((0504));   
+    auto valueBB = Value("hello db", TypeID::VARCHAR);                    
+    auto valueCC = Value(0.618);                          
+    std::vector<Value> values2{valueAA, valueBB, valueCC};
+
+    auto tuple = Tuple(values, schema);
+    auto tuple_update = Tuple(values2, schema);
+
+
+    // --------------------
+    //  create table_heap
+    // --------------------
+    LockManager lock;
+    Transaction txn(file_manager.get(), buf_manager.get(), &lock,  1);
+    RID rid;
+    auto table_heap = std::make_unique<TableHeap>(&txn, test_file, 
+                      file_manager.get(), rm.get(), buf_manager.get());
+    int tuple_num = 1000;
+    
+    std::vector<RID> tuple_list(tuple_num);
+    
+    // insert many tuple
+    for (int i = 0; i < tuple_num; i++) {
+        table_heap->Insert(&txn, tuple, &tuple_list[i]);
+    }
+    
+    // scan them
+    for (int i = 0; i < tuple_num; i++) {
+        auto tmp = Tuple();
+        EXPECT_EQ(table_heap->GetTuple(&txn, tuple_list[i], &tmp), true);
+        EXPECT_EQ(tmp == tuple, true);
+    }
+
+
+    // update many tuple
+    for (int i = 0; i < tuple_num; i++) {
+        Tuple tuple;
+        if (table_heap->Update(&txn, tuple_list[i], tuple_update) == false) {
+            // if inplace updation failed, then we perform the deletion/insertion
+            table_heap->Delete(&txn, tuple_list[i]);
+            table_heap->Insert(&txn, tuple_update, &tuple_list[i]);
+        }
+    }
+    
+    // scan them
+    for (int i = 0; i < tuple_num; i++) {
+        auto tmp = Tuple();
+        EXPECT_EQ(table_heap->GetTuple(&txn, tuple_list[i], &tmp), true);
+        EXPECT_EQ(tmp == tuple_update, true);
+    }
+    
+    // delete many tuple
+    for (int i = 0; i < tuple_num; i++) {
+        table_heap->Delete(&txn, tuple_list[i]);
+    }
+    
+    // scan should fail
+    for (int i = 0; i < tuple_num; i++) {
+        auto tmp = Tuple();
+        EXPECT_EQ(table_heap->GetTuple(&txn, tuple_list[i], &tmp), false);
+    }
+
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+}
+
+TEST(TableHeapTest, IteratorTest) {
+    const std::string filename = "test.db";
+    const size_t buffer_pool_size = 3;
+    remove(filename.c_str());
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+
+
+    auto colA = Column("colA", TypeID::INTEGER);
+    auto colB = Column("colB", TypeID::VARCHAR, 20);
+    auto colC = Column("colC", TypeID::DECIMAL);
+    std::vector<Column> cols;
+    cols.push_back(colA);
+    cols.push_back(colB);
+    cols.push_back(colC);
+    auto schema = Schema(cols);
+
+    auto valueA = Value((20010310));   
+    auto valueB = Value("hello world", TypeID::VARCHAR);                    
+    auto valueC = Value(3.14159);                          
+    std::vector<Value> values{valueA, valueB, valueC};
+
+    auto valueAA = Value((0504));   
+    auto valueBB = Value("hello db", TypeID::VARCHAR);                    
+    auto valueCC = Value(0.618);                          
+    std::vector<Value> values2{valueAA, valueBB, valueCC};
+
+    auto tuple = Tuple(values, schema);
+    auto tuple_update = Tuple(values2, schema);
+
+    // --------------------
+    //  create table_heap
+    // --------------------
+    LockManager lock;
+    Transaction txn(file_manager.get(), buf_manager.get(), &lock,  1);
+    RID rid;
+    auto table_heap = std::make_unique<TableHeap>(&txn, test_file, 
+                      file_manager.get(), rm.get(), buf_manager.get());
+    int tuple_num = 1000;
+    std::vector<RID> tuple_list(tuple_num);
+    
+    
+    // insert many tuple
+    for (int i = 0; i < tuple_num; i++) {
+        table_heap->Insert(&txn, tuple, &tuple_list[i]);
+    }
+
+
+    // scan them
+    // since we are not doing concurrent test, we won't get any invalid tuple
+    int cnt;
+    TableIterator it;
+    for (it = table_heap->Begin(&txn), cnt = 0; it != table_heap->End(); ++it, ++cnt) {
+        EXPECT_EQ(*it == tuple, true);
+        EXPECT_EQ(it->GetRID() == tuple_list[cnt], true);
+    }
+    EXPECT_EQ(cnt, tuple_num);
+
+    // update many tuple
+    for (int i = 0; i < tuple_num; i++) {
+        if (table_heap->Update(&txn, tuple_list[i], tuple_update)) {
+            // if inplace updation failed, then we perform the deletion/insertion
+            table_heap->Delete(&txn, tuple_list[i]);
+            table_heap->Insert(&txn, tuple_update, &tuple_list[i]);
+        }
+    }
+    // scan them
+    for (it = table_heap->Begin(&txn), cnt = 0; it != table_heap->End(); ++it, ++cnt) {
+        EXPECT_EQ(*it == tuple_update, true);
+        // don't test the rid, since they may out of order after insertion/deletion
+        // EXPECT_EQ(it->GetRID(), tuple_list[cnt]);
+    }
+    EXPECT_EQ(cnt, tuple_num);
+
+    // delete many tuple
+    for (int i = 0; i < tuple_num; i++) {
+        table_heap->Delete(&txn, tuple_list[i]);
+    }
+
+    // scan should fail
+    it = table_heap->Begin(&txn);
+    EXPECT_EQ(it, table_heap->End());
+
+}
 
 } // namespace SimpleDB

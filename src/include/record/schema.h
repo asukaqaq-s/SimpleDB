@@ -106,6 +106,15 @@ public:
                columns_ == schema.columns_;
     }
 
+    Schema& operator =(const Schema &other) {
+        if (&other != this) {
+            length_ = other.length_;
+            columns_ = other.columns_;
+        }
+        return *this;
+    }
+
+
     std::string ToString() {
         std::stringstream str;
         int size = columns_.size();
@@ -123,7 +132,6 @@ private:
     void CaculateSchema() {
 
         int cur_length = 0;
-        int cnt = 0;
         for (auto &t:columns_) {
             t.column_offset_ = cur_length;
             cur_length += t.GetFixedLength();

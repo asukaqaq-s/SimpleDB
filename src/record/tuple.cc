@@ -144,13 +144,13 @@ Value Tuple::GetValue(const std::string &column_name,
 std::string Tuple::ToString(const Schema &schema) {
     
     std::stringstream s;
-    s << "{";
+    s << "{" << std::endl;
     for (auto t:schema.GetColumns()) {
-        s << "[field = " << t.GetName() << ","
+        s << "      [field = " << t.GetName() << ","
           << "offset = " << t.GetOffset() << ","
           << "type = " << t.GetType() << ","
           << "length = " << t.GetLength() << ","
-          << "data = " << GetValue(t.GetName(), schema).to_string() << "], ";
+          << "data = " << GetValue(t.GetName(), schema).to_string() << "]" << std::endl;
     }
     s << "}";
     return s.str();

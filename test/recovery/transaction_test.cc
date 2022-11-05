@@ -4,7 +4,8 @@
 #include "buffer/buffer_manager.h"
 #include "gtest/gtest.h"
 #include "recovery/recovery_manager.h"
-#include "record/table_scan.h"
+#include "record/table_heap.h"
+#include "concurrency/transaction_manager.h"
 
 #include <iostream>
 #include <memory>
@@ -64,116 +65,6 @@ void ModifyTupleWithRid(std::vector<Tuple> &arr, RID rid, Tuple new_tuple) {
 }
 
 
-TEST(TransactionTest, SimpleRALLBACKTest) {
-    char buf[100];
-    std::string local_path = getcwd(buf, 100);
-    std::string test_dir = local_path + "/" + "test_dir";
-    std::string test_file = "test1.txt";
-    std::string cmd;
-    std::cout << local_path << std::endl;
-    cmd = "rm -rf " + test_dir;
-    system(cmd.c_str());
-
-    std::string log_file_name = "log.log";
-    std::string log_file_path = test_dir + "/" + log_file_name;
-    std::unique_ptr<FileManager> file_manager 
-        = std::make_unique<FileManager>(test_dir, 4096);
-    
-    std::unique_ptr<LogManager> log_manager 
-        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
-
-
-    std::unique_ptr<RecoveryManager> rm 
-        = std::make_unique<RecoveryManager>(log_manager.get());
-
-
-    std::unique_ptr<BufferManager> buf_manager
-        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
-
-    std::unique_ptr<Transaction> tx1 
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
-
-    std::unique_ptr<Transaction> tx2
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
-
-    std::unique_ptr<Transaction> tx3
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
-
-    int min = -1e9,max = 1e9;
-    std::random_device seed; // get ramdom seed
-	std::ranlux48 engine(seed());
-    std::uniform_int_distribution<> distrib(min, max); // uniform distribution
-
-    std::vector<char> q(10,'1');
-    std::vector<char> test2(15, '2');
-    std::vector<char> test3(5, '3');
-    Layout layout;
-    Tuple tuple_test1(q);
-    Tuple tuple_test2(test2);
-    Tuple tuple_test3(test3);    
-    
-    TableHeap ts1(tx1.get(), test_file, layout);
-    ts1.Begin();
-
-
-    for (int i = 0;i < 10;i ++) {
-        ts1.Insert(tuple_test1, nullptr);
-    }
-
-    std::cout << "file size = " << tx1->GetFileSize(test_file + ".table") << std::endl;
-    tx1->Abort();
-    // std::cout << "file size = " << tx2->GetFileSize(test_file + ".table") << std::endl;
-    
-
-    // TableHeap ts2(tx2.get(), test_file, layout);
-    // TableHeap ts3(tx3.get(), test_file, layout);
-    // ts2.FirstTuple();
-    // ts3.FirstTuple();
-
-    
-    // for (int i = 0;i < 10;i ++) {
-    //     ts2.Next();
-    //     Tuple tuple;
-    //     EXPECT_EQ(ts2.GetTuple(&tuple), true);
-    //     EXPECT_EQ(tuple, tuple_test1);
-    //     ts2.Update(tuple_test2);
-    //     EXPECT_EQ(ts2.GetTuple(&tuple), true);
-    //     EXPECT_EQ(tuple, tuple_test2);
-    // }
-
-    // tx2->Abort();
-
-    // for (int i = 0;i < 10;i ++) {
-    //     ts3.Next();
-    //     Tuple tuple;
-    //     ts3.GetTuple(&tuple);
-    //     EXPECT_EQ(tuple, tuple_test1);
-    // }
-
-    // tx3->Commit();
-    
-
-    auto log_iter = log_manager->Iterator();
-    while(log_iter.HasNextRecord()) {
-        auto byte_array1 = log_iter.CurrentRecord();
-        
-        // static_cast<InsertRecord*>
-        auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
-        // std::cout << log_record_tmp->ToString() << std::endl;
-
-        // if (log_record_tmp->GetRecordType() == LogRecordType::INITPAGE && log_record_tmp->IsCLR()) {
-        //     log_record_tmp->Redo(tx2.get());
-        //     std::cout << "file size = " << tx2->GetFileSize(test_file + ".table") << std::endl;
-        // }
-
-        log_iter.NextRecord();
-    }
-    
-    
-    cmd = "rm -rf " + test_dir;
-    system(cmd.c_str());
-}
-
 
 TEST(TransactionTest, IsolationTest) {
     char buf[100];
@@ -189,26 +80,13 @@ TEST(TransactionTest, IsolationTest) {
     std::string log_file_path = test_dir + "/" + log_file_name;
     std::unique_ptr<FileManager> file_manager 
         = std::make_unique<FileManager>(test_dir, 4096);
-    
     std::unique_ptr<LogManager> log_manager 
         = std::make_unique<LogManager>(file_manager.get(), log_file_name);
-
-
     std::unique_ptr<RecoveryManager> rm 
         = std::make_unique<RecoveryManager>(log_manager.get());
-
-
     std::unique_ptr<BufferManager> buf_manager
-        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 10);
 
-    std::unique_ptr<Transaction> tx1 
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
-
-    std::unique_ptr<Transaction> tx2
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
-
-    std::unique_ptr<Transaction> tx3
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
 
     int min = -1e9,max = 1e9;
     std::random_device seed; // get ramdom seed
@@ -218,60 +96,64 @@ TEST(TransactionTest, IsolationTest) {
     std::vector<char> q(10,'1');
     std::vector<char> test2(15, '2');
     std::vector<char> test3(5, '3');
-    Layout layout;
+    Schema schema;
     Tuple tuple_test1(q);
     Tuple tuple_test2(test2);
     Tuple tuple_test3(test3);    
+
+    auto lock = std::make_unique<LockManager>();
+    TransactionManager txn_mgr(std::move(lock), rm.get(), file_manager.get(), buf_manager.get());
+    RID rid;
+
+    auto tx1 = std::move(txn_mgr.Begin());
+    auto tx2 = std::move(txn_mgr.Begin());
+    auto tx3 = std::move(txn_mgr.Begin());
+
+
+    auto table_heap = std::make_unique<TableHeap>(tx1.get(), test_file, 
+                      file_manager.get(), rm.get(), buf_manager.get());
+
     
-    TableHeap ts1(tx1.get(), test_file, layout);
-    ts1.Begin();
-
-
-    for (int i = 0;i < 100;i ++) {
-        ts1.Insert(tuple_test1, nullptr);
+    // txn1 insert
+    {
+        for (int i = 0;i < 100;i ++) {
+            table_heap->Insert(tx1.get(), tuple_test1, nullptr);
+        }
+        txn_mgr.Commit(tx1.get());
     }
 
-    std::cout << "file size = " << tx1->GetFileSize(test_file + ".table") << std::endl;
-    // return;
-    tx2->SetIsolationLevel(IsoLationLevel::READ_UNCOMMITED);
-    TableHeap ts2(tx1.get(), test_file, layout);
-    ts2.Begin();
-
-    for (int i = 0;i < 100;i ++) {
-        Tuple tuple;
+    // txn2 update
+    {
+        tx2->SetIsolationLevel(IsoLationLevel::READ_UNCOMMITED);
+        auto iter2 = table_heap->Begin(tx2.get());
         
-        EXPECT_EQ(true, ts2.Next());
-        EXPECT_EQ(true, ts2.GetTuple(&tuple));
-        EXPECT_EQ(tuple, tuple_test1);
+        for (int i = 0;i < 100;i ++) {
+            Tuple tuple = iter2.Get();
+            EXPECT_EQ(tuple, tuple_test1);
+            iter2++;
+        }
+
+        iter2 = table_heap->Begin(tx2.get());
+        for (int i = 0;i < 10;i ++) {
+            Tuple tuple = iter2.Get();
+            EXPECT_EQ(tuple, tuple_test1);
+
+            table_heap->Update(tx2.get(), RID(0,i), tuple_test2);
+            tuple = iter2.Get();
+            EXPECT_EQ(tuple, tuple_test2);
+            iter2++;
+        }
+        txn_mgr.Abort(tx2.get());
     }
 
+    auto iter3 = table_heap->Begin(tx3.get());
+    for (int i = 0;i < 10;i ++) {
+        Tuple tuple = iter3.Get();
+        EXPECT_EQ(tuple, tuple_test1);
+        iter3++;
+    }
 
-    // TableHeap ts2(tx2.get(), test_file, layout);
-    // TableHeap ts3(tx3.get(), test_file, layout);
-    // ts2.FirstTuple();
-    // ts3.FirstTuple();
-
-    
-    // for (int i = 0;i < 10;i ++) {
-    //     ts2.Next();
-    //     Tuple tuple;
-    //     EXPECT_EQ(ts2.GetTuple(&tuple), true);
-    //     EXPECT_EQ(tuple, tuple_test1);
-    //     ts2.Update(tuple_test2);
-    //     EXPECT_EQ(ts2.GetTuple(&tuple), true);
-    //     EXPECT_EQ(tuple, tuple_test2);
-    // }
-
-    // tx2->Abort();
-
-    // for (int i = 0;i < 10;i ++) {
-    //     ts3.Next();
-    //     Tuple tuple;
-    //     ts3.GetTuple(&tuple);
-    //     EXPECT_EQ(tuple, tuple_test1);
-    // }
-
-    // tx3->Commit();
+    txn_mgr.Commit(tx3.get());
     
 
     auto log_iter = log_manager->Iterator();
@@ -281,11 +163,6 @@ TEST(TransactionTest, IsolationTest) {
         // static_cast<InsertRecord*>
         auto log_record_tmp = (LogRecord::DeserializeFrom(byte_array1));
         std::cout << log_record_tmp->ToString() << std::endl;
-
-        if (log_record_tmp->GetRecordType() == LogRecordType::INITPAGE && log_record_tmp->IsCLR()) {
-            log_record_tmp->Redo(tx2.get());
-            std::cout << "file size = " << tx2->GetFileSize(test_file + ".table") << std::endl;
-        }
 
         log_iter.NextRecord();
     }

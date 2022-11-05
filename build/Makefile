@@ -337,19 +337,6 @@ file_test/fast:
 .PHONY : file_test/fast
 
 #=============================================================================
-# Target rules for targets named buffer_test
-
-# Build rule for target.
-buffer_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 buffer_test
-.PHONY : buffer_test
-
-# fast build rule for target.
-buffer_test/fast:
-	$(MAKE) -f test/CMakeFiles/buffer_test.dir/build.make test/CMakeFiles/buffer_test.dir/build
-.PHONY : buffer_test/fast
-
-#=============================================================================
 # Target rules for targets named tuple_test
 
 # Build rule for target.
@@ -479,7 +466,6 @@ help:
 	@echo "... metadata_test"
 	@echo "... buffer_manager_test"
 	@echo "... file_test"
-	@echo "... buffer_test"
 	@echo "... tuple_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"

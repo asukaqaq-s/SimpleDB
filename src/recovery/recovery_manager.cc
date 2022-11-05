@@ -319,7 +319,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            UndoLog(log_record.get(), curr_lsn);
+            UndoLog(txn, log_record.get(), curr_lsn);
 
             // 3. update block
             block = BlockId(file_name, rid.GetBlockNum());
@@ -341,7 +341,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            UndoLog(log_record.get(), curr_lsn);
+            UndoLog(txn, log_record.get(), curr_lsn);
 
             // 3. update block
             block = BlockId(file_name, rid.GetBlockNum());
@@ -364,7 +364,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            UndoLog(log_record.get(), curr_lsn);
+            UndoLog(txn, log_record.get(), curr_lsn);
 
             // 3. update block
             block = BlockId(file_name, rid.GetBlockNum());
@@ -384,7 +384,7 @@ void RecoveryManager::DoRollBack(Transaction *txn) {
             curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
             // 2. undo
-            UndoLog(log_record.get(), curr_lsn);
+            UndoLog(txn, log_record.get(), curr_lsn);
             
             // 3. update block
 
@@ -414,8 +414,8 @@ void RecoveryManager::Recover(Transaction *txn) {
     if (DoRedo(txn) == false) {
         return;
     }
+   
     DoUndo(txn);
-
     // it 's a good time to write a checkpoint
     CheckPoint();
 }
@@ -606,9 +606,9 @@ bool RecoveryManager::DoRedo(Transaction *txn) {
 
             if (log_record_type == LogRecordType::INITPAGE &&
                 log_record->IsCLR()) {
-                UndoLog(log_record.get(), INVALID_LSN);
+                UndoLog(txn, log_record.get(), INVALID_LSN);
             } else {
-                RedoLog(log_record.get());
+                RedoLog(txn, log_record.get());
             } 
         }
 
@@ -733,7 +733,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogRecord(*clr_record);
 
                 // 2. undo
-                UndoLog(log, curr_lsn);
+                UndoLog(txn, log, curr_lsn);
 
                 // 3. update block
                 block = BlockId(file_name, rid.GetBlockNum());
@@ -756,7 +756,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogRecord(*clr_record);
 
                 // 2. undo
-                UndoLog(log, curr_lsn);
+                UndoLog(txn, log, curr_lsn);
 
                 // 3. update block
                 block = BlockId(file_name, rid.GetBlockNum());
@@ -780,7 +780,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogRecord(*clr_record);
 
                 // 2. undo
-                UndoLog(log, curr_lsn);
+                UndoLog(txn, log, curr_lsn);
 
                 // 3. update block
                 block = BlockId(file_name, rid.GetBlockNum());
@@ -800,7 +800,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
                 curr_lsn = log_manager_->AppendLogWithOffset(*clr_record, &offset);
 
                 // 2. undo
-                UndoLog(log, curr_lsn);
+                UndoLog(txn, log, curr_lsn);
                 
                 // 3. update block
 

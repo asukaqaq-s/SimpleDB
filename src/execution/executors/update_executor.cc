@@ -73,7 +73,7 @@ Tuple UpdateExecutor::GenerateUpdatedTuple(const Tuple &tuple) {
     // update columns
     for (auto &update_info:node.update_list_) {
         int index = table_schema_->GetColumnIdx(update_info.field_name_);
-        assert(index >= 0 && index < value_list.size());
+        assert(index >= 0 && index < static_cast<int>(value_list.size()));
         
         // We will only have one child at most
         // so it always exist in left child node

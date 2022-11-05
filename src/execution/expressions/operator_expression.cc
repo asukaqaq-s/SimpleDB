@@ -94,6 +94,7 @@ Value OperatorExpression::Evaluate(const Tuple *tuple_left,
         break;
     }
     
+    return Value();
 }
 
 } // namespace SimpleDB

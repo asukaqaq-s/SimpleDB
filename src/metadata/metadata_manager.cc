@@ -10,8 +10,9 @@ std::unique_ptr<ViewManager> MetadataManager::view_mgr_;
 std::unique_ptr<StatManager> MetadataManager::stat_mgr_;
 std::unique_ptr<IndexManager> MetadataManager::index_mgr_;
 
-MetadataManager::MetadataManager(bool IsNew, Transaction *txn) {
-        table_mgr_ = std::make_unique<TableManager> (IsNew, txn);
+MetadataManager::MetadataManager(bool IsNew, Transaction *txn, FileManager *fm, 
+        RecoveryManager *rm, BufferManager *bfm, LockManager *lock_mgr) {
+        table_mgr_ = std::make_unique<TableManager> (IsNew, txn, fm, rm, bfm, lock_mgr);
         stat_mgr_ = std::make_unique<StatManager>(table_mgr_.get(), txn);
         view_mgr_ = std::make_unique<ViewManager>(IsNew, table_mgr_.get(), txn);
         index_mgr_ = std::make_unique<IndexManager>(IsNew, table_mgr_.get(), stat_mgr_.get(), txn);

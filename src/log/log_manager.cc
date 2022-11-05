@@ -2,6 +2,7 @@
 #define LOG_MANAGER_CC
 
 #include "log/log_manager.h"
+#include "unistd.h"
 
 #include <vector>
 #include <iostream>
@@ -142,12 +143,12 @@ LogIterator LogManager::Iterator(int offset) {
 }
 
 void LogManager::SetMasterLsnOffset(int offset) {
-    auto byte_array = std::make_shared<std::vector<char>> (4);
+    auto byte_array = std::make_shared<std::vector<char>> (file_manager_->BlockSize());
     Page chkpt_page(byte_array);
     chkpt_page.SetInt(0, offset);
 
+    
     file_manager_->Write(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
-
     // debug purpose
     file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
     SIMPLEDB_ASSERT(chkpt_page.GetInt(0) == offset, "write chkpt log error");

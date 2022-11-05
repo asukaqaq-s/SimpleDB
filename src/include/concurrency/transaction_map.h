@@ -9,9 +9,9 @@ class TransactionMap {
 
 public:
 
-    TransactionMap();
+    TransactionMap() {}
     
-    ~TransactionMap();
+    ~TransactionMap() {}
     
     void InsertTransaction(Transaction *txn) {
         std::lock_guard<std::mutex> latch(latch_);

@@ -31,10 +31,10 @@ TableManager::TableManager(bool IsNew, Transaction *txn, FileManager *fm, Recove
     
     // add this two table's tableinfo to table_infos_
     table_infos_[TABLE_CATCH] = std::make_unique<TableInfo> (tcat_schema_, TABLE_CATCH, 
-                                std::make_unique<TableHeap> (txn, TABLE_CATCH, fm_, rm_, bfm_, lock_mgr_));
+                                std::make_unique<TableHeap> (txn, TABLE_CATCH, fm_, rm_, bfm_));
     table_infos_[FIELD_CATCH] = std::make_unique<TableInfo> (fcat_schema_, FIELD_CATCH, 
-                                std::make_unique<TableHeap> (txn, FIELD_CATCH, fm_, rm_, bfm_, lock_mgr_));
-
+                                std::make_unique<TableHeap> (txn, FIELD_CATCH, fm_, rm_, bfm_));
+    
 
     // if this database is new, create fcat and tcat table
     if (IsNew) {
@@ -58,7 +58,7 @@ void TableManager::CreateTable(const std::string &table_name,
 
     // create a tableinfo which stored in memory
     auto new_table = std::make_unique<TableInfo> (schema, table_name, 
-                     std::make_unique<TableHeap> (txn, table_name, fm_, rm_, bfm_, lock_mgr_));
+                     std::make_unique<TableHeap> (txn, table_name, fm_, rm_, bfm_));
     table_infos_[table_name] = std::move(new_table);
 
 
@@ -156,7 +156,7 @@ TableInfo* TableManager::GetTable(const std::string &table_name,
     
     latch.lock();
     auto table_info = std::make_unique<TableInfo>(schema, table_name,
-                      std::make_unique<TableHeap>(txn, table_name, fm_, rm_, bfm_, lock_mgr_));
+                      std::make_unique<TableHeap>(txn, table_name, fm_, rm_, bfm_));
     table_infos_[table_name] = std::move(table_info);
     return table_infos_[table_name].get();
 }

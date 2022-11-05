@@ -51,7 +51,6 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/tuple_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/concurrency_test.dir

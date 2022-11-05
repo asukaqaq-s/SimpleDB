@@ -95,6 +95,7 @@ public:
         }
 
         SIMPLEDB_ASSERT(false, "can't reach it");
+        return 0;
     }
 
 
@@ -108,6 +109,7 @@ public:
         if (dval_) {
             return std::hash<double> {}(*dval_);
         }
+        return 0;
     }
     
     std::string to_string() const {
@@ -137,7 +139,7 @@ public:
         if (dval_) {
             return *dval_ < *obj.dval_;
         }
-        return true;
+        return false;
     }
 
     bool operator >(const Value &obj) const {
@@ -150,6 +152,7 @@ public:
         if (dval_) {
             return *dval_ > *obj.dval_;
         }
+        return false;
     }
 
     Value& operator =(const Value &obj) {
@@ -171,6 +174,7 @@ public:
         if (dval_) {
             return *dval_ <= *obj.dval_;
         }
+        return false;
     }
 
     bool operator >=(const Value &obj) const {
@@ -183,6 +187,7 @@ public:
         if (dval_) {
             return *dval_ >= *obj.dval_;
         }
+        return false;
     }
 
     bool operator !=(const Value &obj) const {        
@@ -195,6 +200,7 @@ public:
         if (dval_) {
             return *dval_ != *obj.dval_;
         }
+        return false;
     }
 
     bool operator ==(const Value &obj) const {
@@ -207,6 +213,7 @@ public:
         if (dval_) {
             return *dval_ == *obj.dval_;
         }
+        return false;
     }
 
     Value operator +(const Value &obj) {

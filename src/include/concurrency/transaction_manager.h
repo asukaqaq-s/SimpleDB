@@ -19,9 +19,10 @@ class TransactionManager {
 
 public:
 
-    TransactionManager(FileManager *fm, RecoveryManager *rm, BufferManager *bfm) 
-    : file_mgr_(fm), recovery_mgr_(rm), buf_mgr_(bfm) {
-        lock_mgr_ = std::make_unique<LockManager> ();
+    TransactionManager(std::unique_ptr<LockManager> &&lock_manager, RecoveryManager *rm,
+                       FileManager *file_manager, BufferManager *buffer_manager) 
+    : lock_mgr_(std::move(lock_manager)), recovery_mgr_(rm), file_manager_(file_manager),
+      buffer_manager_(buffer_manager) {
         txn_map_ = std::make_unique<TransactionMap>();
     }
 
@@ -68,22 +69,21 @@ private:
 
 
 private:
-
-    // shared file manager
-    FileManager *file_mgr_;
-
-    // shared recovery manager 
-    RecoveryManager *recovery_mgr_;
-
-    // shared buffer manager
-    BufferManager *buf_mgr_;
-
+    
     // lock manager which every txns share it
     std::unique_ptr<LockManager> lock_mgr_;
+
+    // shared recovery manager
+    RecoveryManager *recovery_mgr_;
 
     // transaction map which every txns share it
     std::unique_ptr<TransactionMap> txn_map_;
     
+    // global file manager to create a txn need
+    FileManager *file_manager_;
+    
+    // global buffer manager to create a txn need
+    BufferManager *buffer_manager_;
 };
 
 } // namespace SimpleDB

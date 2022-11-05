@@ -91,7 +91,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "test/CMakeFiles/metadata_test.dir/DependInfo.cmake"
   "test/CMakeFiles/buffer_manager_test.dir/DependInfo.cmake"
   "test/CMakeFiles/file_test.dir/DependInfo.cmake"
-  "test/CMakeFiles/buffer_test.dir/DependInfo.cmake"
   "test/CMakeFiles/tuple_test.dir/DependInfo.cmake"
   "test/CMakeFiles/concurrency_test.dir/DependInfo.cmake"
   "test/CMakeFiles/file_manager_test.dir/DependInfo.cmake"

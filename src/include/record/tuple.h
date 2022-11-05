@@ -17,13 +17,15 @@ namespace SimpleDB {
 * -------------------------------
 * | Schema  | varlen type data  |
 * -------------------------------
-* for the start of tuple, we will store a schema object 
+* for the start of tuple, we will store a schema object in byte array.
+* 
 * for varlen type, in "fixlen type data", we just store the offset of the 
-* field in tuple, the actually data will be stored in the end of tuple. 
-* i.e. for every column, either it contains the corresponding fixed-size 
-* value which can be retrieved based on field-offset in schema, or it 
-* contains the offset of varied-size type, and the corresponding payload 
-* is placed at the end of the tuple
+*     field in tuple, the real data will be stored in the end of tuple. 
+* 
+* i.e. for every columns, either it contains the corresponding fixed-size 
+* value which can be retrieved based on column-offset in schema, or it 
+* contains the offset of varied-size type, and the corresponding data 
+* is placed at the end of the tuple.
 */
 class Tuple {
     

@@ -14,7 +14,7 @@ namespace SimpleDB {
 class RID {
 
 public:
-    RID() { block_number_ = 0, slot_ = 0;}
+    RID() = default;
 
     RID(int block_number, int slot) :
         block_number_(block_number), slot_(slot) {}
@@ -66,9 +66,9 @@ public:
 private:
     
     // logical block number in this table file
-    int block_number_;
+    int block_number_{0};
     // slot number
-    int slot_; 
+    int slot_{0}; 
 }; 
 
 } // namespace SimpleDB

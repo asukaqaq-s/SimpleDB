@@ -7,6 +7,18 @@
 
 namespace SimpleDB {
 
+
+inline TableIterator& TableIterator::operator=(const TableIterator &iter) { 
+    if (&iter != this) {
+        txn_ = iter.txn_;
+        table_heap_ = iter.table_heap_;
+        rid_ = iter.rid_;
+        tuple_ = iter.tuple_;
+    }
+    return *this;
+}
+
+
 void TableIterator::GetTuple() {
     bool res = table_heap_->GetTuple(txn_, rid_, &tuple_);
     // log the event
@@ -16,20 +28,21 @@ void TableIterator::GetTuple() {
 }
 
 const Tuple &TableIterator::operator*() {
-    SIMPLEDB_ASSERT(rid_.GetBlockNum() >= 0, "Invalid Table Iterator");
-    if (tuple_.GetRID() != rid_) {
-        GetTuple();
-    }
+    SIMPLEDB_ASSERT(rid_.GetBlockNum() >= 0 && rid_.GetSlot() >= -1, 
+                    "Invalid Table Iterator");
+    // maybe we can use the cache of tuple
+    // if tuple.rid_ == this.rid_, we don't need to call this method
+    // but it will bring some bugs
+    GetTuple();
     // still we may return with invalid tuple
     return tuple_;
 }
 
 
 Tuple *TableIterator::operator->() {
-    SIMPLEDB_ASSERT(rid_.GetBlockNum() >= 0, "Invalid Table Iterator");
-    if (tuple_.GetRID() != rid_) {
+    SIMPLEDB_ASSERT(rid_.GetBlockNum() >= 0 && rid_.GetSlot() >= -1, 
+                    "Invalid Table Iterator");
         GetTuple();
-    }
     return &tuple_;
 }
 
@@ -37,8 +50,9 @@ Tuple *TableIterator::operator->() {
 // logic here is very similar to TableHeap::Begin()
 TableIterator TableIterator::operator++() {
 
-    txn_->LockShared(lock_mgr_, GetBlock());
-    auto *bfm = table_heap_->buffer_pool_manager_;
+    // get resource
+    txn_->LockShared(GetBlock());
+    auto *bfm = txn_->GetBufferManager();
     auto *table_page = static_cast<TablePage*>(bfm->PinBlock(GetBlock()));
     table_page->RLock();
 
@@ -46,17 +60,17 @@ TableIterator TableIterator::operator++() {
     if (!table_page->GetNextTupleRid(&rid_)) {
         while(rid_.GetSlot() == -1) {
 
-            // if this txn's isolation level is rc, means we need to acquire
-            // s-block but don't need to grant it until txn terminated
-            if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED) {
-                lock_mgr_->UnLock(txn_, GetBlock());
-            }
-
-            // remember that unlock and unpin before return
+            // release resource
             table_page->RUnlock();
             bfm->UnpinBlock(GetBlock());
+            if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
+                txn_->IsSharedLock(GetBlock())) {
+                // if this txn's isolation level is rc, means we need to acquire
+                // s-block but don't need to grant it until txn terminated
+                txn_->UnLock(GetBlock());
+            }
 
-            // not next block, we can't create new one in Next
+            // if not next block, we can't create new one in Next
             if (table_heap_->AtLastBlock(txn_, rid_.GetBlockNum())) {
                 *this = table_heap_->End();
                 return *this;
@@ -65,21 +79,25 @@ TableIterator TableIterator::operator++() {
             // move to the next block and update infor
             rid_ = RID(rid_.GetBlockNum() + 1, -1);
             
-            txn_->LockShared(lock_mgr_, GetBlock());
+            // get resource again
+            txn_->LockShared(GetBlock());
             table_page = static_cast<TablePage*>(bfm->PinBlock(GetBlock()));
+            table_page->RLock();
 
             // acquire next tuple again
-            table_page->RLock();
             table_page->GetNextTupleRid(&rid_);
         }
     }
 
-    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED) {
-        lock_mgr_->UnLock(txn_, GetBlock());
-    }
+    
 
+    // release resource
     table_page->RUnlock();
     bfm->UnpinBlock(GetBlock());
+    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
+        txn_->IsSharedLock(GetBlock())) {
+        txn_->UnLock(GetBlock());
+    }
 
     return *this;
 }
@@ -96,12 +114,17 @@ const Tuple &TableIterator::Get() {
     return this->operator*();
 }
 
-void TableIterator::Advance() {
-    this->operator++();
+RID TableIterator::GetRID() {
+    return rid_;
 }
 
 bool TableIterator::IsEnd() {
     return rid_ == RID(-1,0);
+}
+
+
+BlockId TableIterator::GetBlock() {
+    return BlockId(table_heap_->file_name_, rid_.GetBlockNum());
 }
 
 } // namespace SimpleDB

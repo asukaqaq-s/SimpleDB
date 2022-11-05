@@ -11,8 +11,11 @@ namespace SimpleDB {
 // for crash recovery, a lock request is not required because 
 // no new transactions enter until recovery is complete
 
-void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
+void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) {
     auto type = log->GetRecordType();
+    auto file_manager = txn->GetFileManager();
+    auto buffer_manager = txn->GetBufferManager(); 
+
 
     switch (type)
     {
@@ -32,12 +35,12 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         auto block = log_record->GetBlockID();
 
 
-        SIMPLEDB_ASSERT(block.BlockNum() + 1 == file_manager_->GetFileBlockNum(block.FileName()),
+        SIMPLEDB_ASSERT(block.BlockNum() + 1 == file_manager->GetFileBlockNum(block.FileName()),
                         "logic error");
 
         // since we append a block and init it when initpage
         // undo this operations is reduce a block of file. 
-        file_manager_->SetFileSize(block.FileName(), block.BlockNum() - 1);
+        file_manager->SetFileSize(block.FileName(), block.BlockNum());
 
         break;
     }
@@ -48,14 +51,14 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         auto block = BlockId(log_record->GetFileName(), log_record->GetRID().GetBlockNum());
         auto rid = log_record->GetRID();
         Tuple tuple;
-        
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+    
+        Buffer *buffer = buffer_manager->PinBlock(block); 
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
         
-        // if pagelsn >= lsn, i think it's a logic error
-        assert(table_page->GetPageLsn() < log_record->GetLsn());
+        // if pagelsn < lsn, i think it's a logic error
+        assert(table_page->GetPageLsn() >= log_record->GetLsn());
         
         // undo
         bool res = table_page->Delete(rid, &tuple);
@@ -63,8 +66,7 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         table_page->SetPageLsn(undo_lsn);
 
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
-        
+        buffer_manager->UnpinBlock(block);
         break;
     }
 
@@ -75,13 +77,13 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         auto rid = log_record->GetRID();
         Tuple tuple = log_record->GetTuple();
         
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+        Buffer *buffer = buffer_manager->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
         
-        // if pagelsn >= lsn, i think it's a logic error
-        assert(table_page->GetPageLsn() < log_record->GetLsn());
+        // if pagelsn < lsn, i think it's a logic error
+        assert(table_page->GetPageLsn() >= log_record->GetLsn());
         
         // undo
         bool res = table_page->InsertWithRID(rid, tuple);
@@ -89,7 +91,7 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         table_page->SetPageLsn(undo_lsn);
 
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
+        buffer_manager->UnpinBlock(block);
         
         break;
     }
@@ -102,21 +104,22 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         auto old_tuple = log_record->GetOldTuple();
         auto new_tuple = log_record->GetNewTuple();
 
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+        Buffer *buffer = buffer_manager->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
         
-        // if pagelsn >= lsn, i think it's a logic error
-        assert(table_page->GetPageLsn() < log_record->GetLsn());
+        // if pagelsn < lsn, i think it's a logic error
+        assert(table_page->GetPageLsn() >= log_record->GetLsn());
         
         // undo
-        bool res = table_page->Update(rid, &new_tuple, old_tuple);
-        SIMPLEDB_ASSERT(res == true && new_tuple == old_tuple, "logic error");
+        Tuple tuple;
+        bool res = table_page->Update(rid, &tuple, old_tuple);
+        SIMPLEDB_ASSERT(res == true && new_tuple == tuple, "logic error");
         table_page->SetPageLsn(undo_lsn);
 
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
+        buffer_manager->UnpinBlock(block);
 
         break;
     }
@@ -125,6 +128,7 @@ void RecoveryManager::UndoLog(LogRecord *log, lsn_t undo_lsn) {
         SIMPLEDB_ASSERT(false, "can't reach");
         break;
     }
+
 }
 
 

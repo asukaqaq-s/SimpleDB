@@ -42,6 +42,8 @@ Value ComparisonExpression::Evaluate(const Tuple *tuple_left,
         SIMPLEDB_ASSERT(false, "can't reach");
         break;
     }
+
+    return Value();
 }
 
 } // namespace SimpleDB

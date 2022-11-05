@@ -26,11 +26,6 @@ void Buffer::SetPageLsn(lsn_t lsn) {
 }
 
 
-lsn_t Buffer::GetPageLsn() const {
-    return data_->GetLsn();
-}
-
-
 void Buffer::flush(FileManager *file_manager, RecoveryManager *recovery_manager) {
     // because of WAL protocol, we should flush relative log record
     // before writing block to disk.

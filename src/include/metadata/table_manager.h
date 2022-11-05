@@ -17,7 +17,9 @@ class IndexManager;
 */
 class TableInfo {
 
-    TableInfo(const Schema &schema, const std::string &table_name,
+public:
+
+    TableInfo(Schema schema, std::string table_name,
               std::unique_ptr<TableHeap> &&table)
               : schema_(schema), table_name_(table_name), table_heap_(std::move(table)) {
         // init index info...
@@ -38,7 +40,7 @@ public:
 
     // cache indexinfo
     // index name ---> index info
-    std::map<std::string, IndexInfo> indexs_;
+    // std::map<std::string, IndexInfo> indexs_;
 
 };
 

@@ -33,6 +33,8 @@ Value ConjunctionExpression::Evaluate(const Tuple *tuple_left,
         SIMPLEDB_ASSERT(false, "can't reach");
         break;
     }
+    assert(false);
+    return Value();
 }
 
 } // namespace SimpleDB

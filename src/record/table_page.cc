@@ -47,7 +47,7 @@ bool TablePage::Insert(RID *rid, const Tuple &tuple,
                        const std::function<bool(const BlockId &)> &upgrade, 
                        Transaction *txn, RecoveryManager *rm) {
     SIMPLEDB_ASSERT(tuple.GetSize() > 0, "can not insert a empty tuple");
-
+    
     int free_space_size = GetFreeSpaceRemaining();
     int need_size = Page::MaxLength(tuple.GetSize());
 
@@ -97,7 +97,6 @@ bool TablePage::Insert(RID *rid, const Tuple &tuple,
         lsn_t lsn = rm->InsertLogRec(txn, block_.FileName(), *rid, tuple, false);
         SetPageLsn(lsn);
     }
-
 
     return true;
 }
@@ -342,6 +341,55 @@ bool TablePage::GetNextEmptyRid(RID *rid, const Tuple &tuple) {
     
     *rid = RID(block_.BlockNum(), tuple_count);
     return true;
+}
+
+std::string TablePage::ToString(const Schema &schema) {
+    std::stringstream str;
+    str << "free space ptr = " << GetFreeSpacePtr() << " "
+                  << "free space remain = " << GetFreeSpaceRemaining() << " "
+                  << "tuple count = " << GetTupleCount() << std::endl;
+        
+    int tuple_cnt = GetTupleCount();
+    for (int i = 0;i < tuple_cnt;i ++) {
+        if (IsDeleted(GetTupleOffset(i))) {
+            str << "not exist   " << i << std::endl;
+        }
+        else {
+            Tuple tuple;
+            GetTuple(RID(block_.BlockNum(), i), &tuple);
+            str << "exist   " << i << " "
+                << "tuple offset = " << GetTupleOffset(i) << " " 
+                << "tuple size = " << GetTupleSize(i) << " "
+                << "Get Tuple = " <<  tuple.ToString(schema)<< std::endl;
+        }
+    }
+    
+    return str.str();
+}
+
+
+std::string TablePage::ToString() {
+    std::stringstream str;
+    str << "block = " << block_.to_string() << " "
+        << "free space ptr = " << GetFreeSpacePtr() << " "
+        << "free space remain = " << GetFreeSpaceRemaining() << " "
+        << "tuple count = " << GetTupleCount() << std::endl;
+        
+    int tuple_cnt = GetTupleCount();
+    for (int i = 0;i < tuple_cnt;i ++) {
+        if (IsDeleted(GetTupleOffset(i))) {
+            str << "not exist   " << i << std::endl;
+        }
+        else {
+            Tuple tuple;
+            GetTuple(RID(block_.BlockNum(), i), &tuple);
+            str << "exist   " << i << " "
+                << "tuple offset = " << GetTupleOffset(i) << " " 
+                << "tuple size = " << GetTupleSize(i) << std::endl;
+        }
+    }
+    
+    return str.str();
 }
 
 

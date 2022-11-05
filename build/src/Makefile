@@ -317,33 +317,6 @@ concurrency/transaction_manager.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_manager.cc.s
 .PHONY : concurrency/transaction_manager.cc.s
 
-concurrency/transaction_map.o: concurrency/transaction_map.cc.o
-
-.PHONY : concurrency/transaction_map.o
-
-# target to build an object file
-concurrency/transaction_map.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_map.cc.o
-.PHONY : concurrency/transaction_map.cc.o
-
-concurrency/transaction_map.i: concurrency/transaction_map.cc.i
-
-.PHONY : concurrency/transaction_map.i
-
-# target to preprocess a source file
-concurrency/transaction_map.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_map.cc.i
-.PHONY : concurrency/transaction_map.cc.i
-
-concurrency/transaction_map.s: concurrency/transaction_map.cc.s
-
-.PHONY : concurrency/transaction_map.s
-
-# target to generate assembly for a file
-concurrency/transaction_map.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/concurrency/transaction_map.cc.s
-.PHONY : concurrency/transaction_map.cc.s
-
 execution/executors/delete_executor.o: execution/executors/delete_executor.cc.o
 
 .PHONY : execution/executors/delete_executor.o
@@ -370,6 +343,114 @@ execution/executors/delete_executor.s: execution/executors/delete_executor.cc.s
 execution/executors/delete_executor.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/delete_executor.cc.s
 .PHONY : execution/executors/delete_executor.cc.s
+
+execution/executors/insert_executor.o: execution/executors/insert_executor.cc.o
+
+.PHONY : execution/executors/insert_executor.o
+
+# target to build an object file
+execution/executors/insert_executor.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/insert_executor.cc.o
+.PHONY : execution/executors/insert_executor.cc.o
+
+execution/executors/insert_executor.i: execution/executors/insert_executor.cc.i
+
+.PHONY : execution/executors/insert_executor.i
+
+# target to preprocess a source file
+execution/executors/insert_executor.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/insert_executor.cc.i
+.PHONY : execution/executors/insert_executor.cc.i
+
+execution/executors/insert_executor.s: execution/executors/insert_executor.cc.s
+
+.PHONY : execution/executors/insert_executor.s
+
+# target to generate assembly for a file
+execution/executors/insert_executor.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/insert_executor.cc.s
+.PHONY : execution/executors/insert_executor.cc.s
+
+execution/executors/nested_loop_join_executor.o: execution/executors/nested_loop_join_executor.cc.o
+
+.PHONY : execution/executors/nested_loop_join_executor.o
+
+# target to build an object file
+execution/executors/nested_loop_join_executor.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o
+.PHONY : execution/executors/nested_loop_join_executor.cc.o
+
+execution/executors/nested_loop_join_executor.i: execution/executors/nested_loop_join_executor.cc.i
+
+.PHONY : execution/executors/nested_loop_join_executor.i
+
+# target to preprocess a source file
+execution/executors/nested_loop_join_executor.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.i
+.PHONY : execution/executors/nested_loop_join_executor.cc.i
+
+execution/executors/nested_loop_join_executor.s: execution/executors/nested_loop_join_executor.cc.s
+
+.PHONY : execution/executors/nested_loop_join_executor.s
+
+# target to generate assembly for a file
+execution/executors/nested_loop_join_executor.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.s
+.PHONY : execution/executors/nested_loop_join_executor.cc.s
+
+execution/executors/seq_scan_executor.o: execution/executors/seq_scan_executor.cc.o
+
+.PHONY : execution/executors/seq_scan_executor.o
+
+# target to build an object file
+execution/executors/seq_scan_executor.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/seq_scan_executor.cc.o
+.PHONY : execution/executors/seq_scan_executor.cc.o
+
+execution/executors/seq_scan_executor.i: execution/executors/seq_scan_executor.cc.i
+
+.PHONY : execution/executors/seq_scan_executor.i
+
+# target to preprocess a source file
+execution/executors/seq_scan_executor.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/seq_scan_executor.cc.i
+.PHONY : execution/executors/seq_scan_executor.cc.i
+
+execution/executors/seq_scan_executor.s: execution/executors/seq_scan_executor.cc.s
+
+.PHONY : execution/executors/seq_scan_executor.s
+
+# target to generate assembly for a file
+execution/executors/seq_scan_executor.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/seq_scan_executor.cc.s
+.PHONY : execution/executors/seq_scan_executor.cc.s
+
+execution/executors/update_executor.o: execution/executors/update_executor.cc.o
+
+.PHONY : execution/executors/update_executor.o
+
+# target to build an object file
+execution/executors/update_executor.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/update_executor.cc.o
+.PHONY : execution/executors/update_executor.cc.o
+
+execution/executors/update_executor.i: execution/executors/update_executor.cc.i
+
+.PHONY : execution/executors/update_executor.i
+
+# target to preprocess a source file
+execution/executors/update_executor.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/update_executor.cc.i
+.PHONY : execution/executors/update_executor.cc.i
+
+execution/executors/update_executor.s: execution/executors/update_executor.cc.s
+
+.PHONY : execution/executors/update_executor.s
+
+# target to generate assembly for a file
+execution/executors/update_executor.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/execution/executors/update_executor.cc.s
+.PHONY : execution/executors/update_executor.cc.s
 
 execution/expressions/column_value_expression.o: execution/expressions/column_value_expression.cc.o
 
@@ -1156,12 +1237,21 @@ help:
 	@echo "... concurrency/transaction_manager.o"
 	@echo "... concurrency/transaction_manager.i"
 	@echo "... concurrency/transaction_manager.s"
-	@echo "... concurrency/transaction_map.o"
-	@echo "... concurrency/transaction_map.i"
-	@echo "... concurrency/transaction_map.s"
 	@echo "... execution/executors/delete_executor.o"
 	@echo "... execution/executors/delete_executor.i"
 	@echo "... execution/executors/delete_executor.s"
+	@echo "... execution/executors/insert_executor.o"
+	@echo "... execution/executors/insert_executor.i"
+	@echo "... execution/executors/insert_executor.s"
+	@echo "... execution/executors/nested_loop_join_executor.o"
+	@echo "... execution/executors/nested_loop_join_executor.i"
+	@echo "... execution/executors/nested_loop_join_executor.s"
+	@echo "... execution/executors/seq_scan_executor.o"
+	@echo "... execution/executors/seq_scan_executor.i"
+	@echo "... execution/executors/seq_scan_executor.s"
+	@echo "... execution/executors/update_executor.o"
+	@echo "... execution/executors/update_executor.i"
+	@echo "... execution/executors/update_executor.s"
 	@echo "... execution/expressions/column_value_expression.o"
 	@echo "... execution/expressions/column_value_expression.i"
 	@echo "... execution/expressions/column_value_expression.s"

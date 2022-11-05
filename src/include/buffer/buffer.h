@@ -8,30 +8,41 @@
 namespace SimpleDB {
 
 
+class RecoveryManager;
+
 /**
 * @brief a buffer object is stored in memory and is a unit of bufferpool
 * buffer also contains book-keeping information that is used by the buffer 
 * pool manager, e.g.pin count, dirty flag, block id, etc.
 *
-* note that, page is only a wrapper for data, but not a unit of bufferpool
+* note that, page is only a wrapper for data, but not a unit of bufferpool.
 */
 class Buffer {
 
+friend class BufferManager;
+
 public:
 
+
     explicit Buffer(FileManager *file_manager);
-    
+
+    /**
+    * @brief return a data ptr which wrapped by page object
+    */    
     Page* contents() { return data_.get(); }
+
 
     /**
     * @brief Mark as dirty pages and set the lastest lsn of buffer
     */
     void SetPageLsn(lsn_t lsn);
 
+
     /**
     * @brief Get the PageLsn
     */
-    inline lsn_t GetPageLsn() const;
+    inline lsn_t GetPageLsn() { return data_->GetLsn(); }
+
 
     /**
     * @return check if the buffer is pinned
@@ -41,6 +52,9 @@ public:
     
     /**
     * @brief assign a new block and reset information
+    * 
+    * @param file_manager shared filemangaer ptr which offered by bufferpool
+    * @param recovery_manager shared recoverymanager ptr which offered by bufferpool
     */
     void AssignBlock(BlockId blk, 
                      FileManager *file_manager, 
@@ -48,8 +62,10 @@ public:
 
 
     /**
-    * @brief according to WAL, the log is flushed before the buffer 
-    * is written back to disk 
+    * @brief flush data to disk.
+    * 
+    * @param file_manager shared filemangaer ptr which offered by bufferpool
+    * @param recovery_manager shared recoverymanager ptr which offered by bufferpool
     */
     void flush(FileManager *file_manager, RecoveryManager *recovery_manager);
 
@@ -57,8 +73,6 @@ public:
     inline void pin() { pin_count_++; }
     
     inline void unpin() { pin_count_--; }
-
-    inline BlockId BlockNum() { return block_;}
 
     inline BlockId GetBlockID() { return block_; }
     
@@ -78,7 +92,6 @@ public:
     inline void WUnlock() { latch.WUnlock(); }
 
 
-
 protected:
     
     // buffer content
@@ -92,7 +105,7 @@ protected:
     
     // read write latch
     // because we need different transaction isolation level
-    // Despite having a buffer lock, it is still needed different 
+    // Despite having a block lock, it is still needed different 
     // transaction work at the same time.so we should need to a
     // reader writer latch
     ReaderWriterLatch latch;

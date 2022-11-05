@@ -17,7 +17,7 @@ public:
     ExecutionContext(MetadataManager *mdm, BufferManager *bfm, 
                      Transaction *txn, TransactionManager *txn_mgr)
                 : metadata_(mdm), bfm_(bfm), txn_(txn), txn_mgr_(txn_mgr) {
-        SIMPLEDB_ASSERT(txn_mgr_ == txn->GetTxnManager(), "");
+        // SIMPLEDB_ASSERT(txn_mgr_ == txn->GetTxnManager(), "");
     }
 
     

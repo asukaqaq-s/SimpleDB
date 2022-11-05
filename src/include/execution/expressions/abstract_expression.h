@@ -60,7 +60,7 @@ public:
     * @param ret_type 
     */
     AbstractExpression(ExpressionType type, 
-                       std::vector<std::shared_ptr<AbstractExpression>> &&children, 
+                       std::vector<const AbstractExpression *> &&children, 
                        TypeID ret_type)
         : type_(type), children_(std::move(children)), ret_type_(ret_type) {}
     
@@ -81,7 +81,7 @@ public:
     * @param idx 
     * @return const AbstractExpression* 
     */
-    inline std::shared_ptr<AbstractExpression> GetChildAt(uint32_t idx) const {
+    inline const AbstractExpression *GetChildAt(uint32_t idx) const {
         SIMPLEDB_ASSERT(idx < children_.size(), "index out of bounds");
         return children_[idx];
     }
@@ -92,7 +92,7 @@ public:
      * Get all child expressions
      * @return const std::vector<const AbstractExpression *>& 
      */
-    inline const std::vector<std::shared_ptr<AbstractExpression>>& GetChilren() const {
+    inline const std::vector<const AbstractExpression *> &GetChilren() const {
         return children_;
     }
 
@@ -113,7 +113,7 @@ protected:
     ExpressionType type_;
     
     // Children node of this expression
-    std::vector<std::shared_ptr<AbstractExpression>> children_;
+    std::vector<const AbstractExpression *> children_;
     
     // return type of this expression. 
     TypeID ret_type_;

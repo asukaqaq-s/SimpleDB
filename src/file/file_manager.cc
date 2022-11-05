@@ -67,10 +67,13 @@ void FileManager::Read(const BlockId &block, Page &page) {
 // so it can write past the end of file
 void FileManager::Write(const BlockId &block, Page &page) {
     std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
+    
     std::string file_name = block.FileName();
     int block_number = block.BlockNum();
     int offset = block_number * block_size_;
     auto file_io = GetFile(file_name);
+
+    
     file_io->seekp(offset, std::ios::beg);
     file_io->write(&((*page.content())[0]), block_size_);
     if(file_io->bad()) {
@@ -131,7 +134,7 @@ BlockId FileManager::Append(const std::string &file_name) {
     std::lock_guard<std::mutex> lock(latch_); /* mutex lock! */
     auto file_io = GetFile(file_name);
     std::vector<char> empty_array(block_size_, 0);
-    int next_block_num = Length(file_name);
+    int next_block_num = GetFileBlockNum(file_name);
     BlockId new_block_id(file_name, next_block_num);
     int offset = next_block_num * block_size_;
 

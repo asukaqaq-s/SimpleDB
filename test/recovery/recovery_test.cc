@@ -4,8 +4,8 @@
 #include "buffer/buffer_manager.h"
 #include "gtest/gtest.h"
 #include "recovery/recovery_manager.h"
-#include "record/table_scan.h"
-#include "record/layout.h"
+#include "record/table_heap.h"
+#include "concurrency/transaction_manager.h"
 
 #include <iostream>
 #include <memory>
@@ -91,14 +91,17 @@ TEST(TransactionTest, SimpleRecoveryTest) {
     std::unique_ptr<BufferManager> buf_manager
         = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
 
-    std::unique_ptr<Transaction> tx1 
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
+    auto lock = std::make_unique<LockManager>();
+    TransactionManager txn_mgr(std::move(lock), rm.get(), file_manager.get(), buf_manager.get());
+    RID rid;
 
-    std::unique_ptr<Transaction> tx2
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
+    auto tx1 = std::move(txn_mgr.Begin());
+    auto tx2 = std::move(txn_mgr.Begin());
+    auto tx3 = std::move(txn_mgr.Begin());
 
-    std::unique_ptr<Transaction> tx3
-        = std::make_unique<Transaction> (file_manager.get(), buf_manager.get(), rm.get());
+
+    auto table_heap = std::make_unique<TableHeap>(tx1.get(), test_file, 
+                      file_manager.get(), rm.get(), buf_manager.get());
 
     
     Tuple tuple1(std::vector<char>(10,'1'));
@@ -110,81 +113,79 @@ TEST(TransactionTest, SimpleRecoveryTest) {
     std::random_device seed; // get ramdom seed
 	std::ranlux48 engine(seed());
     std::uniform_int_distribution<> distrib(min, max); // uniform distribution
-    Layout layout;
 
-    auto ts1 = TableHeap(tx1.get(), test_file, layout);
-    ts1.Begin();
 
-    for (int i = 0;i < 10000;i ++) {
-        ts1.Insert(tuple1, nullptr);
+
+    for (int i = 0;i < 100;i ++) {
+        RID rid;
+        table_heap->Insert(tx1.get(), tuple1, &rid);
 
         Tuple tuple;
-        ts1.GetTuple(&tuple);
+        table_heap->GetTuple(tx1.get(), rid, &tuple);
         EXPECT_EQ(tuple1, tuple);
     }
 
-    ts1.Begin();
-    for (int i = 0;i < 10000;i ++) {
-        ts1.Next();
-        if (i % 2) {
-            ts1.Update(tuple2);
+    
+    auto iter1 = table_heap->Begin(tx1.get());
+    for (int i = 0;i < 100;i ++) {
+        RID rid = iter1.GetRID();
 
-            Tuple tuple;
-            ts1.GetTuple(&tuple);
+        if (i % 2) {
+            table_heap->Update(tx1.get(), rid, tuple2);
+
+            Tuple tuple = iter1.Get();
             EXPECT_EQ(tuple2, tuple);
         }
         else {
-            ts1.Update(tuple3);
+            table_heap->Update(tx1.get(), rid, tuple3);
 
-            Tuple tuple;
-            ts1.GetTuple(&tuple);
+            Tuple tuple = iter1.Get();
             EXPECT_EQ(tuple3, tuple);
         }
+        iter1++;
     }
     
-    tx1->Commit();
+    txn_mgr.Commit(tx1.get());
 
-    auto ts2 = TableHeap(tx2.get(), test_file, layout);
-    ts2.Begin();
-    for (int i = 0;i < 10000;i ++) {
-        ts2.Insert(tuple1, nullptr);
+    
+    
+    for (int i = 0;i < 100;i ++) {
+        table_heap->Insert(tx2.get(), tuple1, nullptr);
     }
 
-    ts2.Begin();
-    for (int i = 0;i < 10000;i ++) {
-        ts2.Next();
+    auto iter2 = table_heap->Begin(tx2.get());
+    for (int i = 0;i < 100;i ++) {
+        RID rid = iter2.GetRID();
 
         if (i % 2) {
-            Tuple tuple;
-            ts2.GetTuple(&tuple);
+            Tuple tuple = iter2.Get();
             EXPECT_EQ(tuple2, tuple);
             
-            ts2.Update(tuple1);
+            table_heap->Update(tx2.get(), rid, tuple1);
             
-            ts2.GetTuple(&tuple);
+            tuple = iter2.Get();
             EXPECT_EQ(tuple1, tuple);
             
         } else {
-            Tuple tuple;
-            ts2.GetTuple(&tuple);
+            Tuple tuple = iter2.Get();
             EXPECT_EQ(tuple3, tuple);
 
-            ts2.Delete();
-
-            EXPECT_EQ(false, ts2.GetTuple(&tuple));
+            table_heap->Delete(tx2.get(), rid);
+            EXPECT_EQ(false, table_heap->GetTuple(tx2.get(), rid, &tuple));
         }
+        iter2++;
     }  
     
 
-    tx2->Recovery();
+    rm->Recover(tx2.get());
+
     // tx2->Commit();
     // auto ts3 = TableHeap(tx3.get(), test_file, layout);
-    ts2.Begin();
-
-    for (int i = 0;i < 10000;i ++) {
-        ts2.Next();
-        Tuple tuple;
-        EXPECT_EQ(true, ts2.GetTuple(&tuple));
+    
+    iter2 = table_heap->Begin(tx2.get());
+    for (int i = 0;i < 1000 && !iter2.IsEnd();i ++) {
+        RID rid = iter2.GetRID();
+        Tuple tuple = iter2.Get();
         
         if (i % 2) {
             EXPECT_EQ(tuple, tuple2);
@@ -192,6 +193,8 @@ TEST(TransactionTest, SimpleRecoveryTest) {
         else {
             EXPECT_EQ(tuple, tuple3);
         }
+
+        iter2++;
     }
 
     auto log_iter = log_manager->Iterator();

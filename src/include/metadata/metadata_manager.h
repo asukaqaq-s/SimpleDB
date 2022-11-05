@@ -20,7 +20,8 @@ class MetadataManager {
 
 public:
 
-    MetadataManager(bool IsNew, Transaction *txn);
+    MetadataManager(bool IsNew, Transaction *txn, FileManager *fm, 
+        RecoveryManager *rm, BufferManager *bfm, LockManager *lock_mgr);
 
 // set metadata 
 

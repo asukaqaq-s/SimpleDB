@@ -133,6 +133,10 @@ public:
 
     Page* GetData() { return data_.get(); }
 
+
+    std::string ToString(const Schema &schema);
+    std::string ToString();
+
 private:
 
     // static constexpr int DELETE_MASK = 1 << (4 * sizeof(int) - 1);
@@ -194,27 +198,6 @@ private:
     inline int GetFreeSpaceRemaining() {
         return GetFreeSpacePtr() - 
                (SLOT_ARRAY_OFFSET + SLOT_SIZE * GetTupleCount());
-    }
-
-public:
-
-    void PrintTablePage() {
-        std::cout << "free space ptr = " << GetFreeSpacePtr() << " "
-                  << "free space remain = " << GetFreeSpaceRemaining() << " "
-                  << "tuple count = " << GetTupleCount() << std::endl;
-        
-        int tuple_cnt = GetTupleCount();
-        for (int i = 0;i < tuple_cnt;i ++) {
-            if (IsDeleted(GetTupleOffset(i))) {
-                std::cout << "not exist   " << i << std::endl;
-            }
-            else {
-                std::cout << "exist   " << i << " "
-                          << "tuple offset = " << GetTupleOffset(i) << " " 
-                          << "tuple size = " << GetTupleSize(i) << std::endl;
-            }
-        }
-        std::cout << std::endl;
     }
 
 

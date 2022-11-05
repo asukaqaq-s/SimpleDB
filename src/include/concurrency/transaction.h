@@ -31,9 +31,14 @@ using TxnEndAction = std::function<void()>;
 
 public:
 
-    Transaction(TransactionManager *txn_mgr, txn_id_t txn_id, 
-                IsoLationLevel level = IsoLationLevel::SERIALIZABLE) {
-        lock_set_ = std::make_unique<std::map<BlockId, LockMode>> ();                
+    Transaction(FileManager *file_manager,
+                BufferManager *buffer_manager,
+                LockManager *lock_manager,
+                txn_id_t txn_id, 
+                IsoLationLevel level = IsoLationLevel::SERIALIZABLE) 
+        : file_manager_(file_manager), buffer_manager_(buffer_manager), 
+          lock_manager_(lock_manager), txn_id_(txn_id) {
+        lock_set_ = std::make_unique<std::map<BlockId, LockMode>> ();  
     }
     
     ~Transaction() = default;
@@ -51,8 +56,11 @@ public:
     }
 
     
-    bool LockShared(LockManager* lock_mgr, BlockId block) {
-        
+    bool LockShared(BlockId block) {
+        if (isolation_level_ == IsoLationLevel::READ_UNCOMMITED) {
+            return true;
+        }
+
         if (isolation_level_ == IsoLationLevel::READ_UNCOMMITED) {
             return true;
         }
@@ -60,19 +68,27 @@ public:
         if (IsExclusiveLock(block) || IsSharedLock(block)) {
             return true;
         }
-        return lock_mgr->LockShared(this, block);
+        return lock_manager_->LockShared(this, block);
     }
 
-    bool LockExclusive(LockManager* lock_mgr, BlockId block) {
+    bool LockExclusive(BlockId block) {
         if (IsSharedLock(block)) {
-            return lock_mgr->LockUpgrade(this, block);
+            return lock_manager_->LockUpgrade(this, block);
         }
         
         if (IsExclusiveLock(block)) {
             return true;
         }
 
-        return lock_mgr->LockExclusive(this, block);
+        return lock_manager_->LockExclusive(this, block);
+    }
+
+    bool UnLock(BlockId block) {
+        if (isolation_level_ == IsoLationLevel::READ_UNCOMMITED &&
+            IsSharedLock(block)) {
+            assert(false);
+        }
+        return lock_manager_->UnLock(this, block);
     }
 
 
@@ -104,12 +120,32 @@ public:
 
     inline IsoLationLevel GetIsolationLevel() const { return isolation_level_; }
 
-    inline TransactionManager* GetTxnManager() const { return txn_mgr_; }
+    inline BufferManager* GetBufferManager() const { return buffer_manager_; }
+
+    inline FileManager* GetFileManager() const { return file_manager_; }
+
 
 private:
 
-    // global transaction manager to complete real op
-    TransactionManager *txn_mgr_;
+//---------------------------------------------
+// global manager which execute a txn need
+//---------------------------------------------
+    
+    // global file manager
+    FileManager *file_manager_;
+
+    // global buffer manager
+    BufferManager *buffer_manager_;
+
+    // global lock manager
+    LockManager *lock_manager_;
+    
+    // we don't need recovery manager in txn
+    // because abort and commit a txn will implemented by txn manager
+    
+//----------------
+// information
+//----------------
 
     // the lock set of this transaction granted
     std::unique_ptr<std::map<BlockId, LockMode>> lock_set_;

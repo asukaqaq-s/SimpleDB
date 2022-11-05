@@ -28,12 +28,14 @@ public:
         : column_name_(column_name), column_type_(column_type) {
         
         column_length_ = GetFixedLength(column_type_);
-        SIMPLEDB_ASSERT(column_type_ != TypeID::INTEGER &&
-                        column_type_ != TypeID::DECIMAL, "wrong constructor");
+        SIMPLEDB_ASSERT(column_type_ != TypeID::CHAR &&
+                        column_type_ != TypeID::VARCHAR, "wrong constructor");
     }
+
 
     /**
     * @brief this constructor always is used to varchar or char
+    * because their length is variable.
     */
     Column(const std::string &column_name, TypeID column_type, int length)
         : column_name_(column_name), column_type_(column_type), column_length_(length) {

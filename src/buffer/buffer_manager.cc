@@ -109,7 +109,7 @@ Buffer* BufferManager::TryToPin(BlockId block) {
         // until a unpinned buffer occur
         if (frame_id == INVALID_FRAME_ID) {
             assert(available_num_ == 0);
-            return NULL;
+            return nullptr;
         }
         
         // success
@@ -142,6 +142,7 @@ Buffer* BufferManager::PinBlock(BlockId block) {
     auto start = std::chrono::high_resolution_clock::now();
     Buffer *buffer = TryToPin(block);
 
+    
     while (buffer == NULL && !WaitTooLong(start)) {
         
         // wait until a pinned buffer release
@@ -158,9 +159,9 @@ Buffer* BufferManager::PinBlock(BlockId block) {
 }
 
 bool BufferManager::UnpinBlock(Buffer *buffer) {
-    assert(buffer != nullptr);
     std::unique_lock<std::mutex> lock(latch_);
-    auto block = buffer->BlockNum();
+    assert(buffer != nullptr);
+    auto block = buffer->GetBlockID();
     
     // not exist
     if(page_table_.find(block) == page_table_.end()){
@@ -186,6 +187,22 @@ bool BufferManager::UnpinBlock(BlockId block) {
 }
 
 
+bool BufferManager::UnpinBlock(BlockId block, bool is_dirty) {
+    std::unique_lock<std::mutex> lock(latch_);
+    
+    // not exist
+    if(page_table_.find(block) == page_table_.end()){
+        return false;
+    }
+    
+    auto frame_id = page_table_[block];
+    auto *buffer = buffer_pool_[frame_id].get();
+    buffer->is_dirty_ |= is_dirty;
+
+    UnpinHelper(frame_id, block);
+    return true;
+}
+
 
 void BufferManager::FlushAll() {
     std::lock_guard<std::mutex> lock(latch_);
@@ -201,13 +218,14 @@ void BufferManager::FlushAll() {
 Buffer* BufferManager::NewPage(BlockId block) {
     file_manager_->Append(block.FileName());
 
-    return PinBlock(block);
+    return TryToPin(block);
 }
 
 Buffer* BufferManager::NewPage(std::string file_name) {
     auto blk = file_manager_->Append(file_name);
-    return PinBlock(blk);
+    return TryToPin(blk);
 }
+
 
 } // namespace SimpleDB
 

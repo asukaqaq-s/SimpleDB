@@ -98,10 +98,7 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
      // check if growing phase
     SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
                     "acquire lock when shrink");
-    
-    // check if isolation level correct
-    SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
-                    "isolation level read_uncommitted don't need acquire lock");
+
 
     // if lock_request_queue is not exist, we should create one
     if (lock_table_.find(block) == lock_table_.end()) {
@@ -248,9 +245,6 @@ bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
                         "acquire lock when shrink");
     }
     
-    // check if isolation level correct
-    SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
-                    "isolation level read_uncommitted don't need acquire lock");  
 
     // this lock_queue should exist
     SIMPLEDB_ASSERT(lock_table_.find(block) != lock_table_.end(), "logic error");
@@ -376,12 +370,12 @@ void LockManager::DeadLockPrevent(Transaction *txn,
         it ++;
         
         if (should_abort) {
-            txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_)->SetAborted();
+            // txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_)->SetAborted();
             should_notify = true;
         }
 
         if (should_abort && old_it->granted_) {
-            UnLockImp(txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_), lock_request_queue, block);
+            // UnLockImp(txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_), lock_request_queue, block);
         }
         
     }

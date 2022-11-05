@@ -5,7 +5,6 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 include("/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test[1]_include.cmake")
-include("/home/asuka/workbench/project/SimpleDB/build/test/buffer_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/lru_replacer_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/concurrency_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/lock_manager_test[1]_include.cmake")
@@ -21,8 +20,6 @@ include("/home/asuka/workbench/project/SimpleDB/build/test/recovery_test[1]_incl
 include("/home/asuka/workbench/project/SimpleDB/build/test/transaction_test[1]_include.cmake")
 add_test(buffer_manager_test "/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test.xml")
 set_tests_properties(buffer_manager_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
-add_test(buffer_test "/home/asuka/workbench/project/SimpleDB/build/test/buffer_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/buffer_test.xml")
-set_tests_properties(buffer_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(lru_replacer_test "/home/asuka/workbench/project/SimpleDB/build/test/lru_replacer_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/lru_replacer_test.xml")
 set_tests_properties(lru_replacer_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(concurrency_test "/home/asuka/workbench/project/SimpleDB/build/test/concurrency_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/concurrency_test.xml")

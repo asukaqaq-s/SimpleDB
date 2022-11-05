@@ -9,9 +9,10 @@ namespace SimpleDB {
 
 // for crash recovery, a lock request is not required because 
 // no new transactions enter until recovery is complete
-
-void RecoveryManager::RedoLog(LogRecord *log) {
+void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
     auto type = log->GetRecordType();
+    auto file_manager = txn->GetFileManager();
+    auto buffer_manager = txn->GetBufferManager();
 
     switch (type)
     {
@@ -29,19 +30,19 @@ void RecoveryManager::RedoLog(LogRecord *log) {
     {
         auto log_record = static_cast<InitPageRecord*>(log);
         auto block = log_record->GetBlockID();
-
-        if (block.BlockNum() != file_manager_->GetFileBlockNum(block.FileName())) {
-            // if this file's size < block_number, logic error
-            // if this file's size == block_number, only this case we should redo
-            // if this file's size > block_number, this op has been done
-            SIMPLEDB_ASSERT(block.BlockNum() > file_manager_->GetFileBlockNum(block.FileName()),
-                            "redo initpage record content error");
+        
+        // if this file's size < block_number - 2, logic error
+        // if this file's size == block_number - 2, only this case we should redo
+        // if this file's size >= block_number - 1, this op has been done    
+        if (block.BlockNum() != file_manager->GetFileBlockNum(block.FileName())) {
+            SIMPLEDB_ASSERT(file_manager->GetFileBlockNum(block.FileName()) > block.BlockNum(), "");
             return;
         }
 
 
-        SIMPLEDB_ASSERT(block == file_manager_->Append(block.FileName()), "should equal");
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+        auto block2 = file_manager->Append(block.FileName());
+        SIMPLEDB_ASSERT(block == block2, "should equal");
+        Buffer *buffer = buffer_manager->PinBlock(block);
         auto *table_page = static_cast<TablePage*>(buffer);
         
         table_page->WLock();
@@ -51,7 +52,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
             table_page->SetPageLsn(log_record->GetLsn()); // but we still need to update PageLsn
         }
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
+        buffer_manager->UnpinBlock(block);
 
         break;
     }
@@ -62,7 +63,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
         auto block = BlockId(log_record->GetFileName(), log_record->GetRID().GetBlockNum());
         auto rid = log_record->GetRID();
 
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+        Buffer *buffer = buffer_manager->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
@@ -72,7 +73,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
             table_page->SetPageLsn(log_record->GetLsn());
         }
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
+        buffer_manager->UnpinBlock(block);
         
         break;
     }
@@ -83,7 +84,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
         auto block = BlockId(log_record->GetFileName(), log_record->GetRID().GetBlockNum());
         auto rid = log_record->GetRID();
 
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+        Buffer *buffer = buffer_manager->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
@@ -95,7 +96,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
             assert(old_tuple == log_record->GetTuple());
         }
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
+        buffer_manager->UnpinBlock(block);
 
         break;
     }
@@ -108,7 +109,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
         auto old_tuple = log_record->GetOldTuple();
         auto new_tuple = log_record->GetNewTuple();
 
-        Buffer *buffer = buffer_manager_->PinBlock(block);
+        Buffer *buffer = buffer_manager->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
@@ -120,7 +121,7 @@ void RecoveryManager::RedoLog(LogRecord *log) {
             assert(old_tuple == tuple);
         }
         table_page->WUnlock();
-        buffer_manager_->UnpinBlock(block);
+        buffer_manager->UnpinBlock(block);
 
         break;
     }
@@ -129,6 +130,8 @@ void RecoveryManager::RedoLog(LogRecord *log) {
         SIMPLEDB_ASSERT(false, "can't reach");
         break;
     }
+
+
 }
 
 } // namespace SimpleDB

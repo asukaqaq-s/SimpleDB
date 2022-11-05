@@ -33,7 +33,8 @@ bool NestedLoopJoinExecutor::Next(Tuple *tuple) {
             std::vector<Value> value_list;
             int column_count = node.schema_->GetColumnsCount();
 
-            SIMPLEDB_ASSERT(column_count == node.value_expressions_.size(), "size not match");
+            SIMPLEDB_ASSERT(column_count == static_cast<int>(node.value_expressions_.size()), 
+                            "size not match");
 
 
             // update tmp_tuple, only need to update the column 

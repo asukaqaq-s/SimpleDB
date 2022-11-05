@@ -2,6 +2,7 @@
 #define PAGE_H
 
 #include "type/value.h"
+#include "config/type.h"
 #include "config/rw_latch.h"
 
 #include <memory>

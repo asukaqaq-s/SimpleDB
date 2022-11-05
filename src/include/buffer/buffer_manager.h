@@ -59,6 +59,9 @@ public:
     */
     bool UnpinBlock(BlockId block);
 
+    /*
+    */
+    bool UnpinBlock(BlockId block, bool is_dirty);
     
     /**
     * @brief Flush all dirty buffers 
@@ -75,6 +78,9 @@ public:
     Buffer* NewPage(BlockId block);
 
     Buffer* NewPage(std::string file_name);
+
+
+
 
 private:
     /* some heapler functions */
