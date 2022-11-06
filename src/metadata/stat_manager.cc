@@ -15,10 +15,11 @@ StatManager::StatManager(TableManager *table_mgr,
 }
 
 StatInfo StatManager::GetStatInfo(const std::string &table_name,
-                                  const Schema &schema, 
                                   Transaction* txn) {
+
     std::unique_lock<std::recursive_mutex> latch(latch_);
     num_calls_ ++;
+
 
     // we should refersh the stat info.
     // because the current transaction is asked to do this, 
@@ -52,7 +53,6 @@ void StatManager::RefreshStatistics(Transaction *txn) {
         Tuple tcat_tuple = table_iterator.Get();
         table_iterator++;
 
-        
         auto table_name = tcat_tuple.GetValue(table_mgr_->TCAT_TABLE_NAME_FIELD, 
                                               table_mgr_->tcat_schema_).AsString();
         auto schema = table_mgr_->GetTable(table_name, txn)->schema_;

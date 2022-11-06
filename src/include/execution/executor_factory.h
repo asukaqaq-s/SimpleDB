@@ -44,7 +44,7 @@ public:
             auto child_executor = ExecutorFactory::CreateExecutor(context, node->GetChildAt(0));
             return std::make_unique<DeleteExecutor>(context, node, std::move(child_executor));
         }
-
+        
         case PlanType::InsertPlan: {
             auto insert_plan = dynamic_cast<InsertPlan *>(node);
             if (insert_plan->IsRawInsert()) {

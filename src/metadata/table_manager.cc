@@ -7,19 +7,21 @@
 
 namespace SimpleDB {
 
-TableManager::TableManager(bool IsNew, Transaction *txn, FileManager *fm, RecoveryManager *rm, 
-        BufferManager *bfm, LockManager *lock_mgr) : fm_(fm), rm_(rm), bfm_(bfm), lock_mgr_(lock_mgr) {
+TableManager::TableManager(bool IsNew, Transaction *txn, FileManager *fm, 
+                           RecoveryManager *rm, BufferManager *bfm) : 
+        fm_(fm), rm_(rm), bfm_(bfm) {
 
 
     // init tcat's schema
     tcat_schema_.AddColumn(Column(TCAT_TABLE_NAME_FIELD, 
-                        TypeID::VARCHAR, MAX_TABLE_NAME_LENGTH));
+                           TypeID::VARCHAR, MAX_TABLE_NAME_LENGTH));
     tcat_schema_.AddColumn(Column(TCAT_SCHEMA_SIZE_FIELD, TypeID::INTEGER));
 
     
 
     // init fcat's schema
-    std::vector<Column> vec {
+    std::vector<Column> vec 
+    {
         Column(FCAT_TABLE_NAME_FIELD, TypeID::VARCHAR, MAX_TABLE_NAME_LENGTH),
         Column(FCAT_FIELD_NAME_FIELD, TypeID::VARCHAR, MAX_TABLE_NAME_LENGTH),
         Column(FCAT_FIELD_TYPE_FIELD, TypeID::INTEGER),
@@ -35,7 +37,7 @@ TableManager::TableManager(bool IsNew, Transaction *txn, FileManager *fm, Recove
     table_infos_[FIELD_CATCH] = std::make_unique<TableInfo> (fcat_schema_, FIELD_CATCH, 
                                 std::make_unique<TableHeap> (txn, FIELD_CATCH, fm_, rm_, bfm_));
     
-
+    
     // if this database is new, create fcat and tcat table
     if (IsNew) {
         CreateTable(TABLE_CATCH, tcat_schema_, txn);
@@ -52,7 +54,7 @@ void TableManager::CreateTable(const std::string &table_name,
     if (table_infos_.find(table_name) != table_infos_.end() &&
         table_name != TABLE_CATCH &&
         table_name != FIELD_CATCH) {
-        SIMPLEDB_ASSERT(false, "create table error");
+        SIMPLEDB_ASSERT(false, "create table multipy");
     }
 
 
@@ -76,25 +78,24 @@ void TableManager::CreateTable(const std::string &table_name,
     Tuple tcat_tuple(tcat_list, tcat_schema_);
     tcat_info->table_heap_->Insert(txn, tcat_tuple, &rid); 
 
-
+    
     // for every columns, generate a tuple and insert it into fcat_table
     for (auto &column : schema.GetColumns()) {
         
         // generate a fieldinfo tuple
-        std::vector<Value> fcat_list {
+        std::vector<Value> fcat_list 
+        {
             Value(table_name, TypeID::VARCHAR),       // table_name field
             Value(column.GetName(), TypeID::VARCHAR), // column_name field
-            Value(column.GetType()),      // column_type field
+            Value(static_cast<int>(column.GetType())),      // column_type field
             Value(column.GetLength()),    // column_length field
             Value(column.GetOffset())     // column_offset field
         };
 
         // insert this tuple into fcat table
-        RID rid;
         Tuple fcat_tuple(fcat_list, fcat_schema_);
-        fcat_info->table_heap_->Insert(txn, fcat_tuple, &rid);
+        fcat_info->table_heap_->Insert(txn, fcat_tuple, nullptr);
     }
-
 }
 
 TableInfo* TableManager::GetTable(const std::string &table_name, 
@@ -127,9 +128,9 @@ TableInfo* TableManager::GetTable(const std::string &table_name,
         }
     }
     
-    SIMPLEDB_ASSERT(schema_size > 0, "layout_size error");
+    SIMPLEDB_ASSERT(schema_size > 0, "schema_size error");
     
-    // Retrieve the offset_table of layout and schema
+    // Retrieve the offset of columns
     std::vector<Column> vec;
     
     while (!fcat_iterator.IsEnd()) {

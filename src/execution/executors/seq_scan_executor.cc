@@ -22,11 +22,14 @@ bool SeqScanExecutor::Next(Tuple *tuple) {
         Tuple tmp_tuple = iterator_.Get();
         iterator_++;
         
-        if (!node.predicate_->Evaluate(&tmp_tuple, nullptr).IsTrue()) {
+        // this tuple is not statify request
+        // skip it and move to the next tuple
+        if (node.predicate_ && 
+            !node.predicate_->Evaluate(&tmp_tuple, nullptr).IsTrue()) {
             continue;
         }
-
-        *tuple = tmp_tuple;
+        
+        *tuple = tmp_tuple.KeyFromTuple(table_schema_, node.schema_);
         return true;
     }
 

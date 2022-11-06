@@ -97,7 +97,6 @@ public:
     * @return the statistical information about the table
     */
     StatInfo GetStatInfo(const std::string &table_name,
-                         const Schema &schema, 
                          Transaction* txn);
 
 private:

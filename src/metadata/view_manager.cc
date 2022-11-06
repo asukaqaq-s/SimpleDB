@@ -8,7 +8,7 @@ namespace SimpleDB {
 ViewManager::ViewManager(bool IsNew, 
                          TableManager *table_mgr, 
                          Transaction *txn) 
-            : table_mgr_(table_mgr){
+            : table_mgr_(table_mgr) {
 
     Schema view_table_schema;
         
@@ -20,9 +20,8 @@ ViewManager::ViewManager(bool IsNew,
                                        TypeID::VARCHAR,
                                        MAX_VIEW_LENGTH));     
 
-    // if the database is new one, we should
-    // create a view_catch table and store its 
-    // informations in catalog table
+    // if the database is new one, we should create a view_catch table 
+    // and store its informations in catalog table
     if (IsNew) {
         // add it to catalog table
         table_mgr_->CreateTable(VIEW_TABLE_NAME,
@@ -30,7 +29,7 @@ ViewManager::ViewManager(bool IsNew,
                                 txn);
     }
 
-    table_info_ = table_mgr_->GetTable(VIEW_TABLE_NAME,txn);
+    table_info_ = table_mgr_->GetTable(VIEW_TABLE_NAME, txn);
 }
 
 void ViewManager::CreateView(const std::string &view_name, 
@@ -43,7 +42,8 @@ void ViewManager::CreateView(const std::string &view_name,
     // --------------------------------
     // | view_name | view_definitions |
     // --------------------------------
-    std::vector<Value> field_list{ 
+    std::vector<Value> field_list 
+    { 
         Value(view_name, TypeID::VARCHAR), 
         Value(view_def, TypeID::VARCHAR)
     };

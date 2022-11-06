@@ -9,14 +9,14 @@ namespace SimpleDB {
 Value ComparisonExpression::Evaluate(const Tuple *tuple_left, 
                                      const Tuple *tuple_right) const {
 
-    SIMPLEDB_ASSERT(tuple_left != nullptr 
-                    && tuple_right != nullptr, "logic error");
+    SIMPLEDB_ASSERT(children_[0] != nullptr 
+                    && children_[1] != nullptr, "logic error");
 
     Value left_value = children_[0]->Evaluate(tuple_left, tuple_right);
     Value right_value = children_[1]->Evaluate(tuple_left, tuple_right);
 
-    SIMPLEDB_ASSERT(left_value.GetTypeID() 
-                    == right_value.GetTypeID(), "typeid not match");
+    SIMPLEDB_ASSERT(left_value.GetDataType() 
+                    == right_value.GetDataType(), "datatype not match");
 
     switch (type_)
     {

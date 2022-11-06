@@ -22,10 +22,6 @@ public:
     bool Next(Tuple *tuple) override;
 
 private:
-    // helper function
-
-    bool NextWithTxn(Tuple *tuple);
-    bool NextWithoutTxn(Tuple *tuple);
 
     // stored the pointer to table metadata to avoid additional indirection
     TableInfo *table_info_;

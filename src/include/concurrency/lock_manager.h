@@ -58,10 +58,15 @@ class LockManager {
 // some helper substruct or subclass
     class LockRequest {
     public:
-        LockRequest(txn_id_t txn_id, LockMode lock_mode) :
-            txn_id_(txn_id), lock_mode_(lock_mode) {}
+        LockRequest(txn_id_t txn_id, Transaction *txn, LockMode lock_mode) :
+            txn_id_(txn_id), txn_(txn), lock_mode_(lock_mode) {}
         
         txn_id_t txn_id_;
+
+        // why we need a txn ptr?
+        // because we don't have transaction map in txn class
+        // use txn ptr can help us to set the state of txn.
+        Transaction* txn_{nullptr};
 
         LockMode lock_mode_;
         
@@ -133,7 +138,8 @@ private:
             for (auto &t:queue.second.request_queue_) {
                 std::cout << "    granted = " << t.granted_ << " "
                           << "lockmode = " << static_cast<int> (t.lock_mode_) << " "
-                          << "txn_id = " << t.txn_id_ << std::endl;
+                          << "txn_id = " << t.txn_id_ << " " 
+                          << "txn_ = " << t.txn_ << std::endl;
             }
         }
 

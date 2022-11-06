@@ -140,6 +140,27 @@ Value Tuple::GetValue(const std::string &column_name,
     return Value();
 }
 
+Tuple Tuple::KeyFromTuple(const Schema *curr, const Schema *other) {
+
+    // if schema is equal, don't need to filter 
+    if (*curr == *other) {
+        return *this;
+    }
+
+    // otherwise, should need to create a new tuple
+    std::vector<Value> list;    
+    for (auto column : other->GetColumns()) {
+        auto column_name = curr->GetColumn(column.GetName()).GetName();
+        list.emplace_back(GetValue(column_name, *curr));
+    }    
+    
+    auto res = Tuple(list, *other);
+    // remember setRID
+    res.SetRID(rid_);
+    return res;
+}
+
+
 
 std::string Tuple::ToString(const Schema &schema) {
     

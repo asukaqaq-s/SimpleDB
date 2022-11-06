@@ -89,7 +89,7 @@ public:
     * @param tx the startup transaction
     */
     TableManager(bool IsNew, Transaction *txn, FileManager *fm, 
-                 RecoveryManager *rm, BufferManager *bfm, LockManager *lock_mgr);
+                 RecoveryManager *rm, BufferManager *bfm);
 
     /**
     * @brief Create a new table having the specified name and schema
@@ -137,9 +137,6 @@ private:
 
     // shared bufferpool manager to create table heap
     BufferManager *bfm_;
-    
-    // shared lockmanager to createe table heap
-    LockManager *lock_mgr_;
 
 
     // because we use unordered_map, so a latch is useful

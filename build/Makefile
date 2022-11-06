@@ -246,6 +246,19 @@ recovery_test/fast:
 .PHONY : recovery_test/fast
 
 #=============================================================================
+# Target rules for targets named table_test
+
+# Build rule for target.
+table_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 table_test
+.PHONY : table_test
+
+# fast build rule for target.
+table_test/fast:
+	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
+.PHONY : table_test/fast
+
+#=============================================================================
 # Target rules for targets named show-tests
 
 # Build rule for target.
@@ -389,6 +402,32 @@ lock_manager_test/fast:
 .PHONY : lock_manager_test/fast
 
 #=============================================================================
+# Target rules for targets named expreesion_test
+
+# Build rule for target.
+expreesion_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 expreesion_test
+.PHONY : expreesion_test
+
+# fast build rule for target.
+expreesion_test/fast:
+	$(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
+.PHONY : expreesion_test/fast
+
+#=============================================================================
+# Target rules for targets named seqscan_executor_test
+
+# Build rule for target.
+seqscan_executor_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+#=============================================================================
 # Target rules for targets named page_test
 
 # Build rule for target.
@@ -400,19 +439,6 @@ page_test: cmake_check_build_system
 page_test/fast:
 	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
 .PHONY : page_test/fast
-
-#=============================================================================
-# Target rules for targets named table_test
-
-# Build rule for target.
-table_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 table_test
-.PHONY : table_test
-
-# fast build rule for target.
-table_test/fast:
-	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
-.PHONY : table_test/fast
 
 #=============================================================================
 # Target rules for targets named log_record_test
@@ -459,6 +485,7 @@ help:
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
 	@echo "... recovery_test"
+	@echo "... table_test"
 	@echo "... show-tests"
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
@@ -470,8 +497,9 @@ help:
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... lock_manager_test"
+	@echo "... expreesion_test"
+	@echo "... seqscan_executor_test"
 	@echo "... page_test"
-	@echo "... table_test"
 	@echo "... log_record_test"
 	@echo "... log_test"
 .PHONY : help

@@ -84,6 +84,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "_deps/googletest-build/googletest/CMakeFiles/gtest.dir/DependInfo.cmake"
   "src/CMakeFiles/SimpleDB_lib.dir/DependInfo.cmake"
   "test/CMakeFiles/recovery_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/table_test.dir/DependInfo.cmake"
   "test/CMakeFiles/show-tests.dir/DependInfo.cmake"
   "test/CMakeFiles/transaction_test.dir/DependInfo.cmake"
   "test/CMakeFiles/lru_replacer_test.dir/DependInfo.cmake"
@@ -95,8 +96,9 @@ set(CMAKE_DEPEND_INFO_FILES
   "test/CMakeFiles/concurrency_test.dir/DependInfo.cmake"
   "test/CMakeFiles/file_manager_test.dir/DependInfo.cmake"
   "test/CMakeFiles/lock_manager_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/expreesion_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/seqscan_executor_test.dir/DependInfo.cmake"
   "test/CMakeFiles/page_test.dir/DependInfo.cmake"
-  "test/CMakeFiles/table_test.dir/DependInfo.cmake"
   "test/CMakeFiles/log_record_test.dir/DependInfo.cmake"
   "test/CMakeFiles/log_test.dir/DependInfo.cmake"
   )

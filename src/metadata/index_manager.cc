@@ -141,7 +141,7 @@ std::map<std::string, IndexInfo> IndexManager::GetIndexInfo
 
 
             Schema table_schema = table_mgr_->GetTable(table_name, txn)->schema_;
-            StatInfo table_info = stat_mgr_->GetStatInfo(table_name, table_schema, txn);
+            StatInfo table_info = stat_mgr_->GetStatInfo(table_name, txn);
 
 
             res[field_name] = IndexInfo(index_name, 

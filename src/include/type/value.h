@@ -9,6 +9,12 @@
 
 namespace SimpleDB {
 
+enum DataType {
+    INT,
+    REAL,
+    STRING
+};
+
 /**
 * @brief The class that denotes values stored in the database.
 */
@@ -24,7 +30,6 @@ public:
     */
     Value(TypeID type) : type_id_(type) {}
     
-
     Value(const Value & obj) {
         if (obj.ival_) {
             ival_ = std::make_unique<int> (*(obj.ival_));
@@ -58,6 +63,11 @@ public:
         return *ival_ == true;
     }
 
+    bool IsFalse() const {
+        SIMPLEDB_ASSERT(ival_, "not exist");
+        return *ival_ == false;
+    }
+
     int AsInt() const { 
         SIMPLEDB_ASSERT(ival_, "not exist");
         return *ival_; 
@@ -75,6 +85,20 @@ public:
 
     TypeID GetTypeID() const {
         return type_id_;
+    }
+
+    DataType GetDataType() const {
+        if (ival_) {
+            return DataType::INT;
+        }
+        if (dval_) {
+            return DataType::REAL;
+        }
+        if (sval_) {
+            return DataType::STRING;
+        }
+
+        SIMPLEDB_ASSERT(false, "");
     }
 
     int GetLength() const {

@@ -17,8 +17,8 @@ namespace SimpleDB {
 
 bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
-
     
+
     // check if growing phase
     SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
                     "acquire lock when shrink");
@@ -26,6 +26,14 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
     // check if isolation level correct
     SIMPLEDB_ASSERT(txn->GetIsolationLevel() != IsoLationLevel::READ_UNCOMMITED,
                     "isolation level read_uncommitted don't need acquire lock");
+    
+    // check if acquire file-lock
+    if (txn->GetIsolationLevel() != IsoLationLevel::SERIALIZABLE &&
+        block.BlockNum() == -1) {
+            SIMPLEDB_ASSERT(false, "only serializable can acquire file s-lock");
+    }
+
+
 
     // if lock_request_queue is not exist, we should create one
     if (lock_table_.find(block) == lock_table_.end()) {
@@ -44,16 +52,15 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
         }
     }
 
-    SIMPLEDB_ASSERT(it == request_queue->end(), "request not exist");
+    SIMPLEDB_ASSERT(it == request_queue->end(), "request exist");
     
     // insert request into queue
-    request_queue->emplace_back(LockRequest(txn->GetTxnID(), LockMode::SHARED));
+    request_queue->emplace_back(LockRequest(txn->GetTxnID(), txn, LockMode::SHARED));
     
     
-    // find new_inserted request object, it must is in 
-    // the end of queue, because we have a latch.
-    // note that, we can not use std::rbegin in here
-    // because it is unthread-safe, maybe happen error.
+    // find new_inserted request object, it must is in the end of queue, 
+    // because we have a latch.note that, we can not use std::rbegin in 
+    // here because it is unthread-safe, maybe happen error.
     it = std::prev(lock_request_queue->request_queue_.end());
     
     
@@ -71,16 +78,15 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
             });
     }
 
-    // if this txn is aborted, this request which not 
-    // granted lock should be moved out the queue
+    // if this txn is aborted, this request which not granted lock should 
+    // be moved out the queue but not need to unlock.
     if (txn->IsAborted()) {
         request_queue->erase(it);
         throw TransactionAbortException(txn->GetTxnID(), "acquire s-lock error");
     }
 
 
-    // current, we have received this lock successfully.
-    // update some necessary informations
+    // current, we have received this lock successfully.update some necessary informations
     it->granted_ = true;
     lock_request_queue->shared_count_ ++;
     assert(it->lock_mode_ == LockMode::SHARED);
@@ -93,7 +99,7 @@ bool LockManager::LockShared(Transaction *txn, const BlockId &block) {
 
 bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
-
+    
     
      // check if growing phase
     SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
@@ -119,15 +125,15 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
 
 
     // why this txn request must not exist?
-    // because we think transaction is a single-thread in simpledb
+    // because we think a transaction is a single-thread in simpledb
     // txn acquire x-lock means it doesn't have s-lock before
     // and if not receive s-lock, the txn will be blocked until receive it
     SIMPLEDB_ASSERT(it == request_queue->end(), "request not exist");
 
 
-    request_queue->emplace_back(LockRequest(txn->GetTxnID(), LockMode::EXCLUSIVE));
+    request_queue->emplace_back(LockRequest(txn->GetTxnID(), txn, LockMode::EXCLUSIVE));
 
-    // can't use rbegin
+    // don't use rbegin
     it = std::prev(lock_request_queue->request_queue_.end());
 
     if (lock_request_queue->writing_ ||
@@ -166,7 +172,7 @@ bool LockManager::LockExclusive(Transaction *txn, const BlockId &block) {
 
 bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
-
+    
     // check if growing phase
     SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::GROWING, 
                     "acquire lock when shrink");
@@ -196,6 +202,7 @@ bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
                     lock_request_queue->shared_count_ > 0, "logic error");
     
     // update infor
+    // other writer txns can't receive x-lock because of latch 
     it->granted_ = false;
     it->lock_mode_ = LockMode::EXCLUSIVE;
     lock_request_queue->shared_count_ --;
@@ -238,7 +245,7 @@ bool LockManager::LockUpgrade(Transaction *txn, const BlockId &block) {
 
 bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
     std::unique_lock<std::mutex> latch(latch_);
-
+    
     // check if shrinking phase
     if (txn->GetIsolationLevel() != IsoLationLevel::READ_COMMITED) {
         SIMPLEDB_ASSERT(txn->GetLockStage() == LockStage::SHRINKING, 
@@ -260,7 +267,6 @@ bool LockManager::UnLock(Transaction *txn, const BlockId &block) {
 bool LockManager::UnLockImp(Transaction *txn, 
                             LockRequestQueue* lock_request_queue, 
                             const BlockId &block) {
-
 
     auto request_queue = &lock_request_queue->request_queue_;
     auto it = lock_request_queue->request_queue_.begin();
@@ -329,7 +335,6 @@ bool LockManager::UnLockImp(Transaction *txn,
 void LockManager::DeadLockPrevent(Transaction *txn, 
                                   LockRequestQueue* lock_request_queue, 
                                   const BlockId &block) {
-    
     // find the lockmode of txn
     LockMode lock_mode;
     auto it_origin = lock_request_queue->request_queue_.begin();
@@ -370,12 +375,12 @@ void LockManager::DeadLockPrevent(Transaction *txn,
         it ++;
         
         if (should_abort) {
-            // txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_)->SetAborted();
+            old_it->txn_->SetAborted();
             should_notify = true;
         }
 
         if (should_abort && old_it->granted_) {
-            // UnLockImp(txn->GetTxnManager()->TransactionLookUp(old_it->txn_id_), lock_request_queue, block);
+            UnLockImp(old_it->txn_, lock_request_queue, block);
         }
         
     }

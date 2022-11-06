@@ -59,6 +59,10 @@ public:
         return false;
     }
 
+    bool operator !=(const Tuple &rhs) const {
+        return !(*this == rhs);
+    }
+
 
     inline RID GetRID() const {
         return rid_;
@@ -101,21 +105,28 @@ public:
     * 
     * @param field_name
     * @param val
-    * @param layout
+    * @param schema
     */
     void SetValue(const std::string &field_name, 
                   const Value& val,
-                  const Schema &layout);
+                  const Schema &schema);
 
     /**
     * @brief read a value from tuple
     * 
     * @param field_name
     * @param val
-    * @param layout
+    * @param schema
     */
     Value GetValue(const std::string &field_name,
-                   const Schema &layout) const;
+                   const Schema &schema) const;
+
+    /**
+    * @brief according to another schema which included columns are typically 
+    * a subset of the current schema columns. Generate a tuple with only the 
+    * value of column in this subset
+    */
+    Tuple KeyFromTuple(const Schema *curr, const Schema *other);
 
 
     std::string ToString() {
@@ -126,7 +137,7 @@ public:
     /**
     * @brief a more convenient way to get tuple data
     */
-    std::string ToString(const Schema &layout);
+    std::string ToString(const Schema &schema);
 
 private:
     

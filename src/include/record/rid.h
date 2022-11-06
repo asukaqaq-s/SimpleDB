@@ -19,6 +19,8 @@ public:
     RID(int block_number, int slot) :
         block_number_(block_number), slot_(slot) {}
     
+    bool IsValid() const { return slot_ >= 0 && block_number_ >= 0; }
+
     int GetBlockNum() const { return block_number_; }
 
     int GetSlot() const { return slot_; }
@@ -66,9 +68,9 @@ public:
 private:
     
     // logical block number in this table file
-    int block_number_{0};
+    int block_number_{-1};
     // slot number
-    int slot_{0}; 
+    int slot_{-1}; 
 }; 
 
 } // namespace SimpleDB

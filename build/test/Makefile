@@ -183,6 +183,21 @@ recovery_test/fast:
 .PHONY : recovery_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/table_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_test.dir/rule
+.PHONY : test/CMakeFiles/table_test.dir/rule
+
+# Convenience name for target.
+table_test: test/CMakeFiles/table_test.dir/rule
+
+.PHONY : table_test
+
+# fast build rule for target.
+table_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
+.PHONY : table_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/show-tests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
 .PHONY : test/CMakeFiles/show-tests.dir/rule
@@ -348,6 +363,36 @@ lock_manager_test/fast:
 .PHONY : lock_manager_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/expreesion_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/expreesion_test.dir/rule
+.PHONY : test/CMakeFiles/expreesion_test.dir/rule
+
+# Convenience name for target.
+expreesion_test: test/CMakeFiles/expreesion_test.dir/rule
+
+.PHONY : expreesion_test
+
+# fast build rule for target.
+expreesion_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
+.PHONY : expreesion_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/seqscan_executor_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/seqscan_executor_test.dir/rule
+.PHONY : test/CMakeFiles/seqscan_executor_test.dir/rule
+
+# Convenience name for target.
+seqscan_executor_test: test/CMakeFiles/seqscan_executor_test.dir/rule
+
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/page_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
 .PHONY : test/CMakeFiles/page_test.dir/rule
@@ -361,21 +406,6 @@ page_test: test/CMakeFiles/page_test.dir/rule
 page_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
 .PHONY : page_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/table_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_test.dir/rule
-.PHONY : test/CMakeFiles/table_test.dir/rule
-
-# Convenience name for target.
-table_test: test/CMakeFiles/table_test.dir/rule
-
-.PHONY : table_test
-
-# fast build rule for target.
-table_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
-.PHONY : table_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/log_record_test.dir/rule:
@@ -514,6 +544,60 @@ concurrency/lock_manager_test.s: concurrency/lock_manager_test.cc.s
 concurrency/lock_manager_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/concurrency/lock_manager_test.cc.s
 .PHONY : concurrency/lock_manager_test.cc.s
+
+execution/expreesion_test.o: execution/expreesion_test.cc.o
+
+.PHONY : execution/expreesion_test.o
+
+# target to build an object file
+execution/expreesion_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/execution/expreesion_test.cc.o
+.PHONY : execution/expreesion_test.cc.o
+
+execution/expreesion_test.i: execution/expreesion_test.cc.i
+
+.PHONY : execution/expreesion_test.i
+
+# target to preprocess a source file
+execution/expreesion_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/execution/expreesion_test.cc.i
+.PHONY : execution/expreesion_test.cc.i
+
+execution/expreesion_test.s: execution/expreesion_test.cc.s
+
+.PHONY : execution/expreesion_test.s
+
+# target to generate assembly for a file
+execution/expreesion_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/execution/expreesion_test.cc.s
+.PHONY : execution/expreesion_test.cc.s
+
+execution/seqscan_executor_test.o: execution/seqscan_executor_test.cc.o
+
+.PHONY : execution/seqscan_executor_test.o
+
+# target to build an object file
+execution/seqscan_executor_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/execution/seqscan_executor_test.cc.o
+.PHONY : execution/seqscan_executor_test.cc.o
+
+execution/seqscan_executor_test.i: execution/seqscan_executor_test.cc.i
+
+.PHONY : execution/seqscan_executor_test.i
+
+# target to preprocess a source file
+execution/seqscan_executor_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/execution/seqscan_executor_test.cc.i
+.PHONY : execution/seqscan_executor_test.cc.i
+
+execution/seqscan_executor_test.s: execution/seqscan_executor_test.cc.s
+
+.PHONY : execution/seqscan_executor_test.s
+
+# target to generate assembly for a file
+execution/seqscan_executor_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/execution/seqscan_executor_test.cc.s
+.PHONY : execution/seqscan_executor_test.cc.s
 
 file/file_manager_test.o: file/file_manager_test.cc.o
 
@@ -797,6 +881,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... recovery_test"
+	@echo "... table_test"
 	@echo "... show-tests"
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
@@ -809,8 +894,9 @@ help:
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... lock_manager_test"
+	@echo "... expreesion_test"
+	@echo "... seqscan_executor_test"
 	@echo "... page_test"
-	@echo "... table_test"
 	@echo "... list_install_components"
 	@echo "... log_record_test"
 	@echo "... log_test"
@@ -826,6 +912,12 @@ help:
 	@echo "... concurrency/lock_manager_test.o"
 	@echo "... concurrency/lock_manager_test.i"
 	@echo "... concurrency/lock_manager_test.s"
+	@echo "... execution/expreesion_test.o"
+	@echo "... execution/expreesion_test.i"
+	@echo "... execution/expreesion_test.s"
+	@echo "... execution/seqscan_executor_test.o"
+	@echo "... execution/seqscan_executor_test.i"
+	@echo "... execution/seqscan_executor_test.s"
 	@echo "... file/file_manager_test.o"
 	@echo "... file/file_manager_test.i"
 	@echo "... file/file_manager_test.s"

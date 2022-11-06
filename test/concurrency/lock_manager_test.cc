@@ -1,452 +1,476 @@
-// /**
-//  * grading_lock_manager_test_1.cpp
-//  */
+/**
+ * grading_lock_manager_test_1.cpp
+ */
 
-// #include <atomic>
-// #include <future>  //NOLINT
-// #include <random>
-// #include <thread>  //NOLINT
+#include <atomic>
+#include <future>  //NOLINT
+#include <random>
+#include <thread>  //NOLINT
 
-// #include "config/exception.h"
-// #include "concurrency/transaction.h"
-// #include "concurrency/lock_manager.h"
-// #include "gtest/gtest.h"
+#include "config/exception.h"
+#include "concurrency/transaction.h"
+#include "concurrency/lock_manager.h"
+#include "concurrency/transaction_manager.h"
+#include "gtest/gtest.h"
 
-// namespace SimpleDB {
-// #define TEST_TIMEOUT_BEGIN                           \
-//   std::promise<bool> promisedFinished;               \
-//   auto futureResult = promisedFinished.get_future(); \
-//                               std::thread([](std::promise<bool>& finished) {
-// #define TEST_TIMEOUT_FAIL_END(X)                                                                  \
-//   finished.set_value(true);                                                                       \
-//   }, std::ref(promisedFinished)).detach();                                                        \
-//   EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout) \
-//       << "Test Failed Due to Time Out";
+#define TEST_TIMEOUT_BEGIN                           \
+  std::promise<bool> promisedFinished;               \
+  auto futureResult = promisedFinished.get_future(); \
+                              std::thread([](std::promise<bool>& finished) {
+#define TEST_TIMEOUT_FAIL_END(X)                                                                  \
+  finished.set_value(true);                                                                       \
+  }, std::ref(promisedFinished)).detach();                                                        \
+  EXPECT_TRUE(futureResult.wait_for(std::chrono::milliseconds(X)) != std::future_status::timeout) \
+      << "Test Failed Due to Time Out";
 
-// const std::string test_file = "testfile.txt";
-// std::string directory_name;
+namespace SimpleDB {
 
 
-// void Init() {
-//     char buf[100];
-//     directory_name = getcwd(buf, 100);
-//     directory_name += "/test_dir";    
-// }
+// --- Helper functions ---
+void CheckGrowing(Transaction *txn) { EXPECT_EQ(txn->GetLockStage(), LockStage::GROWING); }
 
-// int txn_cnt = 1;
+void CheckShrinking(Transaction *txn) { EXPECT_EQ(txn->GetLockStage(), LockStage::SHRINKING); }
 
-// // --- Helper functions ---
-// void CheckGrowing(Transaction *txn) { EXPECT_EQ(txn->GetLockStage(), LockStage::GROWING); }
+void CheckAborted(Transaction *txn) { EXPECT_EQ(txn->GetTxnState(), TransactionState::ABORTED); }
 
-// void CheckShrinking(Transaction *txn) { EXPECT_EQ(txn->GetLockStage(), LockStage::SHRINKING); }
+void CheckCommitted(Transaction *txn) { EXPECT_EQ(txn->GetTxnState(), TransactionState::COMMITTED); }
 
-// void CheckAborted(Transaction *txn) { EXPECT_EQ(txn->GetTxnState(), TransactionState::ABORTED); }
+void CheckTxnLockSize(Transaction *txn, size_t shared_size, size_t exclusive_size) {
 
-// void CheckCommitted(Transaction *txn) { EXPECT_EQ(txn->GetTxnState(), TransactionState::COMMITTED); }
+    int s_cnt = 0;
+    int cnt = txn->GetLockSet()->size();
+    for (auto t : *txn->GetLockSet()) {
+        if (t.second == LockMode::SHARED) {
+            s_cnt++;
+        }
+    }
 
-// void CheckTxnLockSize(Transaction *txn, int shared_size, int exclusive_size) {
+    int e_cnt = cnt - s_cnt;
+
+    EXPECT_EQ(s_cnt, shared_size);
+    EXPECT_EQ(e_cnt, exclusive_size);
+}
+
+// --- Real tests ---
+// Basic single thread upgrade test
+void UpgradeTest() {
+
+    //
+    // prepare
+    // 
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
     
-//     int shared_size_ = 0;
-//     int exclusive_size_ = txn->GetLockSet()->size();
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
 
-//     for (auto t: *txn->GetLockSet()) {
-//         if (t.second == LockMode::SHARED) {
-//             shared_size_++;
-//         }
-//     }
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
 
-//     exclusive_size_ -= shared_size_;
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
 
-//     EXPECT_EQ(shared_size_, shared_size);
-//     EXPECT_EQ(exclusive_size_, exclusive_size);
-// }
+    auto lock_mgr = std::make_unique<LockManager> ();
 
-// // --- Real tests ---
-// // Basic shared lock test under REPEATABLE_READ
-// void BasicTest1() {
-//     LockManager lock_mgr{};
-//     FileManager fm(directory_name, 4096);
-//     LogManager lm(&fm, "log.txt");
-//     RecoveryManager rm(&lm);
-//     BufferManager bm(&fm, &rm, 100);
+    TransactionManager txn_mgr(std::move(lock_mgr), rm.get(), file_manager.get(), buf_manager.get());
+    LockManager *lock = txn_mgr.GetLockManager();
 
-//     std::vector<BlockId> blockids;
-//     std::vector<Transaction *> txns;
-//     int num_blockids = 10;
-//     for (int i = 0; i < num_blockids; i++) {
-//         BlockId blk(test_file, i);
-//         blockids.push_back(blk);
-//         txns.push_back(new Transaction(&fm, &bm, &rm));
-//         EXPECT_EQ(txn_cnt ++, txns[i]->GetTxnID());
-//     }
-//     // test
+    BlockId block{"123", 0};
+    auto txn = txn_mgr.Begin();
 
-//     auto task = [&](int txn_id) {
-//         bool res;
-//         for (const BlockId &blockid : blockids) {
-//             res = lock_mgr.LockShared(txns[txn_id], blockid);
-//             EXPECT_TRUE(res);
-//             CheckGrowing(txns[txn_id]);
-//         }
+    bool res = lock->LockShared(txn.get(), block);
+    EXPECT_TRUE(res);
+    CheckTxnLockSize(txn.get(), 1, 0);
+    CheckGrowing(txn.get());
 
-//         txns[txn_id]->SetLockStage(LockStage::SHRINKING);
+    res = lock->LockUpgrade(txn.get(), block);
+    EXPECT_TRUE(res);
+    CheckTxnLockSize(txn.get(), 0, 1);
+    CheckGrowing(txn.get());
+    txn_mgr.Commit(txn.get());
 
-//         for (const BlockId &blockid : blockids) {
-//             res = lock_mgr.UnLock(txns[txn_id], blockid);
-//             EXPECT_TRUE(res);
-//             CheckShrinking(txns[txn_id]);
-//         }
-
-//         txns[txn_id]->Commit();
-//         CheckCommitted(txns[txn_id]);
-//     };
-
-//     std::vector<std::thread> threads;
-//     threads.reserve(num_blockids);
-
-//     for (int i = 0; i < num_blockids; i++) {
-//         threads.emplace_back(std::thread{task, i});
-//     }
-
-//     for (int i = 0; i < num_blockids; i++) {
-//         threads[i].join();
-//     }
-
-//     for (int i = 0; i < num_blockids; i++) {
-//         delete txns[i];
-//     }
-// }
-
-
-
-
-// void WoundWaitBasicTest() {
-//     BlockId block0(test_file, 0);
-//     BlockId block1(test_file, 1);
-
-//     FileManager fm(directory_name, 4096);
-//     LogManager lm(&fm, "log.txt");
-//     RecoveryManager rm(&lm);
-//     BufferManager bm(&fm, &rm, 100);
-
-
-//     std::mutex id_mutex;
-//     int id_hold = 0;
-//     int id_wait = 10;
-//     int id_kill = 1;
-
-//     int num_wait = 10;
-//     int num_kill = 1;
-
-//     std::vector<std::thread> wait_threads;
-//     std::vector<std::thread> kill_threads;
-
-//     std::shared_ptr<Transaction> txn = std::make_shared<Transaction>(&fm, &bm, &rm, id_hold);
-    
-//     txn->AcquireLock(block0, LockMode::EXCLUSIVE);
-//     txn->AcquireLock(block1, LockMode::SHARED);
-
-//     auto wait_die_task = [&]() {
-        
-//         Transaction wait_txn(&fm, &bm, &rm, id_wait++);
-        
-//         wait_txn.AcquireLock(block1, LockMode::SHARED);
-        
-//         CheckGrowing(&wait_txn);
-//         CheckTxnLockSize(&wait_txn, 1, 0);
-        
-//         try {
-//             wait_txn.AcquireLock(block0, LockMode::EXCLUSIVE);
-//         } catch (const TransactionAbortException &e) {
-//         } catch (const Exception &e) {
-//             EXPECT_TRUE(false) << "Test encountered exception" << e.what();
-//         }
-
-//         CheckAborted(&wait_txn);
-
-//         wait_txn.Abort();
-//     };
-
-//     // All transaction here should wait.
-//     for (int i = 0; i < num_wait; i++) {
-//         wait_threads.emplace_back(std::thread{wait_die_task});
-//         std::this_thread::sleep_for(std::chrono::milliseconds(50));
-//     }
-
-//     // TODO(peijingx): guarantee all are waiting on LockExclusive
-//     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-//     auto kill_task = [&]() {
-//         Transaction kill_txn(&fm, &bm, &rm, id_kill++);
-        
-//         bool res;
-//         kill_txn.AcquireLock(block1, LockMode::SHARED);
-//         CheckGrowing(&kill_txn);
-//         CheckTxnLockSize(&kill_txn, 1, 0);
-
-//         kill_txn.AcquireLock(block0, LockMode::SHARED);
-//         CheckGrowing(&kill_txn);
-//         CheckTxnLockSize(&kill_txn, 2, 0);
-
-//         kill_txn.Commit();
-//         CheckCommitted(&kill_txn);
-//         CheckTxnLockSize(&kill_txn, 0, 0);
-//     };
+    EXPECT_TRUE(res);
+    CheckTxnLockSize(txn.get(), 0, 0);
+    CheckShrinking(txn.get());
 
     
-//     for (size_t i = 0; i < num_kill; i++) {
-//         kill_threads.emplace_back(std::thread{kill_task});
-//     }
+    CheckCommitted(txn.get());
+}
 
-//     for (size_t i = 0; i < num_wait; i++) {
-//         wait_threads[i].join();
-//     }
+/****************************
+ * Basic Tests (15 pts)
+ ****************************/
 
-//     CheckGrowing(txn.get());
-//     txn->Commit();
-//     CheckCommitted(txn.get());
+const size_t NUM_ITERS = 10;
 
-//     for (size_t i = 0; i < num_kill; i++) {
-//         kill_threads[i].join();
-//     }
-//     return;
+/*
+ * Score 5
+ * Description: test lock upgrade.
+ */
+TEST(LockManagerTest, UpgradeLockTest) {
+  TEST_TIMEOUT_BEGIN
+  for (size_t i = 0; i < NUM_ITERS; i++) {
+    UpgradeTest();
+  }
+  TEST_TIMEOUT_FAIL_END(1000 * 30)
+}
+
+
+
+void BasicTest1() {
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+
+    auto lock_mgr_ = std::make_unique<LockManager> ();
+
+    TransactionManager txn_mgr(std::move(lock_mgr_), rm.get(), file_manager.get(), buf_manager.get());
+    LockManager *lock_mgr = txn_mgr.GetLockManager();
+
+    std::vector<BlockId> blockids;
+    std::vector<std::unique_ptr<Transaction>> txns;
+
+    int num_blockids = 10;
+    for (int i = 0; i < num_blockids; i++) {
+        BlockId block{test_file, static_cast<int>(i)};
+        blockids.push_back(block);
+        txns.emplace_back(txn_mgr.Begin());
+        EXPECT_EQ(i, txns[i]->GetTxnID());
+    }
+    // test
+
+    auto task = [&](int txn_id) {
+        bool res;
+        for (const BlockId &blockid : blockids) {
+            res = lock_mgr->LockShared(txns[txn_id].get(), blockid);
+            EXPECT_TRUE(res);
+            CheckGrowing(txns[txn_id].get());
+        }
+
+        txn_mgr.Commit(txns[txn_id].get());
+        CheckShrinking(txns[txn_id].get());
+        CheckCommitted(txns[txn_id].get());
+        CheckTxnLockSize(txns[txn_id].get(), 0, 0);
+    };
+    std::vector<std::thread> threads;
+    threads.reserve(num_blockids);
+
+    for (int i = 0; i < num_blockids; i++) {
+        threads.emplace_back(std::thread{task, i});
+    }
+
+    for (int i = 0; i < num_blockids; i++) {
+        threads[i].join();
+    }
+
+
+}
+TEST(LockManagerTest, BasicTest) { BasicTest1(); }
+
+void TwoPLTest() {
+    
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+    
+    auto lock_mgr_ = std::make_unique<LockManager> ();
+    
+    TransactionManager txn_mgr(std::move(lock_mgr_), rm.get(), file_manager.get(), buf_manager.get());
+    LockManager *lock_mgr = txn_mgr.GetLockManager();
+
+    BlockId blockid0{test_file, 0};
+    BlockId blockid1{test_file, 1};
+
+    auto txn_ = txn_mgr.Begin();   
+    auto txn = txn_.get();
+    EXPECT_EQ(0, txn->GetTxnID());
+    
+    bool res;
+    res = lock_mgr->LockShared(txn, blockid0);
+    EXPECT_TRUE(res);
+    CheckGrowing(txn);
+    CheckTxnLockSize(txn, 1, 0);
+
+    res = lock_mgr->LockExclusive(txn, blockid1);
+    EXPECT_TRUE(res);
+    CheckGrowing(txn);
+    CheckTxnLockSize(txn, 1, 1);
+
+    // Need to call txn_mgr's abort
+    txn_mgr.Abort(txn);
+    CheckAborted(txn);
+    CheckTxnLockSize(txn, 0, 0);
+
+}
+TEST(LockManagerTest, TwoPLTest) { TwoPLTest(); }
+
+
+void WoundWaitBasicTest() {
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+
+    auto lock_mgr_ = std::make_unique<LockManager> ();
+
+    TransactionManager txn_mgr(std::move(lock_mgr_), rm.get(), file_manager.get(), buf_manager.get());
+    LockManager *lock_mgr = txn_mgr.GetLockManager();
+
+
+    BlockId blockid{test_file, 0};
+
+
+    std::promise<void> t1done;
+    std::shared_future<void> t1_future(t1done.get_future());
+
+    auto wait_die_task = [&]() {
+        // younger transaction acquires lock first
+        auto txn_die_ = txn_mgr.Begin();
+        auto txn_die = txn_die_.get();
+
+        bool res = lock_mgr->LockExclusive(txn_die, blockid);
+        EXPECT_TRUE(res);
+
+        CheckGrowing(txn_die);
+        CheckTxnLockSize(txn_die, 0, 1);
+
+        t1done.set_value();
+
+        // wait for txn 0 to call lock_exclusive(), which should wound us
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
+        CheckAborted(txn_die);
+
+        // unlock
+        txn_mgr.Abort(txn_die);
+    };
+
+    auto txn_hold_ = txn_mgr.Begin();
+    auto txn_hold = txn_hold_.get();
+
+    // launch the waiter thread
+    std::thread wait_thread{wait_die_task};
+
+    // wait for txn1 to lock
+    t1_future.wait();
+
+    bool res = lock_mgr->LockExclusive(txn_hold, blockid);
+    EXPECT_TRUE(res);
+
+    wait_thread.join();
+
+    CheckGrowing(txn_hold);
+    txn_mgr.Commit(txn_hold);
+    CheckCommitted(txn_hold);
+}
+
+void WoundWaitTest() {
+  char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
+
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
+    
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
+
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+
+    auto lock_mgr_ = std::make_unique<LockManager> ();
+
+    TransactionManager txn_mgr(std::move(lock_mgr_), rm.get(), file_manager.get(), buf_manager.get());
+    LockManager *lock_mgr = txn_mgr.GetLockManager();
+
+    BlockId blockid0{test_file, 0};
+    BlockId blockid1{test_file, 1};
+
+    std::mutex id_mutex;
+    size_t id_hold = 0;
+    size_t id_wait = 10;
+    size_t id_kill = 1;
+
+    size_t num_wait = 10;
+    size_t num_kill = 1;
+
+    std::vector<std::thread> wait_threads;
+    std::vector<std::thread> kill_threads;
+    std::vector<std::unique_ptr<Transaction>> wait_txns;
+    std::vector<std::unique_ptr<Transaction>> kill_txns;
+    std::vector<std::unique_ptr<Transaction>> hold_txns;
+
+    for (int i = 0;i < 10;i ++) {
+        if (i == 1) {
+            kill_txns.emplace_back(txn_mgr.Begin());
+        }
+        else if (i == 0) {
+            hold_txns.emplace_back(txn_mgr.Begin());
+        }
+        else {
+            auto tx = txn_mgr.Begin();
+        }
+    }
+
+
+    for (int i = 0;i < 10;i ++) {
+        wait_txns.emplace_back(txn_mgr.Begin());
+    }
 
     
-// }
-
-
-// void WoundWaitDeadlockTest() {
-//     BlockId block0(test_file, 0);
-//     BlockId block1(test_file, 1);
-
-//     FileManager fm(directory_name, 4096);
-//     LogManager lm(&fm, "log.txt");
-//     RecoveryManager rm(&lm);
-//     BufferManager bm(&fm, &rm, 100);
-//     Transaction txn1(&fm, &bm, &rm, 1);
-
-//     bool res;
-//     txn1.AcquireLock(block0, LockMode::EXCLUSIVE);
+    auto txn = hold_txns[0].get();
     
-//     CheckGrowing(&txn1);
-//     // This will imediately take the lock
+    lock_mgr->LockExclusive(txn, blockid0);
+    lock_mgr->LockShared(txn, blockid1);
 
-//     // Use promise and future to identify
-//     auto task = [&](std::promise<void> lock_acquired) {
-//         Transaction txn0(&fm, &bm, &rm, 0);  // this transaction is older than txn1
-//         txn1.AcquireLock(block0, LockMode::EXCLUSIVE);
-//         CheckGrowing(&txn0);
-//         txn0.AcquireLock(block0, LockMode::EXCLUSIVE);
+    auto wait_die_task = [&]() {
+        id_mutex.lock();
+        Transaction* wait_txn = wait_txns[id_wait++ - 10].get();
+        id_mutex.unlock();
+        bool res;
+        res = lock_mgr->LockShared(wait_txn, blockid1);
+        EXPECT_TRUE(res);
+        CheckGrowing(wait_txn);
+        CheckTxnLockSize(wait_txn, 1, 0);
 
-//         CheckGrowing(&txn0);
-//         txn0.Commit();
+        try {
+            res = lock_mgr->LockExclusive(wait_txn, blockid0);
+            EXPECT_FALSE(res) << wait_txn->GetTxnID() << "ERR";
+        } catch (const TransactionAbortException &e) {
+        } catch (const Exception &e) {
+            EXPECT_TRUE(false) << "Test encountered exception" << e.what();
+        }
 
-//         lock_acquired.set_value();
-//     };
+        CheckAborted(wait_txn);
+        txn_mgr.Abort(wait_txn);
+    };
 
-//     std::promise<void> lock_acquired;
-//     std::future<void> lock_acquired_future = lock_acquired.get_future();
+    // All transaction here should wait.
+    for (size_t i = 0; i < num_wait; i++) {
+        wait_threads.emplace_back(std::thread{wait_die_task});
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
 
-//     std::thread t{task, std::move(lock_acquired)};
-//     auto otask = [&](Transaction *tx) {
-//         while (tx->GetTxnState() != TransactionState::ABORTED) {
-//         }
-//         tx->Abort();
-//     };
-//     std::thread w{otask, &txn1};
-//     lock_acquired_future.wait();  // waiting for the thread to acquire exclusive lock for block1
-//     // this should fail, and txn abort and release all the locks.
+    // TODO(peijingx): guarantee all are waiting on LockExclusive
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-//     t.join();
-//     w.join();
-// }
+    auto kill_task = [&]() {
+        Transaction* kill_txn = kill_txns[id_kill++ - 1].get();
+        bool res;
+        res = lock_mgr->LockShared(kill_txn, blockid1);
+        EXPECT_TRUE(res);
+        CheckGrowing(kill_txn);
+        CheckTxnLockSize(kill_txn, 1, 0);
 
-// // // Large number of lock and unlock operations.
-// // void WoundWaitStressTest() {
-// //     BlockId block0(test_file, 0);
-// //     BlockId block1(test_file, 1);
+        res = lock_mgr->LockShared(kill_txn, blockid0);
+        EXPECT_TRUE(res);
+        CheckGrowing(kill_txn);
+        CheckTxnLockSize(kill_txn, 2, 0);
 
-// //     FileManager fm(directory_name, 4096);
-// //     LogManager lm(&fm, "log.txt");
-// //     RecoveryManager rm(&lm);
-// //     BufferManager bm(&fm, &rm, 100);
+        txn_mgr.Commit(kill_txn);
+        CheckCommitted(kill_txn);
+        CheckTxnLockSize(kill_txn, 0, 0);
+    };
 
-// //     std::mt19937 generator(time(nullptr));
+    for (size_t i = 0; i < num_kill; i++) {
+        kill_threads.emplace_back(std::thread{kill_task});
+    }
 
-// //     size_t num_blocks = 100;
-// //     size_t num_threads = 1000;
+    for (size_t i = 0; i < num_wait; i++) {
+        wait_threads[i].join();
+    }
 
-// //     std::vector<BlockId> blocks;
-// //     for (uint32_t i = 0; i < num_blocks; i++) {
-// //         BlockId block(test_file, i);
-// //         blocks.push_back(block);
-// //     }
+    CheckGrowing(txn);
+    txn_mgr.Commit(txn);
+    CheckCommitted(txn);
 
-// //     // Task1 is to get shared lock until abort
-// //     auto task1 = [&](int tid) {
-// //         Transaction txn(&fm, &bm, &rm, tid);
-// //         int num_shared = 0;
-// //         int mod = 2;
-// //         for (size_t i = 0; i < blocks.size(); i++) {
-// //             if (i % mod == 0) {
-// //                 txn.AcquireLock(blocks[i], LockMode::SHARED);
-// //                 num_shared++;
-// //                 CheckTxnLockSize(&txn, num_shared, 0);
-// //             }
-// //         }
+    for (size_t i = 0; i < num_kill; i++) {
+        kill_threads[i].join();
+    }
+}
 
 
-// //         CheckGrowing(&txn);
+TEST(LockManagerTest, WoundWaitBasicTest) { WoundWaitBasicTest(); }
 
-// //         if (txn.IsAborted()) {
-// //             txn.Abort();
-// //         } else {
-// //             txn.Commit();
-// //         }
-        
-// //         CheckTxnLockSize(&txn, 0, 0);
-// //     };
 
-// //     // Task 2 is shared lock from the back
-// //     auto task2 = [&](int tid) {
-// //         Transaction txn(&fm, &bm, &rm, tid);
-// //         int mod = 3;
-// //         int num_shared = 0;
-// //         for (int i = static_cast<int>(blocks.size()) - 1; i >= 0; i--) {
-// //             if (i % mod == 0) {
-// //                 txn.AcquireLock(blocks[i], LockMode::EXCLUSIVE);
-// //                 num_shared++;
-// //                 CheckTxnLockSize(&txn, num_shared, 0);
-// //             }
-// //         }
-// //         CheckGrowing(&txn);
-        
-// //         if (txn.IsAborted()) {
-// //             txn.Abort();
-// //         } else {
-// //             txn.Commit();
-// //         }
-        
-// //         CheckTxnLockSize(&txn, 0, 0);
-// //     };
-
-// //     // Shared lock wants to upgrade
-// //     auto task3 = [&](int tid) {
-// //         Transaction txn(tid);
-// //         int num_exclusive = 0;
-// //         int mod = 6;
-// //         bool res;
-// //         for (size_t i = 0; i < blocks.size(); i++) {
-// //         if (i % mod == 0) {
-// //             res = AcquireLock(&txn, blocks[i]);
-// //             if (!res) {
-// //             CheckTxnLockSize(&txn, 0, num_exclusive);
-// //             CheckAborted(&txn);
-// //             txn_mgr.Abort(&txn);
-// //             CheckTxnLockSize(&txn, 0, 0);
-// //             return;
-// //             }
-// //             CheckTxnLockSize(&txn, 1, num_exclusive);
-// //             res = lock_mgr.LockUpgrade(&txn, blocks[i]);
-// //             if (!res) {
-// //             CheckAborted(&txn);
-// //             txn_mgr.Abort(&txn);
-// //             CheckTxnLockSize(&txn, 0, 0);
-// //             return;
-// //             }
-// //             num_exclusive++;
-// //             CheckTxnLockSize(&txn, 0, num_exclusive);
-// //             CheckGrowing(&txn);
-// //         }
-// //         }
-// //         for (size_t i = 0; i < blocks.size(); i++) {
-// //         if (i % mod == 0) {
-// //             res = lock_mgr.Unlock(&txn, blocks[i]);
-
-// //             EXPECT_TRUE(res);
-// //             CheckShrinking(&txn);
-// //             // A fresh BlockId here
-// //             BlockId block{tid, static_cast<uint32_t>(tid)};
-// //             res = AcquireLock(&txn, block);
-// //             EXPECT_FALSE(res);
-
-// //             CheckAborted(&txn);
-// //             txn_mgr.Abort(&txn);
-// //             CheckTxnLockSize(&txn, 0, 0);
-// //             return;
-// //         }
-// //         }
-// //     };
-
-// //     // Exclusive lock and unlock
-// //     auto task4 = [&](int tid) {
-// //         Transaction txn(tid);
-// //         // randomly pick
-// //         int index = static_cast<int>(generator() % blocks.size());
-// //         bool res = lock_mgr.LockExclusive(&txn, blocks[index]);
-// //         if (res) {
-// //         bool res = lock_mgr.Unlock(&txn, blocks[index]);
-// //         EXPECT_TRUE(res);
-// //         } else {
-// //             txn_mgr.Abort(&txn);
-// //         }
-// //         CheckTxnLockSize(&txn, 0, 0);
-// //     };
-
-// //     std::vector<std::function<void(int)>> tasks{task1, task2, task4};
-// //     std::vector<std::thread> threads;
-// //     // only one task3 to ensure success upgrade most of the time
-// //     threads.emplace_back(std::thread{task3, num_threads / 2});
-// //     for (size_t i = 0; i < num_threads; i++) {
-// //         if (i != num_threads / 2) {
-// //         threads.emplace_back(std::thread{tasks[i % tasks.size()], i});
-// //         }
-// //     }
-// //     for (size_t i = 0; i < num_threads; i++) {
-// //         // Threads might be returned already
-// //         if (threads[i].joinable()) {
-// //         threads[i].join();
-// //         }
-// //     }
-// // }
+TEST(LockManagerTest, WoundWaitTest) { WoundWaitTest();}
 
 
 
 
-
-// // Correct case
-
-// /****************************
-//  * Basic Tests (15 pts)
-//  ****************************/
-
-// const int NUM_ITERS = 10;
-
-// /*
-//  * Score: 5
-//  * Description: Basic tests for LockShared and UnLock operations
-//  * on small amount of blockids.
-//  */
-// TEST(LockManagerTest, BasicTest) {
-
-//     Init();return;
-//   TEST_TIMEOUT_BEGIN
-//   for (int i = 0; i < NUM_ITERS; i++) {
-//     BasicTest1();
-//   }
-//   TEST_TIMEOUT_FAIL_END(1000 * 30)
-// }
-
-// TEST(LockManagerTest, WoundWaitBasicTest) { 
-//     return;
-//     WoundWaitBasicTest();
-// }
-
-// TEST(LockManagerTest, WoundWaitDeadLockTest) { 
-//     WoundWaitDeadlockTest();
-// }
-
-
-// }  // namespace SimpleDB
+}  // namespace SimpleDB
 
 

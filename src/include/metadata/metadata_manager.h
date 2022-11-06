@@ -21,35 +21,34 @@ class MetadataManager {
 public:
 
     MetadataManager(bool IsNew, Transaction *txn, FileManager *fm, 
-        RecoveryManager *rm, BufferManager *bfm, LockManager *lock_mgr);
+        RecoveryManager *rm, BufferManager *bfm);
 
 // set metadata 
 
-    void CreateTable(std::string table_name, 
-                     Schema sch, 
+    void CreateTable(const std::string &table_name, 
+                     const Schema &sch, 
                      Transaction *txn);
 
-    void CreateView(std::string view_name, 
-                    std::string view_def, 
+    void CreateView(const std::string &view_name, 
+                    const std::string &view_def, 
                     Transaction *txn);
 
-    void CreateIndex(std::string index_name, 
-                     std::string table_name, 
-                     std::string field_name, 
+    void CreateIndex(const std::string &index_name, 
+                     const std::string &table_name, 
+                     const std::string &field_name, 
                      Transaction *txn);
 
 // get metadata
 
-    TableInfo* GetTable(std::string table_name, Transaction *txn);
+    TableInfo* GetTable(const std::string &table_name, Transaction *txn);
 
 
-    std::string GetViewDef(std::string view_name, Transaction *txn);
+    std::string GetViewDef(const std::string &view_name, Transaction *txn);
 
-    StatInfo GetStatInfo(std::string table_name,
-                            Schema schema, 
-                            Transaction *txn);
+    StatInfo GetStatInfo(const std::string &table_name,
+                         Transaction *txn);
 
-    std::map<std::string, IndexInfo> GetIndexInfo(std::string table_name, 
+    std::map<std::string, IndexInfo> GetIndexInfo(const std::string &table_name, 
                                                   Transaction *txn);
 
 
