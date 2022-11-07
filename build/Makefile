@@ -259,6 +259,19 @@ table_test/fast:
 .PHONY : table_test/fast
 
 #=============================================================================
+# Target rules for targets named metadata_test
+
+# Build rule for target.
+metadata_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+#=============================================================================
 # Target rules for targets named show-tests
 
 # Build rule for target.
@@ -309,32 +322,6 @@ unittests: cmake_check_build_system
 unittests/fast:
 	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
 .PHONY : unittests/fast
-
-#=============================================================================
-# Target rules for targets named metadata_test
-
-# Build rule for target.
-metadata_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
-.PHONY : metadata_test
-
-# fast build rule for target.
-metadata_test/fast:
-	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
-
-#=============================================================================
-# Target rules for targets named buffer_manager_test
-
-# Build rule for target.
-buffer_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 buffer_manager_test
-.PHONY : buffer_manager_test
-
-# fast build rule for target.
-buffer_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
-.PHONY : buffer_manager_test/fast
 
 #=============================================================================
 # Target rules for targets named file_test
@@ -415,6 +402,32 @@ expreesion_test/fast:
 .PHONY : expreesion_test/fast
 
 #=============================================================================
+# Target rules for targets named buffer_manager_test
+
+# Build rule for target.
+buffer_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 buffer_manager_test
+.PHONY : buffer_manager_test
+
+# fast build rule for target.
+buffer_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
+.PHONY : buffer_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named other_executors_test
+
+# Build rule for target.
+other_executors_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 other_executors_test
+.PHONY : other_executors_test
+
+# fast build rule for target.
+other_executors_test/fast:
+	$(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/build
+.PHONY : other_executors_test/fast
+
+#=============================================================================
 # Target rules for targets named seqscan_executor_test
 
 # Build rule for target.
@@ -486,18 +499,19 @@ help:
 	@echo "... SimpleDB_lib"
 	@echo "... recovery_test"
 	@echo "... table_test"
+	@echo "... metadata_test"
 	@echo "... show-tests"
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
-	@echo "... metadata_test"
-	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... tuple_test"
 	@echo "... concurrency_test"
 	@echo "... file_manager_test"
 	@echo "... lock_manager_test"
 	@echo "... expreesion_test"
+	@echo "... buffer_manager_test"
+	@echo "... other_executors_test"
 	@echo "... seqscan_executor_test"
 	@echo "... page_test"
 	@echo "... log_record_test"

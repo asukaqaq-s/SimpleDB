@@ -42,13 +42,14 @@ void UpdateExecutor::Init() {
 bool UpdateExecutor::Next(Tuple *tuple) {
     
     auto *table_heap = table_info_->table_heap_.get();
+    Tuple tmp;
 
-    if (child_->Next(tuple)) {
+    if (child_->Next(&tmp)) {
         
         // generate a new tuple
-        Tuple new_tuple = GenerateUpdatedTuple(*tuple);
+        Tuple new_tuple = GenerateUpdatedTuple(tmp);
         RID rid = new_tuple.GetRID();    
-    
+
         // update in this loction
         table_heap->Update(txn_, rid, new_tuple);
         return true;

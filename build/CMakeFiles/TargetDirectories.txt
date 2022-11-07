@@ -45,12 +45,11 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/edit_cache.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/recovery_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/table_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/tuple_test.dir
@@ -58,6 +57,8 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lock_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/expreesion_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/other_executors_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/seqscan_executor_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/page_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/list_install_components.dir

@@ -32,6 +32,7 @@ public:
           tuple_idx_(tuple_idx),
           field_name_(field_name),
           schema_(schema) {
+            
         // check the value type based on schema and col idx
         SIMPLEDB_ASSERT(schema->GetColumn(field_name).GetType() == ret_type, "logic error");
     }

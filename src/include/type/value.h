@@ -181,9 +181,16 @@ public:
 
     Value& operator =(const Value &obj) {
         if (this != &obj) {
-            *ival_ = *obj.ival_;
-            *sval_ = *obj.sval_;
-            *dval_ = *obj.dval_;
+            if (ival_) {
+                *ival_ = *obj.ival_;
+            }
+            if (sval_) {
+                *sval_ = *obj.sval_;
+            }
+            if (dval_) {
+                *dval_ = *obj.dval_;
+            }
+            
         }
         return *this;
     }

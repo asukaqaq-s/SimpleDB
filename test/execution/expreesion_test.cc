@@ -143,6 +143,57 @@ TEST(ExpressionTest, ConjunctionExpressionTest) {
 
 }
 
+TEST(OperatorExpressionTest, BasicTest) {
+    auto colA = Column("colA", TypeID::INTEGER);
+    auto colB = Column("colB", TypeID::INTEGER);
+    auto colC = Column("colC", TypeID::INTEGER);
+    auto colD = Column("colD", TypeID::DECIMAL);
+    std::vector<Column> cols;
+    cols.push_back(colA);
+    cols.push_back(colB);
+    cols.push_back(colC);
+    cols.push_back(colD);
+    auto schema_left = Schema(cols);
+
+    auto colA2 = Column("colA", TypeID::INTEGER);
+    auto colB2 = Column("colB", TypeID::DECIMAL);
+    auto schema_right = Schema({colA2, colB2});
+    
+    auto column_value_expression1 = new ColumnValueExpression(TypeID::INTEGER, 0, "colC", &schema_left);
+    auto column_value_expression2 = new ColumnValueExpression(TypeID::INTEGER, 1, "colA", &schema_right);
+    auto column_value_expression3 = new ColumnValueExpression(TypeID::INTEGER, 0, "colA", &schema_left);
+
+    // generate tuple
+    Tuple tuple1, tuple2, tuple3;
+    auto valueA1 = Value((1));
+    auto valueB1 = Value((20010310));
+    auto valueC1 = Value((24));
+    auto valueD1 = Value(3.14159);
+    tuple1 = Tuple({valueA1, valueB1, valueC1, valueD1}, schema_left);
+
+    auto valueA2 = Value((42));
+    auto valueB2 = Value(3.14159);
+    tuple2 = Tuple({valueA2, valueB2}, schema_right);
+
+    tuple3 = Tuple({valueA1, valueB1, valueA2, valueD1}, schema_left);
+
+    auto operator_expression1 = new OperatorExpression(
+        ExpressionType::OperatorExpression_Add, column_value_expression1, column_value_expression2);
+    EXPECT_EQ(operator_expression1->GetReturnType(), TypeID::INTEGER);
+    EXPECT_EQ(operator_expression1->Evaluate(&tuple1, &tuple2), Value(66));
+
+    auto operator_expression2 = new OperatorExpression(
+        ExpressionType::OperatorExpression_Subtract, column_value_expression3, column_value_expression2);
+    EXPECT_EQ(operator_expression2->GetReturnType(), TypeID::INTEGER);
+    EXPECT_EQ(operator_expression2->Evaluate(&tuple1, &tuple2), Value(-41));
+
+    delete column_value_expression1;
+    delete column_value_expression2;
+    delete column_value_expression3;
+    delete operator_expression1;
+    delete operator_expression2;
+}
+
 
 
 } // namespace SimpleDB

@@ -198,6 +198,21 @@ table_test/fast:
 .PHONY : table_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/metadata_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
+.PHONY : test/CMakeFiles/metadata_test.dir/rule
+
+# Convenience name for target.
+metadata_test: test/CMakeFiles/metadata_test.dir/rule
+
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/show-tests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
 .PHONY : test/CMakeFiles/show-tests.dir/rule
@@ -256,36 +271,6 @@ unittests: test/CMakeFiles/unittests.dir/rule
 unittests/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
 .PHONY : unittests/fast
-
-# Convenience name for target.
-test/CMakeFiles/metadata_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
-.PHONY : test/CMakeFiles/metadata_test.dir/rule
-
-# Convenience name for target.
-metadata_test: test/CMakeFiles/metadata_test.dir/rule
-
-.PHONY : metadata_test
-
-# fast build rule for target.
-metadata_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/buffer_manager_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_manager_test.dir/rule
-.PHONY : test/CMakeFiles/buffer_manager_test.dir/rule
-
-# Convenience name for target.
-buffer_manager_test: test/CMakeFiles/buffer_manager_test.dir/rule
-
-.PHONY : buffer_manager_test
-
-# fast build rule for target.
-buffer_manager_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
-.PHONY : buffer_manager_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/file_test.dir/rule:
@@ -376,6 +361,36 @@ expreesion_test: test/CMakeFiles/expreesion_test.dir/rule
 expreesion_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
 .PHONY : expreesion_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/buffer_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_manager_test.dir/rule
+.PHONY : test/CMakeFiles/buffer_manager_test.dir/rule
+
+# Convenience name for target.
+buffer_manager_test: test/CMakeFiles/buffer_manager_test.dir/rule
+
+.PHONY : buffer_manager_test
+
+# fast build rule for target.
+buffer_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
+.PHONY : buffer_manager_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/other_executors_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/other_executors_test.dir/rule
+.PHONY : test/CMakeFiles/other_executors_test.dir/rule
+
+# Convenience name for target.
+other_executors_test: test/CMakeFiles/other_executors_test.dir/rule
+
+.PHONY : other_executors_test
+
+# fast build rule for target.
+other_executors_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/build
+.PHONY : other_executors_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/seqscan_executor_test.dir/rule:
@@ -571,6 +586,33 @@ execution/expreesion_test.s: execution/expreesion_test.cc.s
 execution/expreesion_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/execution/expreesion_test.cc.s
 .PHONY : execution/expreesion_test.cc.s
+
+execution/other_executors_test.o: execution/other_executors_test.cc.o
+
+.PHONY : execution/other_executors_test.o
+
+# target to build an object file
+execution/other_executors_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/execution/other_executors_test.cc.o
+.PHONY : execution/other_executors_test.cc.o
+
+execution/other_executors_test.i: execution/other_executors_test.cc.i
+
+.PHONY : execution/other_executors_test.i
+
+# target to preprocess a source file
+execution/other_executors_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/execution/other_executors_test.cc.i
+.PHONY : execution/other_executors_test.cc.i
+
+execution/other_executors_test.s: execution/other_executors_test.cc.s
+
+.PHONY : execution/other_executors_test.s
+
+# target to generate assembly for a file
+execution/other_executors_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/execution/other_executors_test.cc.s
+.PHONY : execution/other_executors_test.cc.s
 
 execution/seqscan_executor_test.o: execution/seqscan_executor_test.cc.o
 
@@ -882,12 +924,11 @@ help:
 	@echo "... edit_cache"
 	@echo "... recovery_test"
 	@echo "... table_test"
+	@echo "... metadata_test"
 	@echo "... show-tests"
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
-	@echo "... metadata_test"
-	@echo "... buffer_manager_test"
 	@echo "... file_test"
 	@echo "... test"
 	@echo "... tuple_test"
@@ -895,6 +936,8 @@ help:
 	@echo "... file_manager_test"
 	@echo "... lock_manager_test"
 	@echo "... expreesion_test"
+	@echo "... buffer_manager_test"
+	@echo "... other_executors_test"
 	@echo "... seqscan_executor_test"
 	@echo "... page_test"
 	@echo "... list_install_components"
@@ -915,6 +958,9 @@ help:
 	@echo "... execution/expreesion_test.o"
 	@echo "... execution/expreesion_test.i"
 	@echo "... execution/expreesion_test.s"
+	@echo "... execution/other_executors_test.o"
+	@echo "... execution/other_executors_test.i"
+	@echo "... execution/other_executors_test.s"
 	@echo "... execution/seqscan_executor_test.o"
 	@echo "... execution/seqscan_executor_test.i"
 	@echo "... execution/seqscan_executor_test.s"

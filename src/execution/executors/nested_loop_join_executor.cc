@@ -17,15 +17,15 @@ bool NestedLoopJoinExecutor::Next(Tuple *tuple) {
     Tuple inner_tuple;
 
     auto node = GetPlanNode<NestedLoopJoinPlan>();
-
+    
     // Time complexity is n^2 
     while (left_child_->Next(&outer_tuple)) {
         while (right_child_->Next(&inner_tuple)) {
-            
+
             // if predicate is nullptr, we just return this tuple
             // and if statisfy conditions, return this tuple to father node  
             if (node.predicate_ != nullptr && 
-                !node.predicate_->Evaluate(&inner_tuple, &outer_tuple).IsTrue()) {
+                node.predicate_->Evaluate(&outer_tuple, &inner_tuple).IsFalse()) {
                 continue;
             }
 
@@ -35,7 +35,6 @@ bool NestedLoopJoinExecutor::Next(Tuple *tuple) {
 
             SIMPLEDB_ASSERT(column_count == static_cast<int>(node.value_expressions_.size()), 
                             "size not match");
-
 
             // update tmp_tuple, only need to update the column 
             // which exists in output schema
