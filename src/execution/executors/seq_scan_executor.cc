@@ -25,16 +25,19 @@ bool SeqScanExecutor::Next(Tuple *tuple) {
         // this tuple is not statify request
         // skip it and move to the next tuple
         if (node.predicate_ && 
-            !node.predicate_->Evaluate(&tmp_tuple, nullptr).IsTrue()) {
+            !node.predicate_->Evaluate(&tmp_tuple, *table_schema_).IsTrue()) {
             continue;
         }
         
-        *tuple = tmp_tuple.KeyFromTuple(table_schema_, node.schema_);
+        *tuple = tmp_tuple.KeyFromTuple(table_schema_, node.schema_.get());
         return true;
     }
 
     return false;
 }
+
+// nested join
+// 
 
 
 } // namespace SimpleDB

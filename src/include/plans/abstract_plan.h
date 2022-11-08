@@ -25,10 +25,18 @@ enum class PlanType {
  * Base abstract class for plan nodes.
  */
 class AbstractPlan {
+
+
+public:
+
+
+using SchemaRef = std::shared_ptr<Schema>;
+
+
 public:
 
     AbstractPlan(PlanType type, 
-                 Schema *schema, 
+                 SchemaRef schema, 
                  std::vector<AbstractPlan *> &&children)
         : schema_(schema), children_(std::move(children)), type_(type) {}
     
@@ -62,7 +70,7 @@ protected:
     // out put schema for current node
     // why we need schema instead of schema?
     // becaues 
-    Schema *schema_;
+    SchemaRef schema_;
     
     // children nodes
     std::vector<AbstractPlan *> children_;

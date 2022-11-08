@@ -18,7 +18,15 @@ public:
           val_(val) {}
     
     
-    Value Evaluate(const Tuple *tuple_left, const Tuple *tuple_right) const override;
+    Value Evaluate(const Tuple *tuple, const Schema &schema) const override;
+
+    Value EvaluateJoin(const Tuple *left_tuple, const Schema &left_schema,
+                       const Tuple *right_tuple, const Schema &right_schema) const override;
+
+
+    std::string ToString() const override {
+        return val_.to_string();
+    }
 
 private:
 

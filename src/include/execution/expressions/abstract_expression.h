@@ -39,6 +39,28 @@ enum class ExpressionType {
 
 };
 
+/**
+* @brief identify a column 
+*/
+class ColumnRef {
+public:
+    
+
+    ColumnRef() = default;
+
+    ColumnRef(const std::string &table_name, 
+              const std::string &column_name)
+        : table_name_(table_name), column_name_(column_name) {}
+
+    std::string table_name_;
+
+    std::string column_name_;
+
+    std::string ToString() const {
+        return table_name_+"."+column_name_;
+    }
+};
+
 
 /**
 * @brief 
@@ -50,6 +72,9 @@ enum class ExpressionType {
 class AbstractExpression {
 public:
 
+    using SchemaRef = std::shared_ptr<Schema>;
+    using AbstractExpressionRef = std::shared_ptr<AbstractExpression>;
+
 
     virtual ~AbstractExpression() = default;
 
@@ -60,19 +85,33 @@ public:
     * @param ret_type 
     */
     AbstractExpression(ExpressionType type, 
-                       std::vector<const AbstractExpression *> &&children, 
+                       std::vector<AbstractExpressionRef> children, 
                        TypeID ret_type)
         : type_(type), children_(std::move(children)), ret_type_(ret_type) {}
     
 
     /**
     * @brief 
-    * Evaluate tuple
-    * @param tuple_left 
-    * @param tuple_right 
+    * Evaluate tuple which often be used to scan executor
+    * @param tuple
+    * @param schema 
     * @return Value 
     */
-    virtual Value Evaluate(const Tuple *tuple_left, const Tuple *tuple_right) const = 0;
+    virtual Value Evaluate(const Tuple *tuple, const Schema &schema) const = 0;
+
+    /**
+    * @brief
+    * Evaluate tuple which often be used to scan executor
+    * @param left_tuple
+    * @param left_schema
+    * @param right_tuple
+    * @param right_schema
+    */
+    virtual Value EvaluateJoin(const Tuple *left_tuple, const Schema &left_schema,
+                               const Tuple *right_tuple, const Schema &right_schema) const = 0;
+
+
+    virtual std::string ToString() const = 0;
 
 
     /**
@@ -81,7 +120,7 @@ public:
     * @param idx 
     * @return const AbstractExpression* 
     */
-    inline const AbstractExpression *GetChildAt(uint32_t idx) const {
+    inline const AbstractExpressionRef &GetChildAt(uint32_t idx) const {
         SIMPLEDB_ASSERT(idx < children_.size(), "index out of bounds");
         return children_[idx];
     }
@@ -92,7 +131,7 @@ public:
      * Get all child expressions
      * @return const std::vector<const AbstractExpression *>& 
      */
-    inline const std::vector<const AbstractExpression *> &GetChilren() const {
+    inline const std::vector<AbstractExpressionRef> &GetChilren() const {
         return children_;
     }
 
@@ -108,12 +147,17 @@ public:
     }
 
 
+    inline ExpressionType GetExpressionType() const {
+        return type_;
+    }
+
+
 protected:
     // current expression type
     ExpressionType type_;
     
     // Children node of this expression
-    std::vector<const AbstractExpression *> children_;
+    std::vector<AbstractExpressionRef> children_;
     
     // return type of this expression. 
     TypeID ret_type_;

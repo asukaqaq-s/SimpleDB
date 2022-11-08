@@ -28,7 +28,7 @@ void TableIterator::GetTuple() {
 }
 
 const Tuple &TableIterator::operator*() {
-    SIMPLEDB_ASSERT(rid_.GetBlockNum() >= 0 && rid_.GetSlot() >= -1, 
+    SIMPLEDB_ASSERT(rid_.GetBlockNum() >= 0 && rid_.GetSlot() >= 0, 
                     "Invalid Table Iterator");
     // maybe we can use the cache of tuple
     // if tuple.rid_ == this.rid_, we don't need to call this method
@@ -49,7 +49,6 @@ Tuple *TableIterator::operator->() {
 
 // logic here is very similar to TableHeap::Begin()
 TableIterator TableIterator::operator++() {
-
     // get resource
     txn_->LockShared(GetBlock());
     auto *bfm = txn_->GetBufferManager();

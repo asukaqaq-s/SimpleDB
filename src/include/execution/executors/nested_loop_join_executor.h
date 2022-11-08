@@ -29,6 +29,10 @@ private:
 
     std::unique_ptr<AbstractExecutor> left_child_;
     std::unique_ptr<AbstractExecutor> right_child_;
+
+    // value expression array which help us construct a new output_tuple
+    // cache to avoid multipy penalty.
+    std::vector<std::unique_ptr<ColumnValueExpression>> value_expressions_;
 };
 
 

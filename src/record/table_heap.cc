@@ -307,6 +307,9 @@ TableIterator TableHeap::Begin(Transaction *txn) {
         txn->UnLock(GetBlock(rid));
     }
 
+    if (rid.GetSlot() == -1) {
+        return End();
+    }
     return TableIterator(txn, this, rid);
 }
 

@@ -146,6 +146,26 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/lexer.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/parse/lexer.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/parse_query.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/parse/parse_query.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/stream_reader.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/parse/stream_reader.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/stream_tokenizer.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/parse/stream_tokenizer.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o -c /home/asuka/workbench/project/SimpleDB/src/record/table_heap.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/src/record/table_heap.cc"
 },
@@ -218,6 +238,16 @@
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/table_test.dir/record/table_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/record/table_test.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/test/record/table_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/tokenizer_test.dir/parse/tokenizer_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/parse/tokenizer_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/parse/tokenizer_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/select_parse_test.dir/parse/select_parse_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/parse/select_parse_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/parse/select_parse_test.cc"
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",

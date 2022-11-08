@@ -7,12 +7,12 @@
 namespace SimpleDB {
 
 /**
- * @brief 
- * DeletePlan, it will delete all the tuple from child executor
- */
+* @brief 
+* DeletePlan, it will delete the specified tuple from child executor
+*/
 class DeletePlan : public AbstractPlan {
     
-    friend class DeleteExecutor;
+friend class DeleteExecutor;
 
 public:
     

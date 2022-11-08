@@ -128,8 +128,11 @@ TableInfo* TableManager::GetTable(const std::string &table_name,
         }
     }
     
-    SIMPLEDB_ASSERT(schema_size > 0, "schema_size error");
-    
+    if (schema_size == 0) {
+        // this table is not exist
+        return nullptr;
+    }
+
     // Retrieve the offset of columns
     std::vector<Column> vec;
     
@@ -150,10 +153,6 @@ TableInfo* TableManager::GetTable(const std::string &table_name,
     }
 
     Schema schema(schema_size, vec);
-    if (schema.GetLength() == 0) {
-        // this table is not exist
-        return nullptr;
-    }
     
     latch.lock();
     auto table_info = std::make_unique<TableInfo>(schema, table_name,

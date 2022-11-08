@@ -30,6 +30,20 @@ public:
     std::string reason_;
 };
 
+
+
+class BadSyntaxException : public std::exception {
+    
+public:
+
+    BadSyntaxException(const std::string &reason) 
+        : reason_(reason) {}
+
+    std::string reason_;
+};
+
+
+
 } // namespace SimpleDB
 
 

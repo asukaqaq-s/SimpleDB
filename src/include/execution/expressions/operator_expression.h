@@ -9,11 +9,64 @@ class OperatorExpression : public AbstractExpression {
 
 public:
     
-    OperatorExpression(ExpressionType type, AbstractExpression *left, AbstractExpression *right)
+    OperatorExpression(ExpressionType type, AbstractExpressionRef left, AbstractExpressionRef right)
         : AbstractExpression(type, {left, right}, DeduceReturnType(type, left, right)) {}
 
     
-    Value Evaluate(const Tuple *tuple_left, const Tuple *tuple_right) const override;
+    Value Evaluate(const Tuple *tuple, const Schema &schema) const override;
+
+
+    Value EvaluateJoin(const Tuple *left_tuple, const Schema &left_schema,
+                       const Tuple *right_tuple, const Schema &right_schema) const override;
+
+
+
+    std::string ToString() const override {
+        std::string left = children_[0]->ToString();
+        std::string right = children_[1]->ToString();
+        std::string tmp;
+
+
+        switch (type_)
+        {
+        case ExpressionType::OperatorExpression_Add:
+            tmp = " + ";
+            break;
+        
+        case ExpressionType::OperatorExpression_Subtract:
+            tmp = " - ";
+            break;
+        
+        case ExpressionType::OperatorExpression_Multiply:
+            tmp = " * ";
+            break;
+        
+        case ExpressionType::OperatorExpression_Divide:
+            tmp = " / ";
+            break;
+        
+        case ExpressionType::OperatorExpression_Modulo:
+            tmp = " % ";
+            break;
+        
+        case ExpressionType::OperatorExpression_Min:
+            SIMPLEDB_ASSERT(false, "not implement");
+            break;
+        
+        case ExpressionType::OperatorExpression_Max:
+            SIMPLEDB_ASSERT(false, "not implement");
+            break;
+        
+        default:
+            SIMPLEDB_ASSERT(false, "can't reach");
+            break;
+        }
+
+
+        
+        return left + tmp + right;
+    }
+
 
 private:
 
@@ -26,7 +79,7 @@ private:
     * @param right 
     * @return TypeID 
     */
-    TypeID DeduceReturnType(ExpressionType type, AbstractExpression *left, AbstractExpression *right) {
+    TypeID DeduceReturnType(ExpressionType type, AbstractExpressionRef left, AbstractExpressionRef right) {
         switch (type) {
         
         // fall though

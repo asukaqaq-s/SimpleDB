@@ -13,7 +13,7 @@ class ComparisonExpression : public AbstractExpression {
 
 public:
     
-    ComparisonExpression(ExpressionType type, const AbstractExpression *left, const AbstractExpression *right)
+    ComparisonExpression(ExpressionType type, AbstractExpressionRef left, AbstractExpressionRef right)
         : AbstractExpression(type, {left, right}, TypeID::INTEGER) {
         // check the expression type
         switch (type) {
@@ -32,7 +32,44 @@ public:
 
     }
     
-    Value Evaluate(const Tuple *tuple_left, const Tuple *tuple_right) const override;
+    Value Evaluate(const Tuple *tuple, const Schema &schema) const override;
+
+    Value EvaluateJoin(const Tuple *left_tuple, const Schema &letf_schema,
+                       const Tuple *right_tuple, const Schema &right_schema) const override;
+    
+
+    std::string ToString() const override {
+        std::stringstream s;
+        s << children_[0]->ToString();
+        s << " ";
+
+        switch (type_)
+        {
+        case ExpressionType::ComparisonExpression_Equal:
+            s << "=";
+            break;
+        case ExpressionType::ComparisonExpression_NotEqual:
+            s << "!=";
+            break;
+        case ExpressionType::ComparisonExpression_GreaterThan:
+            s << ">";
+            break;
+        case ExpressionType::ComparisonExpression_GreaterThanEquals:
+            s << ">=";
+            break;
+        case ExpressionType::ComparisonExpression_LessThan:
+            s << "<";
+            break;
+        case ExpressionType::ComparisonExpression_LessThanEquals:
+            s << "<=";
+            break;
+        default:
+            break;
+        }
+
+        s << " " << children_[1]->ToString();
+        return s.str();
+    }
 };
 
 } // namespace SimpleDB

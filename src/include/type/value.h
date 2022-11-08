@@ -252,7 +252,7 @@ public:
             return Value(*ival_ + *obj.ival_);
         }
         if (sval_) {
-            return Value(*sval_ + *obj.sval_, type_id_);
+            SIMPLEDB_ASSERT(false, "not implement");
         }
         if (dval_) {
             return Value(*dval_ + *obj.dval_);

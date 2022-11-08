@@ -7,13 +7,10 @@ namespace SimpleDB {
 
 /**
 * @brief 
-* ColumnValueExpression is used to generate the value based on
-* value index and tuple index.
-* it will be used to some term such as "F=C" and "F1=F2", 
-* f is a field_name 
+* ColumnValueExpression is used to generate the value based on column_name
+* it will be used to some term such as "F=C" and "F1=F2", f is a column_name 
 */
 class ColumnValueExpression : public AbstractExpression {
-
 
 public:
     
@@ -21,48 +18,46 @@ public:
     * @brief Construct a new Column Value Expression object.
     * 
     * @param ret_type Return Type
-    * @param tuple_idx tuple idx, could be 0 or 1, indicating tuple is lhs or rhs
-    * @param col_idx index of the column we need to extract
-    * @param schema original tuple schema
+    * @param column_name find the column we need to extract
     */
-    ColumnValueExpression(TypeID ret_type, int tuple_idx, 
-                          const std::string &field_name, 
-                          Schema *schema)
+    ColumnValueExpression(TypeID ret_type, 
+                          const std::string &column_name)
         : AbstractExpression(ExpressionType::ColumnValueExpression, {}, ret_type),
-          tuple_idx_(tuple_idx),
-          field_name_(field_name),
-          schema_(schema) {
-            
-        // check the value type based on schema and col idx
-        SIMPLEDB_ASSERT(schema->GetColumn(field_name).GetType() == ret_type, "logic error");
-    }
+          column_name_(column_name) {}
 
 
     /**
     * @brief columns_value_expression's evaluate method just 
     * returns the value read from tuple 
     */
-    Value Evaluate(const Tuple *tuple_left, const Tuple *tuple_right) const override;
+    Value Evaluate(const Tuple *tuple, const Schema &schema) const override;
+
     
+    /**
+    * @brief evaluatejoin method help us find which tuple we need to evaluate
+    * and get value from this tuple
+    * @param left_tuple
+    * @param right_tuple
+    * @param left_schema the schema of left_tuple
+    * @param right_schema the schema of right_tuple
+    */
+    Value EvaluateJoin(const Tuple *left_tuple, const Schema &left_schema,
+                       const Tuple *right_tuple, const Schema &right_schema) const override;
 
-    inline int GetTupleIdx() const {
-        return tuple_idx_;
+
+    inline std::string GetColumnName() const {
+        return column_name_;
     }
 
-    inline std::string GetFieldName() const {
-        return field_name_;
+    std::string ToString() const override {
+        return column_name_;
     }
+
 
 private:
-
-    // tuple idx, 0 for left tuple, 1 for right tuple
-    int tuple_idx_;
     
-    // field name
-    std::string field_name_;
-    
-    // tuple schema
-    Schema *schema_;
+    // column name
+    std::string column_name_;
 };
 
 }

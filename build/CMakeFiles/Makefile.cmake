@@ -85,6 +85,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/SimpleDB_lib.dir/DependInfo.cmake"
   "test/CMakeFiles/recovery_test.dir/DependInfo.cmake"
   "test/CMakeFiles/table_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/tokenizer_test.dir/DependInfo.cmake"
+  "test/CMakeFiles/select_parse_test.dir/DependInfo.cmake"
   "test/CMakeFiles/metadata_test.dir/DependInfo.cmake"
   "test/CMakeFiles/show-tests.dir/DependInfo.cmake"
   "test/CMakeFiles/transaction_test.dir/DependInfo.cmake"

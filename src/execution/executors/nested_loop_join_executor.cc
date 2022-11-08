@@ -2,12 +2,18 @@
 #define NESTED_LOOP_JOIN_EXECUTOR_CC
 
 #include "execution/executors/nested_loop_join_executor.h"
+#include "execution/expressions/column_value_expression.h"
 
 namespace SimpleDB {
 
 void NestedLoopJoinExecutor::Init() {
     left_child_->Init();
     right_child_->Init();
+
+    for (const auto &t:node_->GetSchema().GetColumns()) {
+        value_expressions_.emplace_back(
+            std::make_unique<ColumnValueExpression>(t.GetType(), t.GetName()));
+    }
 }
 
 
@@ -39,8 +45,9 @@ bool NestedLoopJoinExecutor::Next(Tuple *tuple) {
             // update tmp_tuple, only need to update the column 
             // which exists in output schema
             for (int i = 0;i < column_count;i ++) {
+                
                 // left and right children may have columns with duplicate names
-                // so read which children is depend on user.
+                // so read which children is depent on user.
                 value_list.emplace_back(node.value_expressions_[i]
                                         ->Evaluate(&outer_tuple, &inner_tuple));
             }

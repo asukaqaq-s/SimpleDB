@@ -24,11 +24,11 @@ public:
     * @brief Construct a new Seq Scan Plan object.
     * Since SeqScanPlan must be the leaf node, we don't need to provide child nodes here.
     * 
-    * @param schema Output Schema
+    * @param schema Output Schema which consists of the columns of current table
     * @param predicate Optional Preicate
     * @param table_name Oid of table that we scanned
     */
-    SeqScanPlan(Schema *schema, AbstractExpression *predicate, const std::string &table_name)
+    SeqScanPlan(SchemaRef schema, AbstractExpression *predicate, const std::string &table_name)
         : AbstractPlan(PlanType::SeqScanPlan, schema, {}),
           predicate_(predicate),
           table_name_(table_name) {}

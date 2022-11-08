@@ -26,24 +26,24 @@ public:
     /**
     * @brief Construct a new Nested Loop Join Plan object.
     * 
-    * @param schema output schema
+    * @param schema output schema which maybe consists of the columns of two children
     * @param children children plan
     * @param predicate predicate used to evaluate the legality of output tuple.
     * @param value_expressions expressions used to generate value for new tuple
     */
-    NestedLoopJoinPlan(Schema *schema, std::vector<AbstractPlan *> &&children, AbstractExpression *predicate,
-                       std::vector<AbstractExpression*> value_expressions)
+    NestedLoopJoinPlan(SchemaRef schema, std::vector<AbstractPlan *> &&children, 
+                       AbstractExpression *predicate)
         : AbstractPlan(PlanType::NestedLoopJoinPlan, schema, std::move(children)),
-          predicate_(predicate), value_expressions_(value_expressions) {
+          predicate_(predicate) {
         
         SIMPLEDB_ASSERT(predicate_->GetReturnType() == TypeID::INTEGER, "Invalid predicate");
         SIMPLEDB_ASSERT(children_.size() == 2, "Wrong children size");
     }
 
-    NestedLoopJoinPlan(Schema *schema, AbstractPlan *left, AbstractPlan *right, AbstractExpression *predicate, 
-                       std::vector<AbstractExpression*> value_expressions)
+    NestedLoopJoinPlan(SchemaRef schema, AbstractPlan *left, AbstractPlan *right, 
+                       AbstractExpression *predicate)
         : AbstractPlan(PlanType::NestedLoopJoinPlan, schema, {left, right}),
-          predicate_(predicate), value_expressions_(value_expressions){
+          predicate_(predicate) {
 
         SIMPLEDB_ASSERT(predicate_->GetReturnType() == TypeID::INTEGER, "Invalid predicate");
         SIMPLEDB_ASSERT(children_.size() == 2, "Wrong children size");
@@ -55,9 +55,6 @@ private:
 
     // predicate used to evaluate the legality
     AbstractExpression *predicate_;
-
-    // value expression array which indicate us to read left_child or right_child
-    std::vector<AbstractExpression*> value_expressions_;
 };
 
 } // namespace SimpleDB

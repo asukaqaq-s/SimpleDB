@@ -259,6 +259,32 @@ table_test/fast:
 .PHONY : table_test/fast
 
 #=============================================================================
+# Target rules for targets named tokenizer_test
+
+# Build rule for target.
+tokenizer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tokenizer_test
+.PHONY : tokenizer_test
+
+# fast build rule for target.
+tokenizer_test/fast:
+	$(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
+.PHONY : tokenizer_test/fast
+
+#=============================================================================
+# Target rules for targets named select_parse_test
+
+# Build rule for target.
+select_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 select_parse_test
+.PHONY : select_parse_test
+
+# fast build rule for target.
+select_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/select_parse_test.dir/build.make test/CMakeFiles/select_parse_test.dir/build
+.PHONY : select_parse_test/fast
+
+#=============================================================================
 # Target rules for targets named metadata_test
 
 # Build rule for target.
@@ -499,6 +525,8 @@ help:
 	@echo "... SimpleDB_lib"
 	@echo "... recovery_test"
 	@echo "... table_test"
+	@echo "... tokenizer_test"
+	@echo "... select_parse_test"
 	@echo "... metadata_test"
 	@echo "... show-tests"
 	@echo "... transaction_test"
