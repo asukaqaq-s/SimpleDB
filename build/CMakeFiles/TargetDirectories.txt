@@ -52,6 +52,7 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/select_execution_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/tuple_test.dir

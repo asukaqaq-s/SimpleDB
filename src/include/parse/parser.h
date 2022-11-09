@@ -44,6 +44,7 @@ public:
 
     std::unique_ptr<SelectStatement> ParseSelect();
 
+    
 
 private: // some helper functions that are often used
     
@@ -74,13 +75,13 @@ private: // methods for parsing where clause
     * @brief the method for parsing column value
     * @return the columnvalue
     */
-    std::shared_ptr<ColumnValueExpression> ParseColumnValue(int index);
+    std::shared_ptr<ColumnValueExpression> ParseColumnValue();
 
     /**
     * @brief parse a columnvalue or constantvalue
     * @return a column_value_expression or constant_value_expression
     */
-    std::shared_ptr<AbstractExpression> ParseLeafExpression(int index);
+    std::shared_ptr<AbstractExpression> ParseLeafExpression();
 
     /**
     * @brief Multiple arithmetic operations are not supported.
@@ -215,7 +216,6 @@ public:
     Schema ParseColumnType(const std::string &field_name);
 
 
-
 private:
 
     Lexer lexer_;
@@ -225,6 +225,10 @@ private:
     // since a parser usually only parse one statement
     // i think cache table_list can help us check legality.
     std::set<std::string> table_list_;
+
+    // since a parser usually only parse one statement
+    // i think cache rename_list can help us make select
+    std::vector<ColumnRef> rename_list_;
 };
 
 }

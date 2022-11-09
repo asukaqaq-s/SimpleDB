@@ -303,6 +303,21 @@ unittests/fast:
 .PHONY : unittests/fast
 
 # Convenience name for target.
+test/CMakeFiles/select_execution_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/select_execution_test.dir/rule
+.PHONY : test/CMakeFiles/select_execution_test.dir/rule
+
+# Convenience name for target.
+select_execution_test: test/CMakeFiles/select_execution_test.dir/rule
+
+.PHONY : select_execution_test
+
+# fast build rule for target.
+select_execution_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
+.PHONY : select_execution_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/file_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_test.dir/rule
 .PHONY : test/CMakeFiles/file_test.dir/rule
@@ -806,6 +821,33 @@ metadata/metadata_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
 .PHONY : metadata/metadata_test.cc.s
 
+parse/select_execution_test.o: parse/select_execution_test.cc.o
+
+.PHONY : parse/select_execution_test.o
+
+# target to build an object file
+parse/select_execution_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/parse/select_execution_test.cc.o
+.PHONY : parse/select_execution_test.cc.o
+
+parse/select_execution_test.i: parse/select_execution_test.cc.i
+
+.PHONY : parse/select_execution_test.i
+
+# target to preprocess a source file
+parse/select_execution_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/parse/select_execution_test.cc.i
+.PHONY : parse/select_execution_test.cc.i
+
+parse/select_execution_test.s: parse/select_execution_test.cc.s
+
+.PHONY : parse/select_execution_test.s
+
+# target to generate assembly for a file
+parse/select_execution_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/parse/select_execution_test.cc.s
+.PHONY : parse/select_execution_test.cc.s
+
 parse/select_parse_test.o: parse/select_parse_test.cc.o
 
 .PHONY : parse/select_parse_test.o
@@ -1015,6 +1057,7 @@ help:
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
+	@echo "... select_execution_test"
 	@echo "... file_test"
 	@echo "... test"
 	@echo "... tuple_test"
@@ -1065,6 +1108,9 @@ help:
 	@echo "... metadata/metadata_test.o"
 	@echo "... metadata/metadata_test.i"
 	@echo "... metadata/metadata_test.s"
+	@echo "... parse/select_execution_test.o"
+	@echo "... parse/select_execution_test.i"
+	@echo "... parse/select_execution_test.s"
 	@echo "... parse/select_parse_test.o"
 	@echo "... parse/select_parse_test.i"
 	@echo "... parse/select_parse_test.s"

@@ -193,6 +193,7 @@ src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc
 src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/execution/executors/abstract_executor.h
 src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/execution/executors/nested_loop_join_executor.h
 src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/execution/expressions/abstract_expression.h
+src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/execution/expressions/column_value_expression.h
 src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/file/block_id.h
 src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/execution/executors/nested_loop_join_executor.cc.o: ../src/include/file/page.h

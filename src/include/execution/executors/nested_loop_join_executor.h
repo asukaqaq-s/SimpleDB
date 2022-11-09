@@ -3,6 +3,7 @@
 
 #include "execution/executors/abstract_executor.h"
 #include "plans/nested_loop_join_plan.h"
+#include "execution/expressions/column_value_expression.h"
 
 #include <memory>
 
@@ -27,8 +28,14 @@ public:
 
 private:
 
+    Tuple GenerateOutputTuple(Tuple *right_tuple);
+
+
     std::unique_ptr<AbstractExecutor> left_child_;
     std::unique_ptr<AbstractExecutor> right_child_;
+
+    // cache left tuple
+    std::unique_ptr<Tuple> left_tuple_;
 
     // value expression array which help us construct a new output_tuple
     // cache to avoid multipy penalty.

@@ -265,7 +265,7 @@ TEST(SelectParseTest, WhereSimpleTest) {
                   ExpressionType::ColumnValueExpression);
         EXPECT_EQ(select->where_->GetChildAt(1)->GetExpressionType(), 
                   ExpressionType::ConstantValueExpression);
-        EXPECT_EQ(select->where_->GetChildAt(1)->Evaluate(nullptr, nullptr), Value(10));
+        // EXPECT_EQ(select->where_->GetChildAt(1)->Evaluate(nullptr, nullptr), Value(10));
 
         EXPECT_EQ(select->where_->ToString(), "cola = 10");
     }
@@ -281,7 +281,7 @@ TEST(SelectParseTest, WhereSimpleTest) {
                   ExpressionType::ColumnValueExpression);
         EXPECT_EQ(select->where_->GetChildAt(0)->GetExpressionType(), 
                   ExpressionType::ConstantValueExpression);
-        EXPECT_EQ(select->where_->GetChildAt(0)->Evaluate(nullptr, nullptr), Value(10));
+        // EXPECT_EQ(select->where_->GetChildAt(0)->Evaluate(nullptr, nullptr), Value(10));
 
         EXPECT_EQ(select->where_->ToString(), "10 = cola");
     }
@@ -323,7 +323,7 @@ TEST(SelectParseTest, WhereSimpleTest) {
             std::string s = "select test2.cola, colb from test1, test2 where cole >= test1.colA";
             Parser p(s, txn.get(), mdm.get());
             auto select = p.ParseSelect();
-            EXPECT_EQ(select->where_->ToString(), "cole >= cola");
+            EXPECT_EQ(select->where_->ToString(), "cole >= test1.cola");
         } catch (BadSyntaxException &e) {
             std::cout << e.reason_ << std::endl;
         }
@@ -611,6 +611,7 @@ TEST(SelectParseTest, ExecutionTest) {
     // --------------------
     //  insert tuple
     // --------------------
+    int request_cnt = 0;
     std::function<Tuple (Schema schema)> GetRandomTuple = [&](Schema schema){
         std::vector<Value> value_list;
         for (auto t:schema.GetColumns()) {
@@ -624,27 +625,33 @@ TEST(SelectParseTest, ExecutionTest) {
                 value_list.emplace_back(Value(GetRandomString(), TypeID::VARCHAR));
             }
         }
-
+        if (value_list[0] + value_list[2] == 100) {
+            request_cnt++;
+        }
         return Tuple(value_list, schema);
     };
 
-    for (int i = 0;i < 100;i ++) {
+    for (int i = 0;i < 1000;i ++) {
         table_info->table_heap_->Insert(txn.get(), GetRandomTuple(schema1), nullptr);
     }
 
     ExecutionContext context(mdm.get(), buf_manager.get(), txn.get(), &txn_mgr);
-    std::string s = "select colA, colb from test1 where colA + colc = 10";
+    std::string s = "select colA, colb from test1 where colA + colc = 100";
     Parser p(s, txn.get(), mdm.get());
     auto select = p.ParseSelect();
-    auto seqscannode = std::make_unique<SeqScanPlan>(&schema1, select->where_.get(), test_file);
+    auto seqscannode = std::make_unique<SeqScanPlan>(std::make_shared<Schema>(schema1), select->where_.get(), test_file);
     auto seqscan = std::make_unique<SeqScanExecutor>(&context, seqscannode.get());
     
 
     Tuple tuple;
     seqscan->Init();
+    int cnt = 0;
     while (seqscan->Next(&tuple)) {
+       cnt ++;
        std::cout << tuple.ToString(schema1) << std::endl;
     } 
+    
+    EXPECT_EQ(cnt, request_cnt);
 
 }
 

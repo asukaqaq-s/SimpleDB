@@ -93,7 +93,7 @@ public:
         return columns_[pos];
     }
 
-    inline const std::vector<Column>& GetColumns() const {
+    inline const std::vector<Column> &GetColumns() const {
         return columns_;
     }
     

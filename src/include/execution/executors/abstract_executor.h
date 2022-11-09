@@ -55,7 +55,7 @@ public:
 
 
     Schema GetOutputSchema() {
-        return node_->GetSchema();
+        return *node_->GetSchema();
     }
 
 

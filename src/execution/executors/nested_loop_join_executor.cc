@@ -10,7 +10,11 @@ void NestedLoopJoinExecutor::Init() {
     left_child_->Init();
     right_child_->Init();
 
-    for (const auto &t:node_->GetSchema().GetColumns()) {
+    left_tuple_ = std::make_unique<Tuple> ();
+    // move to the first tuple of left_child
+    left_child_->Next(left_tuple_.get());
+
+    for (const auto &t:node_->GetSchema()->GetColumns()) {
         value_expressions_.emplace_back(
             std::make_unique<ColumnValueExpression>(t.GetType(), t.GetName()));
     }
@@ -19,51 +23,59 @@ void NestedLoopJoinExecutor::Init() {
 
 
 bool NestedLoopJoinExecutor::Next(Tuple *tuple) {
-    Tuple outer_tuple;
-    Tuple inner_tuple;
-
-    auto node = GetPlanNode<NestedLoopJoinPlan>();
+    SIMPLEDB_ASSERT(left_tuple_, "nullptr");
+    Tuple right_tuple;
     
-    // Time complexity is n^2 
-    while (left_child_->Next(&outer_tuple)) {
-        while (right_child_->Next(&inner_tuple)) {
+    auto node = GetPlanNode<NestedLoopJoinPlan>();
 
-            // if predicate is nullptr, we just return this tuple
-            // and if statisfy conditions, return this tuple to father node  
-            if (node.predicate_ != nullptr && 
-                node.predicate_->Evaluate(&outer_tuple, &inner_tuple).IsFalse()) {
+    while (right_child_->Next(&right_tuple)) {
+        if (node.predicate_ != nullptr &&
+            node.predicate_->EvaluateJoin(left_tuple_.get(), 
+                                          left_child_->GetOutputSchema(),
+                                          &right_tuple,
+                                          right_child_->GetOutputSchema()).IsFalse()) {
+            continue;
+        }
+
+        // success, generate a output tuple and return true
+        *tuple = GenerateOutputTuple(&right_tuple);
+        return true; 
+    }
+
+    right_child_->Init();
+
+    while (left_child_->Next(left_tuple_.get())) {
+        while (right_child_->Next(&right_tuple)) {
+            
+            if (node.predicate_ != nullptr &&
+                node.predicate_->EvaluateJoin(left_tuple_.get(), 
+                                              left_child_->GetOutputSchema(),
+                                              &right_tuple,
+                                              right_child_->GetOutputSchema()).IsFalse()) {
                 continue;
             }
 
-            Tuple tmp_tuple;
-            std::vector<Value> value_list;
-            int column_count = node.schema_->GetColumnsCount();
-
-            SIMPLEDB_ASSERT(column_count == static_cast<int>(node.value_expressions_.size()), 
-                            "size not match");
-
-            // update tmp_tuple, only need to update the column 
-            // which exists in output schema
-            for (int i = 0;i < column_count;i ++) {
-                
-                // left and right children may have columns with duplicate names
-                // so read which children is depent on user.
-                value_list.emplace_back(node.value_expressions_[i]
-                                        ->Evaluate(&outer_tuple, &inner_tuple));
-            }
-
-            // generate a tmp tuple
-            // we don't need to set rid, because this tuple not exists in disk
-            *tuple = Tuple(value_list, *node.schema_); 
-
-            return true;
+            // success, generate a ouput tuple and return true
+            *tuple = GenerateOutputTuple(&right_tuple);
+            return true; 
         }
-
-        // let right child points to the first record
         right_child_->Init();
     }
 
     return false;
+}
+
+Tuple NestedLoopJoinExecutor::GenerateOutputTuple(Tuple *right_tuple) {
+    std::vector<Value> value_list;
+
+    for (auto &t:value_expressions_) {
+        value_list.emplace_back(t->EvaluateJoin(left_tuple_.get(), 
+                                                left_child_->GetOutputSchema(),
+                                                right_tuple,
+                                                right_child_->GetOutputSchema()));
+    }
+
+    return Tuple(value_list, *node_->GetSchema());
 }
 
 

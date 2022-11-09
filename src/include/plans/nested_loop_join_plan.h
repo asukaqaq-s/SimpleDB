@@ -36,7 +36,9 @@ public:
         : AbstractPlan(PlanType::NestedLoopJoinPlan, schema, std::move(children)),
           predicate_(predicate) {
         
-        SIMPLEDB_ASSERT(predicate_->GetReturnType() == TypeID::INTEGER, "Invalid predicate");
+        if (predicate_) {
+            SIMPLEDB_ASSERT(predicate_->GetReturnType() == TypeID::INTEGER, "Invalid predicate");
+        }
         SIMPLEDB_ASSERT(children_.size() == 2, "Wrong children size");
     }
 
@@ -44,8 +46,9 @@ public:
                        AbstractExpression *predicate)
         : AbstractPlan(PlanType::NestedLoopJoinPlan, schema, {left, right}),
           predicate_(predicate) {
-
-        SIMPLEDB_ASSERT(predicate_->GetReturnType() == TypeID::INTEGER, "Invalid predicate");
+        if (predicate_) {
+            SIMPLEDB_ASSERT(predicate_->GetReturnType() == TypeID::INTEGER, "Invalid predicate");
+        }
         SIMPLEDB_ASSERT(children_.size() == 2, "Wrong children size");
     }
 

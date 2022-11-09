@@ -42,9 +42,10 @@ public:
     
     virtual ~AbstractPlan() = default;
 
-    Schema GetSchema() const {
-        return *schema_;
+    SchemaRef GetSchema() const {
+        return schema_;
     }
+
 
     /**
     * @brief

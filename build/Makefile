@@ -350,6 +350,19 @@ unittests/fast:
 .PHONY : unittests/fast
 
 #=============================================================================
+# Target rules for targets named select_execution_test
+
+# Build rule for target.
+select_execution_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 select_execution_test
+.PHONY : select_execution_test
+
+# fast build rule for target.
+select_execution_test/fast:
+	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
+.PHONY : select_execution_test/fast
+
+#=============================================================================
 # Target rules for targets named file_test
 
 # Build rule for target.
@@ -532,6 +545,7 @@ help:
 	@echo "... transaction_test"
 	@echo "... lru_replacer_test"
 	@echo "... unittests"
+	@echo "... select_execution_test"
 	@echo "... file_test"
 	@echo "... tuple_test"
 	@echo "... concurrency_test"

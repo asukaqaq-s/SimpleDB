@@ -78,7 +78,7 @@ Tuple UpdateExecutor::GenerateUpdatedTuple(const Tuple &tuple) {
         
         // We will only have one child at most
         // so it always exist in left child node
-        value_list[index] = update_info.expression_->Evaluate(&tuple, nullptr);
+        value_list[index] = update_info.expression_->Evaluate(&tuple, *table_schema_);
     }
     
     // constructor new tuple

@@ -81,6 +81,12 @@ ColumnRef Parser::ParseColumn() {
         throw BadSyntaxException("parse column error: column not exist");
     }
 
+    if (table_name.size()) {
+        // if this column_name includes table_name
+        // we need to add it to rename_list to avoid duplicate name
+        rename_list_.emplace_back(ColumnRef(table_name, column_name));
+    }
+
     return ColumnRef(table_name, column_name);
 }
 
@@ -97,11 +103,10 @@ std::string Parser::ParseTable() {
 
 
 
-
-
-std::shared_ptr<ColumnValueExpression> Parser::ParseColumnValue(int index) {
+std::shared_ptr<ColumnValueExpression> Parser::ParseColumnValue() {
     // check if a column value's legality
     ColumnRef columnref = ParseColumn();
+    bool is_rename = columnref.table_name_.size();
 
     if (columnref.table_name_.empty()) {
         CheckColumnLegality(columnref);
@@ -109,8 +114,15 @@ std::shared_ptr<ColumnValueExpression> Parser::ParseColumnValue(int index) {
     
     auto *schema = analyzer_->GetSchema(columnref.table_name_);
     auto type = schema->GetColumn(columnref.column_name_).GetType();
-    return std::make_shared<ColumnValueExpression> 
-          (type, index, columnref.column_name_, schema);
+
+    if (!is_rename) {
+        return std::make_shared<ColumnValueExpression> 
+               (type, columnref.column_name_);
+    } else {
+        // this table has been renamed, update to avoid error.
+        return std::make_shared<ColumnValueExpression>
+               (type, columnref.ToString());
+    }
 }
 
 
@@ -138,9 +150,9 @@ std::shared_ptr<ConstantValueExpression> Parser::ParseConstantValue() {
 }
 
 
-std::shared_ptr<AbstractExpression> Parser::ParseLeafExpression(int index) {
+std::shared_ptr<AbstractExpression> Parser::ParseLeafExpression() {
     if (lexer_.MatchId()) {
-        return ParseColumnValue(index);
+        return ParseColumnValue();
     }
     else {
         return ParseConstantValue();
@@ -156,7 +168,7 @@ std::shared_ptr<AbstractExpression> Parser::ParseArithmetic() {
     // format: F1 + C or F1 + F2 or C1 + C2 or C + F1
     // C must be integer or decimal
     
-    auto left = ParseLeafExpression(0);
+    auto left = ParseLeafExpression();
 
     // check if need arithmetic, it's optional 
     // if true, we need to execute arithmetic op
@@ -169,7 +181,7 @@ std::shared_ptr<AbstractExpression> Parser::ParseArithmetic() {
         lexer_.EatDelim(lexer_.GetTType());
 
 
-        auto right = ParseLeafExpression(1);
+        auto right = ParseLeafExpression();
         auto left_type = left->GetReturnType();
         auto right_type = right->GetReturnType();
         

@@ -21,6 +21,7 @@ public:
 
     bool Next(Tuple *tuple) override;
 
+
 private:
 
     // stored the pointer to table metadata to avoid additional indirection

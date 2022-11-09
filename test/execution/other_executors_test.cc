@@ -1,37 +1,37 @@
-// #include "log/log_iterator.h"
-// #include "log/log_manager.h"
-// #include "recovery/log_record.h"
-// #include "buffer/buffer_manager.h"
-// #include "gtest/gtest.h"
-// #include "recovery/recovery_manager.h"
-// #include "record/table_heap.h"
-// #include "record/table_iterator.h"
-// #include "execution/expressions/column_value_expression.h"
-// #include "execution/expressions/comparison_expression.h"
-// #include "execution/expressions/conjuction_expression.h"
-// #include "execution/expressions/conjuction_expression.h"
-// #include "execution/expressions/conjuction_expression.h"
-// #include "execution/expressions/constant_value_expression.h"
-// #include "execution/expressions/operator_expression.h"
-// #include "execution/executors/delete_executor.h"
-// #include "execution/executors/insert_executor.h"
-// #include "execution/executors/nested_loop_join_executor.h"
-// #include "execution/executors/seq_scan_executor.h"
-// #include "execution/executors/update_executor.h"
-// #include "execution/execution_engine.h"
+#include "log/log_iterator.h"
+#include "log/log_manager.h"
+#include "recovery/log_record.h"
+#include "buffer/buffer_manager.h"
+#include "gtest/gtest.h"
+#include "recovery/recovery_manager.h"
+#include "record/table_heap.h"
+#include "record/table_iterator.h"
+#include "execution/expressions/column_value_expression.h"
+#include "execution/expressions/comparison_expression.h"
+#include "execution/expressions/conjuction_expression.h"
+#include "execution/expressions/conjuction_expression.h"
+#include "execution/expressions/conjuction_expression.h"
+#include "execution/expressions/constant_value_expression.h"
+#include "execution/expressions/operator_expression.h"
+#include "execution/executors/delete_executor.h"
+#include "execution/executors/insert_executor.h"
+#include "execution/executors/nested_loop_join_executor.h"
+#include "execution/executors/seq_scan_executor.h"
+#include "execution/executors/update_executor.h"
+#include "execution/execution_engine.h"
 
 
 
 
-// #include <iostream>
-// #include <memory>
-// #include <random>
-// #include <string>
-// #include <cstring>
-// #include <algorithm>
+#include <iostream>
+#include <memory>
+#include <random>
+#include <string>
+#include <cstring>
+#include <algorithm>
 
 
-// namespace SimpleDB {
+namespace SimpleDB {
 
 // TEST(InsertExecutorTest, BasicTest) {
 //     const std::string filename = "test.db";
@@ -391,188 +391,130 @@
 //     remove(filename.c_str());
 // }
 
-// TEST(LoopJoinExecutorTest, BasicTest) {
-//     const std::string filename = "test.db";
-//     char buf[100];
-//     std::string local_path = getcwd(buf, 100);
-//     std::string test_dir = local_path + "/" + "test_dir";
-//     std::string test_file = "test1.txt";
-//     std::string cmd;
-//     cmd = "rm -rf " + test_dir;
-//     system(cmd.c_str());
+TEST(LoopJoinExecutorTest, BasicTest) {
+    const std::string filename = "test.db";
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
 
-//     std::string log_file_name = "log.log";
-//     std::string log_file_path = test_dir + "/" + log_file_name;
-//     std::unique_ptr<FileManager> file_manager 
-//         = std::make_unique<FileManager>(test_dir, 4096);
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> file_manager 
+        = std::make_unique<FileManager>(test_dir, 4096);
     
-//     std::unique_ptr<LogManager> log_manager 
-//         = std::make_unique<LogManager>(file_manager.get(), log_file_name);
+    std::unique_ptr<LogManager> log_manager 
+        = std::make_unique<LogManager>(file_manager.get(), log_file_name);
 
-//     std::unique_ptr<RecoveryManager> rm 
-//         = std::make_unique<RecoveryManager>(log_manager.get());
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(log_manager.get());
 
-//     std::unique_ptr<BufferManager> buf_manager
-//         = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
+    std::unique_ptr<BufferManager> buf_manager
+        = std::make_unique<BufferManager>(file_manager.get(), rm.get(), 100);
 
-//     // --------------------
-//     //  create execution context
-//     // --------------------
-//     auto lock = std::make_unique<LockManager> ();
-//     TransactionManager txn_mgr(std::move(lock), rm.get(), file_manager.get(), buf_manager.get());
-//     auto txn = txn_mgr.Begin();
+    // --------------------
+    //  create execution context
+    // --------------------
+    auto lock = std::make_unique<LockManager> ();
+    TransactionManager txn_mgr(std::move(lock), rm.get(), file_manager.get(), buf_manager.get());
+    auto txn = txn_mgr.Begin();
 
-//     std::unique_ptr<MetadataManager> mdm
-//         = std::make_unique<MetadataManager>(true, txn.get(), file_manager.get(), rm.get(), buf_manager.get());
+    std::unique_ptr<MetadataManager> mdm
+        = std::make_unique<MetadataManager>(true, txn.get(), file_manager.get(), rm.get(), buf_manager.get());
 
-//     ExecutionContext context(mdm.get(), buf_manager.get(), txn.get(), &txn_mgr);
+    ExecutionContext context(mdm.get(), buf_manager.get(), txn.get(), &txn_mgr);
 
     
-//     {
-//         auto colA = Column("colA", TypeID::INTEGER);
-//         auto colB = Column("colB", TypeID::INTEGER);
-//         auto colC = Column("colC", TypeID::DECIMAL);
-//         auto schema = Schema({colA, colB, colC});
-//         mdm->CreateTable("table1", schema, txn.get());
-//         auto table_meta = mdm->GetTable("table1", txn.get());
+    {
+        auto colA = Column("colA", TypeID::INTEGER);
+        auto colB = Column("colB", TypeID::INTEGER);
+        auto colC = Column("colC", TypeID::DECIMAL);
+        auto schema = Schema({colA, colB, colC});
+        mdm->CreateTable("table1", schema, txn.get());
+        auto table_meta = mdm->GetTable("table1", txn.get());
 
-//         // insert 5 tuple
-//         // sheep: i'm not sure how to write styled code in such cases.
-//         RID tmp;
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(2001311),
-//                     Value(1),
-//                     Value(3.14)
-//                 },
-//                 schema), &tmp);
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(2001312),
-//                     Value(2),
-//                     Value(3.14),
-//                 },
-//                 schema), &tmp);
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(2001313),
-//                     Value(3),
-//                     Value(3.14)
-//                 },
-//                 schema), &tmp);
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(2001314),
-//                     Value(4),
-//                     Value(3.14)
-//                 },
-//                 schema), &tmp);
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(2001315),
-//                     Value(5),
-//                     Value(3.14)
-//                 },
-//                 schema), &tmp);
-//     }
+        // insert 5 tuple
+        RID tmp;
+        for (int i = 0;i < 5;i ++) {
+            std::vector<Value> vec 
+            {
+                Value(i),
+                Value(i),
+                Value(double(i))
+            };
 
-//     {
-//         auto colA = Column("colA", TypeID::INTEGER);
-//         auto colB = Column("colB", TypeID::INTEGER);
-//         auto schema = Schema({colA, colB});
-//         mdm->CreateTable("table2", schema, txn.get());
-//         auto table_meta = mdm->GetTable("table2", txn.get());
+            Tuple tuple(vec, schema);
+            table_meta->table_heap_->Insert(txn.get(), tuple, nullptr);
+        }
+    }
+
+    {
+        auto colD = Column("colD", TypeID::INTEGER);
+        auto colE = Column("colE", TypeID::INTEGER);
+        auto schema = Schema({colD, colE});
+        mdm->CreateTable("table2", schema, txn.get());
+        auto table_meta = mdm->GetTable("table2", txn.get());
 
 
-//         // insert 3 tuple
-//         RID tmp;
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(2),
-//                     Value(1),
-//                 },
-//                 schema), &tmp);
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(3),
-//                     Value(-1),
-//                 },
-//                 schema), &tmp);
-//         table_meta->table_heap_->Insert(
-//                 txn.get(),
-//                 Tuple(
-//                 {   Value(6),
-//                     Value(1),
-//                 },
-//                 schema), &tmp);
-//     }
+        // insert 3 tuple
+        RID tmp;
+        for (int i = 0;i < 3;i ++) {
+            std::vector<Value> vec 
+            {
+                Value(3),
+                Value(3)
+            };
+
+            Tuple tuple(vec, schema);
+            table_meta->table_heap_->Insert(txn.get(), tuple, nullptr);
+        }
+    }
 
 
 
-//     {
-//         auto seq_plan_t1 = new SeqScanPlan(&mdm->GetTable("table1", txn.get())->schema_, nullptr, mdm->GetTable("table1", txn.get())->table_name_);
-//         auto seq_plan_t2 = new SeqScanPlan(&mdm->GetTable("table2", txn.get())->schema_, nullptr, mdm->GetTable("table2", txn.get())->table_name_);
+    {
+        auto seq_plan_t1 = std::make_shared<SeqScanPlan>(std::make_shared<Schema>(mdm->GetTable("table1", txn.get())->schema_), nullptr, mdm->GetTable("table1", txn.get())->table_name_);
+        auto seq_plan_t2 = std::make_shared<SeqScanPlan>(std::make_shared<Schema>(mdm->GetTable("table2", txn.get())->schema_), nullptr, mdm->GetTable("table2", txn.get())->table_name_);
 
-//         // expressions used to generate new tuple
-//         auto getCol1 = new ColumnValueExpression(TypeID::INTEGER, 0, "colA", &mdm->GetTable("table1", txn.get())->schema_);
-//         auto getCol2 = new ColumnValueExpression(TypeID::INTEGER, 0, "colB", &mdm->GetTable("table1", txn.get())->schema_);
-//         auto getCol3 = new ColumnValueExpression(TypeID::INTEGER, 1, "colA", &mdm->GetTable("table2", txn.get())->schema_);
-//         auto getCol4 = new ColumnValueExpression(TypeID::INTEGER, 1, "colB", &mdm->GetTable("table2", txn.get())->schema_);
+        // expressions used to generate new tuple
+        auto getCol1 = std::make_shared<ColumnValueExpression>(TypeID::INTEGER, "colA");
+        auto getCol2 = std::make_shared<ColumnValueExpression>(TypeID::INTEGER, "colB");
+        auto getCol3 = std::make_shared<ColumnValueExpression>(TypeID::INTEGER, "colE");
+        auto getCol4 = std::make_shared<ColumnValueExpression>(TypeID::INTEGER,  "colF");
 
-//         // expression used to evaluate the legality
-//         // since expression is stateless, so we can reuse the expression
-//         auto comp = new ComparisonExpression(ExpressionType::ComparisonExpression_Equal, getCol2, getCol3);
+        // expression used to evaluate the legality
+        // since expression is stateless, so we can reuse the expression
+        auto comp = std::make_shared<ComparisonExpression>(ExpressionType::ComparisonExpression_Equal, getCol2, getCol3);
 
-//         auto colA = Column("colA", TypeID::INTEGER);
-//         auto colB = Column("colB", TypeID::INTEGER);
-//         auto colC = Column("colC", TypeID::INTEGER);
-//         auto output_schema = Schema({colA, colB, colC});
-//         auto join_plan = new NestedLoopJoinPlan(&output_schema, {seq_plan_t1, seq_plan_t2}, comp, {getCol1, getCol2, getCol4});
+        auto colA = Column("colA", TypeID::INTEGER);
+        auto colB = Column("colB", TypeID::INTEGER);
+        auto colE = Column("colE", TypeID::INTEGER);
+        auto output_schema = Schema({colA, colB, colE});
+        auto join_plan = std::make_shared<NestedLoopJoinPlan>
+        (std::make_shared<Schema>(output_schema), seq_plan_t1.get(), seq_plan_t2.get(), comp.get());
 
-//         std::vector<Tuple> result;
-//         ExecutionEngine engine;
-//         engine.Execute(&context, join_plan, &result);
+        std::vector<Tuple> result;
+        ExecutionEngine engine;
+        engine.Execute(&context, join_plan.get(), &result);
 
-//         // result tuples
-//         std::vector<Tuple> result_expected;
-//         result_expected.push_back(
-//             Tuple({ Value(2001312),
-//                     Value(2),
-//                     Value(1) }, output_schema));
-
-//         result_expected.push_back(
-//             Tuple({ Value(2001313),
-//                     Value(3),
-//                     Value(-1), }, output_schema));
+        // result tuples
+        std::vector<Tuple> result_expected;
         
-//         EXPECT_EQ(result.size(), result_expected.size());
-//         for (uint i = 0; i < result.size(); i++) {
-//             EXPECT_EQ(result[i], result_expected[i]);
-//             // LOG_DEBUG("expect: %s get: %s", result_expected[i].ToString(&output_schema).c_str(), 
-//             //     result[i].ToString(&output_schema).c_str());
-//         }
-
-//         delete seq_plan_t1;
-//         delete seq_plan_t2;
-//         delete join_plan;
-//         delete getCol1;
-//         delete getCol2;
-//         delete getCol3;
-//         delete getCol4;
-//         delete comp;
-//     }
+        EXPECT_EQ(result.size(), 3);
+        // for (uint i = 0; i < result.size(); i++) {
+        //     EXPECT_EQ(result[i], result_expected[i]);
+        //     // LOG_DEBUG("expect: %s get: %s", result_expected[i].ToString(&output_schema).c_str(), 
+        //     //     result[i].ToString(&output_schema).c_str());
+        // }
+    }
 
 
-//     remove(filename.c_str());
-// }
+    remove(filename.c_str());
+}
 
 
 
-// }
+}

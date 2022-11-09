@@ -266,6 +266,11 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/select_execution_test.dir/parse/select_execution_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/parse/select_execution_test.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/test/parse/select_execution_test.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/test",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest/include -isystem /home/asuka/workbench/project/SimpleDB/build/_deps/googletest-src/googletest   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/file_test.dir/file/file_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/test/file/file_test.cc"
 },
