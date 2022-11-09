@@ -16,8 +16,8 @@ class UpdateStatement :public Statement {
 public:
 
     UpdateStatement(const std::string &table_name,
-                    std::vector<std::unique_ptr<AbstractExpression>> set, 
-                    std::unique_ptr<AbstractExpression> where) :
+                    std::vector<UpdateInfoRef> set, 
+                    std::shared_ptr<AbstractExpression> where) :
         table_name_(table_name),
         set_(std::move(set)),
         where_(std::move(where)) {}
@@ -40,9 +40,9 @@ public:
 
     std::string table_name_;
 
-    std::vector<std::unique_ptr<AbstractExpression>> set_;
+    std::vector<UpdateInfoRef> set_;
 
-    std::unique_ptr<AbstractExpression> where_;
+    std::shared_ptr<AbstractExpression> where_;
 
 };
 

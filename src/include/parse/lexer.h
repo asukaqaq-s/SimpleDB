@@ -120,6 +120,9 @@ public:
 
     int GetTType() { return tokenizer_->TType_; }
 
+
+    bool IsEnd() { return tokenizer_->TType_ == tokenizer_->TT_EOF; }
+
 private:
     
  

@@ -9,11 +9,11 @@
 
 namespace SimpleDB {
     
-class CreateViewData : public Statement {
+class CreateViewStmt : public Statement {
 
 public:
     
-    CreateViewData(const std::string &view_name,
+    CreateViewStmt(const std::string &view_name,
                    std::unique_ptr<SelectStatement> select_stmt)
         : view_name_(view_name), 
           select_stmt_(std::move(select_stmt)) {}

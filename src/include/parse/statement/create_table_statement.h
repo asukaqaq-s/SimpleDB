@@ -9,17 +9,19 @@
 
 namespace SimpleDB {
 
-class CreateTableData : public Statement {
+class CreateTableStmt : public Statement {
 
 public:
 
     /**
     * @brief Saves the table name and schema
     */
-    CreateTableData(const std::string &table_name,
-                    const Schema &sch)
+    CreateTableStmt(const std::string &table_name,
+                    const SchemaRef &sch,
+                    bool table_exist = false)
         : table_name_(table_name), 
-          sch_(sch) {}
+          sch_(sch),
+          is_table_exist_(table_exist) {}
 
 
     StatementType GetStmtType() override {
@@ -38,7 +40,9 @@ public:
 
     std::string table_name_;
 
-    Schema sch_;
+    SchemaRef sch_;
+
+    bool is_table_exist_;
 
 };
 

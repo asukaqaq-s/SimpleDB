@@ -92,7 +92,7 @@ std::unique_ptr<SelectStatement> Parser::ParseSelect() {
     
     // Phase 4: if a where clause is required, parsewhere
     if (lexer_.MatchKeyword("where")) {
-        lexer_.EatKeyword("where");
+        
         where = ParseWhere();
     }
 
@@ -168,12 +168,12 @@ std::shared_ptr<AbstractExpression> Parser::ParseArithmetic() {
         auto left_type = left->GetReturnType();
         auto right_type = right->GetReturnType();
         
-        if (left_type != right_type) {
-            throw BadSyntaxException("arithmetic operation type erorr");
-        }
-
         if (left_type == TypeID::CHAR || left_type == TypeID::VARCHAR) {
             throw BadSyntaxException("arithmetic not support string type");
+        }
+
+        if (left_type != right_type) {
+            throw BadSyntaxException("arithmetic operation type erorr");
         }
 
         switch (op)
@@ -324,6 +324,7 @@ std::shared_ptr<AbstractExpression> Parser::ParseConjuctOr() {
 }
 
 std::shared_ptr<AbstractExpression> Parser::ParseWhere() {
+    lexer_.EatKeyword("where");
     return ParseConjuctOr();
 }
 

@@ -884,6 +884,60 @@ parse/lexer.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.s
 .PHONY : parse/lexer.cc.s
 
+parse/parse_create.o: parse/parse_create.cc.o
+
+.PHONY : parse/parse_create.o
+
+# target to build an object file
+parse/parse_create.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_create.cc.o
+.PHONY : parse/parse_create.cc.o
+
+parse/parse_create.i: parse/parse_create.cc.i
+
+.PHONY : parse/parse_create.i
+
+# target to preprocess a source file
+parse/parse_create.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_create.cc.i
+.PHONY : parse/parse_create.cc.i
+
+parse/parse_create.s: parse/parse_create.cc.s
+
+.PHONY : parse/parse_create.s
+
+# target to generate assembly for a file
+parse/parse_create.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_create.cc.s
+.PHONY : parse/parse_create.cc.s
+
+parse/parse_delete.o: parse/parse_delete.cc.o
+
+.PHONY : parse/parse_delete.o
+
+# target to build an object file
+parse/parse_delete.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_delete.cc.o
+.PHONY : parse/parse_delete.cc.o
+
+parse/parse_delete.i: parse/parse_delete.cc.i
+
+.PHONY : parse/parse_delete.i
+
+# target to preprocess a source file
+parse/parse_delete.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_delete.cc.i
+.PHONY : parse/parse_delete.cc.i
+
+parse/parse_delete.s: parse/parse_delete.cc.s
+
+.PHONY : parse/parse_delete.s
+
+# target to generate assembly for a file
+parse/parse_delete.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_delete.cc.s
+.PHONY : parse/parse_delete.cc.s
+
 parse/parse_insert.o: parse/parse_insert.cc.o
 
 .PHONY : parse/parse_insert.o
@@ -937,6 +991,33 @@ parse/parse_query.s: parse/parse_query.cc.s
 parse/parse_query.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.s
 .PHONY : parse/parse_query.cc.s
+
+parse/parse_update.o: parse/parse_update.cc.o
+
+.PHONY : parse/parse_update.o
+
+# target to build an object file
+parse/parse_update.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_update.cc.o
+.PHONY : parse/parse_update.cc.o
+
+parse/parse_update.i: parse/parse_update.cc.i
+
+.PHONY : parse/parse_update.i
+
+# target to preprocess a source file
+parse/parse_update.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_update.cc.i
+.PHONY : parse/parse_update.cc.i
+
+parse/parse_update.s: parse/parse_update.cc.s
+
+.PHONY : parse/parse_update.s
+
+# target to generate assembly for a file
+parse/parse_update.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/parse/parse_update.cc.s
+.PHONY : parse/parse_update.cc.s
 
 parse/parser.o: parse/parser.cc.o
 
@@ -1462,12 +1543,21 @@ help:
 	@echo "... parse/lexer.o"
 	@echo "... parse/lexer.i"
 	@echo "... parse/lexer.s"
+	@echo "... parse/parse_create.o"
+	@echo "... parse/parse_create.i"
+	@echo "... parse/parse_create.s"
+	@echo "... parse/parse_delete.o"
+	@echo "... parse/parse_delete.i"
+	@echo "... parse/parse_delete.s"
 	@echo "... parse/parse_insert.o"
 	@echo "... parse/parse_insert.i"
 	@echo "... parse/parse_insert.s"
 	@echo "... parse/parse_query.o"
 	@echo "... parse/parse_query.i"
 	@echo "... parse/parse_query.s"
+	@echo "... parse/parse_update.o"
+	@echo "... parse/parse_update.i"
+	@echo "... parse/parse_update.s"
 	@echo "... parse/parser.o"
 	@echo "... parse/parser.i"
 	@echo "... parse/parser.s"

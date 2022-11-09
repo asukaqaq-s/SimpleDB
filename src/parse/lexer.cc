@@ -149,7 +149,7 @@ void Lexer::InitKeywords() {
         // basic keywords
         "select",  "from",   "where",  "and", "insert", "into",
         "values",  "delete", "update", "set", "create", "table",
-        "varchar", "int",    "view",   "as",  "index",  "on",
+        "varchar", "char", "int",    "view",   "as",  "index",  "on", "if", "not", "exist",
         // some other function
         "order", "by", "limit", "drop",
         // Aggregate functions

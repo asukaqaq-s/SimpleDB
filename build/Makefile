@@ -350,6 +350,32 @@ file_test/fast:
 .PHONY : file_test/fast
 
 #=============================================================================
+# Target rules for targets named seqscan_executor_test
+
+# Build rule for target.
+seqscan_executor_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+#=============================================================================
+# Target rules for targets named update_parse_test
+
+# Build rule for target.
+update_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 update_parse_test
+.PHONY : update_parse_test
+
+# fast build rule for target.
+update_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
+.PHONY : update_parse_test/fast
+
+#=============================================================================
 # Target rules for targets named lru_replacer_test
 
 # Build rule for target.
@@ -376,6 +402,19 @@ transaction_test/fast:
 .PHONY : transaction_test/fast
 
 #=============================================================================
+# Target rules for targets named metadata_test
+
+# Build rule for target.
+metadata_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+#=============================================================================
 # Target rules for targets named show-tests
 
 # Build rule for target.
@@ -389,17 +428,43 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 #=============================================================================
-# Target rules for targets named metadata_test
+# Target rules for targets named create_parse_test
 
 # Build rule for target.
-metadata_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
-.PHONY : metadata_test
+create_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 create_parse_test
+.PHONY : create_parse_test
 
 # fast build rule for target.
-metadata_test/fast:
-	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
+create_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/create_parse_test.dir/build.make test/CMakeFiles/create_parse_test.dir/build
+.PHONY : create_parse_test/fast
+
+#=============================================================================
+# Target rules for targets named select_execution_test
+
+# Build rule for target.
+select_execution_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 select_execution_test
+.PHONY : select_execution_test
+
+# fast build rule for target.
+select_execution_test/fast:
+	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
+.PHONY : select_execution_test/fast
+
+#=============================================================================
+# Target rules for targets named insert_parse_test
+
+# Build rule for target.
+insert_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 insert_parse_test
+.PHONY : insert_parse_test
+
+# fast build rule for target.
+insert_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/build
+.PHONY : insert_parse_test/fast
 
 #=============================================================================
 # Target rules for targets named unittests
@@ -492,45 +557,6 @@ tuple_test/fast:
 	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
 .PHONY : tuple_test/fast
 
-#=============================================================================
-# Target rules for targets named seqscan_executor_test
-
-# Build rule for target.
-seqscan_executor_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
-.PHONY : seqscan_executor_test
-
-# fast build rule for target.
-seqscan_executor_test/fast:
-	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
-.PHONY : seqscan_executor_test/fast
-
-#=============================================================================
-# Target rules for targets named select_execution_test
-
-# Build rule for target.
-select_execution_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 select_execution_test
-.PHONY : select_execution_test
-
-# fast build rule for target.
-select_execution_test/fast:
-	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
-.PHONY : select_execution_test/fast
-
-#=============================================================================
-# Target rules for targets named insert_parse_test
-
-# Build rule for target.
-insert_parse_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 insert_parse_test
-.PHONY : insert_parse_test
-
-# fast build rule for target.
-insert_parse_test/fast:
-	$(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/build
-.PHONY : insert_parse_test/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -558,10 +584,15 @@ help:
 	@echo "... file_manager_test"
 	@echo "... concurrency_test"
 	@echo "... file_test"
+	@echo "... seqscan_executor_test"
+	@echo "... update_parse_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
-	@echo "... show-tests"
 	@echo "... metadata_test"
+	@echo "... show-tests"
+	@echo "... create_parse_test"
+	@echo "... select_execution_test"
+	@echo "... insert_parse_test"
 	@echo "... unittests"
 	@echo "... select_parse_test"
 	@echo "... other_executors_test"
@@ -569,9 +600,6 @@ help:
 	@echo "... table_test"
 	@echo "... recovery_test"
 	@echo "... tuple_test"
-	@echo "... seqscan_executor_test"
-	@echo "... select_execution_test"
-	@echo "... insert_parse_test"
 .PHONY : help
 
 

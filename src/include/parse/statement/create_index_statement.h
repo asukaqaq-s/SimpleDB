@@ -3,20 +3,21 @@
 
 #include "parse/statement/statement.h"
 
+
 #include <string>
 
 namespace SimpleDB {
 
-class CreateIndexData : public Statement {
+class CreateIndexStmt : public Statement {
 
 public:
 
-    CreateIndexData(const std::string &index_name,
+    CreateIndexStmt(const std::string &index_name,
                     const std::string &table_name,
-                    const std::string &field_name)
+                    const std::string &column_name)
         : index_name_(index_name), 
           table_name_(table_name),
-          field_name_(field_name) {}
+          column_name_(column_name) {}
     
     StatementType GetStmtType() override {
         return StatementType::CREATEINDEX;
@@ -26,7 +27,7 @@ public:
         std::stringstream s;
         s << "index_name_ = " << index_name_ << " "
           << "table_name_ = " << table_name_ << " "
-          << "field_name_ = " << field_name_ << std::endl;
+          << "column_name_ = " << column_name_ << std::endl;
         return s.str();
     }
 
@@ -35,7 +36,7 @@ public:
     
     std::string table_name_;
 
-    std::string field_name_;
+    std::string column_name_;
 
 };
 

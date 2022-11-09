@@ -7,6 +7,11 @@
 
 namespace SimpleDB {
 
+class UpdateInfo;
+
+using UpdateInfoRef = std::shared_ptr<UpdateInfo>;
+
+
 /**
 * @brief a updateinfo object includes predicate 
 */
@@ -14,17 +19,17 @@ class UpdateInfo {
 
 public:
 
-    UpdateInfo(AbstractExpression *expression, const std::string &field_name)
-        : expression_(expression), field_name_(field_name) {}
+    UpdateInfo(AbstractExpressionRef expression, const std::string &column_name)
+        : expression_(expression), column_name_(column_name) {}
 
     
     // a update sql statement will like
     // UPDATE table_name SET field_name = constant
     // so expression's type always is constant_expression
-    AbstractExpression *expression_{nullptr};
+    AbstractExpressionRef expression_{nullptr};
 
-    // field_name for table schema.
-    std::string field_name_;
+    // column_name for table schema.
+    std::string column_name_;
 };
 
 

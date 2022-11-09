@@ -89,28 +89,6 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -134,6 +112,28 @@ install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -303,6 +303,36 @@ file_test/fast:
 .PHONY : file_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/seqscan_executor_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/seqscan_executor_test.dir/rule
+.PHONY : test/CMakeFiles/seqscan_executor_test.dir/rule
+
+# Convenience name for target.
+seqscan_executor_test: test/CMakeFiles/seqscan_executor_test.dir/rule
+
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/update_parse_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/update_parse_test.dir/rule
+.PHONY : test/CMakeFiles/update_parse_test.dir/rule
+
+# Convenience name for target.
+update_parse_test: test/CMakeFiles/update_parse_test.dir/rule
+
+.PHONY : update_parse_test
+
+# fast build rule for target.
+update_parse_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
+.PHONY : update_parse_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/lru_replacer_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
 .PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
@@ -333,6 +363,21 @@ transaction_test/fast:
 .PHONY : transaction_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/metadata_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
+.PHONY : test/CMakeFiles/metadata_test.dir/rule
+
+# Convenience name for target.
+metadata_test: test/CMakeFiles/metadata_test.dir/rule
+
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/show-tests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/show-tests.dir/rule
 .PHONY : test/CMakeFiles/show-tests.dir/rule
@@ -348,19 +393,49 @@ show-tests/fast:
 .PHONY : show-tests/fast
 
 # Convenience name for target.
-test/CMakeFiles/metadata_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/rule
-.PHONY : test/CMakeFiles/metadata_test.dir/rule
+test/CMakeFiles/create_parse_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/create_parse_test.dir/rule
+.PHONY : test/CMakeFiles/create_parse_test.dir/rule
 
 # Convenience name for target.
-metadata_test: test/CMakeFiles/metadata_test.dir/rule
+create_parse_test: test/CMakeFiles/create_parse_test.dir/rule
 
-.PHONY : metadata_test
+.PHONY : create_parse_test
 
 # fast build rule for target.
-metadata_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
+create_parse_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/create_parse_test.dir/build.make test/CMakeFiles/create_parse_test.dir/build
+.PHONY : create_parse_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/select_execution_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/select_execution_test.dir/rule
+.PHONY : test/CMakeFiles/select_execution_test.dir/rule
+
+# Convenience name for target.
+select_execution_test: test/CMakeFiles/select_execution_test.dir/rule
+
+.PHONY : select_execution_test
+
+# fast build rule for target.
+select_execution_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
+.PHONY : select_execution_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/insert_parse_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/insert_parse_test.dir/rule
+.PHONY : test/CMakeFiles/insert_parse_test.dir/rule
+
+# Convenience name for target.
+insert_parse_test: test/CMakeFiles/insert_parse_test.dir/rule
+
+.PHONY : insert_parse_test
+
+# fast build rule for target.
+insert_parse_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/build
+.PHONY : insert_parse_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/unittests.dir/rule:
@@ -466,51 +541,6 @@ tuple_test: test/CMakeFiles/tuple_test.dir/rule
 tuple_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
 .PHONY : tuple_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/seqscan_executor_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/seqscan_executor_test.dir/rule
-.PHONY : test/CMakeFiles/seqscan_executor_test.dir/rule
-
-# Convenience name for target.
-seqscan_executor_test: test/CMakeFiles/seqscan_executor_test.dir/rule
-
-.PHONY : seqscan_executor_test
-
-# fast build rule for target.
-seqscan_executor_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
-.PHONY : seqscan_executor_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/select_execution_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/select_execution_test.dir/rule
-.PHONY : test/CMakeFiles/select_execution_test.dir/rule
-
-# Convenience name for target.
-select_execution_test: test/CMakeFiles/select_execution_test.dir/rule
-
-.PHONY : select_execution_test
-
-# fast build rule for target.
-select_execution_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
-.PHONY : select_execution_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/insert_parse_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/insert_parse_test.dir/rule
-.PHONY : test/CMakeFiles/insert_parse_test.dir/rule
-
-# Convenience name for target.
-insert_parse_test: test/CMakeFiles/insert_parse_test.dir/rule
-
-.PHONY : insert_parse_test
-
-# fast build rule for target.
-insert_parse_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/build
-.PHONY : insert_parse_test/fast
 
 buffer/buffer_manager_test.o: buffer/buffer_manager_test.cc.o
 
@@ -836,6 +866,33 @@ metadata/metadata_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/metadata/metadata_test.cc.s
 .PHONY : metadata/metadata_test.cc.s
 
+parse/create_parse_test.o: parse/create_parse_test.cc.o
+
+.PHONY : parse/create_parse_test.o
+
+# target to build an object file
+parse/create_parse_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/create_parse_test.dir/build.make test/CMakeFiles/create_parse_test.dir/parse/create_parse_test.cc.o
+.PHONY : parse/create_parse_test.cc.o
+
+parse/create_parse_test.i: parse/create_parse_test.cc.i
+
+.PHONY : parse/create_parse_test.i
+
+# target to preprocess a source file
+parse/create_parse_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/create_parse_test.dir/build.make test/CMakeFiles/create_parse_test.dir/parse/create_parse_test.cc.i
+.PHONY : parse/create_parse_test.cc.i
+
+parse/create_parse_test.s: parse/create_parse_test.cc.s
+
+.PHONY : parse/create_parse_test.s
+
+# target to generate assembly for a file
+parse/create_parse_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/create_parse_test.dir/build.make test/CMakeFiles/create_parse_test.dir/parse/create_parse_test.cc.s
+.PHONY : parse/create_parse_test.cc.s
+
 parse/insert_parse_test.o: parse/insert_parse_test.cc.o
 
 .PHONY : parse/insert_parse_test.o
@@ -943,6 +1000,33 @@ parse/tokenizer_test.s: parse/tokenizer_test.cc.s
 parse/tokenizer_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/parse/tokenizer_test.cc.s
 .PHONY : parse/tokenizer_test.cc.s
+
+parse/update_parse_test.o: parse/update_parse_test.cc.o
+
+.PHONY : parse/update_parse_test.o
+
+# target to build an object file
+parse/update_parse_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/parse/update_parse_test.cc.o
+.PHONY : parse/update_parse_test.cc.o
+
+parse/update_parse_test.i: parse/update_parse_test.cc.i
+
+.PHONY : parse/update_parse_test.i
+
+# target to preprocess a source file
+parse/update_parse_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/parse/update_parse_test.cc.i
+.PHONY : parse/update_parse_test.cc.i
+
+parse/update_parse_test.s: parse/update_parse_test.cc.s
+
+.PHONY : parse/update_parse_test.s
+
+# target to generate assembly for a file
+parse/update_parse_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/parse/update_parse_test.cc.s
+.PHONY : parse/update_parse_test.cc.s
 
 record/table_test.o: record/table_test.cc.o
 
@@ -1097,10 +1181,17 @@ help:
 	@echo "... concurrency_test"
 	@echo "... test"
 	@echo "... file_test"
+	@echo "... install"
+	@echo "... seqscan_executor_test"
+	@echo "... update_parse_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
-	@echo "... show-tests"
 	@echo "... metadata_test"
+	@echo "... show-tests"
+	@echo "... create_parse_test"
+	@echo "... install/local"
+	@echo "... select_execution_test"
+	@echo "... insert_parse_test"
 	@echo "... unittests"
 	@echo "... select_parse_test"
 	@echo "... other_executors_test"
@@ -1110,11 +1201,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... tuple_test"
 	@echo "... rebuild_cache"
-	@echo "... seqscan_executor_test"
-	@echo "... install"
-	@echo "... select_execution_test"
-	@echo "... insert_parse_test"
-	@echo "... install/local"
 	@echo "... buffer/buffer_manager_test.o"
 	@echo "... buffer/buffer_manager_test.i"
 	@echo "... buffer/buffer_manager_test.s"
@@ -1151,6 +1237,9 @@ help:
 	@echo "... metadata/metadata_test.o"
 	@echo "... metadata/metadata_test.i"
 	@echo "... metadata/metadata_test.s"
+	@echo "... parse/create_parse_test.o"
+	@echo "... parse/create_parse_test.i"
+	@echo "... parse/create_parse_test.s"
 	@echo "... parse/insert_parse_test.o"
 	@echo "... parse/insert_parse_test.i"
 	@echo "... parse/insert_parse_test.s"
@@ -1163,6 +1252,9 @@ help:
 	@echo "... parse/tokenizer_test.o"
 	@echo "... parse/tokenizer_test.i"
 	@echo "... parse/tokenizer_test.s"
+	@echo "... parse/update_parse_test.o"
+	@echo "... parse/update_parse_test.i"
+	@echo "... parse/update_parse_test.s"
 	@echo "... record/table_test.o"
 	@echo "... record/table_test.i"
 	@echo "... record/table_test.s"

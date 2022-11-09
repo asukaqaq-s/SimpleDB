@@ -11,9 +11,9 @@ class DeleteStatement : public Statement {
 public:
 
     DeleteStatement(const std::string &table_name,
-               std::unique_ptr<AbstractExpression> where) :
-               table_name_(table_name), 
-               where_(std::move(where)) {}
+                    std::shared_ptr<AbstractExpression> where) :
+                    table_name_(table_name), 
+                    where_(where) {}
 
 
     StatementType GetStmtType() override {
@@ -30,7 +30,7 @@ public:
 
     std::string table_name_;
 
-    std::unique_ptr<AbstractExpression> where_;
+    std::shared_ptr<AbstractExpression> where_;
 
 };
 

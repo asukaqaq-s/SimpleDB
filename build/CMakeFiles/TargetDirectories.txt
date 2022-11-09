@@ -50,10 +50,17 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/concurrency_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/seqscan_executor_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/update_parse_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/create_parse_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/local.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/select_execution_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/insert_parse_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/unittests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/select_parse_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/other_executors_test.dir
@@ -63,8 +70,3 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/edit_cache.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/tuple_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/rebuild_cache.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/seqscan_executor_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/select_execution_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/insert_parse_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/local.dir

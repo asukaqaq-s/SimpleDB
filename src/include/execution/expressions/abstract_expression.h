@@ -62,6 +62,12 @@ public:
 };
 
 
+class AbstractExpression;
+
+using SchemaRef = std::shared_ptr<Schema>;
+using AbstractExpressionRef = std::shared_ptr<AbstractExpression>;
+
+
 /**
 * @brief 
 * base class of all expressions in the system.
@@ -72,8 +78,7 @@ public:
 class AbstractExpression {
 public:
 
-    using SchemaRef = std::shared_ptr<Schema>;
-    using AbstractExpressionRef = std::shared_ptr<AbstractExpression>;
+
 
 
     virtual ~AbstractExpression() = default;

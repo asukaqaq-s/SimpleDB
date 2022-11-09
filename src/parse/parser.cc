@@ -83,7 +83,25 @@ std::unique_ptr<Statement> Parser::ParseModify() {
         return std::move(ParseUpdate());
     }
 
-    assert(false);
+    throw BadSyntaxException("bad syntax!");
+}
+
+
+std::unique_ptr<Statement> Parser::ParseCreate() {
+    lexer_.EatKeyword("create");
+    if (lexer_.MatchKeyword("table")) {
+        return std::move(ParseCreateTable());
+    }
+    
+    if (lexer_.MatchKeyword("index")) {
+        return std::move(ParseCreateIndex());
+    }
+
+    if (lexer_.MatchKeyword("view")) {
+        return std::move(ParseCreateView());
+    }
+
+    throw BadSyntaxException("bad syntax");
 }
 
 

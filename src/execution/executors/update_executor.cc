@@ -30,10 +30,17 @@ void UpdateExecutor::Init() {
 
     // check return type
     for (auto &update_info : node.update_list_) {
-        auto type = table_schema_->GetColumn(update_info.field_name_).GetType();
-        SIMPLEDB_ASSERT(type == update_info.expression_->GetReturnType(), 
-                        "type is not match");
-    } 
+        auto type = table_schema_->GetColumn(update_info.column_name_).GetType();
+
+        if (type == TypeID::CHAR && 
+            update_info.expression_->GetReturnType() == TypeID::VARCHAR) {
+            
+        }
+        else {
+            SIMPLEDB_ASSERT(type == update_info.expression_->GetReturnType(), 
+                            "type is not match");
+        } 
+    }
 
     
 }
@@ -73,7 +80,7 @@ Tuple UpdateExecutor::GenerateUpdatedTuple(const Tuple &tuple) {
 
     // update columns
     for (auto &update_info:node.update_list_) {
-        int index = table_schema_->GetColumnIdx(update_info.field_name_);
+        int index = table_schema_->GetColumnIdx(update_info.column_name_);
         assert(index >= 0 && index < static_cast<int>(value_list.size()));
         
         // We will only have one child at most

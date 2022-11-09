@@ -24,6 +24,7 @@
 #include "parse/statement/create_table_statement.h"
 #include "parse/statement/create_view_statement.h"
 #include "parse/analyzer.h"
+#include "plans/update_plan.h"
 
 
 namespace SimpleDB {
@@ -135,20 +136,45 @@ private: // heapler functions for parsing select
 
     std::set<std::string> ParseTableList();
 
-    void CheckColumnLegality(ColumnRef &t);
+
 
 
 private: // healper functions for parsing modify
 
     std::unique_ptr<InsertStatement> ParseInsert();
 
-    std::unique_ptr<DeleteStatement> ParseDelete() { return nullptr;}
+    std::unique_ptr<DeleteStatement> ParseDelete();
 
-    std::unique_ptr<UpdateStatement> ParseUpdate() { return nullptr;}
+    std::unique_ptr<UpdateStatement> ParseUpdate();
 
     std::vector<std::string> ParseColumnList();
 
     std::vector<Value> ParseValueList();
+
+    std::vector<UpdateInfoRef> ParseUpdateInfoList();
+
+    UpdateInfoRef ParseUpdateInfo();
+
+
+private: // helper functions for parsing create
+
+    std::unique_ptr<CreateTableStmt> ParseCreateTable();
+
+    std::unique_ptr<CreateIndexStmt> ParseCreateIndex();
+
+    std::unique_ptr<CreateViewStmt> ParseCreateView();
+
+    Column ParseColumnDef();
+
+    TypeID ParseColumnType(int *length);
+    
+    
+
+
+private: // helper function for check legality
+
+    
+    void CheckColumnLegality(ColumnRef &t);
 
     bool CheckValuesLegal(const std::string &table, 
                           std::vector<Value> &columns);
