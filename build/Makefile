@@ -233,264 +233,17 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
-# Target rules for targets named recovery_test
+# Target rules for targets named log_test
 
 # Build rule for target.
-recovery_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 recovery_test
-.PHONY : recovery_test
+log_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 log_test
+.PHONY : log_test
 
 # fast build rule for target.
-recovery_test/fast:
-	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
-.PHONY : recovery_test/fast
-
-#=============================================================================
-# Target rules for targets named table_test
-
-# Build rule for target.
-table_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 table_test
-.PHONY : table_test
-
-# fast build rule for target.
-table_test/fast:
-	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
-.PHONY : table_test/fast
-
-#=============================================================================
-# Target rules for targets named tokenizer_test
-
-# Build rule for target.
-tokenizer_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tokenizer_test
-.PHONY : tokenizer_test
-
-# fast build rule for target.
-tokenizer_test/fast:
-	$(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
-.PHONY : tokenizer_test/fast
-
-#=============================================================================
-# Target rules for targets named select_parse_test
-
-# Build rule for target.
-select_parse_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 select_parse_test
-.PHONY : select_parse_test
-
-# fast build rule for target.
-select_parse_test/fast:
-	$(MAKE) -f test/CMakeFiles/select_parse_test.dir/build.make test/CMakeFiles/select_parse_test.dir/build
-.PHONY : select_parse_test/fast
-
-#=============================================================================
-# Target rules for targets named metadata_test
-
-# Build rule for target.
-metadata_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
-.PHONY : metadata_test
-
-# fast build rule for target.
-metadata_test/fast:
-	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-.PHONY : metadata_test/fast
-
-#=============================================================================
-# Target rules for targets named show-tests
-
-# Build rule for target.
-show-tests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 show-tests
-.PHONY : show-tests
-
-# fast build rule for target.
-show-tests/fast:
-	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
-.PHONY : show-tests/fast
-
-#=============================================================================
-# Target rules for targets named transaction_test
-
-# Build rule for target.
-transaction_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 transaction_test
-.PHONY : transaction_test
-
-# fast build rule for target.
-transaction_test/fast:
-	$(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
-.PHONY : transaction_test/fast
-
-#=============================================================================
-# Target rules for targets named lru_replacer_test
-
-# Build rule for target.
-lru_replacer_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
-.PHONY : lru_replacer_test
-
-# fast build rule for target.
-lru_replacer_test/fast:
-	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
-
-#=============================================================================
-# Target rules for targets named unittests
-
-# Build rule for target.
-unittests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 unittests
-.PHONY : unittests
-
-# fast build rule for target.
-unittests/fast:
-	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
-.PHONY : unittests/fast
-
-#=============================================================================
-# Target rules for targets named select_execution_test
-
-# Build rule for target.
-select_execution_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 select_execution_test
-.PHONY : select_execution_test
-
-# fast build rule for target.
-select_execution_test/fast:
-	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
-.PHONY : select_execution_test/fast
-
-#=============================================================================
-# Target rules for targets named file_test
-
-# Build rule for target.
-file_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_test
-.PHONY : file_test
-
-# fast build rule for target.
-file_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-.PHONY : file_test/fast
-
-#=============================================================================
-# Target rules for targets named tuple_test
-
-# Build rule for target.
-tuple_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
-.PHONY : tuple_test
-
-# fast build rule for target.
-tuple_test/fast:
-	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
-.PHONY : tuple_test/fast
-
-#=============================================================================
-# Target rules for targets named concurrency_test
-
-# Build rule for target.
-concurrency_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 concurrency_test
-.PHONY : concurrency_test
-
-# fast build rule for target.
-concurrency_test/fast:
-	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
-.PHONY : concurrency_test/fast
-
-#=============================================================================
-# Target rules for targets named file_manager_test
-
-# Build rule for target.
-file_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named lock_manager_test
-
-# Build rule for target.
-lock_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lock_manager_test
-.PHONY : lock_manager_test
-
-# fast build rule for target.
-lock_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/build
-.PHONY : lock_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named expreesion_test
-
-# Build rule for target.
-expreesion_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 expreesion_test
-.PHONY : expreesion_test
-
-# fast build rule for target.
-expreesion_test/fast:
-	$(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
-.PHONY : expreesion_test/fast
-
-#=============================================================================
-# Target rules for targets named buffer_manager_test
-
-# Build rule for target.
-buffer_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 buffer_manager_test
-.PHONY : buffer_manager_test
-
-# fast build rule for target.
-buffer_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
-.PHONY : buffer_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named other_executors_test
-
-# Build rule for target.
-other_executors_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 other_executors_test
-.PHONY : other_executors_test
-
-# fast build rule for target.
-other_executors_test/fast:
-	$(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/build
-.PHONY : other_executors_test/fast
-
-#=============================================================================
-# Target rules for targets named seqscan_executor_test
-
-# Build rule for target.
-seqscan_executor_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
-.PHONY : seqscan_executor_test
-
-# fast build rule for target.
-seqscan_executor_test/fast:
-	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
-.PHONY : seqscan_executor_test/fast
-
-#=============================================================================
-# Target rules for targets named page_test
-
-# Build rule for target.
-page_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 page_test
-.PHONY : page_test
-
-# fast build rule for target.
-page_test/fast:
-	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
+log_test/fast:
+	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
+.PHONY : log_test/fast
 
 #=============================================================================
 # Target rules for targets named log_record_test
@@ -506,17 +259,277 @@ log_record_test/fast:
 .PHONY : log_record_test/fast
 
 #=============================================================================
-# Target rules for targets named log_test
+# Target rules for targets named page_test
 
 # Build rule for target.
-log_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 log_test
-.PHONY : log_test
+page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 page_test
+.PHONY : page_test
 
 # fast build rule for target.
-log_test/fast:
-	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
-.PHONY : log_test/fast
+page_test/fast:
+	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
+
+#=============================================================================
+# Target rules for targets named buffer_manager_test
+
+# Build rule for target.
+buffer_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 buffer_manager_test
+.PHONY : buffer_manager_test
+
+# fast build rule for target.
+buffer_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/buffer_manager_test.dir/build.make test/CMakeFiles/buffer_manager_test.dir/build
+.PHONY : buffer_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named expreesion_test
+
+# Build rule for target.
+expreesion_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 expreesion_test
+.PHONY : expreesion_test
+
+# fast build rule for target.
+expreesion_test/fast:
+	$(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
+.PHONY : expreesion_test/fast
+
+#=============================================================================
+# Target rules for targets named lock_manager_test
+
+# Build rule for target.
+lock_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lock_manager_test
+.PHONY : lock_manager_test
+
+# fast build rule for target.
+lock_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/build
+.PHONY : lock_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named file_manager_test
+
+# Build rule for target.
+file_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named concurrency_test
+
+# Build rule for target.
+concurrency_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 concurrency_test
+.PHONY : concurrency_test
+
+# fast build rule for target.
+concurrency_test/fast:
+	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
+.PHONY : concurrency_test/fast
+
+#=============================================================================
+# Target rules for targets named file_test
+
+# Build rule for target.
+file_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_test
+.PHONY : file_test
+
+# fast build rule for target.
+file_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
+.PHONY : file_test/fast
+
+#=============================================================================
+# Target rules for targets named lru_replacer_test
+
+# Build rule for target.
+lru_replacer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+#=============================================================================
+# Target rules for targets named transaction_test
+
+# Build rule for target.
+transaction_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 transaction_test
+.PHONY : transaction_test
+
+# fast build rule for target.
+transaction_test/fast:
+	$(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
+.PHONY : transaction_test/fast
+
+#=============================================================================
+# Target rules for targets named show-tests
+
+# Build rule for target.
+show-tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 show-tests
+.PHONY : show-tests
+
+# fast build rule for target.
+show-tests/fast:
+	$(MAKE) -f test/CMakeFiles/show-tests.dir/build.make test/CMakeFiles/show-tests.dir/build
+.PHONY : show-tests/fast
+
+#=============================================================================
+# Target rules for targets named metadata_test
+
+# Build rule for target.
+metadata_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 metadata_test
+.PHONY : metadata_test
+
+# fast build rule for target.
+metadata_test/fast:
+	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
+.PHONY : metadata_test/fast
+
+#=============================================================================
+# Target rules for targets named unittests
+
+# Build rule for target.
+unittests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 unittests
+.PHONY : unittests
+
+# fast build rule for target.
+unittests/fast:
+	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
+.PHONY : unittests/fast
+
+#=============================================================================
+# Target rules for targets named select_parse_test
+
+# Build rule for target.
+select_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 select_parse_test
+.PHONY : select_parse_test
+
+# fast build rule for target.
+select_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/select_parse_test.dir/build.make test/CMakeFiles/select_parse_test.dir/build
+.PHONY : select_parse_test/fast
+
+#=============================================================================
+# Target rules for targets named other_executors_test
+
+# Build rule for target.
+other_executors_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 other_executors_test
+.PHONY : other_executors_test
+
+# fast build rule for target.
+other_executors_test/fast:
+	$(MAKE) -f test/CMakeFiles/other_executors_test.dir/build.make test/CMakeFiles/other_executors_test.dir/build
+.PHONY : other_executors_test/fast
+
+#=============================================================================
+# Target rules for targets named tokenizer_test
+
+# Build rule for target.
+tokenizer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tokenizer_test
+.PHONY : tokenizer_test
+
+# fast build rule for target.
+tokenizer_test/fast:
+	$(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
+.PHONY : tokenizer_test/fast
+
+#=============================================================================
+# Target rules for targets named table_test
+
+# Build rule for target.
+table_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 table_test
+.PHONY : table_test
+
+# fast build rule for target.
+table_test/fast:
+	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
+.PHONY : table_test/fast
+
+#=============================================================================
+# Target rules for targets named recovery_test
+
+# Build rule for target.
+recovery_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 recovery_test
+.PHONY : recovery_test
+
+# fast build rule for target.
+recovery_test/fast:
+	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
+.PHONY : recovery_test/fast
+
+#=============================================================================
+# Target rules for targets named tuple_test
+
+# Build rule for target.
+tuple_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
+.PHONY : tuple_test
+
+# fast build rule for target.
+tuple_test/fast:
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
+
+#=============================================================================
+# Target rules for targets named seqscan_executor_test
+
+# Build rule for target.
+seqscan_executor_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+#=============================================================================
+# Target rules for targets named select_execution_test
+
+# Build rule for target.
+select_execution_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 select_execution_test
+.PHONY : select_execution_test
+
+# fast build rule for target.
+select_execution_test/fast:
+	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
+.PHONY : select_execution_test/fast
+
+#=============================================================================
+# Target rules for targets named insert_parse_test
+
+# Build rule for target.
+insert_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 insert_parse_test
+.PHONY : insert_parse_test
+
+# fast build rule for target.
+insert_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/build
+.PHONY : insert_parse_test/fast
 
 # Help Target
 help:
@@ -536,28 +549,29 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
-	@echo "... recovery_test"
-	@echo "... table_test"
-	@echo "... tokenizer_test"
-	@echo "... select_parse_test"
-	@echo "... metadata_test"
-	@echo "... show-tests"
-	@echo "... transaction_test"
-	@echo "... lru_replacer_test"
-	@echo "... unittests"
-	@echo "... select_execution_test"
-	@echo "... file_test"
-	@echo "... tuple_test"
-	@echo "... concurrency_test"
-	@echo "... file_manager_test"
-	@echo "... lock_manager_test"
-	@echo "... expreesion_test"
-	@echo "... buffer_manager_test"
-	@echo "... other_executors_test"
-	@echo "... seqscan_executor_test"
-	@echo "... page_test"
-	@echo "... log_record_test"
 	@echo "... log_test"
+	@echo "... log_record_test"
+	@echo "... page_test"
+	@echo "... buffer_manager_test"
+	@echo "... expreesion_test"
+	@echo "... lock_manager_test"
+	@echo "... file_manager_test"
+	@echo "... concurrency_test"
+	@echo "... file_test"
+	@echo "... lru_replacer_test"
+	@echo "... transaction_test"
+	@echo "... show-tests"
+	@echo "... metadata_test"
+	@echo "... unittests"
+	@echo "... select_parse_test"
+	@echo "... other_executors_test"
+	@echo "... tokenizer_test"
+	@echo "... table_test"
+	@echo "... recovery_test"
+	@echo "... tuple_test"
+	@echo "... seqscan_executor_test"
+	@echo "... select_execution_test"
+	@echo "... insert_parse_test"
 .PHONY : help
 
 

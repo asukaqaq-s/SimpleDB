@@ -6,14 +6,14 @@
 
 namespace SimpleDB {
 
-class DeleteData : public Statement {
+class DeleteStatement : public Statement {
 
 public:
 
-    DeleteData(const std::string &table_name,
+    DeleteStatement(const std::string &table_name,
                std::unique_ptr<AbstractExpression> where) :
-        table_name_(table_name), 
-        where_(std::move(where)) {}
+               table_name_(table_name), 
+               where_(std::move(where)) {}
 
 
     StatementType GetStmtType() override {

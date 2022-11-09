@@ -14,11 +14,20 @@ class InsertStatement : public Statement {
 public:
 
     InsertStatement(const std::string &table_name,
-                    const std::vector<std::string> &fields,
-                    std::vector<std::unique_ptr<AbstractExpression>> values) :
+                    const std::vector<std::string> &columns,
+                    const std::vector<Tuple> &values) :
         table_name_(table_name), 
-        fields_(fields), 
+        columns_(columns), 
         values_(std::move(values)) {}
+
+
+    InsertStatement(const std::string &table_name, 
+                    const std::vector<std::string> &columns,
+                    std::unique_ptr<SelectStatement> subquery) : 
+        table_name_(table_name),
+        columns_(columns),
+        subquery_(std::move(subquery)) {}
+
 
     StatementType GetStmtType() override {
         return StatementType::INSERT;
@@ -27,7 +36,7 @@ public:
     std::string ToString() override {
         std::stringstream s;
         s << "insert into " << table_name_ << " ( ";
-        for (auto t:fields_) {
+        for (auto t:columns_) {
             s << t;
         }
         s << ")  values ( ";
@@ -42,9 +51,11 @@ public:
 
     std::string table_name_;
 
-    std::vector<std::string> fields_;
+    std::vector<std::string> columns_;
 
-    std::vector<std::unique_ptr<AbstractExpression>> values_;
+    std::vector<Tuple> values_;
+
+    std::unique_ptr<SelectStatement> subquery_;
 
 };
 

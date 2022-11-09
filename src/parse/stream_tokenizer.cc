@@ -212,14 +212,8 @@ int StreamTokenizer::NextToken() {
         std::string tok_buf = "";
         tok_buf.push_back(ch);
         
-        int cnt = 0;
-        while ((ch = reader_.Read()) && IsNumeric(ch) && ch != '-') {
-            
-            if (ch == '.' && cnt++ > 0) {
-                break;
-            } else {
-                tok_buf.push_back(ch);
-            }
+        while ((ch = reader_.Read()) && (IsNumeric(ch) || ch == '.') && ch != '-' ) {
+            tok_buf.push_back(ch);
         }
         
         if (ch != TT_EOF) {

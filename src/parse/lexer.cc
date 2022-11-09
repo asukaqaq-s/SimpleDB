@@ -95,7 +95,7 @@ int Lexer::EatIntConstant() {
 
 double Lexer::EatRealConstant() {
     if (!MatchRealConstant()) {
-        throw BadSyntaxException("next token error");
+        throw BadSyntaxException("eat real error");
     }
 
     double res = tokenizer_->NVal_;

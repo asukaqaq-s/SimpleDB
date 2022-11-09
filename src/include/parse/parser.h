@@ -42,9 +42,26 @@ public:
 
 public:
 
+    /**
+    * @brief 
+    */
     std::unique_ptr<SelectStatement> ParseSelect();
 
-    
+    /**
+    * @brief
+    */
+    std::unique_ptr<Statement> ParseModify();
+
+    /**
+    * @brief
+    */
+    std::unique_ptr<Statement> ParseCreate();
+
+    /**
+    * @brief not implement 
+    */
+    // std::unique_ptr<Statement> ParseDrop();
+
 
 private: // some helper functions that are often used
     
@@ -59,6 +76,11 @@ private: // some helper functions that are often used
     * @return the column which be proven a exist column
     */
     std::string ParseTable();    
+
+    /**
+    * 
+    */
+    Value ParseConstant();
 
 
 
@@ -116,105 +138,23 @@ private: // heapler functions for parsing select
     void CheckColumnLegality(ColumnRef &t);
 
 
-public:
-    
-//     /**
-//     * @brief the method for parsing query request
-//     * @return querydata object which stores the query
-//     */
-//     std::unique_ptr<SelectStatement> ParseQuery();
+private: // healper functions for parsing modify
 
-//     /**
-//     * @brief the method for parsing update command
-//     * @return update data
-//     */
-//     std::unique_ptr<Object> ParseUpdateCmd();
+    std::unique_ptr<InsertStatement> ParseInsert();
 
-//     /**
-//     * @brief the method for parsing delete command
-//     * @return the deletedata object
-//     */
-//     std::unique_ptr<DeleteData> ParseDelete();
+    std::unique_ptr<DeleteStatement> ParseDelete() { return nullptr;}
 
-//     /**
-//     * @brief the method for parsing insert command
-//     * @return the insertdata object
-//     */
-//     std::unique_ptr<InsertData> ParseInsert();
+    std::unique_ptr<UpdateStatement> ParseUpdate() { return nullptr;}
 
-//     /**
-//     * @brief the method for parsing modify command
-//     * @return the modifydata object
-//     */
-//     std::unique_ptr<ModifyData> ParseModify(); 
+    std::vector<std::string> ParseColumnList();
 
-//     /**
-//     * @brief the method for parsing create table command
-//     * @return the createtabledata object
-//     */
-//     std::unique_ptr<CreateTableData> ParseCreateTable();
+    std::vector<Value> ParseValueList();
 
-//     /**
-//     * @brief the method for parsing createview command
-//     * @return the createviewdata object
-//     */
-//     std::unique_ptr<CreateViewData> ParseCreateView();
+    bool CheckValuesLegal(const std::string &table, 
+                          std::vector<Value> &columns);
 
-//     /**
-//     * @brief the method for parsing createindex command
-//     * @return the createindexdata object
-//     */
-//     std::unique_ptr<CreateIndexData> ParseCreateIndex();
-
-// private:
-    
-//     // -------------------------------
-//     // | methods for parsing queries |
-//     // -------------------------------
-
-//     /**
-//     * @brief the method for parsing select columns list
-//     * @return the array which stores the selected columns
-//     */
-//     std::vector<std::string> ParseSelectList();
-
-//     /**
-//     * @brief the method for parsing "from" tables list
-//     * @return the array which stores the selected tables 
-//     */
-//     std::set<std::string> ParseTableList();
-
-    
-//     // -----------------------------------------------
-//     // | methods for parsing various update commands |
-//     // -----------------------------------------------
-
-//     /**
-//     * @brief each update method has a different 
-//     * return type, because each one extracts
-//     * different information from its command string
-//     */
-//     std::unique_ptr<Object> ParseCreate();
-
-//     /**
-//     * @brief the method for parsing field list
-//     * @return the array which stores the field list
-//     */
-//     std::vector<std::string> ParseColumnList();
-
-//     /**
-//     * @brief the method for parsing inserted constant list
-//     * @return the array which stores the parse 
-//     */
-//     std::vector<Constant> ParseConstList();
-
-
-    Schema ParseColumnDefs();
-
-    Schema ParseColumnDef();
-
-    Schema ParseColumnType(const std::string &field_name);
-
+    bool IsColumnListLegal(const std::string &table, 
+                           const std::vector<std::string> columns);
 
 private:
 

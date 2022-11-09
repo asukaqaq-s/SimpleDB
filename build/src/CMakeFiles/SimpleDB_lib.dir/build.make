@@ -395,9 +395,22 @@ src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.s"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/parse/lexer.cc -o CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.s
 
+src/CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
+src/CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.o: ../src/parse/parse_insert.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.o"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/parse_insert.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.i"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/src/parse/parse_insert.cc > CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.i
+
+src/CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.s"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/parse/parse_insert.cc -o CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.s
+
 src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o: ../src/parse/parse_query.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/parse_query.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.i: cmake_force
@@ -408,9 +421,22 @@ src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.s"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/parse/parse_query.cc -o CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.s
 
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o: ../src/parse/parser.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/parser.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.i"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/src/parse/parser.cc > CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.i
+
+src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.s"
+	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/src/parse/parser.cc -o CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.s
+
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o: ../src/parse/stream_reader.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/stream_reader.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.i: cmake_force
@@ -423,7 +449,7 @@ src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o: ../src/parse/stream_tokenizer.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o -c /home/asuka/workbench/project/SimpleDB/src/parse/stream_tokenizer.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.i: cmake_force
@@ -436,7 +462,7 @@ src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o: ../src/record/table_heap.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o -c /home/asuka/workbench/project/SimpleDB/src/record/table_heap.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.i: cmake_force
@@ -449,7 +475,7 @@ src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.o: ../src/record/table_iterator.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.o -c /home/asuka/workbench/project/SimpleDB/src/record/table_iterator.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.i: cmake_force
@@ -462,7 +488,7 @@ src/CMakeFiles/SimpleDB_lib.dir/record/table_iterator.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o: ../src/record/table_page.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.o -c /home/asuka/workbench/project/SimpleDB/src/record/table_page.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.i: cmake_force
@@ -475,7 +501,7 @@ src/CMakeFiles/SimpleDB_lib.dir/record/table_page.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.o: ../src/record/tuple.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.o -c /home/asuka/workbench/project/SimpleDB/src/record/tuple.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.i: cmake_force
@@ -488,7 +514,7 @@ src/CMakeFiles/SimpleDB_lib.dir/record/tuple.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.o: ../src/recovery/chkpt_end_record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/chkpt_end_record.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.i: cmake_force
@@ -501,7 +527,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/chkpt_end_record.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.o: ../src/recovery/delete_record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/delete_record.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.i: cmake_force
@@ -514,7 +540,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/delete_record.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.o: ../src/recovery/initpage_record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/initpage_record.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.i: cmake_force
@@ -527,7 +553,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/initpage_record.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.o: ../src/recovery/insert_record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/insert_record.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.i: cmake_force
@@ -540,7 +566,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/insert_record.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o: ../src/recovery/log_record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/log_record.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.i: cmake_force
@@ -553,7 +579,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/log_record.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o: ../src/recovery/recovery_manager.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/recovery_manager.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.i: cmake_force
@@ -566,7 +592,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/recovery_manager.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.o: ../src/recovery/redo_log.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/redo_log.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.i: cmake_force
@@ -579,7 +605,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/redo_log.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o: ../src/recovery/undo_log.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/undo_log.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.i: cmake_force
@@ -592,7 +618,7 @@ src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.s: cmake_force
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.o: src/CMakeFiles/SimpleDB_lib.dir/flags.make
 src/CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.o: ../src/recovery/update_record.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object src/CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.o"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.o -c /home/asuka/workbench/project/SimpleDB/src/recovery/update_record.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.i: cmake_force
@@ -631,7 +657,9 @@ SimpleDB_lib_OBJECTS = \
 "CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o" \
+"CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o" \
+"CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o" \
 "CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o" \
@@ -677,7 +705,9 @@ src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/metadata/stat_manager.cc.
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/metadata/table_manager.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/metadata/view_manager.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/parse/lexer.cc.o
+src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/parse/parse_insert.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/parse/parse_query.cc.o
+src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/parse/parser.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/parse/stream_reader.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/parse/stream_tokenizer.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/record/table_heap.cc.o
@@ -695,7 +725,7 @@ src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/recovery/undo_log.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/recovery/update_record.cc.o
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/build.make
 src/libSimpleDB_lib.a: src/CMakeFiles/SimpleDB_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Linking CXX static library libSimpleDB_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Linking CXX static library libSimpleDB_lib.a"
 	cd /home/asuka/workbench/project/SimpleDB/build/src && $(CMAKE_COMMAND) -P CMakeFiles/SimpleDB_lib.dir/cmake_clean_target.cmake
 	cd /home/asuka/workbench/project/SimpleDB/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SimpleDB_lib.dir/link.txt --verbose=$(VERBOSE)
 

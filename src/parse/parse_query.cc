@@ -59,46 +59,46 @@ namespace SimpleDB {
 *             F3  10
 * 
 */
-ColumnRef Parser::ParseColumn() {
-    // a column name is a identifier, which is not keyword
-    // support variable like table1.cola
 
-    std::string tmp = lexer_.EatId();
-    std::string table_name;
-    std::string column_name;
-    if (lexer_.MatchDelim('.')) {
-        lexer_.EatDelim('.');
-        column_name = lexer_.EatId();
-        table_name = tmp;
-    }
-    else {
-        column_name = tmp;
-        table_name.clear();
-    }
-
-    if (table_name.size() &&
-        !analyzer_->IsColumnExist(table_name, column_name)) {
-        throw BadSyntaxException("parse column error: column not exist");
-    }
-
-    if (table_name.size()) {
-        // if this column_name includes table_name
-        // we need to add it to rename_list to avoid duplicate name
-        rename_list_.emplace_back(ColumnRef(table_name, column_name));
-    }
-
-    return ColumnRef(table_name, column_name);
-}
-
-
-std::string Parser::ParseTable() {
-    std::string table_name = lexer_.EatId();
+std::unique_ptr<SelectStatement> Parser::ParseSelect() {
+    lexer_.EatKeyword("select");
     
-    if (!analyzer_->IsTableExist(table_name)) {
-        throw BadSyntaxException("parse table error: table not exist");
+
+    std::vector<ColumnRef> select_list;
+    std::set<std::string> table_list; // allow repeat table
+    std::shared_ptr<AbstractExpression> where;
+
+
+    // Phase 1: parse select list
+    select_list  = ParseSelectList();
+    
+    
+    // Phase 2: parse table_list;
+    if (!lexer_.MatchKeyword("from") ||
+        select_list.empty()) {
+        throw BadSyntaxException("parse select error");
+    }
+    lexer_.EatKeyword("from");
+    table_list = ParseTableList();
+    table_list_ = table_list;
+    SIMPLEDB_ASSERT(table_list_.size(), "table list can't empty");
+    
+    
+    // Phase 3: update ColumnRef and check for columnref 
+    //          legality without table_name
+    for (auto &t:select_list) {
+        CheckColumnLegality(t);
+    }
+    
+    // Phase 4: if a where clause is required, parsewhere
+    if (lexer_.MatchKeyword("where")) {
+        lexer_.EatKeyword("where");
+        where = ParseWhere();
     }
 
-    return table_name;
+
+    return std::make_unique<SelectStatement>
+           (select_list, table_list, where);
 }
 
 
@@ -129,24 +129,7 @@ std::shared_ptr<ColumnValueExpression> Parser::ParseColumnValue() {
 
 std::shared_ptr<ConstantValueExpression> Parser::ParseConstantValue() {
     
-    if (lexer_.MatchStringConstant()) {
-        return std::make_shared<ConstantValueExpression> 
-               (Value(lexer_.EatStringConstant(), TypeID::VARCHAR));
-    }
-    
-    if (lexer_.MatchIntConstant()) {
-        return std::make_shared<ConstantValueExpression> 
-               (Value(lexer_.EatIntConstant()));
-    }
-
-    if (lexer_.MatchRealConstant()) {
-        return std::make_shared<ConstantValueExpression>
-               (Value(lexer_.EatRealConstant()));
-    }
-
-    // can't reach
-    throw BadSyntaxException("parse constant value error");
-    return nullptr;
+    return std::make_shared<ConstantValueExpression> (ParseConstant());
 }
 
 
@@ -342,49 +325,6 @@ std::shared_ptr<AbstractExpression> Parser::ParseConjuctOr() {
 
 std::shared_ptr<AbstractExpression> Parser::ParseWhere() {
     return ParseConjuctOr();
-}
-
-
-
-std::unique_ptr<SelectStatement> Parser::ParseSelect() {
-    lexer_.EatKeyword("select");
-    
-
-    std::vector<ColumnRef> select_list;
-    std::set<std::string> table_list; // allow repeat table
-    std::shared_ptr<AbstractExpression> where;
-
-
-    // Phase 1: parse select list
-    select_list  = ParseSelectList();
-    
-    
-    // Phase 2: parse table_list;
-    if (!lexer_.MatchKeyword("from") ||
-        select_list.empty()) {
-        throw BadSyntaxException("parse select error");
-    }
-    lexer_.EatKeyword("from");
-    table_list = ParseTableList();
-    table_list_ = table_list;
-    SIMPLEDB_ASSERT(table_list_.size(), "table list can't empty");
-    
-    
-    // Phase 3: update ColumnRef and check for columnref 
-    //          legality without table_name
-    for (auto &t:select_list) {
-        CheckColumnLegality(t);
-    }
-    
-    // Phase 4: if a where clause is required, parsewhere
-    if (lexer_.MatchKeyword("where")) {
-        lexer_.EatKeyword("where");
-        where = ParseWhere();
-    }
-
-
-    return std::make_unique<SelectStatement>
-           (select_list, table_list, where);
 }
 
 

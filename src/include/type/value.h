@@ -87,6 +87,10 @@ public:
         return type_id_;
     }
 
+    void SetTypeID(TypeID type) {
+        type_id_ = type;
+    }
+
     DataType GetDataType() const {
         if (ival_) {
             return DataType::INT;
