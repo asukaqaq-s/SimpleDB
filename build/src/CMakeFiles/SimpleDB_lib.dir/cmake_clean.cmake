@@ -17,6 +17,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/SimpleDB_lib.dir/file/block_id.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/file/file_manager.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/file/page.cc.o"
+  "CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/log/log_iterator.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/log/log_manager.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/metadata/index_manager.cc.o"

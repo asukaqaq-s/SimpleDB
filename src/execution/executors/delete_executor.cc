@@ -2,7 +2,7 @@
 #define DELETE_EXECUTOR_CC
 
 #include "execution/executors/delete_executor.h"
-#include "plans/delete_plan.h"
+#include "execution/plans/delete_plan.h"
 
 
 namespace SimpleDB {

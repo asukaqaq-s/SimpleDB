@@ -12,7 +12,7 @@ namespace SimpleDB {
 void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
     auto type = log->GetRecordType();
     auto file_manager = txn->GetFileManager();
-    auto buffer_manager = txn->GetBufferManager();
+    
 
     switch (type)
     {
@@ -42,17 +42,22 @@ void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
 
         auto block2 = file_manager->Append(block.FileName());
         SIMPLEDB_ASSERT(block == block2, "should equal");
-        Buffer *buffer = buffer_manager->PinBlock(block);
+
+        // acquire resource
+        Buffer *buffer = txn->PinBlock(block);
         auto *table_page = static_cast<TablePage*>(buffer);
-        
         table_page->WLock();
+
         // check if need to redo
         if (table_page->GetPageLsn() < log_record->GetLsn()) {
             table_page->InitPage(); // don't need to log
-            table_page->SetPageLsn(log_record->GetLsn()); // but we still need to update PageLsn
+            // but we still need to update PageLsn
+            table_page->SetPageLsn(log_record->GetLsn()); 
         }
+
+        // release resource
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
 
         break;
     }
@@ -63,17 +68,21 @@ void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
         auto block = BlockId(log_record->GetFileName(), log_record->GetRID().GetBlockNum());
         auto rid = log_record->GetRID();
 
-        Buffer *buffer = buffer_manager->PinBlock(block);
+        // acquire resource
+        Buffer *buffer = txn->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
-
         table_page->WLock();
+
+
         // check if need to redo
         if (table_page->GetPageLsn() < log_record->GetLsn()) {
             table_page->InsertWithRID(rid, log_record->GetTuple());
             table_page->SetPageLsn(log_record->GetLsn());
         }
+
+        // release resource
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
         
         break;
     }
@@ -84,7 +93,8 @@ void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
         auto block = BlockId(log_record->GetFileName(), log_record->GetRID().GetBlockNum());
         auto rid = log_record->GetRID();
 
-        Buffer *buffer = buffer_manager->PinBlock(block);
+        // acquire resource
+        Buffer *buffer = txn->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
@@ -95,8 +105,10 @@ void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
             table_page->SetPageLsn(log_record->GetLsn());
             assert(old_tuple == log_record->GetTuple());
         }
+
+        // release resource
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
 
         break;
     }
@@ -109,7 +121,8 @@ void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
         auto old_tuple = log_record->GetOldTuple();
         auto new_tuple = log_record->GetNewTuple();
 
-        Buffer *buffer = buffer_manager->PinBlock(block);
+        // acquire resource
+        Buffer *buffer = txn->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
@@ -120,8 +133,10 @@ void RecoveryManager::RedoLog(Transaction *txn, LogRecord *log) {
             table_page->SetPageLsn(log_record->GetLsn());
             assert(old_tuple == tuple);
         }
+
+        // release resource
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
 
         break;
     }

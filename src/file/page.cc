@@ -8,6 +8,35 @@
 
 namespace SimpleDB {
 
+bool Page::GetBoolean(int offset) const {
+    char* page_offset;
+    int res;
+    
+    if(offset + sizeof(bool) > content_->size()) { 
+        // overflow
+        throw std::runtime_error("Page overflow when GetBoolean");
+    }
+    // no overflow
+    page_offset = &(*content_)[offset];
+    res = *(reinterpret_cast<bool *>(page_offset));
+    return res;
+}
+
+
+void Page::SetBoolean(int offset, bool n)  {
+    char* page_offset;
+    
+    if(offset + sizeof(bool) > content_->size()) { 
+        // overflow
+        throw std::runtime_error("Page overflow when SetBoolean");
+    }
+    // no overflow
+    page_offset = &(*content_)[offset];
+    *(reinterpret_cast<bool *>(page_offset)) = n;
+}
+
+
+
 int Page::GetInt(int offset) const {
     char* page_offset;
     int res;

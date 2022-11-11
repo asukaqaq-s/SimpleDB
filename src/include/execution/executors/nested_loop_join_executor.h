@@ -2,7 +2,7 @@
 #define NESTED_LOOP_JOIN_EXECUTOR_H
 
 #include "execution/executors/abstract_executor.h"
-#include "plans/nested_loop_join_plan.h"
+#include "execution/plans/nested_loop_join_plan.h"
 #include "execution/expressions/column_value_expression.h"
 
 #include <memory>

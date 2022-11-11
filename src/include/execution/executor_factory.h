@@ -2,7 +2,7 @@
 #define EXECUTOR_FACTORY_H
 
 #include "execution/executors/abstract_executor.h"
-#include "plans/abstract_plan.h"
+#include "execution/plans/abstract_plan.h"
 #include "execution/executor_context.h"
 #include "execution/executors/delete_executor.h"
 #include "execution/executors/insert_executor.h"

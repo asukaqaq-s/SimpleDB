@@ -31,6 +31,24 @@ public:
 
     Page(std::shared_ptr<std::vector<char>> &buffer_page)
         :content_(buffer_page) {}
+
+
+    /**
+    * @brief Get a bool-value from page_[offset]
+    * 
+    * @param offset
+    * @return the obtained bool-value
+    */
+    bool GetBoolean(int offset) const;
+    
+
+    /**
+    * @brief Set a int-value n to page_[offset]
+    * 
+    * @param offset
+    * @param n the value to set
+    */
+    void SetBoolean(int offset, bool n);
     
     /**
     * @brief Get a int-value from page_[offset]

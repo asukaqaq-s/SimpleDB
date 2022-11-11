@@ -4,7 +4,7 @@
 
 #include "parse/parser.h"
 #include "config/exception.h"
-#include "plans/update_plan.h"
+#include "execution/plans/update_plan.h"
 
 namespace SimpleDB {
 

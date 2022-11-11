@@ -5,7 +5,7 @@
 #include "concurrency/transaction.h"
 #include "concurrency/transaction_manager.h"
 #include "config/exception.h"
-#include "plans/abstract_plan.h"
+#include "execution/plans/abstract_plan.h"
 #include "execution/executor_factory.h"
 #include "execution/executor_context.h"
 

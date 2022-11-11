@@ -1,7 +1,7 @@
 #ifndef NESTED_LOOP_JOIN_PLAN_H
 #define NESTED_LOOP_JOIN_PLAN_H
 
-#include "plans/abstract_plan.h"
+#include "execution/plans/abstract_plan.h"
 #include "execution/expressions/abstract_expression.h"
 
 namespace SimpleDB {

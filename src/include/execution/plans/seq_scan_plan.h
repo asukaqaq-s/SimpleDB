@@ -1,7 +1,7 @@
 #ifndef SEQ_SCAN_PLAN_H
 #define SEQ_SCAN_PLAN_H
 
-#include "plans/abstract_plan.h"
+#include "execution/plans/abstract_plan.h"
 #include "execution/expressions/abstract_expression.h"
 
 namespace SimpleDB {

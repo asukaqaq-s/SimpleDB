@@ -126,6 +126,27 @@ public:
         return 0;
     }
 
+    // int SerializationLength() const {
+    //     switch(type_id_) {
+        
+    //     case TypeID::INTEGER:
+    //         return sizeof(int);
+
+    //     case TypeID::DECIMAL:
+    //         return sizeof(double);
+        
+    //     case TypeID::CHAR:
+    //     case TypeID::VARCHAR:
+    //         return Page::MaxLength(sval_->size());
+        
+    //     default:
+    //         break;
+    //     }
+
+    //     SIMPLEDB_ASSERT(false, "can't reach it");
+    //     return 0;
+    // }
+
 
     int hash_code() const {
         if (ival_) {

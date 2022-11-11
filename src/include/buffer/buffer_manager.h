@@ -68,8 +68,16 @@ public:
     */
     void FlushAll();
     
+
+    /**
+    * @brief acquire a new block which not create
+    */
+    Buffer* NewBlock(const std::string &file_name, int *block_num);
+    
+    
     /********* for debugging purpose *********/
     
+
     /**
     * @brief allocate a new page to disk-file
     * and move it to bufferpool
@@ -77,7 +85,19 @@ public:
     */
     Buffer* NewPage(BlockId block);
 
+
     Buffer* NewPage(std::string file_name);
+
+
+    void PrintBufferPool() {
+        std::cout << "buffer pool = " << buffer_pool_.size() << std::endl;
+        for (auto &t:buffer_pool_) {
+            if (t->IsPinned())
+                std::cout << t->GetPinCount() << " " << t->GetBlockID().to_string() << std::endl;
+        }
+
+        std::cout << std::endl;
+    }
 
 
 

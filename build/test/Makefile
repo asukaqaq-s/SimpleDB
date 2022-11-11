@@ -168,36 +168,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/log_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/log_test.dir/rule
-.PHONY : test/CMakeFiles/log_test.dir/rule
-
-# Convenience name for target.
-log_test: test/CMakeFiles/log_test.dir/rule
-
-.PHONY : log_test
-
-# fast build rule for target.
-log_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
-.PHONY : log_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/log_record_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/log_record_test.dir/rule
-.PHONY : test/CMakeFiles/log_record_test.dir/rule
-
-# Convenience name for target.
-log_record_test: test/CMakeFiles/log_record_test.dir/rule
-
-.PHONY : log_record_test
-
-# fast build rule for target.
-log_record_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
-.PHONY : log_record_test/fast
-
-# Convenience name for target.
 test/CMakeFiles/page_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
 .PHONY : test/CMakeFiles/page_test.dir/rule
@@ -241,6 +211,21 @@ expreesion_test: test/CMakeFiles/expreesion_test.dir/rule
 expreesion_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
 .PHONY : expreesion_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/static_hash_index_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/static_hash_index_test.dir/rule
+.PHONY : test/CMakeFiles/static_hash_index_test.dir/rule
+
+# Convenience name for target.
+static_hash_index_test: test/CMakeFiles/static_hash_index_test.dir/rule
+
+.PHONY : static_hash_index_test
+
+# fast build rule for target.
+static_hash_index_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/static_hash_index_test.dir/build.make test/CMakeFiles/static_hash_index_test.dir/build
+.PHONY : static_hash_index_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/lock_manager_test.dir/rule:
@@ -361,6 +346,36 @@ transaction_test: test/CMakeFiles/transaction_test.dir/rule
 transaction_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
 .PHONY : transaction_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/log_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/log_test.dir/rule
+.PHONY : test/CMakeFiles/log_test.dir/rule
+
+# Convenience name for target.
+log_test: test/CMakeFiles/log_test.dir/rule
+
+.PHONY : log_test
+
+# fast build rule for target.
+log_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
+.PHONY : log_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/log_record_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/log_record_test.dir/rule
+.PHONY : test/CMakeFiles/log_record_test.dir/rule
+
+# Convenience name for target.
+log_record_test: test/CMakeFiles/log_record_test.dir/rule
+
+.PHONY : log_record_test
+
+# fast build rule for target.
+log_record_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
+.PHONY : log_record_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/metadata_test.dir/rule:
@@ -812,6 +827,33 @@ file/page_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/file/page_test.cc.s
 .PHONY : file/page_test.cc.s
 
+index/static_hash_index_test.o: index/static_hash_index_test.cc.o
+
+.PHONY : index/static_hash_index_test.o
+
+# target to build an object file
+index/static_hash_index_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/static_hash_index_test.dir/build.make test/CMakeFiles/static_hash_index_test.dir/index/static_hash_index_test.cc.o
+.PHONY : index/static_hash_index_test.cc.o
+
+index/static_hash_index_test.i: index/static_hash_index_test.cc.i
+
+.PHONY : index/static_hash_index_test.i
+
+# target to preprocess a source file
+index/static_hash_index_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/static_hash_index_test.dir/build.make test/CMakeFiles/static_hash_index_test.dir/index/static_hash_index_test.cc.i
+.PHONY : index/static_hash_index_test.cc.i
+
+index/static_hash_index_test.s: index/static_hash_index_test.cc.s
+
+.PHONY : index/static_hash_index_test.s
+
+# target to generate assembly for a file
+index/static_hash_index_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/static_hash_index_test.dir/build.make test/CMakeFiles/static_hash_index_test.dir/index/static_hash_index_test.cc.s
+.PHONY : index/static_hash_index_test.cc.s
+
 log/log_test.o: log/log_test.cc.o
 
 .PHONY : log/log_test.o
@@ -1170,12 +1212,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... log_test"
-	@echo "... log_record_test"
 	@echo "... list_install_components"
 	@echo "... page_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
+	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
 	@echo "... file_manager_test"
 	@echo "... concurrency_test"
@@ -1186,6 +1227,8 @@ help:
 	@echo "... update_parse_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
+	@echo "... log_test"
+	@echo "... log_record_test"
 	@echo "... metadata_test"
 	@echo "... show-tests"
 	@echo "... create_parse_test"
@@ -1231,6 +1274,9 @@ help:
 	@echo "... file/page_test.o"
 	@echo "... file/page_test.i"
 	@echo "... file/page_test.s"
+	@echo "... index/static_hash_index_test.o"
+	@echo "... index/static_hash_index_test.i"
+	@echo "... index/static_hash_index_test.s"
 	@echo "... log/log_test.o"
 	@echo "... log/log_test.i"
 	@echo "... log/log_test.s"

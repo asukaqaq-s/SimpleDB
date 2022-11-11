@@ -17,10 +17,6 @@ class Transaction;
  * @brief The recovery manager.  
  * 
  * current, due to use undo-redo strategy, we don't flush the buffer of being used immediatly.
- * TODO: non-quiescent checkpoint
- * TODO: clr log
- * TODO: TXN-END log 
- * TODO: will store checkpoint offset in meta-data manager.
  */
 class RecoveryManager {
 

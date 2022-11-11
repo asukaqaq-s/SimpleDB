@@ -22,7 +22,7 @@ TEST(TableTest, TablePageTest) {
 
     // we test insert, update, delete, read in this function
     // because this is just one pages so don't need to travel the entire file
-
+    
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string test_dir = local_path + "/" + "test_dir";
@@ -138,7 +138,7 @@ TEST(TableTest, TablePageTest) {
     // std::cout << table_page->ToString(sch1) << std::endl;
     
 
-
+    
     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
 }
@@ -223,6 +223,7 @@ TEST(TableTest, TableHeapTest) {
         ASSERT_EQ(tuple, tmp_tuple);
     }
     EXPECT_EQ(cnt, insert_tuple_num);
+    
 
     // ----------------------
     // test delete or update 
@@ -241,7 +242,8 @@ TEST(TableTest, TableHeapTest) {
         cnt++;
         table_iter++;
     }
-    
+
+
     // after delete, some tuple should not exist
     cnt = 0;
     table_iter = table_heap->Begin(&txn);
@@ -253,8 +255,7 @@ TEST(TableTest, TableHeapTest) {
         table_iter++;
     }
     EXPECT_EQ(cnt, 50);    
-
-
+// exit(0);
     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
 }
@@ -308,7 +309,7 @@ TEST(TableHeapTest, BasicTest) {
     auto tuple = Tuple(values, schema);
     auto tuple_update = Tuple(values2, schema);
 
-
+    
     // --------------------
     //  create table_heap
     // --------------------
@@ -361,7 +362,7 @@ TEST(TableHeapTest, BasicTest) {
         auto tmp = Tuple();
         EXPECT_EQ(table_heap->GetTuple(&txn, tuple_list[i], &tmp), false);
     }
-
+    
     cmd = "rm -rf " + test_dir;
     system(cmd.c_str());
 }
@@ -426,7 +427,7 @@ TEST(TableHeapTest, IteratorTest) {
     int tuple_num = 1000;
     std::vector<RID> tuple_list(tuple_num);
     
-    
+
     // insert many tuple
     for (int i = 0; i < tuple_num; i++) {
         table_heap->Insert(&txn, tuple, &tuple_list[i]);

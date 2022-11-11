@@ -20,6 +20,10 @@ static constexpr int MAX_VIEW_LENGTH = 100;
 static constexpr int MAX_REFERSH_THRESHOLDS = 100;
 
 
+// block size
+
+
+
 }// namespace SimpleDB
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef INSERT_PLAN_H
 #define INSERT_PLAN_H
 
-#include "plans/abstract_plan.h"
+#include "execution/plans/abstract_plan.h"
 #include "record/tuple.h"
 
 namespace SimpleDB {

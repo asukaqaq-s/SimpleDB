@@ -2,7 +2,7 @@
 #define INSERT_EXECUTOR_H
 
 #include "execution/executors/abstract_executor.h"
-#include "plans/insert_plan.h"
+#include "execution/plans/insert_plan.h"
 
 #include <memory>
 

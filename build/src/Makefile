@@ -668,6 +668,33 @@ file/page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 .PHONY : file/page.cc.s
 
+index/hash/static_hash_table.o: index/hash/static_hash_table.cc.o
+
+.PHONY : index/hash/static_hash_table.o
+
+# target to build an object file
+index/hash/static_hash_table.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o
+.PHONY : index/hash/static_hash_table.cc.o
+
+index/hash/static_hash_table.i: index/hash/static_hash_table.cc.i
+
+.PHONY : index/hash/static_hash_table.i
+
+# target to preprocess a source file
+index/hash/static_hash_table.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.i
+.PHONY : index/hash/static_hash_table.cc.i
+
+index/hash/static_hash_table.s: index/hash/static_hash_table.cc.s
+
+.PHONY : index/hash/static_hash_table.s
+
+# target to generate assembly for a file
+index/hash/static_hash_table.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.s
+.PHONY : index/hash/static_hash_table.cc.s
+
 log/log_iterator.o: log/log_iterator.cc.o
 
 .PHONY : log/log_iterator.o
@@ -1519,6 +1546,9 @@ help:
 	@echo "... file/page.o"
 	@echo "... file/page.i"
 	@echo "... file/page.s"
+	@echo "... index/hash/static_hash_table.o"
+	@echo "... index/hash/static_hash_table.i"
+	@echo "... index/hash/static_hash_table.s"
 	@echo "... log/log_iterator.o"
 	@echo "... log/log_iterator.i"
 	@echo "... log/log_iterator.s"

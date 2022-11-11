@@ -24,7 +24,7 @@
 #include "parse/statement/create_table_statement.h"
 #include "parse/statement/create_view_statement.h"
 #include "parse/analyzer.h"
-#include "plans/update_plan.h"
+#include "execution/plans/update_plan.h"
 
 
 namespace SimpleDB {

@@ -39,12 +39,11 @@
 /home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/test.dir
 /home/asuka/workbench/project/SimpleDB/build/src/CMakeFiles/SimpleDB_lib.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/install/strip.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/log_test.dir
-/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/log_record_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/list_install_components.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/page_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/buffer_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/expreesion_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/static_hash_index_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lock_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/file_manager_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/concurrency_test.dir
@@ -55,6 +54,8 @@
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/update_parse_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/lru_replacer_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/transaction_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/log_test.dir
+/home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/log_record_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/metadata_test.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/show-tests.dir
 /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/create_parse_test.dir

@@ -1,7 +1,7 @@
 #ifndef DELETE_PLAN_H
 #define DELETE_PLAN_H
 
-#include "plans/abstract_plan.h"
+#include "execution/plans/abstract_plan.h"
 #include "record/schema.h"
 
 namespace SimpleDB {

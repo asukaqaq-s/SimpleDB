@@ -15,7 +15,7 @@
 #include "execution/expressions/conjuction_expression.h"
 #include "execution/expressions/constant_value_expression.h"
 #include "execution/expressions/operator_expression.h"
-#include "plans/update_plan.h"
+#include "execution/plans/update_plan.h"
 #include "parse/stream_tokenizer.h"
 #include "parse/lexer.h"
 #include "parse/parser.h"

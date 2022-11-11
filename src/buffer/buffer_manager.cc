@@ -214,6 +214,29 @@ void BufferManager::FlushAll() {
     }
 }
 
+Buffer* BufferManager::NewBlock(const std::string &file_name, int *block_num) {
+    std::unique_lock<std::mutex> lock(latch_);
+    auto start = std::chrono::high_resolution_clock::now();
+    auto block = file_manager_->Append(file_name);
+    Buffer *buffer = TryToPin(block);
+
+    while (buffer == NULL && !WaitTooLong(start)) {
+        
+        // wait until a pinned buffer release
+        victim_cv_.wait_for(lock, std::chrono::milliseconds(max_time_));
+        // require the buffer again
+        buffer = TryToPin(block);
+    }
+
+    if(!buffer) { // still can not acquire it
+        throw std::runtime_error("wait too long while bufferpool pin");
+    }
+    
+    *block_num = block.BlockNum();
+    return buffer;
+}
+
+
 // allocate a new page in disk-file
 Buffer* BufferManager::NewPage(BlockId block) {
     file_manager_->Append(block.FileName());

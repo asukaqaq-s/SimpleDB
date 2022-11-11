@@ -14,7 +14,6 @@ namespace SimpleDB {
 void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) {
     auto type = log->GetRecordType();
     auto file_manager = txn->GetFileManager();
-    auto buffer_manager = txn->GetBufferManager(); 
 
 
     switch (type)
@@ -52,21 +51,22 @@ void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) 
         auto rid = log_record->GetRID();
         Tuple tuple;
     
-        Buffer *buffer = buffer_manager->PinBlock(block); 
+        // acquire resource
+        Buffer *buffer = txn->PinBlock(block); 
         auto *table_page = static_cast<TablePage*> (buffer);
-
         table_page->WLock();
         
-        // if pagelsn < lsn, i think it's a logic error
+        // if pagelsn < lsn, this op has been undo, i think it's a logic error
         assert(table_page->GetPageLsn() >= log_record->GetLsn());
         
         // undo
         bool res = table_page->Delete(rid, &tuple);
         SIMPLEDB_ASSERT(res == true && tuple == log_record->GetTuple(), "logic error");
         table_page->SetPageLsn(undo_lsn);
-
+        
+        // release resource
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
         break;
     }
 
@@ -77,7 +77,7 @@ void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) 
         auto rid = log_record->GetRID();
         Tuple tuple = log_record->GetTuple();
         
-        Buffer *buffer = buffer_manager->PinBlock(block);
+        Buffer *buffer = txn->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
 
         table_page->WLock();
@@ -91,7 +91,7 @@ void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) 
         table_page->SetPageLsn(undo_lsn);
 
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
         
         break;
     }
@@ -104,9 +104,9 @@ void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) 
         auto old_tuple = log_record->GetOldTuple();
         auto new_tuple = log_record->GetNewTuple();
 
-        Buffer *buffer = buffer_manager->PinBlock(block);
+        // acquire resource
+        Buffer *buffer = txn->PinBlock(block);
         auto *table_page = static_cast<TablePage*> (buffer);
-
         table_page->WLock();
         
         // if pagelsn < lsn, i think it's a logic error
@@ -118,8 +118,9 @@ void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) 
         SIMPLEDB_ASSERT(res == true && new_tuple == tuple, "logic error");
         table_page->SetPageLsn(undo_lsn);
 
+        // release resource
         table_page->WUnlock();
-        buffer_manager->UnpinBlock(block);
+        txn->UnpinBlock(block);
 
         break;
     }

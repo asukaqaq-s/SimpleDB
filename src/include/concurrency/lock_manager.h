@@ -112,6 +112,10 @@ public:
     */
     bool UnLock(Transaction *txn, const BlockId &block);
 
+
+    void PrintLockTable();
+
+
 private:
 
     /**
@@ -121,31 +125,6 @@ private:
                    LockRequestQueue* queue, 
                    const BlockId &block);
 
-    void PrintLockTable() {
-        // BlockId blk1(item.file_name_, 1);
-        // BlockId blk2(item.file_name_, 2);
-
-
-        std::cout << std::endl;
-        std::cout << "[Print Lock Table] " << std::endl;
-        
-        int cnt = 0;
-        for (auto &queue:lock_table_) {
-            std::cout << "lock_request_queue  " << ++cnt << ": "
-                      << "writing = " << queue.second.writing_ << " "
-                      << "shared_count = " << queue.second.shared_count_ << std::endl;
-            
-            for (auto &t:queue.second.request_queue_) {
-                std::cout << "    granted = " << t.granted_ << " "
-                          << "lockmode = " << static_cast<int> (t.lock_mode_) << " "
-                          << "txn_id = " << t.txn_id_ << " " 
-                          << "txn_ = " << t.txn_ << std::endl;
-            }
-        }
-
-        std::cout << std::endl;
-        
-    }
     
     /**
     * @brief we should deal deadlock correspond to different protocol

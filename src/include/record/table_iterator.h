@@ -24,7 +24,7 @@ public:
         : txn_(nullptr),
           table_heap_(nullptr),
           rid_(RID()),
-          tuple_(Tuple()) {}
+          tuple_(Tuple()) { }
 
     /**
     * @brief
@@ -36,25 +36,43 @@ public:
         : txn_(txn),
           table_heap_(table_heap),
           rid_(rid),
-          tuple_(Tuple()) {}
+          tuple_(Tuple()) {
+
+            // cache a table page
+            if (rid_.GetBlockNum() != -1) {
+                table_page_ = static_cast<TablePage*> (txn_->PinBlock(GetBlock()));
+            }
+          }
 
     TableIterator(const TableIterator &other)
         : txn_(other.txn_),
           table_heap_(other.table_heap_),
           rid_(other.rid_),
-          tuple_(other.tuple_) {}
+          tuple_(other.tuple_) {
+            
+            // we should pin this table page again
+            if (rid_.GetBlockNum() != -1) {
+                table_page_ = static_cast<TablePage*> (txn_->PinBlock(GetBlock()));
+            }
+          }
+
+    ~TableIterator() {
+        Close();
+    }
 
     inline void Swap(TableIterator &iter) {
         std::swap(iter.txn_, txn_);
         std::swap(iter.rid_, rid_);
         std::swap(iter.table_heap_, table_heap_);
         std::swap(iter.tuple_, tuple_);
+        std::swap(iter.table_page_, table_page_);  
     }
 
 
     inline bool operator==(const TableIterator &iter) const {
         return rid_ == iter.rid_ &&
-               table_heap_ == iter.table_heap_;
+               table_heap_ == iter.table_heap_ &&
+               table_page_ == iter.table_page_;
     }
 
     inline bool operator!=(const TableIterator &iter) const {
@@ -97,6 +115,12 @@ public:
 private:
     
     /**
+    * @brief use close to replace unpin
+    */
+    void Close();
+    
+
+    /**
     * @brief private method to get the current tuple
     */
     void GetTuple();
@@ -104,12 +128,19 @@ private:
 
 private:
 
+    // txn provides us with execution context
     Transaction *txn_;
 
+    // include some informations of table
     TableHeap *table_heap_;
 
+    // current position
     RID rid_;
-    
+
+    // cache table page to reduce system calls
+    TablePage* table_page_{nullptr};
+
+    // cache tuple to reduce copy
     Tuple tuple_;
 };
 

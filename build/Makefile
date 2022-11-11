@@ -233,32 +233,6 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
-# Target rules for targets named log_test
-
-# Build rule for target.
-log_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 log_test
-.PHONY : log_test
-
-# fast build rule for target.
-log_test/fast:
-	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
-.PHONY : log_test/fast
-
-#=============================================================================
-# Target rules for targets named log_record_test
-
-# Build rule for target.
-log_record_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 log_record_test
-.PHONY : log_record_test
-
-# fast build rule for target.
-log_record_test/fast:
-	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
-.PHONY : log_record_test/fast
-
-#=============================================================================
 # Target rules for targets named page_test
 
 # Build rule for target.
@@ -296,6 +270,19 @@ expreesion_test: cmake_check_build_system
 expreesion_test/fast:
 	$(MAKE) -f test/CMakeFiles/expreesion_test.dir/build.make test/CMakeFiles/expreesion_test.dir/build
 .PHONY : expreesion_test/fast
+
+#=============================================================================
+# Target rules for targets named static_hash_index_test
+
+# Build rule for target.
+static_hash_index_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 static_hash_index_test
+.PHONY : static_hash_index_test
+
+# fast build rule for target.
+static_hash_index_test/fast:
+	$(MAKE) -f test/CMakeFiles/static_hash_index_test.dir/build.make test/CMakeFiles/static_hash_index_test.dir/build
+.PHONY : static_hash_index_test/fast
 
 #=============================================================================
 # Target rules for targets named lock_manager_test
@@ -400,6 +387,32 @@ transaction_test: cmake_check_build_system
 transaction_test/fast:
 	$(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
 .PHONY : transaction_test/fast
+
+#=============================================================================
+# Target rules for targets named log_test
+
+# Build rule for target.
+log_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 log_test
+.PHONY : log_test
+
+# fast build rule for target.
+log_test/fast:
+	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
+.PHONY : log_test/fast
+
+#=============================================================================
+# Target rules for targets named log_record_test
+
+# Build rule for target.
+log_record_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 log_record_test
+.PHONY : log_record_test
+
+# fast build rule for target.
+log_record_test/fast:
+	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
+.PHONY : log_record_test/fast
 
 #=============================================================================
 # Target rules for targets named metadata_test
@@ -575,11 +588,10 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
-	@echo "... log_test"
-	@echo "... log_record_test"
 	@echo "... page_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
+	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
 	@echo "... file_manager_test"
 	@echo "... concurrency_test"
@@ -588,6 +600,8 @@ help:
 	@echo "... update_parse_test"
 	@echo "... lru_replacer_test"
 	@echo "... transaction_test"
+	@echo "... log_test"
+	@echo "... log_record_test"
 	@echo "... metadata_test"
 	@echo "... show-tests"
 	@echo "... create_parse_test"

@@ -2,7 +2,7 @@
 #define SEQ_SCAN_EXECUTOR_H
 
 #include "execution/executors/abstract_executor.h"
-#include "plans/seq_scan_plan.h"
+#include "execution/plans/seq_scan_plan.h"
 
 namespace SimpleDB {
 

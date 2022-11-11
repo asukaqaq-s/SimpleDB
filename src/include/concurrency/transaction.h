@@ -61,10 +61,6 @@ public:
             return true;
         }
 
-        if (isolation_level_ == IsoLationLevel::READ_UNCOMMITED) {
-            return true;
-        }
-
         if (IsExclusiveLock(block) || IsSharedLock(block)) {
             return true;
         }
@@ -84,11 +80,17 @@ public:
     }
 
     bool UnLock(BlockId block) {
-        if (isolation_level_ == IsoLationLevel::READ_UNCOMMITED &&
-            IsSharedLock(block)) {
-            assert(false);
-        }
+        assert(isolation_level_ == IsoLationLevel::READ_COMMITED 
+               && IsSharedLock(block));
         return lock_manager_->UnLock(this, block);
+    }
+
+    Buffer *PinBlock(const BlockId &block) const {
+        return buffer_manager_->PinBlock(block);
+    }
+
+    void UnpinBlock(const BlockId &block) const {
+        assert(buffer_manager_->UnpinBlock(block));
     }
 
 
