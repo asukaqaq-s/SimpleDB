@@ -79,10 +79,12 @@ public:
         return lock_manager_->LockExclusive(this, block);
     }
 
-    bool UnLock(BlockId block) {
-        assert(isolation_level_ == IsoLationLevel::READ_COMMITED 
-               && IsSharedLock(block));
-        return lock_manager_->UnLock(this, block);
+    bool UnLockWhenRUC(BlockId block) {
+        if (isolation_level_ == IsoLationLevel::READ_COMMITED 
+               && IsSharedLock(block)) {
+            return lock_manager_->UnLock(this, block);     
+        }
+        return false;
     }
 
     Buffer *PinBlock(const BlockId &block) const {

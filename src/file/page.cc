@@ -8,31 +8,31 @@
 
 namespace SimpleDB {
 
-bool Page::GetBoolean(int offset) const {
+char Page::GetByte(int offset) const {
     char* page_offset;
     int res;
     
-    if(offset + sizeof(bool) > content_->size()) { 
+    if(offset + sizeof(char) > content_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when GetBoolean");
     }
     // no overflow
     page_offset = &(*content_)[offset];
-    res = *(reinterpret_cast<bool *>(page_offset));
+    res = *(reinterpret_cast<char *>(page_offset));
     return res;
 }
 
 
-void Page::SetBoolean(int offset, bool n)  {
+void Page::SetByte(int offset, char n)  {
     char* page_offset;
     
-    if(offset + sizeof(bool) > content_->size()) { 
+    if(offset + sizeof(char) > content_->size()) { 
         // overflow
         throw std::runtime_error("Page overflow when SetBoolean");
     }
     // no overflow
     page_offset = &(*content_)[offset];
-    *(reinterpret_cast<bool *>(page_offset)) = n;
+    *(reinterpret_cast<char *>(page_offset)) = n;
 }
 
 
@@ -75,19 +75,21 @@ std::vector<char> Page::GetBytes(int offset) const {
     
     // the maximum of access address = sizeof(int) + blob_size + offset
     if(blob_size + sizeof(int) + offset > content_->size()) {
-        // overflow
-        // printf("blob_size = %d, offset = %d, buffer_page_->size = %d\n",
-            // blob_size, offset, buffer_page_->size());
         throw std::runtime_error("Page overflow when GetBytes");
     }
+
+
     // no overflow
     page_offset_begin = &(*content_)[offset + sizeof(int)];
     page_offset_end = page_offset_begin + blob_size;
     
-    byte_array.insert(byte_array.end(), page_offset_begin,
-        page_offset_end);
+    byte_array.insert(byte_array.end(), page_offset_begin, page_offset_end);
     return byte_array;
 }
+
+
+
+
 
 // 1. set blob's header by calling SetInt func
 // 2. prepare to set byte-array in blob and check overflow

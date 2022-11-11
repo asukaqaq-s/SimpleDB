@@ -668,6 +668,60 @@ file/page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 .PHONY : file/page.cc.s
 
+index/hash/hash_table_bucket_page.o: index/hash/hash_table_bucket_page.cc.o
+
+.PHONY : index/hash/hash_table_bucket_page.o
+
+# target to build an object file
+index/hash/hash_table_bucket_page.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o
+.PHONY : index/hash/hash_table_bucket_page.cc.o
+
+index/hash/hash_table_bucket_page.i: index/hash/hash_table_bucket_page.cc.i
+
+.PHONY : index/hash/hash_table_bucket_page.i
+
+# target to preprocess a source file
+index/hash/hash_table_bucket_page.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.i
+.PHONY : index/hash/hash_table_bucket_page.cc.i
+
+index/hash/hash_table_bucket_page.s: index/hash/hash_table_bucket_page.cc.s
+
+.PHONY : index/hash/hash_table_bucket_page.s
+
+# target to generate assembly for a file
+index/hash/hash_table_bucket_page.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.s
+.PHONY : index/hash/hash_table_bucket_page.cc.s
+
+index/hash/hash_table_directory_page.o: index/hash/hash_table_directory_page.cc.o
+
+.PHONY : index/hash/hash_table_directory_page.o
+
+# target to build an object file
+index/hash/hash_table_directory_page.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_directory_page.cc.o
+.PHONY : index/hash/hash_table_directory_page.cc.o
+
+index/hash/hash_table_directory_page.i: index/hash/hash_table_directory_page.cc.i
+
+.PHONY : index/hash/hash_table_directory_page.i
+
+# target to preprocess a source file
+index/hash/hash_table_directory_page.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_directory_page.cc.i
+.PHONY : index/hash/hash_table_directory_page.cc.i
+
+index/hash/hash_table_directory_page.s: index/hash/hash_table_directory_page.cc.s
+
+.PHONY : index/hash/hash_table_directory_page.s
+
+# target to generate assembly for a file
+index/hash/hash_table_directory_page.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_directory_page.cc.s
+.PHONY : index/hash/hash_table_directory_page.cc.s
+
 index/hash/static_hash_table.o: index/hash/static_hash_table.cc.o
 
 .PHONY : index/hash/static_hash_table.o
@@ -1546,6 +1600,12 @@ help:
 	@echo "... file/page.o"
 	@echo "... file/page.i"
 	@echo "... file/page.s"
+	@echo "... index/hash/hash_table_bucket_page.o"
+	@echo "... index/hash/hash_table_bucket_page.i"
+	@echo "... index/hash/hash_table_bucket_page.s"
+	@echo "... index/hash/hash_table_directory_page.o"
+	@echo "... index/hash/hash_table_directory_page.i"
+	@echo "... index/hash/hash_table_directory_page.s"
 	@echo "... index/hash/static_hash_table.o"
 	@echo "... index/hash/static_hash_table.i"
 	@echo "... index/hash/static_hash_table.s"

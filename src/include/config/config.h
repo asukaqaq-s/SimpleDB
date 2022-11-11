@@ -15,6 +15,7 @@ static const std::string SIMPLEDB_LOG_FILE_NAME = "simpledb.log";
 // store checkpoint_end_record's lsn
 static const std::string SIMPLEDB_CHKPT_FILE_NAME = "checkpoint.log";
 
+static const int DIRECTORY_ARRAY_SIZE = 512;
 
 enum DeadLockResolveProtocol {
     DO_NOTHING,

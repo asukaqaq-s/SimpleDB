@@ -155,6 +155,7 @@ src/clean: src/CMakeFiles/SimpleDB_lib.dir/clean
 # Directory level rules for directory test
 
 # Recursive "all" directory target.
+test/all: test/CMakeFiles/hash_table_bucket_page_test.dir/all
 test/all: test/CMakeFiles/page_test.dir/all
 test/all: test/CMakeFiles/buffer_manager_test.dir/all
 test/all: test/CMakeFiles/expreesion_test.dir/all
@@ -162,6 +163,7 @@ test/all: test/CMakeFiles/static_hash_index_test.dir/all
 test/all: test/CMakeFiles/lock_manager_test.dir/all
 test/all: test/CMakeFiles/file_manager_test.dir/all
 test/all: test/CMakeFiles/concurrency_test.dir/all
+test/all: test/CMakeFiles/tuple_test.dir/all
 test/all: test/CMakeFiles/file_test.dir/all
 test/all: test/CMakeFiles/seqscan_executor_test.dir/all
 test/all: test/CMakeFiles/update_parse_test.dir/all
@@ -178,7 +180,6 @@ test/all: test/CMakeFiles/other_executors_test.dir/all
 test/all: test/CMakeFiles/tokenizer_test.dir/all
 test/all: test/CMakeFiles/table_test.dir/all
 test/all: test/CMakeFiles/recovery_test.dir/all
-test/all: test/CMakeFiles/tuple_test.dir/all
 
 .PHONY : test/all
 
@@ -188,6 +189,7 @@ test/preinstall:
 .PHONY : test/preinstall
 
 # Recursive "clean" directory target.
+test/clean: test/CMakeFiles/hash_table_bucket_page_test.dir/clean
 test/clean: test/CMakeFiles/page_test.dir/clean
 test/clean: test/CMakeFiles/buffer_manager_test.dir/clean
 test/clean: test/CMakeFiles/expreesion_test.dir/clean
@@ -195,6 +197,7 @@ test/clean: test/CMakeFiles/static_hash_index_test.dir/clean
 test/clean: test/CMakeFiles/lock_manager_test.dir/clean
 test/clean: test/CMakeFiles/file_manager_test.dir/clean
 test/clean: test/CMakeFiles/concurrency_test.dir/clean
+test/clean: test/CMakeFiles/tuple_test.dir/clean
 test/clean: test/CMakeFiles/file_test.dir/clean
 test/clean: test/CMakeFiles/seqscan_executor_test.dir/clean
 test/clean: test/CMakeFiles/update_parse_test.dir/clean
@@ -213,7 +216,6 @@ test/clean: test/CMakeFiles/other_executors_test.dir/clean
 test/clean: test/CMakeFiles/tokenizer_test.dir/clean
 test/clean: test/CMakeFiles/table_test.dir/clean
 test/clean: test/CMakeFiles/recovery_test.dir/clean
-test/clean: test/CMakeFiles/tuple_test.dir/clean
 
 .PHONY : test/clean
 
@@ -225,12 +227,12 @@ _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: _deps/googletes
 _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=61 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=60,61 "Built target gmock_main"
 .PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
 .PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
@@ -252,7 +254,7 @@ _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean:
 _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=59,60 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=58,59 "Built target gmock"
 .PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -354,6 +356,35 @@ src/CMakeFiles/SimpleDB_lib.dir/clean:
 .PHONY : src/CMakeFiles/SimpleDB_lib.dir/clean
 
 #=============================================================================
+# Target rules for target test/CMakeFiles/hash_table_bucket_page_test.dir
+
+# All Build rule for target.
+test/CMakeFiles/hash_table_bucket_page_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+test/CMakeFiles/hash_table_bucket_page_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+test/CMakeFiles/hash_table_bucket_page_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
+	$(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/depend
+	$(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=66 "Built target hash_table_bucket_page_test"
+.PHONY : test/CMakeFiles/hash_table_bucket_page_test.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/hash_table_bucket_page_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 51
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/hash_table_bucket_page_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+
+# Convenience name for target.
+hash_table_bucket_page_test: test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+
+.PHONY : hash_table_bucket_page_test
+
+# clean rule for target.
+test/CMakeFiles/hash_table_bucket_page_test.dir/clean:
+	$(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/clean
+.PHONY : test/CMakeFiles/hash_table_bucket_page_test.dir/clean
+
+#=============================================================================
 # Target rules for target test/CMakeFiles/page_test.dir
 
 # All Build rule for target.
@@ -362,12 +393,12 @@ test/CMakeFiles/page_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/
 test/CMakeFiles/page_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=80 "Built target page_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=80,81 "Built target page_test"
 .PHONY : test/CMakeFiles/page_test.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/page_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 51
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 52
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
 .PHONY : test/CMakeFiles/page_test.dir/rule
@@ -478,7 +509,7 @@ test/CMakeFiles/lock_manager_test.dir/all: _deps/googletest-build/googletest/CMa
 test/CMakeFiles/lock_manager_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=68,69 "Built target lock_manager_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=69,70 "Built target lock_manager_test"
 .PHONY : test/CMakeFiles/lock_manager_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -507,12 +538,12 @@ test/CMakeFiles/file_manager_test.dir/all: _deps/googletest-build/googletest/CMa
 test/CMakeFiles/file_manager_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=55,56 "Built target file_manager_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=55 "Built target file_manager_test"
 .PHONY : test/CMakeFiles/file_manager_test.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/file_manager_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 51
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
 .PHONY : test/CMakeFiles/file_manager_test.dir/rule
@@ -557,6 +588,35 @@ test/CMakeFiles/concurrency_test.dir/clean:
 .PHONY : test/CMakeFiles/concurrency_test.dir/clean
 
 #=============================================================================
+# Target rules for target test/CMakeFiles/tuple_test.dir
+
+# All Build rule for target.
+test/CMakeFiles/tuple_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+test/CMakeFiles/tuple_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+test/CMakeFiles/tuple_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/depend
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=97,98 "Built target tuple_test"
+.PHONY : test/CMakeFiles/tuple_test.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/tuple_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 52
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/tuple_test.dir/rule
+
+# Convenience name for target.
+tuple_test: test/CMakeFiles/tuple_test.dir/rule
+
+.PHONY : tuple_test
+
+# clean rule for target.
+test/CMakeFiles/tuple_test.dir/clean:
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/clean
+.PHONY : test/CMakeFiles/tuple_test.dir/clean
+
+#=============================================================================
 # Target rules for target test/CMakeFiles/file_test.dir
 
 # All Build rule for target.
@@ -565,7 +625,7 @@ test/CMakeFiles/file_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/
 test/CMakeFiles/file_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=57,58 "Built target file_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=56,57 "Built target file_test"
 .PHONY : test/CMakeFiles/file_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -594,12 +654,12 @@ test/CMakeFiles/seqscan_executor_test.dir/all: _deps/googletest-build/googletest
 test/CMakeFiles/seqscan_executor_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=87,88 "Built target seqscan_executor_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=88 "Built target seqscan_executor_test"
 .PHONY : test/CMakeFiles/seqscan_executor_test.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/seqscan_executor_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 51
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/seqscan_executor_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
 .PHONY : test/CMakeFiles/seqscan_executor_test.dir/rule
@@ -652,7 +712,7 @@ test/CMakeFiles/lru_replacer_test.dir/all: _deps/googletest-build/googletest/CMa
 test/CMakeFiles/lru_replacer_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=74,75 "Built target lru_replacer_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=75,76 "Built target lru_replacer_test"
 .PHONY : test/CMakeFiles/lru_replacer_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -710,7 +770,7 @@ test/CMakeFiles/log_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/g
 test/CMakeFiles/log_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=72,73 "Built target log_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=73,74 "Built target log_test"
 .PHONY : test/CMakeFiles/log_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -739,7 +799,7 @@ test/CMakeFiles/log_record_test.dir/all: _deps/googletest-build/googletest/CMake
 test/CMakeFiles/log_record_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=70,71 "Built target log_record_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=71,72 "Built target log_record_test"
 .PHONY : test/CMakeFiles/log_record_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -768,12 +828,12 @@ test/CMakeFiles/metadata_test.dir/all: _deps/googletest-build/googletest/CMakeFi
 test/CMakeFiles/metadata_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/metadata_test.dir/build.make test/CMakeFiles/metadata_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=76,77 "Built target metadata_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=77 "Built target metadata_test"
 .PHONY : test/CMakeFiles/metadata_test.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/metadata_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 51
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/metadata_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
 .PHONY : test/CMakeFiles/metadata_test.dir/rule
@@ -853,7 +913,7 @@ test/CMakeFiles/select_execution_test.dir/all: _deps/googletest-build/googletest
 test/CMakeFiles/select_execution_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/select_execution_test.dir/build.make test/CMakeFiles/select_execution_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=83,84 "Built target select_execution_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=84,85 "Built target select_execution_test"
 .PHONY : test/CMakeFiles/select_execution_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -882,7 +942,7 @@ test/CMakeFiles/insert_parse_test.dir/all: _deps/googletest-build/googletest/CMa
 test/CMakeFiles/insert_parse_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/insert_parse_test.dir/build.make test/CMakeFiles/insert_parse_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=66,67 "Built target insert_parse_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=67,68 "Built target insert_parse_test"
 .PHONY : test/CMakeFiles/insert_parse_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -938,7 +998,7 @@ test/CMakeFiles/select_parse_test.dir/all: _deps/googletest-build/googletest/CMa
 test/CMakeFiles/select_parse_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/select_parse_test.dir/build.make test/CMakeFiles/select_parse_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/select_parse_test.dir/build.make test/CMakeFiles/select_parse_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=85,86 "Built target select_parse_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=86,87 "Built target select_parse_test"
 .PHONY : test/CMakeFiles/select_parse_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1054,7 +1114,7 @@ test/CMakeFiles/recovery_test.dir/all: _deps/googletest-build/googletest/CMakeFi
 test/CMakeFiles/recovery_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
 	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/depend
 	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=81,82 "Built target recovery_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=82,83 "Built target recovery_test"
 .PHONY : test/CMakeFiles/recovery_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1073,35 +1133,6 @@ recovery_test: test/CMakeFiles/recovery_test.dir/rule
 test/CMakeFiles/recovery_test.dir/clean:
 	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/clean
 .PHONY : test/CMakeFiles/recovery_test.dir/clean
-
-#=============================================================================
-# Target rules for target test/CMakeFiles/tuple_test.dir
-
-# All Build rule for target.
-test/CMakeFiles/tuple_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
-test/CMakeFiles/tuple_test.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
-test/CMakeFiles/tuple_test.dir/all: src/CMakeFiles/SimpleDB_lib.dir/all
-	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/depend
-	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=97,98 "Built target tuple_test"
-.PHONY : test/CMakeFiles/tuple_test.dir/all
-
-# Build rule for subdir invocation for target.
-test/CMakeFiles/tuple_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 52
-	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles 0
-.PHONY : test/CMakeFiles/tuple_test.dir/rule
-
-# Convenience name for target.
-tuple_test: test/CMakeFiles/tuple_test.dir/rule
-
-.PHONY : tuple_test
-
-# clean rule for target.
-test/CMakeFiles/tuple_test.dir/clean:
-	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/clean
-.PHONY : test/CMakeFiles/tuple_test.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

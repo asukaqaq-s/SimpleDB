@@ -59,10 +59,7 @@ void TableHeap::Insert(Transaction *txn, const Tuple &tuple, RID *rid) {
         
         // should remember that read committed txn should release
         // s-lock after read operation finish
-        if (txn->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-            txn->IsSharedLock(GetBlock(curr_rid))) {
-            SIMPLEDB_ASSERT(txn->UnLock(GetBlock(curr_rid)), "unlock error");
-        }
+        txn->UnLockWhenRUC(GetBlock(curr_rid));
 
         if (AtLastBlock(txn, curr_rid.GetBlockNum())) {
             MoveToNewBlock(txn, curr_rid);
@@ -92,11 +89,7 @@ void TableHeap::Insert(Transaction *txn, const Tuple &tuple, RID *rid) {
 
     table_page->WUnlock();
     buffer_pool_manager_->UnpinBlock(GetBlock(curr_rid));
-
-    if (txn->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-        txn->IsSharedLock(GetBlock(curr_rid))) {
-        SIMPLEDB_ASSERT(txn->UnLock(GetBlock(curr_rid)), "unlock error");
-    }
+    txn->UnLockWhenRUC(GetBlock(curr_rid));
 
     if (rid != nullptr) {
         *rid = curr_rid;
@@ -122,10 +115,7 @@ bool TableHeap::GetTuple(Transaction *txn, const RID &rid, Tuple *tuple) {
     // release
     table_page->RUnlock();
     buffer_pool_manager_->UnpinBlock(GetBlock(rid));
-    if (txn->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-        txn->IsSharedLock(GetBlock(rid))) {
-        SIMPLEDB_ASSERT(txn->UnLock(GetBlock(rid)), "unlock error");
-    }
+    txn->UnLockWhenRUC(GetBlock(rid));
     
     return res;
 }
@@ -273,10 +263,7 @@ TableIterator TableHeap::Begin(Transaction *txn) {
 
             // if this txn's isolation level is rc, means we need to acquire
             // s-block but don't need to grant it until txn terminated
-            if (txn->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-                txn->IsSharedLock(GetBlock(rid))) {
-                txn->UnLock(GetBlock(rid));
-            }
+            txn->UnLockWhenRUC(GetBlock(rid));
 
             // remember unpin before return
             buffer_pool_manager_->UnpinBlock(GetBlock(rid));
@@ -302,10 +289,7 @@ TableIterator TableHeap::Begin(Transaction *txn) {
     // release source
     table_page->RUnlock();
     buffer_pool_manager_->UnpinBlock(GetBlock(rid));
-    if (txn->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-        txn->IsSharedLock(GetBlock(rid))) {
-        txn->UnLock(GetBlock(rid));
-    }
+    txn->UnLockWhenRUC(GetBlock(rid));
 
     if (rid.GetSlot() == -1) {
         return End();

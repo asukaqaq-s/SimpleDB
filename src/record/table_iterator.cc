@@ -30,14 +30,11 @@ void TableIterator::GetTuple() {
     // gettuple directly
     txn_->LockShared(GetBlock());
     table_page_->RLock();
-    bool res = table_page_->GetTuple(rid_, &tuple_);
-    table_page_->RUnlock();
 
-    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED
-        && txn_->IsSharedLock(GetBlock())) {
-        txn_->UnLock(GetBlock());
-    }
+    bool res = table_page_->GetTuple(rid_, &tuple_);
     
+    table_page_->RUnlock();
+    txn_->UnLockWhenRUC(GetBlock());
     // catch the event
     if (!res) {
         SIMPLEDB_ASSERT(false, "Get Tuple error");
@@ -80,10 +77,7 @@ TableIterator TableIterator::operator++() {
             // we should unpinblock here. but we can't replace the 
             // close function with unpinblock. it will unpin the block twice.
             Close(); 
-            if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-                txn_->IsSharedLock(GetBlock())) { 
-                txn_->UnLock(GetBlock());
-            }
+            txn_->UnLockWhenRUC(GetBlock());
 
             // if not next block, we can't create new one in Next
             if (table_heap_->AtLastBlock(txn_, rid_.GetBlockNum())) {
@@ -108,10 +102,7 @@ TableIterator TableIterator::operator++() {
 
     // release resource
     table_page_->RUnlock();
-    if (txn_->GetIsolationLevel() == IsoLationLevel::READ_COMMITED &&
-        txn_->IsSharedLock(GetBlock())) {
-        txn_->UnLock(GetBlock());
-    }
+    txn_->UnLockWhenRUC(GetBlock());
 
     return *this;
 }

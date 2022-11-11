@@ -78,6 +78,17 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -124,17 +135,6 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # The main all target
 all: cmake_check_build_system
 	cd /home/asuka/workbench/project/SimpleDB/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/asuka/workbench/project/SimpleDB/build/CMakeFiles /home/asuka/workbench/project/SimpleDB/build/test/CMakeFiles/progress.marks
@@ -166,6 +166,21 @@ preinstall/fast:
 depend:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+# Convenience name for target.
+test/CMakeFiles/hash_table_bucket_page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+.PHONY : test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+
+# Convenience name for target.
+hash_table_bucket_page_test: test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+
+.PHONY : hash_table_bucket_page_test
+
+# fast build rule for target.
+hash_table_bucket_page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/build
+.PHONY : hash_table_bucket_page_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/page_test.dir/rule:
@@ -271,6 +286,21 @@ concurrency_test: test/CMakeFiles/concurrency_test.dir/rule
 concurrency_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
 .PHONY : concurrency_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/tuple_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/rule
+.PHONY : test/CMakeFiles/tuple_test.dir/rule
+
+# Convenience name for target.
+tuple_test: test/CMakeFiles/tuple_test.dir/rule
+
+.PHONY : tuple_test
+
+# fast build rule for target.
+tuple_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/file_test.dir/rule:
@@ -542,21 +572,6 @@ recovery_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
 .PHONY : recovery_test/fast
 
-# Convenience name for target.
-test/CMakeFiles/tuple_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/rule
-.PHONY : test/CMakeFiles/tuple_test.dir/rule
-
-# Convenience name for target.
-tuple_test: test/CMakeFiles/tuple_test.dir/rule
-
-.PHONY : tuple_test
-
-# fast build rule for target.
-tuple_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
-.PHONY : tuple_test/fast
-
 buffer/buffer_manager_test.o: buffer/buffer_manager_test.cc.o
 
 .PHONY : buffer/buffer_manager_test.o
@@ -826,6 +841,33 @@ file/page_test.s: file/page_test.cc.s
 file/page_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/file/page_test.cc.s
 .PHONY : file/page_test.cc.s
+
+index/hash_table_bucket_page_test.o: index/hash_table_bucket_page_test.cc.o
+
+.PHONY : index/hash_table_bucket_page_test.o
+
+# target to build an object file
+index/hash_table_bucket_page_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/index/hash_table_bucket_page_test.cc.o
+.PHONY : index/hash_table_bucket_page_test.cc.o
+
+index/hash_table_bucket_page_test.i: index/hash_table_bucket_page_test.cc.i
+
+.PHONY : index/hash_table_bucket_page_test.i
+
+# target to preprocess a source file
+index/hash_table_bucket_page_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/index/hash_table_bucket_page_test.cc.i
+.PHONY : index/hash_table_bucket_page_test.cc.i
+
+index/hash_table_bucket_page_test.s: index/hash_table_bucket_page_test.cc.s
+
+.PHONY : index/hash_table_bucket_page_test.s
+
+# target to generate assembly for a file
+index/hash_table_bucket_page_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/index/hash_table_bucket_page_test.cc.s
+.PHONY : index/hash_table_bucket_page_test.cc.s
 
 index/static_hash_index_test.o: index/static_hash_index_test.cc.o
 
@@ -1213,6 +1255,7 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... list_install_components"
+	@echo "... hash_table_bucket_page_test"
 	@echo "... page_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
@@ -1220,6 +1263,8 @@ help:
 	@echo "... lock_manager_test"
 	@echo "... file_manager_test"
 	@echo "... concurrency_test"
+	@echo "... rebuild_cache"
+	@echo "... tuple_test"
 	@echo "... test"
 	@echo "... file_test"
 	@echo "... install"
@@ -1242,8 +1287,6 @@ help:
 	@echo "... table_test"
 	@echo "... recovery_test"
 	@echo "... edit_cache"
-	@echo "... tuple_test"
-	@echo "... rebuild_cache"
 	@echo "... buffer/buffer_manager_test.o"
 	@echo "... buffer/buffer_manager_test.i"
 	@echo "... buffer/buffer_manager_test.s"
@@ -1274,6 +1317,9 @@ help:
 	@echo "... file/page_test.o"
 	@echo "... file/page_test.i"
 	@echo "... file/page_test.s"
+	@echo "... index/hash_table_bucket_page_test.o"
+	@echo "... index/hash_table_bucket_page_test.i"
+	@echo "... index/hash_table_bucket_page_test.s"
 	@echo "... index/static_hash_index_test.o"
 	@echo "... index/static_hash_index_test.i"
 	@echo "... index/static_hash_index_test.s"

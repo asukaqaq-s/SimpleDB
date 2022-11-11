@@ -34,21 +34,22 @@ public:
 
 
     /**
-    * @brief Get a bool-value from page_[offset]
+    * @brief Get a char-value from page_[offset]
     * 
     * @param offset
     * @return the obtained bool-value
     */
-    bool GetBoolean(int offset) const;
+    char GetByte(int offset) const;
     
 
     /**
-    * @brief Set a int-value n to page_[offset]
+    * @brief Set a char-value n to page_[offset]
     * 
     * @param offset
     * @param n the value to set
     */
-    void SetBoolean(int offset, bool n);
+    void SetByte(int offset, char n);
+
     
     /**
     * @brief Get a int-value from page_[offset]
@@ -65,6 +66,7 @@ public:
     * @param n the value to set
     */
     void SetInt(int offset, int n);
+
 
     /**
     * @brief Get a blob from page_[offset]

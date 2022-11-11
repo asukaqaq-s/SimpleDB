@@ -233,6 +233,19 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
+# Target rules for targets named hash_table_bucket_page_test
+
+# Build rule for target.
+hash_table_bucket_page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hash_table_bucket_page_test
+.PHONY : hash_table_bucket_page_test
+
+# fast build rule for target.
+hash_table_bucket_page_test/fast:
+	$(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/build
+.PHONY : hash_table_bucket_page_test/fast
+
+#=============================================================================
 # Target rules for targets named page_test
 
 # Build rule for target.
@@ -322,6 +335,19 @@ concurrency_test: cmake_check_build_system
 concurrency_test/fast:
 	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
 .PHONY : concurrency_test/fast
+
+#=============================================================================
+# Target rules for targets named tuple_test
+
+# Build rule for target.
+tuple_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
+.PHONY : tuple_test
+
+# fast build rule for target.
+tuple_test/fast:
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
 
 #=============================================================================
 # Target rules for targets named file_test
@@ -557,19 +583,6 @@ recovery_test/fast:
 	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
 .PHONY : recovery_test/fast
 
-#=============================================================================
-# Target rules for targets named tuple_test
-
-# Build rule for target.
-tuple_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
-.PHONY : tuple_test
-
-# fast build rule for target.
-tuple_test/fast:
-	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
-.PHONY : tuple_test/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -588,6 +601,7 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
+	@echo "... hash_table_bucket_page_test"
 	@echo "... page_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
@@ -595,6 +609,7 @@ help:
 	@echo "... lock_manager_test"
 	@echo "... file_manager_test"
 	@echo "... concurrency_test"
+	@echo "... tuple_test"
 	@echo "... file_test"
 	@echo "... seqscan_executor_test"
 	@echo "... update_parse_test"
@@ -613,7 +628,6 @@ help:
 	@echo "... tokenizer_test"
 	@echo "... table_test"
 	@echo "... recovery_test"
-	@echo "... tuple_test"
 .PHONY : help
 
 
