@@ -4,6 +4,7 @@
 #include "index/hash/hash_table_directory_page.h"
 
 #include <unordered_map>
+#include <iostream>
 
 namespace SimpleDB {
 
@@ -27,45 +28,55 @@ void HashTableDirectoryPage::SetLSN(lsn_t lsn) {
 }
 
 
-int HashTableDirectoryPage::GetBucketBlockNum(uint32_t bucket_idx) {
+int HashTableDirectoryPage::GetBucketBlockNum(int bucket_idx) {
     SIMPLEDB_ASSERT(bucket_idx < 512, "overflow!");
     return bucket_block_nums_[bucket_idx];
 }
 
 
 void HashTableDirectoryPage::SetBucketBlockNum
-(uint32_t bucket_idx, int bucket_block_num) {
+(int bucket_idx, int bucket_block_num) {
     SIMPLEDB_ASSERT(bucket_idx < 512, "overflow!");
     bucket_block_nums_[bucket_idx] = bucket_block_num;
 }
 
 
-uint32_t HashTableDirectoryPage::GetSplitImageIndex(uint32_t bucket_idx) {
+int HashTableDirectoryPage::GetSplitImageIndex(int bucket_idx) {
     // in split phase, assume that local_depth = k, we only use the 
     // last k bits under index binary to get the block number to 
     // which the key is to be inserted
     // @see extendible hash index to see more
 
-    return bucket_idx ^(1 << GetLocalDepth(bucket_idx));
+    return bucket_idx ^ (1 << GetLocalDepth(bucket_idx));
 }
 
 
-uint32_t HashTableDirectoryPage::GetGlobalDepthMask() {
-    return (1 << (global_depth_ + 1)) - 1;
+
+int HashTableDirectoryPage::GetMergeImageIndex(int bucket_idx) {
+    SIMPLEDB_ASSERT(GetLocalDepth(bucket_idx) > 0, 
+                    "we can't merge a bucket which local depth is 0");
+    return bucket_idx ^ (1 << (GetLocalDepth(bucket_idx) - 1));
 }
 
 
-uint32_t HashTableDirectoryPage::GetLocalDepthMask(uint32_t bucket_idx) {
-    return (1 << (GetLocalDepth(bucket_idx + 1))) - 1;
+
+
+int HashTableDirectoryPage::GetGlobalDepthMask() {
+    return (1 << (global_depth_)) - 1;
 }
 
 
-void HashTableDirectoryPage::SetGlobalDepth(uint32_t global_depth) {
+int HashTableDirectoryPage::GetLocalDepthMask(int bucket_idx) {
+    return (1 << (GetLocalDepth(bucket_idx))) - 1;
+}
+
+
+void HashTableDirectoryPage::SetGlobalDepth(int global_depth) {
     global_depth_ = global_depth;
 }
 
 
-uint32_t HashTableDirectoryPage::GetGlobalDepth() {
+int HashTableDirectoryPage::GetGlobalDepth() {
     return global_depth_;
 }
 
@@ -87,56 +98,56 @@ bool HashTableDirectoryPage::CanShrink() {
     int bucket_num = Size();
     for (int i = 0;i < bucket_num; i++) {
         if (GetLocalDepth(i) >= global_depth_) {
-            return true;
+            return false;
         }
     }
 
-    return false;
+    return true;
 }
 
 
-uint32_t HashTableDirectoryPage::Size() {
+int HashTableDirectoryPage::Size() {
     return 1 << global_depth_;
 }
 
 
-uint32_t HashTableDirectoryPage::GetLocalDepth(uint32_t bucket_idx) {
+int HashTableDirectoryPage::GetLocalDepth(int bucket_idx) {
     return local_depths_[bucket_idx];
 }
 
 
 void HashTableDirectoryPage::SetLocalDepth
-(uint32_t bucket_idx, uint8_t local_depth) {
+(int bucket_idx, uint8_t local_depth) {
     local_depths_[bucket_idx] = local_depth;
 }
 
 
-void HashTableDirectoryPage::IncrLocalDepth(uint32_t bucket_idx) {
+void HashTableDirectoryPage::IncrLocalDepth(int bucket_idx) {
     local_depths_[bucket_idx] ++;
 }
 
 
-void HashTableDirectoryPage::DecrLocalDepth(uint32_t bucket_idx) {
+void HashTableDirectoryPage::DecrLocalDepth(int bucket_idx) {
     local_depths_[bucket_idx]--;
     SIMPLEDB_ASSERT(local_depths_[bucket_idx] >= 0, "can't less than 0");
 }
 
 
-uint32_t HashTableDirectoryPage::GetLocalHighBit(uint32_t bucket_idx) {
+int HashTableDirectoryPage::GetLocalHighBit(int bucket_idx) {
     return bucket_idx >> GetLocalDepth(bucket_idx) & 1;
 }
 
 
 void HashTableDirectoryPage::PrintDirectory() {
-    printf("======== DIRECTORY (global_depth_: %u) ========\n", global_depth_);
+    printf("======== DIRECTORY (global_depth_: %u) ==========================\n", global_depth_);
     fflush(stdout);
-    printf("| bucket_idx | block_num | local_depth |\n");
+    printf("|    bucket_idx      |    block_num       |    local_depth     |\n");
     fflush(stdout);
-    for (uint32_t idx = 0; idx < static_cast<uint32_t>(0x1 << global_depth_); idx++) {
-        printf("|      %u     |     %u     |     %u     |\n", idx, bucket_block_nums_[idx], local_depths_[idx]);
+    for (int idx = 0; idx < static_cast<int>(0x1 << global_depth_); idx++) {
+        printf("|%10u          |%10u          |%10u          |\n", idx, bucket_block_nums_[idx], local_depths_[idx]);
         fflush(stdout);
     }
-    printf("================ END DIRECTORY ================\n");
+    printf("================ END DIRECTORY ==================================\n");
       fflush(stdout);
 }
 

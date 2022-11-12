@@ -8,6 +8,9 @@ namespace SimpleDB {
 
 
 void HashTableBucketPage::InitHashBucketPage(int tuple_size, TypeID type) {
+    // clear all data
+    data_->ZeroPage();
+
     int block_size = data_->GetSize();
     int free_space = block_size - PAGE_HEADER_SIZE;
     int tuple_count = (4 * free_space / (4 * tuple_size + 1));
@@ -15,7 +18,7 @@ void HashTableBucketPage::InitHashBucketPage(int tuple_size, TypeID type) {
     int data_array_ptr = bit_map_size * 2 + PAGE_HEADER_SIZE;
 
     SetPageLsn(INVALID_LSN);
-    SetBlockNum(block_.BlockNum());
+    SetBucketBlockNum(block_.BlockNum());
     SetDataArrayPtr(data_array_ptr);
     SetTupleSize(tuple_size);
     SetTypeID(type);
@@ -23,8 +26,8 @@ void HashTableBucketPage::InitHashBucketPage(int tuple_size, TypeID type) {
 }
 
 
-bool HashTableBucketPage::GetValue(Key key, 
-                                    std::vector<RID> *result) {
+bool HashTableBucketPage::GetValue(const Value &key, 
+                                   std::vector<RID> *result) {
     bool has_get_value = false;
     int max_tuple_count = GetMaxTupleCount();
 
@@ -99,7 +102,6 @@ bool HashTableBucketPage::Remove(const Value &key, const RID &value) {
 
         if (key == KeyAt(i) && value == ValueAt(i)) {
             RemoveAt(i);
-            assert(!has_removed);
             has_removed = true;
         }
     }    
@@ -136,14 +138,37 @@ void HashTableBucketPage::RemoveAt(uint32_t bucket_idx) {
 
 bool HashTableBucketPage::IsFull() {
     int max_tuple_count = GetMaxTupleCount();
-    for (int i = 0;i < max_tuple_count;i ++) {
+    for (int i = 0;i < max_tuple_count; i++) {
+        if (!IsOccupied(i)) {
+            return false;
+        }
+        
         if (!IsReadable(i)) {
             return false;
         }
     }
 
+    
     return true;
 }
+
+
+bool HashTableBucketPage::IsEmpty() {
+    int max_tuple_count = GetMaxTupleCount();
+    for (int i = 0;i < max_tuple_count; i++) {
+        if (!IsOccupied(i)) {
+            break;
+        }
+
+        if (IsReadable(i)) {
+            return false;
+        }
+    }
+
+    return true;
+
+}
+
 
 
 

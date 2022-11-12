@@ -17,7 +17,7 @@ StaticHashTable::StaticHashTable(const std::string &index_name,
 
 
 bool StaticHashTable::Read(Transaction *txn, 
-                           const SearchKey& key, 
+                           const Value& key, 
                            std::vector<RID> *result) {
     auto bucket_file = GenerateBucketFileName(key);
     auto table_heap = GenerateBucketFile(txn, bucket_file);
@@ -28,7 +28,7 @@ bool StaticHashTable::Read(Transaction *txn,
         Tuple tuple = *table_iter;
         table_iter++;
 
-        if (tuple.GetValue("key", *kv_schema_) == key.GetValue()) {
+        if (tuple.GetValue("key", *kv_schema_) == key) {
             int block = tuple.GetValue("block", *kv_schema_).AsInt();
             int slot = tuple.GetValue("slot", *kv_schema_).AsInt();
             result->emplace_back(RID(block, slot));
@@ -42,7 +42,7 @@ bool StaticHashTable::Read(Transaction *txn,
 
 
 void StaticHashTable::Insert(Transaction *txn, 
-                             const SearchKey& key, 
+                             const Value& key, 
                              const RID& rid) {
     auto bucket_file = GenerateBucketFileName(key);
     auto table_heap = GenerateBucketFile(txn, bucket_file);
@@ -54,7 +54,7 @@ void StaticHashTable::Insert(Transaction *txn,
 
 
 bool StaticHashTable::Remove(Transaction *txn, 
-                             const SearchKey &key, 
+                             const Value &key, 
                              const RID& rid) {
     auto bucket_file = GenerateBucketFileName(key);
     auto table_heap = GenerateBucketFile(txn, bucket_file);
@@ -65,11 +65,11 @@ bool StaticHashTable::Remove(Transaction *txn,
         Tuple tuple = *table_iter;
         table_iter++;
 
-        if (tuple.GetValue("key", *kv_schema_) == key.GetValue()) {
+        if (tuple.GetValue("key", *kv_schema_) == key) {
             int block = tuple.GetValue("block", *kv_schema_).AsInt();
             int slot = tuple.GetValue("slot", *kv_schema_).AsInt();
             if (block == rid.GetBlockNum() && slot == rid.GetSlot()) {
-                // use tuple's rid instead  rid
+                // use tuple's rid instead param rid
                 table_heap->Delete(txn, tuple.GetRID());
                 return true;
             }
@@ -81,11 +81,11 @@ bool StaticHashTable::Remove(Transaction *txn,
 
 
 
-std::string StaticHashTable::GenerateBucketFileName(const SearchKey &key) {
+std::string StaticHashTable::GenerateBucketFileName(const Value &key) {
     std::hash<std::string> hs;
-    int hash_code = hs(key.ToString()) % BUCKET_NUM;
+    int hash_code = hs(key.to_string()) % BUCKET_NUM;
     
-    return index_name_ + ".hash_index.bucket_" + std::to_string(hash_code);
+    return index_name_ + ".bucket_" + std::to_string(hash_code);
 }
 
 
@@ -103,11 +103,11 @@ TableHeap* StaticHashTable::GenerateBucketFile
 }
 
 
-Tuple StaticHashTable::GenerateInsertTuple(const SearchKey &key, RID rid) {
+Tuple StaticHashTable::GenerateInsertTuple(const Value &key, RID rid) {
     std::vector<Value> values 
     {
         // key
-        key.GetValue(),
+        key,
         // value
         Value(rid.GetBlockNum()),
         Value(rid.GetSlot())

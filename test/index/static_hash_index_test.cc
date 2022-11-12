@@ -66,30 +66,30 @@ TEST(StaticHashTest, BasicTest) {
     auto static_hash = std::make_unique<StaticHashTable>("hash1", &schema, rm.get());
 
     for (int i = 0;i < 1000;i ++) {
-        static_hash->Insert(txn.get(), SearchKey(Value(i), &key_schema), RID(i,2*i));
+        static_hash->Insert(txn.get(), Value(i), RID(i,2*i));
     }
 
     for (int i = 0;i < 1000;i ++) {
         std::vector<RID> result;
-        static_hash->Read(txn.get(), SearchKey(Value(i), &key_schema), &result);
+        static_hash->Read(txn.get(), Value(i), &result);
         EXPECT_EQ(result.size(), 1);
         EXPECT_EQ(result[0], RID(i, 2*i));
     }
 
     for (int i = 0;i < 1000;i ++) {
         if (i % 2) continue;
-        EXPECT_TRUE(static_hash->Remove(txn.get(), SearchKey(Value(i), &key_schema), RID(i, 2*i)));
+        EXPECT_TRUE(static_hash->Remove(txn.get(), Value(i), RID(i, 2*i)));
     }
 
     for (int i = 0;i < 1000;i ++) {
         std::vector<RID> result;
         if (i % 2) {         
-            static_hash->Read(txn.get(), SearchKey(Value(i), &key_schema), &result);
+            static_hash->Read(txn.get(), Value(i), &result);
             EXPECT_EQ(result.size(), 1);
             EXPECT_EQ(result[0], RID(i, 2*i));
         }
         else {
-            EXPECT_FALSE(static_hash->Read(txn.get(), SearchKey(Value(i), &key_schema), &result));
+            EXPECT_FALSE(static_hash->Read(txn.get(), Value(i), &result));
         }
     }
 
@@ -142,30 +142,30 @@ TEST(StaticHashTest, DecimalTest) {
     auto static_hash = std::make_unique<StaticHashTable>("hash1", &schema, rm.get());
 
     for (int i = 0;i < 1000;i ++) {
-        static_hash->Insert(txn.get(), SearchKey(Value(double(i)), &key_schema), RID(i,2*i));
+        static_hash->Insert(txn.get(), Value(double(i)), RID(i,2*i));
     }
 
     for (int i = 0;i < 1000;i ++) {
         std::vector<RID> result;
-        static_hash->Read(txn.get(), SearchKey(Value(double(i)), &key_schema), &result);
+        static_hash->Read(txn.get(), Value(double(i)), &result);
         EXPECT_EQ(result.size(), 1);
         EXPECT_EQ(result[0], RID(i, 2*i));
     }
 
     for (int i = 0;i < 1000;i ++) {
         if (i % 2) continue;
-        EXPECT_TRUE(static_hash->Remove(txn.get(), SearchKey(Value(double(i)), &key_schema), RID(i, 2*i)));
+        EXPECT_TRUE(static_hash->Remove(txn.get(), Value(double(i)), RID(i, 2*i)));
     }
 
     for (int i = 0;i < 1000;i ++) {
         std::vector<RID> result;
         if (i % 2) {         
-            static_hash->Read(txn.get(), SearchKey(Value(double(i)), &key_schema), &result);
+            static_hash->Read(txn.get(), Value(double(i)), &result);
             EXPECT_EQ(result.size(), 1);
             EXPECT_EQ(result[0], RID(i, 2*i));
         }
         else {
-            EXPECT_FALSE(static_hash->Read(txn.get(), SearchKey(Value(double(i)), &key_schema), &result));
+            EXPECT_FALSE(static_hash->Read(txn.get(), Value(double(i)), &result));
         }
     }
 
@@ -235,11 +235,11 @@ TEST(StaticHashTest, StringTest) {
     for (int i = 0;i < 1000;i ++) {
         if (i % 2) {
             auto value = Value(GenerateKey(20), TypeID::VARCHAR);
-            static_hash->Insert(txn.get(), SearchKey(value, &key_schema), RID(i,2*i));
+            static_hash->Insert(txn.get(), value, RID(i,2*i));
         }
         else {
             auto value = Value(GenerateKey(5), TypeID::VARCHAR);
-            static_hash->Insert(txn.get(), SearchKey(value, &key_schema), RID(i,2*i));
+            static_hash->Insert(txn.get(), value, RID(i,2*i));
         }
     }
 
@@ -248,10 +248,10 @@ TEST(StaticHashTest, StringTest) {
     std::vector<RID> result1;
     std::vector<RID> result2;
     auto value = Value(GenerateKey(20), TypeID::VARCHAR);
-    static_hash->Read(txn.get(), SearchKey(value, &key_schema), &result1);
+    static_hash->Read(txn.get(), value, &result1);
     EXPECT_EQ(result1.size(), 500);
     value = Value(GenerateKey(5), TypeID::VARCHAR);
-    static_hash->Read(txn.get(), SearchKey(value, &key_schema), &result2);
+    static_hash->Read(txn.get(), value, &result2);
     EXPECT_EQ(result2.size(), 500);
 
     for (int i = 0;i < 1000;i ++) {
@@ -268,7 +268,7 @@ TEST(StaticHashTest, StringTest) {
     for (int i = 0;i < 1000;i ++) {
         if (i % 2) {
             auto value = Value(GenerateKey(20), TypeID::VARCHAR);
-            EXPECT_TRUE(static_hash->Remove(txn.get(), SearchKey(value, &key_schema), RID(i, 2*i)));
+            EXPECT_TRUE(static_hash->Remove(txn.get(), value, RID(i, 2*i)));
         }
     }
 
@@ -278,13 +278,13 @@ TEST(StaticHashTest, StringTest) {
         std::vector<RID> result;
         if (i % 2) {         
             auto value = Value(GenerateKey(20), TypeID::VARCHAR);
-            static_hash->Read(txn.get(), SearchKey(value, &key_schema), &result);
+            static_hash->Read(txn.get(), value, &result);
             EXPECT_EQ(result.size(), 0);
         }
         else {
             std::vector<RID> result2;
             value = Value(GenerateKey(5), TypeID::VARCHAR);
-            static_hash->Read(txn.get(), SearchKey(value, &key_schema), &result2);
+            static_hash->Read(txn.get(),value, &result2);
             EXPECT_EQ(result2.size(), 500);
         }
     }

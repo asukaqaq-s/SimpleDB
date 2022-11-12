@@ -156,6 +156,9 @@ public:
     
     char *GetRawDataPtr() { return &(*content_)[0]; }
 
+
+    void ZeroPage() { content_ = std::make_shared<std::vector<char>>(content_->size(), 0); }
+
 public: // for recovery manager, we can use lsn to get more information
 
     static constexpr int LSN_OFFSET = 0;

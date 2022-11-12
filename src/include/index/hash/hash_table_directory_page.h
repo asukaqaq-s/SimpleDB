@@ -34,7 +34,7 @@ public:
     *
     * @param block_num the page id to which to set the block_num_ field
     */
-    void SetBlockNum(int block_num) {}
+    void SetBlockNum(int block_num);
 
     /**
     * @return the lsn of this page
@@ -54,7 +54,7 @@ public:
     * @param bucket_idx the index in the directory to lookup
     * @return bucket block_num corresponding to bucket_idx
     */
-    int GetBucketBlockNum(uint32_t bucket_idx);
+    int GetBucketBlockNum(int bucket_idx);
 
     /**
     * Updates the directory index using a bucket index and block_num
@@ -62,7 +62,7 @@ public:
     * @param bucket_idx directory index at which to insert block_num
     * @param bucket_block_num block_num to insert
     */
-    void SetBucketBlockNum(uint32_t bucket_idx, int bucket_block_num);
+    void SetBucketBlockNum(int bucket_idx, int bucket_block_num);
 
 
     /**
@@ -71,7 +71,17 @@ public:
     * @param bucket_idx the directory index for which to find the split image
     * @return the directory index of the split image
     */
-    uint32_t GetSplitImageIndex(uint32_t bucket_idx);
+    int GetSplitImageIndex(int bucket_idx);
+
+
+    /**
+    * Gets the merge image of an index
+    * 
+    * @param bucket_idx the directory index for which to find the merge image
+    * @return the directory index of the merge image
+    */
+    int GetMergeImageIndex(int bucket_idx);
+
 
     /**
     * GetGlobalDepthMask - returns a mask of global_depth 1's and the rest 0's.
@@ -87,7 +97,7 @@ public:
     *
     * @return mask of global_depth 1's and the rest 0's (with 1's from LSB upwards)
     */
-    uint32_t GetGlobalDepthMask();
+    int GetGlobalDepthMask();
 
     /**
     * GetLocalDepthMask - same as global depth mask, except it
@@ -96,20 +106,20 @@ public:
     * @param bucket_idx the index to use for looking up local depth
     * @return mask of local 1's and the rest 0's (with 1's from LSB upwards)
     */
-    uint32_t GetLocalDepthMask(uint32_t bucket_idx);
+    int GetLocalDepthMask(int bucket_idx);
 
 
     /**
     * Set the global depth of the hash table directory
     */
-    void SetGlobalDepth(uint32_t global_depth);
+    void SetGlobalDepth(int global_depth);
 
     /**
     * Get the global depth of the hash table directory
     *
     * @return the global depth of the directory
     */
-    uint32_t GetGlobalDepth();
+    int GetGlobalDepth();
 
     /**
     * Increment the global depth of the directory
@@ -130,7 +140,7 @@ public:
     /**
     * @return the current directory size
     */
-    uint32_t Size();
+    int Size();
 
     /**
     * Gets the local depth of the bucket at bucket_idx
@@ -138,7 +148,7 @@ public:
     * @param bucket_idx the bucket index to lookup
     * @return the local depth of the bucket at bucket_idx
     */
-    uint32_t GetLocalDepth(uint32_t bucket_idx);
+    int GetLocalDepth(int bucket_idx);
 
     /**
     * Set the local depth of the bucket at bucket_idx to local_depth
@@ -146,20 +156,20 @@ public:
     * @param bucket_idx bucket index to update
     * @param local_depth new local depth
     */
-    void SetLocalDepth(uint32_t bucket_idx, uint8_t local_depth);
+    void SetLocalDepth(int bucket_idx, uint8_t local_depth);
 
     
     /**
     * Increment the local depth of the bucket at bucket_idx
     * @param bucket_idx bucket index to increment
     */
-    void IncrLocalDepth(uint32_t bucket_idx);
+    void IncrLocalDepth(int bucket_idx);
 
     /**
     * Decrement the local depth of the bucket at bucket_idx
     * @param bucket_idx bucket index to decrement
     */
-    void DecrLocalDepth(uint32_t bucket_idx);
+    void DecrLocalDepth(int bucket_idx);
 
     /**
     * Gets the high bit corresponding to the bucket's local depth.
@@ -169,7 +179,7 @@ public:
     * @param bucket_idx bucket index to lookup
     * @return the high bit corresponding to the bucket's local depth
     */
-    uint32_t GetLocalHighBit(uint32_t bucket_idx);
+    int GetLocalHighBit(int bucket_idx);
 
     /**
     * Prints the current directory
@@ -184,7 +194,7 @@ private:
     // page lsn
     lsn_t lsn_;
     
-    uint32_t global_depth_{0};
+    int global_depth_{0};
 
     uint8_t local_depths_[DIRECTORY_ARRAY_SIZE];
      

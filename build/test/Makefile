@@ -78,16 +78,16 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
 
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
 
-.PHONY : rebuild_cache/fast
+.PHONY : edit_cache/fast
 
 # Special rule for the target test
 test:
@@ -99,6 +99,17 @@ test:
 test/fast: test
 
 .PHONY : test/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # Special rule for the target install
 install: preinstall
@@ -123,17 +134,6 @@ install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -168,19 +168,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-test/CMakeFiles/hash_table_bucket_page_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/hash_table_bucket_page_test.dir/rule
-.PHONY : test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+test/CMakeFiles/table_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_test.dir/rule
+.PHONY : test/CMakeFiles/table_test.dir/rule
 
 # Convenience name for target.
-hash_table_bucket_page_test: test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+table_test: test/CMakeFiles/table_test.dir/rule
 
-.PHONY : hash_table_bucket_page_test
+.PHONY : table_test
 
 # fast build rule for target.
-hash_table_bucket_page_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/build
-.PHONY : hash_table_bucket_page_test/fast
+table_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
+.PHONY : table_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/page_test.dir/rule:
@@ -363,6 +363,36 @@ lru_replacer_test/fast:
 .PHONY : lru_replacer_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/hard_extendible_hash_table_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/hard_extendible_hash_table_test.dir/rule
+.PHONY : test/CMakeFiles/hard_extendible_hash_table_test.dir/rule
+
+# Convenience name for target.
+hard_extendible_hash_table_test: test/CMakeFiles/hard_extendible_hash_table_test.dir/rule
+
+.PHONY : hard_extendible_hash_table_test
+
+# fast build rule for target.
+hard_extendible_hash_table_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hard_extendible_hash_table_test.dir/build.make test/CMakeFiles/hard_extendible_hash_table_test.dir/build
+.PHONY : hard_extendible_hash_table_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/hash_table_bucket_page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+.PHONY : test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+
+# Convenience name for target.
+hash_table_bucket_page_test: test/CMakeFiles/hash_table_bucket_page_test.dir/rule
+
+.PHONY : hash_table_bucket_page_test
+
+# fast build rule for target.
+hash_table_bucket_page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/build
+.PHONY : hash_table_bucket_page_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/transaction_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/transaction_test.dir/rule
 .PHONY : test/CMakeFiles/transaction_test.dir/rule
@@ -376,6 +406,21 @@ transaction_test: test/CMakeFiles/transaction_test.dir/rule
 transaction_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/transaction_test.dir/build.make test/CMakeFiles/transaction_test.dir/build
 .PHONY : transaction_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/rwlatch_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/rwlatch_test.dir/rule
+.PHONY : test/CMakeFiles/rwlatch_test.dir/rule
+
+# Convenience name for target.
+rwlatch_test: test/CMakeFiles/rwlatch_test.dir/rule
+
+.PHONY : rwlatch_test
+
+# fast build rule for target.
+rwlatch_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/rwlatch_test.dir/build.make test/CMakeFiles/rwlatch_test.dir/build
+.PHONY : rwlatch_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/log_test.dir/rule:
@@ -483,6 +528,21 @@ insert_parse_test/fast:
 .PHONY : insert_parse_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/extendible_hash_table_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/extendible_hash_table_test.dir/rule
+.PHONY : test/CMakeFiles/extendible_hash_table_test.dir/rule
+
+# Convenience name for target.
+extendible_hash_table_test: test/CMakeFiles/extendible_hash_table_test.dir/rule
+
+.PHONY : extendible_hash_table_test
+
+# fast build rule for target.
+extendible_hash_table_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/extendible_hash_table_test.dir/build.make test/CMakeFiles/extendible_hash_table_test.dir/build
+.PHONY : extendible_hash_table_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/unittests.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/unittests.dir/rule
 .PHONY : test/CMakeFiles/unittests.dir/rule
@@ -541,21 +601,6 @@ tokenizer_test: test/CMakeFiles/tokenizer_test.dir/rule
 tokenizer_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
 .PHONY : tokenizer_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/table_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/table_test.dir/rule
-.PHONY : test/CMakeFiles/table_test.dir/rule
-
-# Convenience name for target.
-table_test: test/CMakeFiles/table_test.dir/rule
-
-.PHONY : table_test
-
-# fast build rule for target.
-table_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
-.PHONY : table_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/recovery_test.dir/rule:
@@ -842,6 +887,60 @@ file/page_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/file/page_test.cc.s
 .PHONY : file/page_test.cc.s
 
+index/extendible_hash_table_test.o: index/extendible_hash_table_test.cc.o
+
+.PHONY : index/extendible_hash_table_test.o
+
+# target to build an object file
+index/extendible_hash_table_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/extendible_hash_table_test.dir/build.make test/CMakeFiles/extendible_hash_table_test.dir/index/extendible_hash_table_test.cc.o
+.PHONY : index/extendible_hash_table_test.cc.o
+
+index/extendible_hash_table_test.i: index/extendible_hash_table_test.cc.i
+
+.PHONY : index/extendible_hash_table_test.i
+
+# target to preprocess a source file
+index/extendible_hash_table_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/extendible_hash_table_test.dir/build.make test/CMakeFiles/extendible_hash_table_test.dir/index/extendible_hash_table_test.cc.i
+.PHONY : index/extendible_hash_table_test.cc.i
+
+index/extendible_hash_table_test.s: index/extendible_hash_table_test.cc.s
+
+.PHONY : index/extendible_hash_table_test.s
+
+# target to generate assembly for a file
+index/extendible_hash_table_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/extendible_hash_table_test.dir/build.make test/CMakeFiles/extendible_hash_table_test.dir/index/extendible_hash_table_test.cc.s
+.PHONY : index/extendible_hash_table_test.cc.s
+
+index/hard_extendible_hash_table_test.o: index/hard_extendible_hash_table_test.cc.o
+
+.PHONY : index/hard_extendible_hash_table_test.o
+
+# target to build an object file
+index/hard_extendible_hash_table_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hard_extendible_hash_table_test.dir/build.make test/CMakeFiles/hard_extendible_hash_table_test.dir/index/hard_extendible_hash_table_test.cc.o
+.PHONY : index/hard_extendible_hash_table_test.cc.o
+
+index/hard_extendible_hash_table_test.i: index/hard_extendible_hash_table_test.cc.i
+
+.PHONY : index/hard_extendible_hash_table_test.i
+
+# target to preprocess a source file
+index/hard_extendible_hash_table_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hard_extendible_hash_table_test.dir/build.make test/CMakeFiles/hard_extendible_hash_table_test.dir/index/hard_extendible_hash_table_test.cc.i
+.PHONY : index/hard_extendible_hash_table_test.cc.i
+
+index/hard_extendible_hash_table_test.s: index/hard_extendible_hash_table_test.cc.s
+
+.PHONY : index/hard_extendible_hash_table_test.s
+
+# target to generate assembly for a file
+index/hard_extendible_hash_table_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hard_extendible_hash_table_test.dir/build.make test/CMakeFiles/hard_extendible_hash_table_test.dir/index/hard_extendible_hash_table_test.cc.s
+.PHONY : index/hard_extendible_hash_table_test.cc.s
+
 index/hash_table_bucket_page_test.o: index/hash_table_bucket_page_test.cc.o
 
 .PHONY : index/hash_table_bucket_page_test.o
@@ -868,6 +967,33 @@ index/hash_table_bucket_page_test.s: index/hash_table_bucket_page_test.cc.s
 index/hash_table_bucket_page_test.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/hash_table_bucket_page_test.dir/build.make test/CMakeFiles/hash_table_bucket_page_test.dir/index/hash_table_bucket_page_test.cc.s
 .PHONY : index/hash_table_bucket_page_test.cc.s
+
+index/rwlatch_test.o: index/rwlatch_test.cc.o
+
+.PHONY : index/rwlatch_test.o
+
+# target to build an object file
+index/rwlatch_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/rwlatch_test.dir/build.make test/CMakeFiles/rwlatch_test.dir/index/rwlatch_test.cc.o
+.PHONY : index/rwlatch_test.cc.o
+
+index/rwlatch_test.i: index/rwlatch_test.cc.i
+
+.PHONY : index/rwlatch_test.i
+
+# target to preprocess a source file
+index/rwlatch_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/rwlatch_test.dir/build.make test/CMakeFiles/rwlatch_test.dir/index/rwlatch_test.cc.i
+.PHONY : index/rwlatch_test.cc.i
+
+index/rwlatch_test.s: index/rwlatch_test.cc.s
+
+.PHONY : index/rwlatch_test.s
+
+# target to generate assembly for a file
+index/rwlatch_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/rwlatch_test.dir/build.make test/CMakeFiles/rwlatch_test.dir/index/rwlatch_test.cc.s
+.PHONY : index/rwlatch_test.cc.s
 
 index/static_hash_index_test.o: index/static_hash_index_test.cc.o
 
@@ -1255,7 +1381,9 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... list_install_components"
-	@echo "... hash_table_bucket_page_test"
+	@echo "... edit_cache"
+	@echo "... test"
+	@echo "... table_test"
 	@echo "... page_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
@@ -1265,13 +1393,15 @@ help:
 	@echo "... concurrency_test"
 	@echo "... rebuild_cache"
 	@echo "... tuple_test"
-	@echo "... test"
 	@echo "... file_test"
 	@echo "... install"
 	@echo "... seqscan_executor_test"
 	@echo "... update_parse_test"
 	@echo "... lru_replacer_test"
+	@echo "... hard_extendible_hash_table_test"
+	@echo "... hash_table_bucket_page_test"
 	@echo "... transaction_test"
+	@echo "... rwlatch_test"
 	@echo "... log_test"
 	@echo "... log_record_test"
 	@echo "... metadata_test"
@@ -1280,13 +1410,12 @@ help:
 	@echo "... install/local"
 	@echo "... select_execution_test"
 	@echo "... insert_parse_test"
+	@echo "... extendible_hash_table_test"
 	@echo "... unittests"
 	@echo "... select_parse_test"
 	@echo "... other_executors_test"
 	@echo "... tokenizer_test"
-	@echo "... table_test"
 	@echo "... recovery_test"
-	@echo "... edit_cache"
 	@echo "... buffer/buffer_manager_test.o"
 	@echo "... buffer/buffer_manager_test.i"
 	@echo "... buffer/buffer_manager_test.s"
@@ -1317,9 +1446,18 @@ help:
 	@echo "... file/page_test.o"
 	@echo "... file/page_test.i"
 	@echo "... file/page_test.s"
+	@echo "... index/extendible_hash_table_test.o"
+	@echo "... index/extendible_hash_table_test.i"
+	@echo "... index/extendible_hash_table_test.s"
+	@echo "... index/hard_extendible_hash_table_test.o"
+	@echo "... index/hard_extendible_hash_table_test.i"
+	@echo "... index/hard_extendible_hash_table_test.s"
 	@echo "... index/hash_table_bucket_page_test.o"
 	@echo "... index/hash_table_bucket_page_test.i"
 	@echo "... index/hash_table_bucket_page_test.s"
+	@echo "... index/rwlatch_test.o"
+	@echo "... index/rwlatch_test.i"
+	@echo "... index/rwlatch_test.s"
 	@echo "... index/static_hash_index_test.o"
 	@echo "... index/static_hash_index_test.i"
 	@echo "... index/static_hash_index_test.s"

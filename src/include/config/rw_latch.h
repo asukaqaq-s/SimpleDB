@@ -4,6 +4,7 @@
 #include <mutex>  // NOLINT
 #include <condition_variable>
 #include <climits>
+#include <shared_mutex>
 
 namespace SimpleDB {
 
@@ -24,17 +25,7 @@ public:
     * acquire writer latch
     */
     void WLock() {
-        std::unique_lock<std::mutex> latch(latch_);
-        if (writer_entered_) {
-            // wait as a reader, will notify when release writer latch
-            reader_.wait(latch, [&]() {return !writer_entered_;});
-        }
-        
-        writer_entered_ = true;
-        if (reader_count_ > 0) {
-            // wait as writer, will notify when release reader latch
-            writer_.wait(latch, [&]() {return reader_count_ == 0; });
-        }
+        mutex_.lock();
     }
 
     /**
@@ -42,11 +33,7 @@ public:
      * release writer latch
      */
     void WUnlock() {
-        std::unique_lock<std::mutex> latch(latch_);
-        writer_entered_ = false;
-
-        // notify all readers
-        reader_.notify_all();
+        mutex_.unlock();
     }
 
     /**
@@ -54,40 +41,16 @@ public:
     * acquire reader latch
     */
     void RLock() {  
-        std::unique_lock<std::mutex> latch(latch_);
-        if (writer_entered_ || reader_count_ == MAX_READERS) {
-            reader_.wait(latch, [&]() {
-                return writer_entered_ = false && reader_count_ < MAX_READERS;
-            });
-        }
-
-        reader_count_ ++;
+        mutex_.lock_shared();
     }
 
     void RUnlock() {
-        std::unique_lock<std::mutex> latch(latch_);
-        reader_count_ --;
-        if (writer_entered_) {
-            if (reader_count_ == 0) {
-                // just notify one, otherwise will lost
-                // writer acquire
-                writer_.notify_one();
-            }
-        } else {
-            // allow oone more reader
-            if (reader_count_ == MAX_READERS - 1) {
-                reader_.notify_one();
-            }
-        }
+        mutex_.unlock_shared();
     }
 
 private:
     
-    std::mutex latch_;
-    std::condition_variable writer_;
-    std::condition_variable reader_;
-    uint32_t reader_count_{0};
-    bool writer_entered_{false};
+    std::shared_mutex mutex_;
 };
 
 class ReaderGuard {

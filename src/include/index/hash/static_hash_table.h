@@ -10,9 +10,10 @@
 namespace SimpleDB {
     
 /**
-* @brief static hashtable use tableheap to implement read and write data.
-* every buckets will be stored as a file.and a bucket can unlimited growth
-* maybe we can store all buckets into one file.But if think about it, it's
+* @brief static hashtable use tableheap to implement read and write op.
+* every buckets will be stored as a file and a bucket can unlimited growth.
+* 
+* Maybe we can store all buckets into one file. But if think about it, it's
 * easy to make phantom reads.
 */
 class StaticHashTable {
@@ -21,24 +22,49 @@ class StaticHashTable {
 
 public:
 
+    
     StaticHashTable(const std::string &index_name, 
                     Schema* kv_schema, 
                     RecoveryManager *rm);
 
-    bool Read(Transaction *txn, const SearchKey& key, std::vector<RID> *result);
+    /**
+    * @brief read op
+    * 
+    * @param txn execution context
+    * @param key insert key
+    * @param result rid array
+    */
+    bool Read(Transaction *txn, const Value& key, std::vector<RID> *result);
 
-    void Insert(Transaction *txn, const SearchKey& key, const RID& rid);
 
-    bool Remove(Transaction *txn, const SearchKey &key, const RID& rid);
+    /**
+    * @brief insert a key-value pair into bucket
+    */
+    void Insert(Transaction *txn, const Value& key, const RID& rid);
+
+
+    /**
+    * @brief remove a key-value pair which satisfy request 
+    */
+    bool Remove(Transaction *txn, const Value &key, const RID& rid);
     
 
 private:
 
-    std::string GenerateBucketFileName(const SearchKey &key);
+    /**
+    * @brief get a bucket number by hash 
+    */
+    std::string GenerateBucketFileName(const Value &key);
 
+    /**
+    * @brief create a tableheap and cache it
+    */
     TableHeap* GenerateBucketFile(Transaction *txn, const std::string &bucket_name);
 
-    Tuple GenerateInsertTuple(const SearchKey& key, RID rid);
+    /**
+    * @brief helper function in insert
+    */
+    Tuple GenerateInsertTuple(const Value& key, RID rid);
 
 
 
@@ -49,6 +75,7 @@ private:
 
     // key schema, format:
     // [key, block, slot]
+    // key is a string which includes many values 
     Schema *kv_schema_;
 
     // i think index should have their own logrecord to ensure datastructure correctly

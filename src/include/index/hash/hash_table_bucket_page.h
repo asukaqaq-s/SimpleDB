@@ -10,24 +10,28 @@ namespace SimpleDB {
 
 
 /**
- * @brief
- * Store indexed key and and value together within bucket page. Supports
- * non-unique keys.
- *
- * Page Header format
- * ---------------------------------------------------------------------------------
- * | Lsn(4) | BlockNum(4) | DataArray Pointer(4) | Tuple Size(4) | Value TypeID(4) |
- * ---------------------------------------------------------------------------------
- * 
- * Bucket page format (keys are stored in order):
- * ---------------------------------------------------------------------
- * | PAGE HEADER(20) | IsOccurid_BitMap | IsReadable_BitMap | Tuple 1 
- * ---------------------------------------------------------------------
- * ---------------------------------------------
- * | Tuple 2 | Tuple 3 | Tuple 4 | Tuple 5 | ...
- * --------------------------------------------
- * we don't need to store tuple size in each tuple, bacause their size is same.
- */
+* @brief
+* Store indexed key and and value together within bucket page. Supports
+* non-unique keys.
+*
+* Page Header format
+* ---------------------------------------------------------------------------------
+* | Lsn(4) | BlockNum(4) | DataArray Pointer(4) | Tuple Size(4) | Value TypeID(4) |
+* ---------------------------------------------------------------------------------
+* 
+* Bucket page format (keys are stored in order):
+* ---------------------------------------------------------------------
+* | PAGE HEADER(20) | IsOccurid_BitMap | IsReadable_BitMap | Tuple 1 
+* ---------------------------------------------------------------------
+* ---------------------------------------------
+* | Tuple 2 | Tuple 3 | Tuple 4 | Tuple 5 | ...
+* --------------------------------------------
+* 
+* Tuple format
+* --------------------
+* | Key | Value(RID) |
+* --------------------
+*/
 class HashTableBucketPage : public Buffer {
 
     using Key = Value;
@@ -50,7 +54,7 @@ public:
     *
     * @return true if at least one key matched
     */
-    bool GetValue(Key key, std::vector<RID> *result);
+    bool GetValue(const Value &key, std::vector<RID> *result);
 
 
     /**
@@ -79,6 +83,11 @@ public:
     * check if this page is full and can't insert again
     */
     bool IsFull();
+
+    /**
+    * check if this page is empty
+    */
+    bool IsEmpty();
 
     /**
     * Prints the bucket's occupancy information
@@ -110,7 +119,18 @@ public: // used by extendible hash table
     void RemoveAt(uint32_t bucket_idx);
 
 
-private: // manipluate 
+    
+    void SetBucketBlockNum(int block_num) {
+        data_->SetInt(BLOCK_NUM_OFFSET, block_num);
+    }
+
+    int GetBucketBlockNum() const {
+        return data_->GetInt(BLOCK_NUM_OFFSET);
+    }
+
+
+
+public: // manipluate 
 
     /**
     * Returns whether or not an index is readable (valid key/value pair)
@@ -151,7 +171,6 @@ private: // manipluate
     void SetOccupied(uint32_t bucket_idx);
 
 
-
 private:
     
     static constexpr int PAGE_LSN_OFFSET = 0;
@@ -169,13 +188,7 @@ private:
         return data_->GetLsn();
     }
 
-    void SetBlockNum(int block_num) {
-        data_->SetInt(BLOCK_NUM_OFFSET, block_num);
-    }
-
-    int GetBlockNum() const {
-        return data_->GetInt(BLOCK_NUM_OFFSET);
-    }
+    
 
     void SetDataArrayPtr(int n) {
         data_->SetInt(DATA_ARRAY_PTR_OFFSET, n);

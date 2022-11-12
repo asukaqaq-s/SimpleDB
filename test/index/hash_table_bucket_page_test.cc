@@ -9,7 +9,6 @@
 #include "concurrency/transaction_manager.h"
 #include "index/hash/static_hash_table.h"
 #include "index/hash/hash_table_bucket_page.h"
-#include "index/hash/hash_table_directory_page.h"
 
 
 #include <iostream>
@@ -275,11 +274,6 @@ TEST(HashTableBucketPageTest, StringTest) {
             for (int i = 0;i < count2;i++)
                 EXPECT_EQ(res3[i], RID(i * 2 + 1, i * 2 + 1));
     
-
-    int h;
-    auto *buffer = bfm->NewBlock(filename, &h);
-    auto directory_page = reinterpret_cast<HashTableDirectoryPage*>(buffer->contents()->GetRawDataPtr());
-
     
 }
 

@@ -18,39 +18,82 @@ public:
 
     ExtendibleHashTable(Transaction *txn,
                         const std::string &index_name, 
+                        Schema *key_schema,
                         RecoveryManager *rm,
                         BufferManager *bfm, 
                         int directory_block_num);
 
     ~ExtendibleHashTable();
 
+    
     /**
     * @brief init this extendible hash table
+    * delete a bucket and set their bucket_block_num to INVALID
     */
     void InitExtendibleHashTable(Transaction *txn);
 
-
-    bool GetValue(const SearchKey &key, 
+    
+    /**
+    * Performs a point query on the hash table.
+    *
+    * @param transaction the current transaction
+    * @param key the key to look up
+    * @param[out] result the value(s) associated with a given key
+    * @return the value(s) associated with the given key
+    */
+    bool GetValue(const Value &key, 
                   std::vector<RID> *result, 
                   Transaction *txn);
 
+
+
     /**
-    * @brief 
-    * 
-    * @return true if insert is successful, false if hash table or bucket full.
+    * Inserts a key-value pair into the hash table.
+    *
+    * @param transaction the current transaction
+    * @param key the key to create
+    * @param value the value to be associated with the key
+    * @return true if insert succeeded, false otherwise
     */
-    bool Insert(const SearchKey &key, 
+    bool Insert(const Value &key, 
                 const RID &rid, 
                 Transaction *txn);
 
 
-    bool Remove(Transaction *txn, const SearchKey &key, const RID &rid);
+    
+    bool Remove(const Value &key, 
+                const RID &rid, 
+                Transaction *txn);
 
+
+    int GetDectorySize();
+
+    /**
+    * @brief debugging helper function
+    */
+    bool VerifyHashTable();
+
+
+    /**
+    * @brief debugging helper function
+    */
+    void PrintHashTable();
 
 private:
 
-    
-    HashTableBucketPage* CreateBucket(Transaction *txn, int *new_bucket_block_num);
+    /**
+    * @brief First scan the index file to find a deleted page
+    * If can't find it, create a new one via NewBlock.
+    */
+    HashTableBucketPage* CreateBucketPage(Transaction *txn, 
+                                          int *new_bucket_block_num);
+
+
+    /**
+    * @brief this function will be used to Merge function.
+    */
+    void DeleteBucketPage(HashTableBucketPage *bucket);
+
 
     /**
     * Performs insertion with an optional bucket splitting.
@@ -60,7 +103,8 @@ private:
     * @param value the value to insert
     * @return whether or not the insertion was successful
     */
-    bool SplitInsert(Transaction *transaction, const SearchKey &key, const RID &value);
+    bool SplitInsert(Transaction *transaction, const Value &key, const RID &value);
+
 
     /**
     * Optionally merges an empty bucket into it's pair.  This is called by Remove,
@@ -70,23 +114,31 @@ private:
     * 1. The bucket is no longer empty.
     * 2. The bucket has local depth 0.
     * 3. The bucket's local depth doesn't match its split image's local depth.
+    * 
     *
     * @param transaction a pointer to the current transaction
     * @param key the key that was removed
     * @param value the value that was removed
     */
-    void Merge(Transaction *transaction, const SearchKey &key, const RID &value);
+    bool Merge(Transaction *txn, 
+               const Value &key, 
+               const RID &value);
 
 
-    uint32_t GetIndexByHash(const Value &key);
+
+    int GetIndexByHash(const Value &key);
     
+    
+    std::string IntToBinary(int x);
 
 
+    int DeduceKeySize();
 
 private:
 
     std::string index_file_name_;
 
+    // cache key_size_
     int key_size_{0};
 
     Schema *key_schema_;
