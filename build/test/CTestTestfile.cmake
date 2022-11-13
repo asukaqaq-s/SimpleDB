@@ -4,6 +4,7 @@
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
+include("/home/asuka/workbench/project/SimpleDB/build/test/btree_leaf_page_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/lru_replacer_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/concurrency_test[1]_include.cmake")
@@ -19,6 +20,7 @@ include("/home/asuka/workbench/project/SimpleDB/build/test/hard_extendible_hash_
 include("/home/asuka/workbench/project/SimpleDB/build/test/hash_table_bucket_page_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/rwlatch_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/static_hash_index_test[1]_include.cmake")
+include("/home/asuka/workbench/project/SimpleDB/build/test/test_bucket[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/log_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/metadata_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/create_parse_test[1]_include.cmake")
@@ -32,6 +34,8 @@ include("/home/asuka/workbench/project/SimpleDB/build/test/tuple_test[1]_include
 include("/home/asuka/workbench/project/SimpleDB/build/test/log_record_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/recovery_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/transaction_test[1]_include.cmake")
+add_test(btree_leaf_page_test "/home/asuka/workbench/project/SimpleDB/build/test/btree_leaf_page_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/btree_leaf_page_test.xml")
+set_tests_properties(btree_leaf_page_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(buffer_manager_test "/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test.xml")
 set_tests_properties(buffer_manager_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(lru_replacer_test "/home/asuka/workbench/project/SimpleDB/build/test/lru_replacer_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/lru_replacer_test.xml")
@@ -62,6 +66,8 @@ add_test(rwlatch_test "/home/asuka/workbench/project/SimpleDB/build/test/rwlatch
 set_tests_properties(rwlatch_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(static_hash_index_test "/home/asuka/workbench/project/SimpleDB/build/test/static_hash_index_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/static_hash_index_test.xml")
 set_tests_properties(static_hash_index_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
+add_test(test_bucket "/home/asuka/workbench/project/SimpleDB/build/test/test_bucket" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/test_bucket.xml")
+set_tests_properties(test_bucket PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(log_test "/home/asuka/workbench/project/SimpleDB/build/test/log_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/log_test.xml")
 set_tests_properties(log_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(metadata_test "/home/asuka/workbench/project/SimpleDB/build/test/metadata_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/metadata_test.xml")

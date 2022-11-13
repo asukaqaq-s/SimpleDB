@@ -10,7 +10,6 @@ namespace SimpleDB {
 
 
 
-
 }// namespace SimpleDB
 
 #endif

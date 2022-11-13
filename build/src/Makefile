@@ -668,6 +668,33 @@ file/page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 .PHONY : file/page.cc.s
 
+index/btree/b_plus_tree_leaf_page.o: index/btree/b_plus_tree_leaf_page.cc.o
+
+.PHONY : index/btree/b_plus_tree_leaf_page.o
+
+# target to build an object file
+index/btree/b_plus_tree_leaf_page.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o
+.PHONY : index/btree/b_plus_tree_leaf_page.cc.o
+
+index/btree/b_plus_tree_leaf_page.i: index/btree/b_plus_tree_leaf_page.cc.i
+
+.PHONY : index/btree/b_plus_tree_leaf_page.i
+
+# target to preprocess a source file
+index/btree/b_plus_tree_leaf_page.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.i
+.PHONY : index/btree/b_plus_tree_leaf_page.cc.i
+
+index/btree/b_plus_tree_leaf_page.s: index/btree/b_plus_tree_leaf_page.cc.s
+
+.PHONY : index/btree/b_plus_tree_leaf_page.s
+
+# target to generate assembly for a file
+index/btree/b_plus_tree_leaf_page.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.s
+.PHONY : index/btree/b_plus_tree_leaf_page.cc.s
+
 index/hash/extendible_hash_table.o: index/hash/extendible_hash_table.cc.o
 
 .PHONY : index/hash/extendible_hash_table.o
@@ -1627,6 +1654,9 @@ help:
 	@echo "... file/page.o"
 	@echo "... file/page.i"
 	@echo "... file/page.s"
+	@echo "... index/btree/b_plus_tree_leaf_page.o"
+	@echo "... index/btree/b_plus_tree_leaf_page.i"
+	@echo "... index/btree/b_plus_tree_leaf_page.s"
 	@echo "... index/hash/extendible_hash_table.o"
 	@echo "... index/hash/extendible_hash_table.i"
 	@echo "... index/hash/extendible_hash_table.s"

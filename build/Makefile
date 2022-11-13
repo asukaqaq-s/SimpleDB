@@ -233,17 +233,30 @@ SimpleDB_lib/fast:
 .PHONY : SimpleDB_lib/fast
 
 #=============================================================================
-# Target rules for targets named table_test
+# Target rules for targets named recovery_test
 
 # Build rule for target.
-table_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 table_test
-.PHONY : table_test
+recovery_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 recovery_test
+.PHONY : recovery_test
 
 # fast build rule for target.
-table_test/fast:
-	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
-.PHONY : table_test/fast
+recovery_test/fast:
+	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
+.PHONY : recovery_test/fast
+
+#=============================================================================
+# Target rules for targets named log_record_test
+
+# Build rule for target.
+log_record_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 log_record_test
+.PHONY : log_record_test
+
+# fast build rule for target.
+log_record_test/fast:
+	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
+.PHONY : log_record_test/fast
 
 #=============================================================================
 # Target rules for targets named page_test
@@ -363,6 +376,32 @@ file_test/fast:
 .PHONY : file_test/fast
 
 #=============================================================================
+# Target rules for targets named btree_leaf_page_test
+
+# Build rule for target.
+btree_leaf_page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 btree_leaf_page_test
+.PHONY : btree_leaf_page_test
+
+# fast build rule for target.
+btree_leaf_page_test/fast:
+	$(MAKE) -f test/CMakeFiles/btree_leaf_page_test.dir/build.make test/CMakeFiles/btree_leaf_page_test.dir/build
+.PHONY : btree_leaf_page_test/fast
+
+#=============================================================================
+# Target rules for targets named lru_replacer_test
+
+# Build rule for target.
+lru_replacer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+#=============================================================================
 # Target rules for targets named seqscan_executor_test
 
 # Build rule for target.
@@ -389,17 +428,17 @@ update_parse_test/fast:
 .PHONY : update_parse_test/fast
 
 #=============================================================================
-# Target rules for targets named lru_replacer_test
+# Target rules for targets named table_test
 
 # Build rule for target.
-lru_replacer_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
-.PHONY : lru_replacer_test
+table_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 table_test
+.PHONY : table_test
 
 # fast build rule for target.
-lru_replacer_test/fast:
-	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
+table_test/fast:
+	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
+.PHONY : table_test/fast
 
 #=============================================================================
 # Target rules for targets named hard_extendible_hash_table_test
@@ -454,6 +493,19 @@ rwlatch_test/fast:
 .PHONY : rwlatch_test/fast
 
 #=============================================================================
+# Target rules for targets named test_bucket
+
+# Build rule for target.
+test_bucket: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_bucket
+.PHONY : test_bucket
+
+# fast build rule for target.
+test_bucket/fast:
+	$(MAKE) -f test/CMakeFiles/test_bucket.dir/build.make test/CMakeFiles/test_bucket.dir/build
+.PHONY : test_bucket/fast
+
+#=============================================================================
 # Target rules for targets named log_test
 
 # Build rule for target.
@@ -465,19 +517,6 @@ log_test: cmake_check_build_system
 log_test/fast:
 	$(MAKE) -f test/CMakeFiles/log_test.dir/build.make test/CMakeFiles/log_test.dir/build
 .PHONY : log_test/fast
-
-#=============================================================================
-# Target rules for targets named log_record_test
-
-# Build rule for target.
-log_record_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 log_record_test
-.PHONY : log_record_test
-
-# fast build rule for target.
-log_record_test/fast:
-	$(MAKE) -f test/CMakeFiles/log_record_test.dir/build.make test/CMakeFiles/log_record_test.dir/build
-.PHONY : log_record_test/fast
 
 #=============================================================================
 # Target rules for targets named metadata_test
@@ -545,19 +584,6 @@ insert_parse_test/fast:
 .PHONY : insert_parse_test/fast
 
 #=============================================================================
-# Target rules for targets named extendible_hash_table_test
-
-# Build rule for target.
-extendible_hash_table_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 extendible_hash_table_test
-.PHONY : extendible_hash_table_test
-
-# fast build rule for target.
-extendible_hash_table_test/fast:
-	$(MAKE) -f test/CMakeFiles/extendible_hash_table_test.dir/build.make test/CMakeFiles/extendible_hash_table_test.dir/build
-.PHONY : extendible_hash_table_test/fast
-
-#=============================================================================
 # Target rules for targets named unittests
 
 # Build rule for target.
@@ -569,6 +595,19 @@ unittests: cmake_check_build_system
 unittests/fast:
 	$(MAKE) -f test/CMakeFiles/unittests.dir/build.make test/CMakeFiles/unittests.dir/build
 .PHONY : unittests/fast
+
+#=============================================================================
+# Target rules for targets named extendible_hash_table_test
+
+# Build rule for target.
+extendible_hash_table_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 extendible_hash_table_test
+.PHONY : extendible_hash_table_test
+
+# fast build rule for target.
+extendible_hash_table_test/fast:
+	$(MAKE) -f test/CMakeFiles/extendible_hash_table_test.dir/build.make test/CMakeFiles/extendible_hash_table_test.dir/build
+.PHONY : extendible_hash_table_test/fast
 
 #=============================================================================
 # Target rules for targets named select_parse_test
@@ -609,19 +648,6 @@ tokenizer_test/fast:
 	$(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
 .PHONY : tokenizer_test/fast
 
-#=============================================================================
-# Target rules for targets named recovery_test
-
-# Build rule for target.
-recovery_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 recovery_test
-.PHONY : recovery_test
-
-# fast build rule for target.
-recovery_test/fast:
-	$(MAKE) -f test/CMakeFiles/recovery_test.dir/build.make test/CMakeFiles/recovery_test.dir/build
-.PHONY : recovery_test/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -640,7 +666,8 @@ help:
 	@echo "... gtest_main"
 	@echo "... gtest"
 	@echo "... SimpleDB_lib"
-	@echo "... table_test"
+	@echo "... recovery_test"
+	@echo "... log_record_test"
 	@echo "... page_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
@@ -650,26 +677,27 @@ help:
 	@echo "... concurrency_test"
 	@echo "... tuple_test"
 	@echo "... file_test"
+	@echo "... btree_leaf_page_test"
+	@echo "... lru_replacer_test"
 	@echo "... seqscan_executor_test"
 	@echo "... update_parse_test"
-	@echo "... lru_replacer_test"
+	@echo "... table_test"
 	@echo "... hard_extendible_hash_table_test"
 	@echo "... hash_table_bucket_page_test"
 	@echo "... transaction_test"
 	@echo "... rwlatch_test"
+	@echo "... test_bucket"
 	@echo "... log_test"
-	@echo "... log_record_test"
 	@echo "... metadata_test"
 	@echo "... show-tests"
 	@echo "... create_parse_test"
 	@echo "... select_execution_test"
 	@echo "... insert_parse_test"
-	@echo "... extendible_hash_table_test"
 	@echo "... unittests"
+	@echo "... extendible_hash_table_test"
 	@echo "... select_parse_test"
 	@echo "... other_executors_test"
 	@echo "... tokenizer_test"
-	@echo "... recovery_test"
 .PHONY : help
 
 

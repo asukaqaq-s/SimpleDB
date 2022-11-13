@@ -35,8 +35,10 @@ Schedule
 - asynchronous IO in LogManager
 
 - ARIES: Currently, the recovery mechanism still uses non-fuzzy checkpoint.I will update it to ARIES and FUZZY-checkpoint soon.
+    - implement index log
 
 - Concurrency: implement rid-level locking is diffculty, because we should solve with phantom read problem.
+   - implement index lock
 
 - DeadLock: Currently, I haven't dealt with how to resolve a deadlock problem.I will update it to WOUND-WAIT or WAIT-DIE.
 
@@ -71,6 +73,7 @@ Schedule
     - planner should support big table query so that filter more early
     - planner should have more efficient optimize.
     - planner should verify correntness
+
 
 
 ## reference
