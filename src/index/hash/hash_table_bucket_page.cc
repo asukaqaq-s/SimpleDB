@@ -18,7 +18,7 @@ void HashTableBucketPage::InitHashBucketPage(int tuple_size, TypeID type) {
     int data_array_ptr = bit_map_size * 2 + PAGE_HEADER_SIZE;
 
     SetPageLsn(INVALID_LSN);
-    SetBucketBlockNum(block_.BlockNum());
+    SetPageType(PageType::HASH_BUCKET_PAGE);
     SetDataArrayPtr(data_array_ptr);
     SetTupleSize(tuple_size);
     SetTypeID(type);

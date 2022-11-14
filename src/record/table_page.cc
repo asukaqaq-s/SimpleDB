@@ -13,6 +13,7 @@ void TablePage::InitPage(Transaction *txn, RecoveryManager *rm) {
         SetPageLsn(lsn);
     }
 
+    data_->SetPageType(PageType::TABLE_PAGE);
     SetFreeSpacePtr(data_->GetSize());
     SetTupleCount(0);
 }

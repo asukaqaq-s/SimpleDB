@@ -12,24 +12,18 @@ namespace SimpleDB {
 
 
 
-
-enum class BTreePageType : uint8_t {
-
-    INVALID_PAGE_TYPE = 0,
-    DIRECTORY_PAGE,
-    OVERFLOW_LEAF_PAGE,
-    LEAF_PAGE,
-};
-
-
 /**
 * @brief
 * Header format:
 * ---------------------------------------------------------------------
-* | BlockNum(4) | LSN(4) | CurrentSize(4) | MaxSize(4) | TupleSize(4) | 
+* | LSN(4) | PageType(4) | CurrentSize(4) | MaxSize(4) | TupleSize(4) | 
 * ---------------------------------------------------------------------
 * | TypeID(4) | ParentBlock(4) | NextBlockNum(4) |
 * ------------------------------------------------
+* Leaf Page format:
+* ----------------------------------------------------
+* | Header | kv-pair 1 | kv-pair 2 | kv-pair 3 | ...
+* ----------------------------------------------------
 */
 class BPlusTreeLeafPage : public Buffer {
 
@@ -47,27 +41,12 @@ public:
     * @param parent_id 
     * @param max_size 
     */
-    void Init(int block_num, int key_size, TypeID type, int parent_num = INVALID_BLOCK_NUM);
+    void Init(int key_size, TypeID type, int parent_num = INVALID_BLOCK_NUM);
 
-
-    /**
-    * @brief set next leaf page's block number
-    */
-    inline void SetNextBlockNum(int block_num) {
-        data_->SetInt(NEXT_BLOCK_NUM_OFFSET, block_num);
-    } 
 
 
     /**
-    * @brief get next leaf page's block number 
-    */
-    inline int GetNextBlockNum() const {
-        return data_->GetInt(NEXT_BLOCK_NUM_OFFSET);
-    } 
-
-
-    /**
-    * @brief get key though index
+    * @brief get key through index
     * @param index 
     * @return key 
     */
@@ -76,7 +55,7 @@ public:
 
     /**
     * @brief 
-    * get value though index
+    * get value through index
     * @param index 
     * @return rid
     */
@@ -106,7 +85,7 @@ public:
 
     /**
     * @brief
-    * get the key & value pair though "index"
+    * get the key & value pair through "index"
     * @param index 
     * @return KVPAIR
     */
@@ -115,7 +94,7 @@ public:
 
     /**
     * @brief
-    * set the key & value pair though "index"
+    * set the key & value pair through "index"
     * @param index 
     * @return KVPAIR 
     */
@@ -197,13 +176,38 @@ public:
 
     // for debug purpose
     void PrintLeaf() {
-        printf("pageid: %d parent: %d size: %d\n", GetBlockNum(), GetParentBlockNum(), GetSize());
+        printf("pageid: %d parent: %d size: %d\n", GetBlockID().BlockNum(), GetParentBlockNum(), GetSize());
         fflush(stdout);
         for (int i = 0; i < GetSize(); i++) {
             std::cout << GetItem(i).first.to_string() << "  " << GetItem(i).second.ToString() << std::endl;
         }
         std::cout << std::endl;
     }
+
+
+        /**
+    * @brief set next leaf page's block number
+    */
+    inline void SetNextBlockNum(int block_num) {
+        data_->SetInt(NEXT_BLOCK_NUM_OFFSET, block_num);
+    } 
+
+
+    /**
+    * @brief get next leaf page's block number 
+    */
+    inline int GetNextBlockNum() const {
+        return data_->GetInt(NEXT_BLOCK_NUM_OFFSET);
+    } 
+
+    inline void SetParentBlockNum(int block_num) {
+        data_->SetInt(PARENT_BLOCK_NUM_OFFSET, block_num);
+    } 
+
+    inline int GetParentBlockNum() const {
+        return data_->GetInt(PARENT_BLOCK_NUM_OFFSET);
+    } 
+
 
 public:
 
@@ -249,8 +253,8 @@ private:
     
 
     static constexpr int LSN_OFFSET = 0;
-    static constexpr int BLOCK_NUM_OFFSET = LSN_OFFSET + sizeof(lsn_t);
-    static constexpr int CURRENT_SIZE_OFFSET = BLOCK_NUM_OFFSET + sizeof(int);
+    static constexpr int PAGE_TYPE_OFFSET = LSN_OFFSET + sizeof(lsn_t);
+    static constexpr int CURRENT_SIZE_OFFSET = PAGE_TYPE_OFFSET + sizeof(int);
     static constexpr int MAX_SIZE_OFFSET = CURRENT_SIZE_OFFSET + sizeof(int);
     static constexpr int TUPLE_SIZE_OFFSET = MAX_SIZE_OFFSET + sizeof(int);
     static constexpr int TYPE_ID_OFFSET = TUPLE_SIZE_OFFSET + sizeof(int);
@@ -264,15 +268,15 @@ private:
     }
 
     inline lsn_t GetLsn() const {
-       return  data_->GetLsn();
+       return data_->GetLsn();
     }
 
-    inline void SetBlockNum(int block_num) {
-        data_->SetInt(BLOCK_NUM_OFFSET, block_num);
+    inline void SetPageType(PageType type) {
+        data_->SetPageType(type);
     }
 
-    inline int GetBlockNum() const {
-        return data_->GetInt(BLOCK_NUM_OFFSET);
+    inline PageType GetPageType() const {
+        return data_->GetPageType();
     }
 
     inline void SetSize(int size) {
@@ -307,13 +311,7 @@ private:
         return static_cast<TypeID> (data_->GetInt(TYPE_ID_OFFSET));
     }
 
-    inline void SetParentBlockNum(int block_num) {
-        data_->SetInt(PARENT_BLOCK_NUM_OFFSET, block_num);
-    } 
 
-    inline int GetParentBlockNum() const {
-        return data_->GetInt(PARENT_BLOCK_NUM_OFFSET);
-    } 
 
 
 

@@ -10,10 +10,10 @@ namespace SimpleDB {
 using KVPair = std::pair<Value, RID>;
 
 
-void BPlusTreeLeafPage::Init(int block_num, int key_size, 
+void BPlusTreeLeafPage::Init(int key_size, 
                              TypeID type, int parent_num) {
     SetLsn(INVALID_LSN);
-    SetBlockNum(block_num);
+    SetPageType(PageType::BPLUS_TREE_LEAF_PAGE);
     SetSize(0);
     SetTupleSize(key_size + sizeof(RID));
     SetMaxSize(SIMPLEDB_BLOCK_SIZE / GetTupleSize());
@@ -193,6 +193,11 @@ bool BPlusTreeLeafPage::Remove(const Value &key, const RID &rid) {
     // check if has this key
     if (key != KeyAt(index)) {
         return false;
+    }
+
+    // we only call this function when this key point to a rid instead of a bucket
+    if (rid != ValueAt(index) || ValueAt(index).GetSlot() == POINT_TO_BUCKET_CHAIN) {
+        SIMPLEDB_ASSERT(false, "call wrong function");
     }
 
     // Successfully found, move all pairs after this pair backwards

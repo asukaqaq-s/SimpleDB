@@ -14,9 +14,9 @@ namespace SimpleDB {
  * Directory Page for extendible hash table.
  *
  * Directory format (size in byte):
- * --------------------------------------------------------------------------------------------
- * | LSN (4) | BlockNum(4) | GlobalDepth(4) | LocalDepths(512) | BucketBlockNums(2048) | Free(1524)
- * --------------------------------------------------------------------------------------------
+ * --------------------------------------------------------------------------------------------------
+ * | LSN (4) | PageType(4) | GlobalDepth(4) | LocalDepths(512) | BucketBlockNums(2048) | Free(1524) |
+ * --------------------------------------------------------------------------------------------------
  */
 class HashTableDirectoryPage {
 
@@ -24,17 +24,10 @@ using block_num_t = int;
 
 public:
     
-    /**
-    * @return the Block number of this page
-    */
-    int GetBlockNum() const;
 
-    /**
-    * @brief Sets the Block number of this page
-    *
-    * @param block_num the page id to which to set the block_num_ field
-    */
-    void SetBlockNum(int block_num);
+    PageType GetPageType() const;
+
+    void SetPageType(PageType type);
 
     /**
     * @return the lsn of this page
@@ -188,11 +181,11 @@ public:
 
 private:
     
-    // block number
-    int block_num_;
-    
     // page lsn
     lsn_t lsn_;
+
+    // page type
+    PageType page_type_;
     
     int global_depth_{0};
 

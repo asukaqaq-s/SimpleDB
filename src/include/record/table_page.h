@@ -13,16 +13,16 @@ class Transaction;
 /**
 * @brief 
 * 
-* sotre a record at a given location in a block
+* store a record at a given location in a block
 * 
 * Page general Header
-* -------------
-* | PageLsn   |
-* -------------
+* ----------------------------
+* | PageLsn(4) | PageType(4) | 
+* ----------------------------
 * TablePage Header
-* ----------------------------------------------
-* | PageLsn | free_space_ptr |  tuple_count_   |
-* ----------------------------------------------
+* ----------------------------------------------------------------
+* | PageLsn(4) | PageType(4) | FreeSpacePtr(4) |  TupleCount(4)  |
+* ----------------------------------------------------------------
 * Slot 
 * -------------------------------
 * | Tuple Start Address Offset  | 
@@ -57,6 +57,7 @@ public:
     */
     void InitPage(Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
 
+
     /**
     * @brief read the specified tuple's data
     * 
@@ -84,6 +85,7 @@ public:
     */
     bool InsertWithRID(const RID &rid, const Tuple &tuple,
                        Transaction *txn = nullptr, RecoveryManager *rm = nullptr);
+
 
     /**
     * @brief perform the direct deletion.
@@ -113,6 +115,7 @@ public:
     */
     bool GetFirstTupleRid(RID &next_rid);
 
+
     /**
     * @brief get next exist tuple after the specified rid
     * 
@@ -120,6 +123,7 @@ public:
     */
     bool GetNextTupleRid(RID *rid);
     
+
     /**
     * @brief get the next empty tuple after the specified rid
     * 
@@ -141,7 +145,8 @@ private:
 
     // static constexpr int DELETE_MASK = 1 << (4 * sizeof(int) - 1);
     static constexpr int PAGE_LSN_OFFSET = 0;
-    static constexpr int FREE_SPACE_PTR_OFFSET = PAGE_LSN_OFFSET + sizeof(int);
+    static constexpr int PAGE_TYPE_OFFSET = sizeof(int);
+    static constexpr int FREE_SPACE_PTR_OFFSET = PAGE_TYPE_OFFSET + sizeof(int);
     static constexpr int TUPLE_COUNT_OFFSET = FREE_SPACE_PTR_OFFSET + sizeof(int);
     static constexpr int SLOT_ARRAY_OFFSET = TUPLE_COUNT_OFFSET + sizeof(int);
     static constexpr int SLOT_SIZE = sizeof(int);

@@ -8,13 +8,13 @@
 
 namespace SimpleDB {
 
-int HashTableDirectoryPage::GetBlockNum() const {
-    return block_num_;
+PageType HashTableDirectoryPage::GetPageType() const {
+    return PageType::HASH_DIRECTORY_PAGE;
 }
 
 
-void HashTableDirectoryPage::SetBlockNum(int block_num) {
-    block_num_ = block_num;
+void HashTableDirectoryPage::SetPageType(PageType type) {
+    page_type_ = type;
 }
 
 

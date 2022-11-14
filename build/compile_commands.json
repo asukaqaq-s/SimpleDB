@@ -111,6 +111,16 @@
 },
 {
   "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o -c /home/asuka/workbench/project/SimpleDB/src/index/btree/b_plus_tree_bucket_page.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/index/btree/b_plus_tree_bucket_page.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
+  "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o -c /home/asuka/workbench/project/SimpleDB/src/index/btree/b_plus_tree_directory_page.cc",
+  "file": "/home/asuka/workbench/project/SimpleDB/src/index/btree/b_plus_tree_directory_page.cc"
+},
+{
+  "directory": "/home/asuka/workbench/project/SimpleDB/build/src",
   "command": "/usr/bin/c++   -I/home/asuka/workbench/project/SimpleDB/src -I/home/asuka/workbench/project/SimpleDB/src/include -I/home/asuka/workbench/project/SimpleDB/test/include -I/home/asuka/workbench/project/SimpleDB/third_party   -fPIC -Wall -Wextra -march=native -Wno-unused-parameter -Wno-attributes -g -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls   -std=gnu++17 -o CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o -c /home/asuka/workbench/project/SimpleDB/src/index/btree/b_plus_tree_leaf_page.cc",
   "file": "/home/asuka/workbench/project/SimpleDB/src/index/btree/b_plus_tree_leaf_page.cc"
 },

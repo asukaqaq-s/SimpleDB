@@ -16,7 +16,7 @@ namespace SimpleDB {
 *
 * Page Header format
 * ---------------------------------------------------------------------------------
-* | Lsn(4) | BlockNum(4) | DataArray Pointer(4) | Tuple Size(4) | Value TypeID(4) |
+* | Lsn(4) | PageType(4) | DataArray Pointer(4) | Tuple Size(4) | Value TypeID(4) |
 * ---------------------------------------------------------------------------------
 * 
 * Bucket page format (keys are stored in order):
@@ -120,12 +120,12 @@ public: // used by extendible hash table
 
 
     
-    void SetBucketBlockNum(int block_num) {
-        data_->SetInt(BLOCK_NUM_OFFSET, block_num);
+    void SetPageType(PageType type) {
+        data_->SetPageType(type);
     }
 
-    int GetBucketBlockNum() const {
-        return data_->GetInt(BLOCK_NUM_OFFSET);
+    PageType GetPageType() const {
+        return data_->GetPageType();
     }
 
 
@@ -174,8 +174,8 @@ public: // manipluate
 private:
     
     static constexpr int PAGE_LSN_OFFSET = 0;
-    static constexpr int BLOCK_NUM_OFFSET = PAGE_LSN_OFFSET + sizeof(int);
-    static constexpr int DATA_ARRAY_PTR_OFFSET = BLOCK_NUM_OFFSET + sizeof(int);
+    static constexpr int PAGE_TYPE_OFFSET = PAGE_LSN_OFFSET + sizeof(int);
+    static constexpr int DATA_ARRAY_PTR_OFFSET = PAGE_TYPE_OFFSET + sizeof(int);
     static constexpr int TUPLE_SIZE_OFFSET = DATA_ARRAY_PTR_OFFSET + sizeof(int);
     static constexpr int TYPE_ID_OFFSET = TUPLE_SIZE_OFFSET + sizeof(int);
     static constexpr int PAGE_HEADER_SIZE = TYPE_ID_OFFSET + sizeof(int);
@@ -188,7 +188,6 @@ private:
         return data_->GetLsn();
     }
 
-    
 
     void SetDataArrayPtr(int n) {
         data_->SetInt(DATA_ARRAY_PTR_OFFSET, n);

@@ -10,10 +10,28 @@
 
 namespace SimpleDB {
 
+
+enum class PageType : uint8_t {
+    DEFAULT_PAGE_TYPE,
+    TABLE_PAGE,
+    HASH_BUCKET_PAGE,
+    HASH_DIRECTORY_PAGE,
+    BPLUS_TREE_LEAF_PAGE,
+    BPLUS_TREE_BUCKET_PAGE,
+    BPLUS_TREE_DIRECTORY_PAGE  
+};
+
+
 /**
 * @brief 
 * Page provides a wrapper for actual data pages being held in main memory.
 * we can use a page object to bufferpool, log manager and so on.
+*
+* we can use a general page header to store some specefic informations
+* general page type format:
+* ------------------------
+* | Lsn(4) | PageType(4) | 
+* ------------------------
 */
 class Page
 {
@@ -162,16 +180,27 @@ public:
 public: // for recovery manager, we can use lsn to get more information
 
     static constexpr int LSN_OFFSET = 0;
-    static constexpr int PAGE_HEADER_SIZE = sizeof(int);
+    static constexpr int PAGE_TYPE_OFFSET = sizeof(int);
+    static constexpr int PAGE_HEADER_SIZE = PAGE_TYPE_OFFSET + sizeof(int);
 
     inline void SetLsn(lsn_t lsn) {
         SIMPLEDB_ASSERT(content_->size() >= PAGE_HEADER_SIZE, "error");
         SetInt(LSN_OFFSET, lsn);
     }
 
-    inline lsn_t GetLsn() {
+    inline lsn_t GetLsn() const {
         SIMPLEDB_ASSERT(content_->size() >= PAGE_HEADER_SIZE, "error");
         return GetInt(LSN_OFFSET);
+    }
+
+    inline void SetPageType(PageType type) {
+        SIMPLEDB_ASSERT(content_->size() >= PAGE_HEADER_SIZE, "error");
+        SetInt(PAGE_TYPE_OFFSET, static_cast<int>(type));
+    }
+
+    inline PageType GetPageType() const {
+        SIMPLEDB_ASSERT(content_->size() >= PAGE_HEADER_SIZE, "error");
+        return static_cast<PageType>(GetInt(PAGE_TYPE_OFFSET));
     }
     
 

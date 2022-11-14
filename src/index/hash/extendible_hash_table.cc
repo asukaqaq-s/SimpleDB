@@ -547,7 +547,7 @@ HashTableBucketPage* ExtendibleHashTable::CreateBucketPage
     for (auto t:index_block_nums) {
         auto *bucket = static_cast<HashTableBucketPage*> 
                        (bfm_->PinBlock(BlockId(index_file_name_, t.first)));
-        bool is_invalid = (bucket->GetBucketBlockNum() == INVALID_BLOCK_NUM);
+        bool is_invalid = (bucket->GetPageType() == PageType::DEFAULT_PAGE_TYPE);
         bfm_->UnpinBlock(BlockId(index_file_name_, t.first), false);
 
 
@@ -598,7 +598,7 @@ std::string ExtendibleHashTable::IntToBinary(int x) {
 
 
 void ExtendibleHashTable::DeleteBucketPage(HashTableBucketPage *bucket) {
-    bucket->SetBucketBlockNum(INVALID_BLOCK_NUM);
+    bucket->SetPageType(PageType::DEFAULT_PAGE_TYPE);
 }
 
 

@@ -668,6 +668,60 @@ file/page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/file/page.cc.s
 .PHONY : file/page.cc.s
 
+index/btree/b_plus_tree_bucket_page.o: index/btree/b_plus_tree_bucket_page.cc.o
+
+.PHONY : index/btree/b_plus_tree_bucket_page.o
+
+# target to build an object file
+index/btree/b_plus_tree_bucket_page.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o
+.PHONY : index/btree/b_plus_tree_bucket_page.cc.o
+
+index/btree/b_plus_tree_bucket_page.i: index/btree/b_plus_tree_bucket_page.cc.i
+
+.PHONY : index/btree/b_plus_tree_bucket_page.i
+
+# target to preprocess a source file
+index/btree/b_plus_tree_bucket_page.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.i
+.PHONY : index/btree/b_plus_tree_bucket_page.cc.i
+
+index/btree/b_plus_tree_bucket_page.s: index/btree/b_plus_tree_bucket_page.cc.s
+
+.PHONY : index/btree/b_plus_tree_bucket_page.s
+
+# target to generate assembly for a file
+index/btree/b_plus_tree_bucket_page.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.s
+.PHONY : index/btree/b_plus_tree_bucket_page.cc.s
+
+index/btree/b_plus_tree_directory_page.o: index/btree/b_plus_tree_directory_page.cc.o
+
+.PHONY : index/btree/b_plus_tree_directory_page.o
+
+# target to build an object file
+index/btree/b_plus_tree_directory_page.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o
+.PHONY : index/btree/b_plus_tree_directory_page.cc.o
+
+index/btree/b_plus_tree_directory_page.i: index/btree/b_plus_tree_directory_page.cc.i
+
+.PHONY : index/btree/b_plus_tree_directory_page.i
+
+# target to preprocess a source file
+index/btree/b_plus_tree_directory_page.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.i
+.PHONY : index/btree/b_plus_tree_directory_page.cc.i
+
+index/btree/b_plus_tree_directory_page.s: index/btree/b_plus_tree_directory_page.cc.s
+
+.PHONY : index/btree/b_plus_tree_directory_page.s
+
+# target to generate assembly for a file
+index/btree/b_plus_tree_directory_page.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.s
+.PHONY : index/btree/b_plus_tree_directory_page.cc.s
+
 index/btree/b_plus_tree_leaf_page.o: index/btree/b_plus_tree_leaf_page.cc.o
 
 .PHONY : index/btree/b_plus_tree_leaf_page.o
@@ -1654,6 +1708,12 @@ help:
 	@echo "... file/page.o"
 	@echo "... file/page.i"
 	@echo "... file/page.s"
+	@echo "... index/btree/b_plus_tree_bucket_page.o"
+	@echo "... index/btree/b_plus_tree_bucket_page.i"
+	@echo "... index/btree/b_plus_tree_bucket_page.s"
+	@echo "... index/btree/b_plus_tree_directory_page.o"
+	@echo "... index/btree/b_plus_tree_directory_page.i"
+	@echo "... index/btree/b_plus_tree_directory_page.s"
 	@echo "... index/btree/b_plus_tree_leaf_page.o"
 	@echo "... index/btree/b_plus_tree_leaf_page.i"
 	@echo "... index/btree/b_plus_tree_leaf_page.s"

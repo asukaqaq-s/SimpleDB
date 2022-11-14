@@ -10,6 +10,8 @@ namespace SimpleDB {
 
 class RecoveryManager;
 
+
+
 /**
 * @brief a buffer object is stored in memory and is a unit of bufferpool
 * buffer also contains book-keeping information that is used by the buffer 
