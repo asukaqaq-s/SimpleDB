@@ -399,6 +399,8 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/index/btree/b_plus_tree_bucket_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/index/btree/b_plus_tree_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/index/generic_key.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src/include/record/column.h
@@ -414,8 +416,6 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o: ../src
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/buffer/buffer.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/buffer/lru_replace.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/concurrency/lock_manager.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/config/config.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/config/rw_latch.h
@@ -424,7 +424,8 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/index/btree/b_plus_tree_directory_page.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/index/btree/b_plus_tree_leaf_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/index/btree/b_plus_tree_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/index/generic_key.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/record/column.h
@@ -432,7 +433,6 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/record/schema.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/record/tuple.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/recovery/log_record.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/recovery/recovery_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/type/typeid.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/include/type/value.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../src/index/btree/b_plus_tree_directory_page.cc
@@ -440,8 +440,6 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o: ../
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/buffer/buffer.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/buffer/buffer_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/buffer/lru_replace.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/concurrency/lock_manager.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/concurrency/transaction.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/config/config.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/config/macro.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/config/rw_latch.h
@@ -450,6 +448,8 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/i
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/index/btree/b_plus_tree_leaf_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/index/btree/b_plus_tree_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/index/generic_key.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/record/column.h
@@ -457,10 +457,39 @@ src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/i
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/record/schema.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/record/tuple.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/recovery/log_record.h
-src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/recovery/recovery_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/type/typeid.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/include/type/value.h
 src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o: ../src/index/btree/b_plus_tree_leaf_page.cc
+
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/buffer/buffer.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/buffer/buffer_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/buffer/lru_replace.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/concurrency/lock_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/concurrency/transaction.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/config/config.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/config/macro.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/config/rw_latch.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/config/type.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/file/block_id.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/file/file_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/file/page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/index/btree/b_plus_tree.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/index/btree/b_plus_tree_bucket_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/index/btree/b_plus_tree_directory_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/index/btree/b_plus_tree_leaf_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/index/btree/b_plus_tree_page.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/index/generic_key.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/log/log_iterator.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/log/log_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/record/column.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/record/rid.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/record/schema.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/record/tuple.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/recovery/log_record.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/recovery/recovery_manager.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/type/typeid.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/include/type/value.h
+src/CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o: ../src/index/btree/bplus_tree.cc
 
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/buffer/buffer.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/buffer/buffer_manager.h
@@ -477,7 +506,6 @@ src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/in
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/index/hash/extendible_hash_table.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/index/hash/hash_table_bucket_page.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/index/hash/hash_table_directory_page.h
-src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/index/search_key.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o: ../src/include/record/column.h
@@ -498,7 +526,6 @@ src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/i
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/index/hash/hash_table_bucket_page.h
-src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/index/search_key.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/record/column.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/record/rid.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/hash_table_bucket_page.cc.o: ../src/include/record/schema.h
@@ -533,7 +560,6 @@ src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/includ
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/file/file_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/file/page.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/index/hash/static_hash_table.h
-src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/index/search_key.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/log/log_iterator.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/log/log_manager.h
 src/CMakeFiles/SimpleDB_lib.dir/index/hash/static_hash_table.cc.o: ../src/include/record/column.h

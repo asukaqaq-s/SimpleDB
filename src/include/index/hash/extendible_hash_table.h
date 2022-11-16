@@ -3,7 +3,6 @@
 
 #include "index/hash/hash_table_bucket_page.h"
 #include "index/hash/hash_table_directory_page.h"
-#include "index/search_key.h"
 #include "concurrency/transaction.h"
 
 namespace SimpleDB {

@@ -3,8 +3,8 @@
 
 #include "config/macro.h"
 #include "type/typeid.h"
-#include <memory>
 
+#include <memory>
 #include <string>
 
 namespace SimpleDB {
@@ -19,6 +19,8 @@ enum DataType {
 * @brief The class that denotes values stored in the database.
 */
 class Value {
+
+
 
 public:
 
@@ -57,6 +59,7 @@ public:
         dval_ = std::make_unique<double> (dval);
         type_id_ = TypeID::DECIMAL;
     }
+
 
     bool IsTrue() const {
         SIMPLEDB_ASSERT(ival_, "not exist");

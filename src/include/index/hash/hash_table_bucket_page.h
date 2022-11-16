@@ -3,7 +3,6 @@
 
 #include "buffer/buffer.h"
 #include "record/tuple.h"
-#include "index/search_key.h"
 
 
 namespace SimpleDB {

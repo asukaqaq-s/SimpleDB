@@ -198,19 +198,19 @@ log_record_test/fast:
 .PHONY : log_record_test/fast
 
 # Convenience name for target.
-test/CMakeFiles/page_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
-.PHONY : test/CMakeFiles/page_test.dir/rule
+test/CMakeFiles/tuple_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/rule
+.PHONY : test/CMakeFiles/tuple_test.dir/rule
 
 # Convenience name for target.
-page_test: test/CMakeFiles/page_test.dir/rule
+tuple_test: test/CMakeFiles/tuple_test.dir/rule
 
-.PHONY : page_test
+.PHONY : tuple_test
 
 # fast build rule for target.
-page_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
+tuple_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/buffer_manager_test.dir/rule:
@@ -273,51 +273,6 @@ lock_manager_test/fast:
 .PHONY : lock_manager_test/fast
 
 # Convenience name for target.
-test/CMakeFiles/file_manager_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
-.PHONY : test/CMakeFiles/file_manager_test.dir/rule
-
-# Convenience name for target.
-file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
-
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/concurrency_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/concurrency_test.dir/rule
-.PHONY : test/CMakeFiles/concurrency_test.dir/rule
-
-# Convenience name for target.
-concurrency_test: test/CMakeFiles/concurrency_test.dir/rule
-
-.PHONY : concurrency_test
-
-# fast build rule for target.
-concurrency_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
-.PHONY : concurrency_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/tuple_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/tuple_test.dir/rule
-.PHONY : test/CMakeFiles/tuple_test.dir/rule
-
-# Convenience name for target.
-tuple_test: test/CMakeFiles/tuple_test.dir/rule
-
-.PHONY : tuple_test
-
-# fast build rule for target.
-tuple_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
-.PHONY : tuple_test/fast
-
-# Convenience name for target.
 test/CMakeFiles/file_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_test.dir/rule
 .PHONY : test/CMakeFiles/file_test.dir/rule
@@ -333,34 +288,19 @@ file_test/fast:
 .PHONY : file_test/fast
 
 # Convenience name for target.
-test/CMakeFiles/btree_leaf_page_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/btree_leaf_page_test.dir/rule
-.PHONY : test/CMakeFiles/btree_leaf_page_test.dir/rule
+test/CMakeFiles/btree_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/btree_test.dir/rule
+.PHONY : test/CMakeFiles/btree_test.dir/rule
 
 # Convenience name for target.
-btree_leaf_page_test: test/CMakeFiles/btree_leaf_page_test.dir/rule
+btree_test: test/CMakeFiles/btree_test.dir/rule
 
-.PHONY : btree_leaf_page_test
+.PHONY : btree_test
 
 # fast build rule for target.
-btree_leaf_page_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_leaf_page_test.dir/build.make test/CMakeFiles/btree_leaf_page_test.dir/build
-.PHONY : btree_leaf_page_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/lru_replacer_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
-.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
-
-# Convenience name for target.
-lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
-
-.PHONY : lru_replacer_test
-
-# fast build rule for target.
-lru_replacer_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
+btree_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_test.dir/build.make test/CMakeFiles/btree_test.dir/build
+.PHONY : btree_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/seqscan_executor_test.dir/rule:
@@ -391,6 +331,81 @@ update_parse_test: test/CMakeFiles/update_parse_test.dir/rule
 update_parse_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
 .PHONY : update_parse_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/file_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
+.PHONY : test/CMakeFiles/file_manager_test.dir/rule
+
+# Convenience name for target.
+file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
+
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/concurrency_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/concurrency_test.dir/rule
+.PHONY : test/CMakeFiles/concurrency_test.dir/rule
+
+# Convenience name for target.
+concurrency_test: test/CMakeFiles/concurrency_test.dir/rule
+
+.PHONY : concurrency_test
+
+# fast build rule for target.
+concurrency_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
+.PHONY : concurrency_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/btree_page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/btree_page_test.dir/rule
+.PHONY : test/CMakeFiles/btree_page_test.dir/rule
+
+# Convenience name for target.
+btree_page_test: test/CMakeFiles/btree_page_test.dir/rule
+
+.PHONY : btree_page_test
+
+# fast build rule for target.
+btree_page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/build
+.PHONY : btree_page_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/lru_replacer_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/lru_replacer_test.dir/rule
+.PHONY : test/CMakeFiles/lru_replacer_test.dir/rule
+
+# Convenience name for target.
+lru_replacer_test: test/CMakeFiles/lru_replacer_test.dir/rule
+
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
+.PHONY : test/CMakeFiles/page_test.dir/rule
+
+# Convenience name for target.
+page_test: test/CMakeFiles/page_test.dir/rule
+
+.PHONY : page_test
+
+# fast build rule for target.
+page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/table_test.dir/rule:
@@ -647,32 +662,59 @@ tokenizer_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/tokenizer_test.dir/build.make test/CMakeFiles/tokenizer_test.dir/build
 .PHONY : tokenizer_test/fast
 
-btree/btree_leaf_page_test.o: btree/btree_leaf_page_test.cc.o
+btree/btree_page_test.o: btree/btree_page_test.cc.o
 
-.PHONY : btree/btree_leaf_page_test.o
+.PHONY : btree/btree_page_test.o
 
 # target to build an object file
-btree/btree_leaf_page_test.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_leaf_page_test.dir/build.make test/CMakeFiles/btree_leaf_page_test.dir/btree/btree_leaf_page_test.cc.o
-.PHONY : btree/btree_leaf_page_test.cc.o
+btree/btree_page_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/btree/btree_page_test.cc.o
+.PHONY : btree/btree_page_test.cc.o
 
-btree/btree_leaf_page_test.i: btree/btree_leaf_page_test.cc.i
+btree/btree_page_test.i: btree/btree_page_test.cc.i
 
-.PHONY : btree/btree_leaf_page_test.i
+.PHONY : btree/btree_page_test.i
 
 # target to preprocess a source file
-btree/btree_leaf_page_test.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_leaf_page_test.dir/build.make test/CMakeFiles/btree_leaf_page_test.dir/btree/btree_leaf_page_test.cc.i
-.PHONY : btree/btree_leaf_page_test.cc.i
+btree/btree_page_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/btree/btree_page_test.cc.i
+.PHONY : btree/btree_page_test.cc.i
 
-btree/btree_leaf_page_test.s: btree/btree_leaf_page_test.cc.s
+btree/btree_page_test.s: btree/btree_page_test.cc.s
 
-.PHONY : btree/btree_leaf_page_test.s
+.PHONY : btree/btree_page_test.s
 
 # target to generate assembly for a file
-btree/btree_leaf_page_test.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_leaf_page_test.dir/build.make test/CMakeFiles/btree_leaf_page_test.dir/btree/btree_leaf_page_test.cc.s
-.PHONY : btree/btree_leaf_page_test.cc.s
+btree/btree_page_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/btree/btree_page_test.cc.s
+.PHONY : btree/btree_page_test.cc.s
+
+btree/btree_test.o: btree/btree_test.cc.o
+
+.PHONY : btree/btree_test.o
+
+# target to build an object file
+btree/btree_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_test.dir/build.make test/CMakeFiles/btree_test.dir/btree/btree_test.cc.o
+.PHONY : btree/btree_test.cc.o
+
+btree/btree_test.i: btree/btree_test.cc.i
+
+.PHONY : btree/btree_test.i
+
+# target to preprocess a source file
+btree/btree_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_test.dir/build.make test/CMakeFiles/btree_test.dir/btree/btree_test.cc.i
+.PHONY : btree/btree_test.cc.i
+
+btree/btree_test.s: btree/btree_test.cc.s
+
+.PHONY : btree/btree_test.s
+
+# target to generate assembly for a file
+btree/btree_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_test.dir/build.make test/CMakeFiles/btree_test.dir/btree/btree_test.cc.s
+.PHONY : btree/btree_test.cc.s
 
 buffer/buffer_manager_test.o: buffer/buffer_manager_test.cc.o
 
@@ -1469,21 +1511,22 @@ help:
 	@echo "... test"
 	@echo "... recovery_test"
 	@echo "... log_record_test"
-	@echo "... page_test"
+	@echo "... rebuild_cache"
+	@echo "... tuple_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
 	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
-	@echo "... file_manager_test"
-	@echo "... concurrency_test"
-	@echo "... rebuild_cache"
-	@echo "... tuple_test"
 	@echo "... file_test"
-	@echo "... btree_leaf_page_test"
-	@echo "... lru_replacer_test"
+	@echo "... btree_test"
 	@echo "... install"
 	@echo "... seqscan_executor_test"
 	@echo "... update_parse_test"
+	@echo "... file_manager_test"
+	@echo "... concurrency_test"
+	@echo "... btree_page_test"
+	@echo "... lru_replacer_test"
+	@echo "... page_test"
 	@echo "... table_test"
 	@echo "... hard_extendible_hash_table_test"
 	@echo "... hash_table_bucket_page_test"
@@ -1502,9 +1545,12 @@ help:
 	@echo "... select_parse_test"
 	@echo "... other_executors_test"
 	@echo "... tokenizer_test"
-	@echo "... btree/btree_leaf_page_test.o"
-	@echo "... btree/btree_leaf_page_test.i"
-	@echo "... btree/btree_leaf_page_test.s"
+	@echo "... btree/btree_page_test.o"
+	@echo "... btree/btree_page_test.i"
+	@echo "... btree/btree_page_test.s"
+	@echo "... btree/btree_test.o"
+	@echo "... btree/btree_test.i"
+	@echo "... btree/btree_test.s"
 	@echo "... buffer/buffer_manager_test.o"
 	@echo "... buffer/buffer_manager_test.i"
 	@echo "... buffer/buffer_manager_test.s"

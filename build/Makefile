@@ -259,17 +259,17 @@ log_record_test/fast:
 .PHONY : log_record_test/fast
 
 #=============================================================================
-# Target rules for targets named page_test
+# Target rules for targets named tuple_test
 
 # Build rule for target.
-page_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 page_test
-.PHONY : page_test
+tuple_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
+.PHONY : tuple_test
 
 # fast build rule for target.
-page_test/fast:
-	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
+tuple_test/fast:
+	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
+.PHONY : tuple_test/fast
 
 #=============================================================================
 # Target rules for targets named buffer_manager_test
@@ -324,45 +324,6 @@ lock_manager_test/fast:
 .PHONY : lock_manager_test/fast
 
 #=============================================================================
-# Target rules for targets named file_manager_test
-
-# Build rule for target.
-file_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named concurrency_test
-
-# Build rule for target.
-concurrency_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 concurrency_test
-.PHONY : concurrency_test
-
-# fast build rule for target.
-concurrency_test/fast:
-	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
-.PHONY : concurrency_test/fast
-
-#=============================================================================
-# Target rules for targets named tuple_test
-
-# Build rule for target.
-tuple_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tuple_test
-.PHONY : tuple_test
-
-# fast build rule for target.
-tuple_test/fast:
-	$(MAKE) -f test/CMakeFiles/tuple_test.dir/build.make test/CMakeFiles/tuple_test.dir/build
-.PHONY : tuple_test/fast
-
-#=============================================================================
 # Target rules for targets named file_test
 
 # Build rule for target.
@@ -376,30 +337,17 @@ file_test/fast:
 .PHONY : file_test/fast
 
 #=============================================================================
-# Target rules for targets named btree_leaf_page_test
+# Target rules for targets named btree_test
 
 # Build rule for target.
-btree_leaf_page_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 btree_leaf_page_test
-.PHONY : btree_leaf_page_test
+btree_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 btree_test
+.PHONY : btree_test
 
 # fast build rule for target.
-btree_leaf_page_test/fast:
-	$(MAKE) -f test/CMakeFiles/btree_leaf_page_test.dir/build.make test/CMakeFiles/btree_leaf_page_test.dir/build
-.PHONY : btree_leaf_page_test/fast
-
-#=============================================================================
-# Target rules for targets named lru_replacer_test
-
-# Build rule for target.
-lru_replacer_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
-.PHONY : lru_replacer_test
-
-# fast build rule for target.
-lru_replacer_test/fast:
-	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
-.PHONY : lru_replacer_test/fast
+btree_test/fast:
+	$(MAKE) -f test/CMakeFiles/btree_test.dir/build.make test/CMakeFiles/btree_test.dir/build
+.PHONY : btree_test/fast
 
 #=============================================================================
 # Target rules for targets named seqscan_executor_test
@@ -426,6 +374,71 @@ update_parse_test: cmake_check_build_system
 update_parse_test/fast:
 	$(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
 .PHONY : update_parse_test/fast
+
+#=============================================================================
+# Target rules for targets named file_manager_test
+
+# Build rule for target.
+file_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named concurrency_test
+
+# Build rule for target.
+concurrency_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 concurrency_test
+.PHONY : concurrency_test
+
+# fast build rule for target.
+concurrency_test/fast:
+	$(MAKE) -f test/CMakeFiles/concurrency_test.dir/build.make test/CMakeFiles/concurrency_test.dir/build
+.PHONY : concurrency_test/fast
+
+#=============================================================================
+# Target rules for targets named btree_page_test
+
+# Build rule for target.
+btree_page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 btree_page_test
+.PHONY : btree_page_test
+
+# fast build rule for target.
+btree_page_test/fast:
+	$(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/build
+.PHONY : btree_page_test/fast
+
+#=============================================================================
+# Target rules for targets named lru_replacer_test
+
+# Build rule for target.
+lru_replacer_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lru_replacer_test
+.PHONY : lru_replacer_test
+
+# fast build rule for target.
+lru_replacer_test/fast:
+	$(MAKE) -f test/CMakeFiles/lru_replacer_test.dir/build.make test/CMakeFiles/lru_replacer_test.dir/build
+.PHONY : lru_replacer_test/fast
+
+#=============================================================================
+# Target rules for targets named page_test
+
+# Build rule for target.
+page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 page_test
+.PHONY : page_test
+
+# fast build rule for target.
+page_test/fast:
+	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
 
 #=============================================================================
 # Target rules for targets named table_test
@@ -668,19 +681,20 @@ help:
 	@echo "... SimpleDB_lib"
 	@echo "... recovery_test"
 	@echo "... log_record_test"
-	@echo "... page_test"
+	@echo "... tuple_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
 	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
-	@echo "... file_manager_test"
-	@echo "... concurrency_test"
-	@echo "... tuple_test"
 	@echo "... file_test"
-	@echo "... btree_leaf_page_test"
-	@echo "... lru_replacer_test"
+	@echo "... btree_test"
 	@echo "... seqscan_executor_test"
 	@echo "... update_parse_test"
+	@echo "... file_manager_test"
+	@echo "... concurrency_test"
+	@echo "... btree_page_test"
+	@echo "... lru_replacer_test"
+	@echo "... page_test"
 	@echo "... table_test"
 	@echo "... hard_extendible_hash_table_test"
 	@echo "... hash_table_bucket_page_test"

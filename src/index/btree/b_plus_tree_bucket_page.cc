@@ -7,15 +7,19 @@
 namespace SimpleDB {
 
 
-void BPlusTreeBucketPage::Init() {
-    memset(&lsn_, 0, SIMPLEDB_BLOCK_SIZE);
-    lsn_ = INVALID_LSN;
-    page_type_ = PageType::BPLUS_TREE_BUCKET_PAGE;
-    next_bucket_num_ = INVALID_BLOCK_NUM;
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_BUCKET_PAGE_TYPE::Init(int block_num) {
+    SetLsn(INVALID_LSN);
+    SetPageType(PageType::BPLUS_TREE_BUCKET_PAGE);
+    SetBlockNum(block_num);
+    SetSize(-1);
+    SetMaxSize(BPLUS_TREE_BUCKET_MAX_SIZE);
+    SetParentBlockNum(INVALID_BLOCK_NUM);
 }
 
 
-bool BPlusTreeBucketPage::GetValue(std::vector<RID> *result) {
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::GetValue(std::vector<ValueType> *result) {
     int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
     bool has_found = false;
 
@@ -35,7 +39,8 @@ bool BPlusTreeBucketPage::GetValue(std::vector<RID> *result) {
 }
 
 
-bool BPlusTreeBucketPage::Insert(const RID &value) {
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::Insert(const ValueType &value) {
     int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
     int i;
 
@@ -55,13 +60,14 @@ bool BPlusTreeBucketPage::Insert(const RID &value) {
 }
 
 
-
-int BPlusTreeBucketPage::GetSize() {
+INDEX_TEMPLATE_ARGUMENTS
+int B_PLUS_TREE_BUCKET_PAGE_TYPE::GetSize() {
     return BPLUS_TREE_BUCKET_MAX_SIZE;
 }
 
 
-bool BPlusTreeBucketPage::Remove(const RID &value) {
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::Remove(const ValueType &value) {
     int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
     int i;
 
@@ -85,8 +91,9 @@ bool BPlusTreeBucketPage::Remove(const RID &value) {
 }
 
 
-bool BPlusTreeBucketPage::IsFull() {
-    int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::IsFull() {
+    int max_size = GetMaxSize();
     
     for (int i = 0;i < max_size; i++) {
         if (!IsOccupied(i)) {
@@ -102,8 +109,9 @@ bool BPlusTreeBucketPage::IsFull() {
 }
 
 
-bool BPlusTreeBucketPage::IsEmpty() {
-    int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::IsEmpty() {
+    int max_size = GetMaxSize();
     
     for (int i = 0;i < max_size; i++) {
         if (IsReadable(i)) {
@@ -115,11 +123,12 @@ bool BPlusTreeBucketPage::IsEmpty() {
 }
 
 
-void BPlusTreeBucketPage::PrintBucket() {
-    uint32_t size = 0;
-    uint32_t taken = 0;
-    uint32_t free = 0;
-    int tuple_count = BPLUS_TREE_BUCKET_MAX_SIZE;
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_BUCKET_PAGE_TYPE::PrintBucket() {
+    int size = 0;
+    int taken = 0;
+    int free = 0;
+    int tuple_count = GetMaxSize();
 
     for (int bucket_idx = 0; bucket_idx < tuple_count; bucket_idx++) {
         
@@ -143,14 +152,16 @@ void BPlusTreeBucketPage::PrintBucket() {
 }
 
 
-RID BPlusTreeBucketPage::RIDAt(uint32_t bucket_idx) const {
-    assert(bucket_idx <= BPLUS_TREE_BUCKET_MAX_SIZE);
+INDEX_TEMPLATE_ARGUMENTS
+ValueType B_PLUS_TREE_BUCKET_PAGE_TYPE::ValueTypeAt(int bucket_idx) const {
+    assert(bucket_idx < GetMaxSize());
     return data_[bucket_idx];
 }
 
 
-void BPlusTreeBucketPage::RemoveAt(uint32_t bucket_idx) {
-    assert(bucket_idx <= BPLUS_TREE_BUCKET_MAX_SIZE);
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_BUCKET_PAGE_TYPE::RemoveAt(int bucket_idx) {
+    assert(bucket_idx < BPLUS_TREE_BUCKET_MAX_SIZE);
     SetUnReadable(bucket_idx);
 }
 
@@ -158,7 +169,8 @@ void BPlusTreeBucketPage::RemoveAt(uint32_t bucket_idx) {
 // ----------------------------
 // |      private method      |
 // ----------------------------
-bool BPlusTreeBucketPage::IsReadable(uint32_t bucket_idx) {
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::IsReadable(int bucket_idx) {
     int bit_map_index = bucket_idx / 8;
     int char_index = bucket_idx % 8;
     
@@ -166,7 +178,8 @@ bool BPlusTreeBucketPage::IsReadable(uint32_t bucket_idx) {
 }
 
 
-void BPlusTreeBucketPage::SetReadable(uint32_t bucket_idx) {
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_BUCKET_PAGE_TYPE::SetReadable(int bucket_idx) {
     int bit_map_index = bucket_idx / 8;
     int char_index = bucket_idx % 8;
     
@@ -174,16 +187,17 @@ void BPlusTreeBucketPage::SetReadable(uint32_t bucket_idx) {
 }
 
 
-void BPlusTreeBucketPage::SetUnReadable(uint32_t bucket_idx) {
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_BUCKET_PAGE_TYPE::SetUnReadable(int bucket_idx) {
     int bit_map_index = bucket_idx / 8;
     int char_index = bucket_idx % 8;
 
-    readable_[bit_map_index] & ((-1) ^ (1 << char_index));
+    readable_[bit_map_index] &= ((-1) ^ (1 << char_index));
 }
 
 
-
-bool BPlusTreeBucketPage::IsOccupied(uint32_t bucket_idx) {
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_BUCKET_PAGE_TYPE::IsOccupied(int bucket_idx) {
     int bit_map_index = bucket_idx / 8;
     int char_index = bucket_idx % 8;
 
@@ -192,12 +206,23 @@ bool BPlusTreeBucketPage::IsOccupied(uint32_t bucket_idx) {
 
 
 
-void BPlusTreeBucketPage::SetOccupied(uint32_t bucket_idx) {
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_BUCKET_PAGE_TYPE::SetOccupied(int bucket_idx) {
     int bit_map_index = bucket_idx / 8;
     int char_index = bucket_idx % 8;
 
     occupied_[bit_map_index] |= (1 << char_index);  
 }
+
+
+
+template class BPlusTreeBucketPage<GenericKey<4>, RID, GenericComparator<4>>;
+template class BPlusTreeBucketPage<GenericKey<8>, RID, GenericComparator<8>>;
+template class BPlusTreeBucketPage<GenericKey<16>, RID, GenericComparator<16>>;
+template class BPlusTreeBucketPage<GenericKey<32>, RID, GenericComparator<32>>;
+template class BPlusTreeBucketPage<GenericKey<64>, RID, GenericComparator<64>>;
+
+
 
 } // namespace SimpleDB
 

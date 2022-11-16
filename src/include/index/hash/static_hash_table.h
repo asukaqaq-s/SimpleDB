@@ -2,7 +2,6 @@
 #define STATIC_HASH_TABLE_H
 
 #include "type/value.h"
-#include "index/search_key.h"
 #include "recovery/recovery_manager.h"
 #include "record/table_heap.h"
 

@@ -3,56 +3,76 @@
 
 #include "index/btree/b_plus_tree_leaf_page.h"
 
-#include <cstring>
+#include <iostream>
+
 
 namespace SimpleDB {
 
-using KVPair = std::pair<Value, RID>;
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::Init(int block_num, int max_size, int parent_block_num) {
 
-
-void BPlusTreeLeafPage::Init(int key_size, 
-                             TypeID type, int parent_num) {
-    SetLsn(INVALID_LSN);
     SetPageType(PageType::BPLUS_TREE_LEAF_PAGE);
+    SetMaxSize(max_size);
+    SetParentBlockNum(parent_block_num);
+    SetBlockNum(block_num);
     SetSize(0);
-    SetTupleSize(key_size + sizeof(RID));
-    SetMaxSize(SIMPLEDB_BLOCK_SIZE / GetTupleSize());
-    SetParentBlockNum(parent_num);
     SetNextBlockNum(INVALID_BLOCK_NUM);
-    SetTypeID(type);
 }
 
 
-Value BPlusTreeLeafPage::KeyAt(int index) const {
-    assert(index < GetSize());
-    int offset = LEAF_PAGE_HEADER_SIZE + index * GetTupleSize();
-    return data_->GetValue(offset, GetTypeID());
+INDEX_TEMPLATE_ARGUMENTS
+int B_PLUS_TREE_LEAF_PAGE_TYPE::GetNextBlockNum() const {
+    return next_block_num_;
 }
 
 
-RID BPlusTreeLeafPage::ValueAt(int index) const {
-    assert(index < GetSize());
-    int offset = LEAF_PAGE_HEADER_SIZE + (index + 1) * GetTupleSize() - sizeof(RID);
-    int block = data_->GetInt(offset);
-    int slot = data_->GetInt(offset + sizeof(int));
-
-    return RID(block, slot);
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::SetNextBlockNum(int next_page_id) {
+    next_block_num_ = next_page_id;
 }
 
 
-int BPlusTreeLeafPage::KeyIndexGreaterEqual(const Value &key) const {
-    int current_size = GetSize();
-    int left = 0, right = current_size - 1;
-    
+INDEX_TEMPLATE_ARGUMENTS
+KeyType B_PLUS_TREE_LEAF_PAGE_TYPE::KeyAt(int index) const {
+    return array_[index].first;
+}
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
+ValueType B_PLUS_TREE_LEAF_PAGE_TYPE::ValueAt(int index) const {
+    return array_[index].second;
+}
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::SetKeyAt(int index, KeyType key) {
+    array_[index].first = key;
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::SetValueAt(int index, ValueType value) {
+    array_[index].second = value;
+}
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
+int B_PLUS_TREE_LEAF_PAGE_TYPE::KeyIndexGreaterEqual
+(const KeyType &key, const KeyComparator &comparator) const {
+    int left = 0, right = GetSize() - 1;
+
     while (left < right) {
         int mid = (left + right) / 2;
         auto tmp_key = KeyAt(mid);
-
-        if (tmp_key >= key) {
-            right = mid;    
+        
+        if (comparator(tmp_key, key) < 0) {
+            left = mid + 1;
         }
         else {
-            left = mid + 1;
+            right = mid;
         }
     }
 
@@ -60,287 +80,156 @@ int BPlusTreeLeafPage::KeyIndexGreaterEqual(const Value &key) const {
 }
 
 
-int BPlusTreeLeafPage::KeyIndexGreaterThan(const Value &key) const {
-    int current_size = GetSize();
-    int left = 0, right = current_size - 1;
-    
+
+INDEX_TEMPLATE_ARGUMENTS
+int B_PLUS_TREE_LEAF_PAGE_TYPE::KeyIndexGreaterThan
+(const KeyType &key, const KeyComparator &comparator) const {
+    int left = 0, right = GetSize() - 1;
+
     while (left < right) {
         int mid = (left + right) / 2;
         auto tmp_key = KeyAt(mid);
-
-        if (tmp_key > key) {
-            right = mid;    
+        
+        if (comparator(tmp_key, key) <= 0) {
+            left = mid + 1;
         }
         else {
-            left = mid + 1;
+            right = mid;
         }
     }
 
     return left;
 }
 
-
-KVPair BPlusTreeLeafPage::GetItem(int index) {
-    return std::make_pair(KeyAt(index), ValueAt(index));    
+INDEX_TEMPLATE_ARGUMENTS
+const MappingType &B_PLUS_TREE_LEAF_PAGE_TYPE::GetItem(int index) {
+    return array_[index];
 }
 
+template <typename KeyType, typename ValueType, typename KeyComparator>
+bool B_PLUS_TREE_LEAF_PAGE_TYPE::Insert(const KeyType &key, const ValueType &value, const KeyComparator &comparator) {
+    if (GetSize() == 0) {
+        array_[0] = std::make_pair(key, value);
+    } else {
 
-void BPlusTreeLeafPage::SetItem(int index, const KVPair &kv) {
-    int offset = LEAF_PAGE_HEADER_SIZE + index * GetTupleSize();
-    int key_size = GetTupleSize() - sizeof(RID);
-
-    data_->SetValue(offset, kv.first);
-    data_->SetInt(offset + key_size, kv.second.GetBlockNum());
-    data_->SetInt(offset + key_size + sizeof(int), kv.second.GetSlot());
-}
-
-
-
-int BPlusTreeLeafPage::Insert(const Value &key, const RID &value) {
-    int current_size = GetSize();
-
-    // should consider about this case fist
-    if (current_size == 0) {
-        SetItem(0, std::make_pair(key, value));
-    }
-    else if (current_size == GetMaxSize()) {
-        SIMPLEDB_ASSERT(false, "we should deal this case in Btree class");
-    }
-    else {
-        // find the last kv-pair which i.first <= key
-        // We insert the key behind this position
-        int left = 0, right = current_size - 1;
+        // binary search to find the first index which 
+        // array[index].first >= key
+        int left = 0, right = GetSize();
         while (left < right) {
-            int mid = (left + right + 1) / 2;
+            int mid = (left + right) / 2;
             auto tmp_key = KeyAt(mid);
 
-            if (tmp_key <= key) {
-                left = mid;
+            if (comparator(tmp_key, key) < 0) {
+                left = mid + 1;
             }
             else {
-                right = mid - 1;
+                right = mid;
             }
         }
 
 
-        // check if this page insert this key before, we only use 
-        // this function to insert a key that does not exist in the B+ tree
-        if (KeyAt(left) == key) {
-            SIMPLEDB_ASSERT(false, "call wrong function");
-        }
-
-
-        // special case, key is smallest in the leaf.
-        if (left == 0 && KeyAt(left) > key) {
-            left--;
-        }
-
-
-        // move all pairs after this pair backwards
-        int tuple_size = GetTupleSize();
-        int be_moved_begin = LEAF_PAGE_HEADER_SIZE + (left + 1) * tuple_size;
-        int be_moved_end = LEAF_PAGE_HEADER_SIZE + (current_size) *tuple_size;
-        if (be_moved_begin < be_moved_end) {
-            assert(current_size - 1 != left);
-            char *page_begin = data_->GetRawDataPtr();
-            std::memmove(page_begin + be_moved_begin + tuple_size, // dist
-                         page_begin + be_moved_begin,              // src
-                         be_moved_end - be_moved_begin);
+        // if key is exist, return false to insert into bucket
+        if (comparator(KeyAt(left), key) == 0) {
+            return false;
         }
 
         
-        // insert this pair into page
-        SetItem(left + 1, std::make_pair(key, value));
-    }
-
-    SetSize(current_size + 1);
-    return current_size + 1;
-}
-
-
-
-bool BPlusTreeLeafPage::GetValue(const Value &key, 
-                                 std::vector<RID> *result, 
-                                 int *overflow_bucket_num) const {
-    
-    // binary search to find the first record which >= key
-    int index = KeyIndexGreaterEqual(key);
-
-    // check if has this key
-    if (key != KeyAt(index)) {
-        return false;
-    }
-
-    // check if this key point to rid instead of a bucket page
-    auto value = ValueAt(index);
-    if (ValueIsRID(value)) {
-        result->emplace_back(value);
-    }
-    else {
-        if (overflow_bucket_num) {
-            *overflow_bucket_num = value.GetBlockNum();
+        for (auto i = GetSize(); i >= left; i--) {
+            array_[i] = array_[i - 1];
         }
+        array_[left] = std::make_pair(key, value);
     }
 
+    IncreaseSize(1);
     return true;
 }
 
-
-bool BPlusTreeLeafPage::Remove(const Value &key, const RID &rid) {
-    // binary search to find the first record which >= key
-    int index = KeyIndexGreaterEqual(key);
-
-    // check if has this key
-    if (key != KeyAt(index)) {
-        return false;
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_LEAF_PAGE_TYPE::Lookup(const KeyType &key, ValueType *value, const KeyComparator &comparator) const {
+    auto index = KeyIndexGreaterEqual(key, comparator);
+    if (comparator(array_[index].first, key) == 0) {
+        if (value != nullptr) {
+            *value = array_[index].second;
+        }
+        return true;
     }
-
-    // we only call this function when this key point to a rid instead of a bucket
-    if (rid != ValueAt(index) || ValueAt(index).GetSlot() == POINT_TO_BUCKET_CHAIN) {
-        SIMPLEDB_ASSERT(false, "call wrong function");
-    }
-
-    // Successfully found, move all pairs after this pair backwards
-    int tuple_size = GetTupleSize();
-    int current_size = GetSize();
-    int dist = LEAF_PAGE_HEADER_SIZE + index * tuple_size;
-    int be_moved_begin = LEAF_PAGE_HEADER_SIZE + (index + 1) * tuple_size;
-    int be_moved_end = LEAF_PAGE_HEADER_SIZE + (current_size) *tuple_size;
-
-    if (be_moved_begin != be_moved_end) {
-        std::memmove(data_->GetRawDataPtr() + dist,
-                     data_->GetRawDataPtr() + be_moved_begin,
-                     be_moved_end - be_moved_begin);
-    }
-
-    SetSize(current_size - 1);
-    return true;
-}
-
-
-void BPlusTreeLeafPage::MoveHalfTo(BPlusTreeLeafPage *recipient) {
-    int half = GetHalfCurrSize();
-    int tuple_size = GetTupleSize();
-    char *src = data_->GetRawDataPtr() + LEAF_PAGE_HEADER_SIZE + 
-                half * tuple_size;
     
-    // in copynfrom we have removed these data
-    recipient->CopyNFrom(src, GetSize() - half);
-    SetSize(half);
+    return false;
 }
 
-
-void BPlusTreeLeafPage::MoveAllTo(BPlusTreeLeafPage *recipient) {
-    int curr_size = GetSize();
-    char *src = data_->GetRawDataPtr() + LEAF_PAGE_HEADER_SIZE;
-
-    recipient->SetNextBlockNum(GetNextBlockNum());
-    recipient->CopyNFrom(src, curr_size);
-    SetSize(0);
-}
-
-
-void BPlusTreeLeafPage::MoveFirstToEndOf(BPlusTreeLeafPage *recipient) {
-    int curr_size = GetSize();
-    assert(curr_size != 0);
-    auto kv = GetItem(0);
-    
-    // remove first record
-    int tuple_size = GetTupleSize();
-    int current_size = GetSize();
-    int be_moved_begin = LEAF_PAGE_HEADER_SIZE;
-    int be_moved_end = LEAF_PAGE_HEADER_SIZE + current_size * tuple_size;
-    if (be_moved_begin < be_moved_end) {
-        char *page_begin = data_->GetRawDataPtr();
-        std::memmove(page_begin + be_moved_begin,              // dist
-                     page_begin + be_moved_begin + tuple_size, // src
-                     be_moved_end - be_moved_begin);
-    }
-
-    recipient->CopyLastFrom(kv);
-    SetSize(curr_size - 1);
-}
-
-
-void BPlusTreeLeafPage::MoveLastToFrontOf(BPlusTreeLeafPage *recipient) {
-    int curr_size = GetSize();
-    assert(curr_size != 0);
-    auto kv = GetItem(curr_size - 1);
-    
-    // i think don't need to move data because the data 
-    // at this location will be overwritten
-    recipient->CopyFirstFrom(kv);
-    SetSize(curr_size - 1);
-}
-
-
-
-int BPlusTreeLeafPage::GetHalfCurrSize() {
-    return (GetSize() + 1) / 2;
-}
-
-
-void BPlusTreeLeafPage::CopyNFrom(char *items, int size) {
-    int tuple_size = GetTupleSize();
-    int moved_size = size * tuple_size;
-    int curr_size = GetSize();
-
-    if (size != 0) {
-        char *curr_end = data_->GetRawDataPtr() + LEAF_PAGE_HEADER_SIZE + 
-                         curr_size * tuple_size;
-        std::memmove(curr_end, items, moved_size);
-    }
-
-    SetSize(curr_size + size);
-}
-
-
-void BPlusTreeLeafPage::CopyLastFrom(const KVPair &item) {
-    int curr_size = GetSize();
-    assert(curr_size != GetMaxSize());
-
-    SetItem(curr_size, item);
-    SetSize(curr_size + 1);
-}
-
-
-void BPlusTreeLeafPage::CopyFirstFrom(const KVPair &item) {
-    
-    // move data first
-    int tuple_size = GetTupleSize();
-    int current_size = GetSize();
-    int be_moved_begin = LEAF_PAGE_HEADER_SIZE;
-    int be_moved_end = LEAF_PAGE_HEADER_SIZE + (current_size) *tuple_size;
-    if (be_moved_begin < be_moved_end) {
-        char *page_begin = data_->GetRawDataPtr();
-        std::memmove(page_begin + be_moved_begin + tuple_size, // dist
-                     page_begin + be_moved_begin,              // src
-                     be_moved_end - be_moved_begin);
-    }
-
-    
-    // set item
-    SetItem(0, item);
-    SetSize(current_size + 1);
-}
-
-
-
-bool BPlusTreeLeafPage::ValueIsRID(const RID &value) const {
-    if (value.GetSlot() == POINT_TO_BUCKET_CHAIN) {
-        return false;
-    }
-    return true;
-}
-
-
-bool BPlusTreeLeafPage::ValueIsBucket(const RID &value) const {
-    if (value.GetSlot() == POINT_TO_BUCKET_CHAIN) {
+INDEX_TEMPLATE_ARGUMENTS
+bool B_PLUS_TREE_LEAF_PAGE_TYPE::Remove(const KeyType &key, const KeyComparator &comparator) {
+    auto index = KeyIndexGreaterEqual(key, comparator);
+    if (comparator(array_[index].first, key) == 0) {
+        for (auto i = index; i < GetSize() - 1; i++) {
+            array_[i] = array_[i + 1];
+        }
+        IncreaseSize(-1);
         return true;
     }
     return false;
 }
 
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::MoveHalfTo(BPlusTreeLeafPage *recipient) {
+    
+    // since the key in the last position does not store anything, it is rounded down
+    int half = (GetSize()) / 2;
+    recipient->CopyNFrom(&array_[half], GetSize() - half);
+    SetSize(half);
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::MoveAllTo(BPlusTreeLeafPage *recipient) {
+    recipient->CopyNFrom(array_, GetSize());
+    recipient->SetNextBlockNum(GetNextBlockNum());
+    SetSize(0);
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::MoveFirstToEndOf(BPlusTreeLeafPage *recipient) {
+    recipient->CopyLastFrom(array_[0]);
+    IncreaseSize(-1);
+    for (int i = 0; i < GetSize(); i++) {
+        array_[i] = array_[i + 1];
+    }
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::MoveLastToFrontOf(BPlusTreeLeafPage *recipient) {
+    recipient->CopyFirstFrom(array_[GetSize() - 1]);
+    IncreaseSize(-1);
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::CopyNFrom(MappingType *items, int size) {
+    for (auto i = 0; i < size; i++) {
+        array_[i + GetSize()] = items[i];
+    }
+    IncreaseSize(size);
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::CopyLastFrom(const MappingType &item) {
+    array_[GetSize()] = item;
+    IncreaseSize(1);
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_LEAF_PAGE_TYPE::CopyFirstFrom(const MappingType &item) {
+    for (auto i = GetSize(); i >= 1; i--) {
+        array_[i] = array_[i - 1];
+    }
+    array_[0] = item;
+    IncreaseSize(1);
+}
+
+
+template class BPlusTreeLeafPage<GenericKey<4>, RID, GenericComparator<4>>;
+template class BPlusTreeLeafPage<GenericKey<8>, RID, GenericComparator<8>>;
+template class BPlusTreeLeafPage<GenericKey<16>, RID, GenericComparator<16>>;
+template class BPlusTreeLeafPage<GenericKey<32>, RID, GenericComparator<32>>;
+template class BPlusTreeLeafPage<GenericKey<64>, RID, GenericComparator<64>>;
 
 } // namespace SimpleDB
 

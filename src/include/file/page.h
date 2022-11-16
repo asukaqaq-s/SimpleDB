@@ -11,8 +11,8 @@
 namespace SimpleDB {
 
 
-enum class PageType : uint8_t {
-    DEFAULT_PAGE_TYPE,
+enum class PageType : int {
+    DEFAULT_PAGE_TYPE = 0,
     TABLE_PAGE,
     HASH_BUCKET_PAGE,
     HASH_DIRECTORY_PAGE,

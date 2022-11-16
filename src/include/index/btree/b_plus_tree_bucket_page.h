@@ -7,28 +7,32 @@
 #include "config/type.h"
 #include "record/rid.h"
 #include "concurrency/transaction.h"
+#include "index/btree/b_plus_tree_page.h"
 
 
 namespace SimpleDB {
 
+#define B_PLUS_TREE_BUCKET_PAGE_TYPE \
+    BPlusTreeBucketPage<KeyType, ValueType, KeyComparator>
+
+
 /**
 * @brief
-* Header format:
-* -------------------------------------------
-* | LSN(4) | PageType(4) | NextBucketNum(4) |
 * -------------------------------------------
 * BucketPage format:
 * --------------------------------------------------------------------
-* | Header(12) | IsReadable BitMap | IsOccupied BitMap | RID ARRAY   |
+* | Header(24) | IsReadable BitMap | IsOccupied BitMap | ValueType ARRAY   |
 * --------------------------------------------------------------------
 */
-class BPlusTreeBucketPage {
+INDEX_TEMPLATE_ARGUMENTS
+class BPlusTreeBucketPage : public BPlusTreePage {
 
+public:
 
     /**
     * init this page
     */
-    void Init();
+    void Init(int block_num);
 
 // in BPlusBucketPage, since all rid are belong to the same key,
 // we don't need to pass key as a param
@@ -39,7 +43,7 @@ class BPlusTreeBucketPage {
     * 
     * @return true if at least one key matched
     */
-    bool GetValue(std::vector<RID> *result);
+    bool GetValue(std::vector<ValueType> *result);
 
 
     /**
@@ -49,7 +53,7 @@ class BPlusTreeBucketPage {
     * @param Tuple key to insert
     * @return true if inserted, false if bucket is full
     */
-    bool Insert(const RID &value);
+    bool Insert(const ValueType &value);
 
     
     /**
@@ -63,7 +67,7 @@ class BPlusTreeBucketPage {
     *
     * @return true if removed, false if not found
     */
-    bool Remove(const RID &value);
+    bool Remove(const ValueType &value);
 
 
     /**
@@ -82,6 +86,16 @@ class BPlusTreeBucketPage {
     void PrintBucket();
 
 
+    inline int GetNextBucketNum() const {
+        return parent_block_num_;
+    }
+
+    inline void SetNextBucketNum(int num) {
+        parent_block_num_ = num;
+    }
+
+
+
 public: // used by Bplus tree
 
 
@@ -92,22 +106,13 @@ public: // used by Bplus tree
     * @param bucket_idx the index in the bucket to get the rid at
     * @return rid at index bucket_idx of the bucket
     */
-    RID RIDAt(uint32_t bucket_idx) const;
+    ValueType ValueTypeAt(int bucket_idx) const;
 
 
     /**
     * Remove rid at bucket_idx
     */
-    void RemoveAt(uint32_t bucket_idx);
-
-    
-    void SetPageType(PageType type) {
-        page_type_ = type;
-    }
-
-    PageType GetPageType() const {
-        return page_type_;
-    }
+    void RemoveAt(int bucket_idx);
 
 
 
@@ -119,7 +124,7 @@ public: // manipluate bit map
     * @param bucket_idx index to lookup
     * @return true if the index is readable, false otherwise
     */
-    bool IsReadable(uint32_t bucket_idx);
+    bool IsReadable(int bucket_idx);
 
 
     /**
@@ -128,7 +133,7 @@ public: // manipluate bit map
     *
     * @param bucket_idx the index to update
     */
-    void SetReadable(uint32_t bucket_idx);
+    void SetReadable(int bucket_idx);
 
 
     /**
@@ -137,7 +142,7 @@ public: // manipluate bit map
     *
     * @param bucket_idx the index to update
     */
-    void SetUnReadable(uint32_t bucket_idx);
+    void SetUnReadable(int bucket_idx);
 
     
     /**
@@ -146,13 +151,13 @@ public: // manipluate bit map
     * @param bucket_idx index to lookup
     * @return true if the index is occupied, false otherwise
     */
-    bool IsOccupied(uint32_t bucket_idx);
+    bool IsOccupied(int bucket_idx);
 
     
     /**
     * set this bucket has been occupied
     */
-    void SetOccupied(uint32_t bucket_idx);
+    void SetOccupied(int bucket_idx);
 
 
 private:
@@ -160,24 +165,17 @@ private:
     // since the size of rid is constant, we don't need to store tuplesize 
     // and bitmap size. they are constant value also.
     
-    static constexpr int FREE_SPACE = SIMPLEDB_BLOCK_SIZE - Page::PAGE_HEADER_SIZE;
-    static constexpr int KVPAIR_SIZE = sizeof(RID);
+    static constexpr int PAGE_HEADER_SIZE = BPLUSTREE_HEADER_SIZE;
+    static constexpr int FREE_SPACE = SIMPLEDB_BLOCK_SIZE - PAGE_HEADER_SIZE;
+    static constexpr int KVPAIR_SIZE = sizeof(ValueType);
     static constexpr int BPLUS_TREE_BUCKET_MAX_SIZE = (4 * FREE_SPACE / (4 * KVPAIR_SIZE + 1));
     static constexpr int BPLUS_TREE_BIT_MAP_SIZE = (BPLUS_TREE_BUCKET_MAX_SIZE - 1) / 8 + 1;
-    static constexpr int PAGE_HEADER_SIZE = Page::PAGE_HEADER_SIZE;
-
-
-    lsn_t lsn_;
-
-    PageType page_type_;
-
-    int next_bucket_num_;
 
     char readable_[BPLUS_TREE_BIT_MAP_SIZE];
     
     char occupied_[BPLUS_TREE_BIT_MAP_SIZE];
 
-    RID data_[0];
+    ValueType data_[0];
 };
 
 } // namespace SimpleDB

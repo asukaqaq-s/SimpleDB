@@ -232,7 +232,8 @@ Buffer* BufferManager::NewBlock(const std::string &file_name, int *block_num) {
         throw std::runtime_error("wait too long while bufferpool pin");
     }
     
-    *block_num = block.BlockNum();
+    if (block_num)
+        *block_num = block.BlockNum();
     return buffer;
 }
 

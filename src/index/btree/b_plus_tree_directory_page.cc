@@ -1,284 +1,218 @@
 #ifndef BPLUS_TREE_DIRECTORY_PAGE_CC
 #define BPLUS_TREE_DIRECTORY_PAGE_CC
 
-
 #include "index/btree/b_plus_tree_directory_page.h"
-#include "index/btree/b_plus_tree_leaf_page.h"
 
 
 namespace SimpleDB {
 
-using KVPair = std::pair<Value, int>;
-
-
-void BPlusTreeDirectoryPage::Init(int key_size, TypeID type, int parent_num) {
-    int tuple_size = key_size + sizeof(int);
-    int free_space_size = data_->GetSize() - DIRECTORY_PAGE_HEADER_SIZE;
-    int max_size = free_space_size / tuple_size;
-
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::Init(int block_num, int max_size, int parent_id) {
     SetLsn(INVALID_LSN);
     SetPageType(PageType::BPLUS_TREE_DIRECTORY_PAGE);
-    SetSize(0);
+    SetParentBlockNum(parent_id);
     SetMaxSize(max_size);
-    SetTupleSize(tuple_size);
-    SetTypeID(type);
-    SetParentBlockNum(parent_num);
+    SetBlockNum(block_num);
+    SetSize(0);
 }
 
 
-
-Value BPlusTreeDirectoryPage::KeyAt(int index) const {
-    int tuple_size = GetTupleSize();
-    int offset = DIRECTORY_PAGE_HEADER_SIZE + index * tuple_size;
-
-    return data_->GetValue(offset, GetTypeID());
+INDEX_TEMPLATE_ARGUMENTS
+KeyType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::KeyAt(int index) const {
+    return array_[index].first;
 }
 
 
-void BPlusTreeDirectoryPage::SetKeyAt(int index, const Value &key) {
-    int tuple_size = GetTupleSize();
-    int offset = DIRECTORY_PAGE_HEADER_SIZE + index * tuple_size;
-
-    data_->SetValue(offset, key);
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::SetKeyAt(int index, const KeyType &key) {
+    array_[index].first = key;
 }
 
 
-
-int BPlusTreeDirectoryPage::ValueIndex(const int &value) const {
-    int size = GetSize();
-
-    for (int i = 0;i < size; i++) {
-        if (ValueAt(i) == value) {
+INDEX_TEMPLATE_ARGUMENTS
+int B_PLUS_TREE_DIRECTORY_PAGE_TYPE::ValueIndex(const ValueType &value) const {
+    for (int i = 0; i < GetSize(); i++) {
+        if (array_[i].second == value) {
             return i;
         }
     }
-
     return -1;
 }
 
 
-int BPlusTreeDirectoryPage::ValueAt(int index) const {
-    int tuple_size = GetTupleSize();
-    int offset = DIRECTORY_PAGE_HEADER_SIZE + (index + 1) * tuple_size - sizeof(int);
 
-    return data_->GetInt(offset);
-}
-
-
-void BPlusTreeDirectoryPage::SetValueAt(int index, const int &num) {
-    int tuple_size = GetTupleSize();
-    int offset = DIRECTORY_PAGE_HEADER_SIZE + (index + 1) * tuple_size - sizeof(int);
-
-    data_->SetInt(offset, num);
+INDEX_TEMPLATE_ARGUMENTS
+ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::ValueAt(int index) const {
+    return array_[index].second;
 }
 
 
 
-int BPlusTreeDirectoryPage::GetValue(const Value &key) const {
-    
-    // binary search for the first key which equal to key
-    int left = 1, right = GetSize() - 1;
+INDEX_TEMPLATE_ARGUMENTS
+ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::Lookup(const KeyType &key, const KeyComparator &comparator) const {
+    // binary search the first key which greater than search_key 
+    // end to GetSize() - 1 
+    int left = 0, right = GetSize() - 2;
     while (left < right) {
-        int mid = (left + right + 1) / 2;
+        int mid = (left + right) / 2;
         auto tmp_key = KeyAt(mid);
 
-        if (tmp_key > key) {
-            right = mid - 1;
+        if (comparator(tmp_key, key) <= 0) {
+            left = mid + 1;
         }
         else {
-            left = mid;
+            right = mid;
         }
     }
 
-    if (KeyAt(left) != key) {
-        return -1;
+
+    if (comparator(key, KeyAt(left)) >= 0 ) {
+        assert(left == GetSize() - 2);
+        left = GetSize() - 1;
     }
+
 
     return ValueAt(left);
 }
 
 
-void BPlusTreeDirectoryPage::PopulateNewRoot(const int &old_value, 
-                                             const Value &new_key, 
-                                             const int &new_value) {
-    SetSize(GetSize() + 1);
-    SetValueAt(0, old_value);
-    InsertNodeAfter(old_value, new_key, new_value);
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::PopulateNewRoot(const KeyType &key, 
+                                                      const ValueType &left_child,
+                                                      const ValueType &right_child) {
+    array_[0] = std::make_pair(key, left_child);
+    array_[1].second = right_child;
+
+    SetSize(2);
 }
 
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::InsertNode(const KeyType &new_key, 
+                                                 const ValueType &new_value, 
+                                                 const KeyComparator &comparator) {
+    // binary search to find the first key which greater than new_key
+    int left = 0, right = GetSize() - 2;
+    while (left < right) {
+        int mid = (left + right) / 2;
+        auto tmp_key = KeyAt(mid);
 
-uint32_t BPlusTreeDirectoryPage::InsertNodeAfter(const int &old_value, 
-                                                 const Value &new_key, 
-                                                 const int &new_value) {
-    int old_size = GetSize();
-    int i;
-
-    // search for a value which equal to old_value
-    // and insert a node after it
-    for (i = 0;i < old_size; i++) {
-        if (ValueAt(i) == old_value) {
-            
-            // move data 
-            int tuple_size = GetTupleSize();
-            int be_moved_begin = DIRECTORY_PAGE_HEADER_SIZE + (i + 1) * tuple_size;
-            int be_moved_end = DIRECTORY_PAGE_HEADER_SIZE + old_size * tuple_size;
-            if (be_moved_begin != be_moved_end) {
-                char *ptr = data_->GetRawDataPtr();
-                std::memmove(ptr + be_moved_begin + tuple_size,
-                             ptr + be_moved_begin,
-                             be_moved_end - be_moved_begin);
-            }
-
-            // insert into it
-            SetKeyAt(i, new_key);
-            SetValueAt(i, new_value);
-            break;
+        if (comparator(tmp_key, new_key) <= 0) {
+            left = mid + 1;
+        }
+        else {
+            right = mid;
         }
     }
 
-    if (i == old_size) {
-        SIMPLEDB_ASSERT(false, "find failed");
+
+    // check if greater than all keys, then insert it into the last position    
+    if (comparator(new_key, KeyAt(left)) >= 0 ) {
+        assert(left == GetSize() - 2);
+        left = GetSize() - 1;
     }
 
-    SetSize(old_size + 1);
-    return old_size + 1;
-}
 
-
-
-
-void BPlusTreeDirectoryPage::Remove(int index) {
     
-    // move data
-    int old_size = GetSize();
-    int tuple_size = GetTupleSize();
-    int be_moved_begin = DIRECTORY_PAGE_HEADER_SIZE + (index + 1) * tuple_size;
-    int be_moved_end = DIRECTORY_PAGE_HEADER_SIZE + old_size * tuple_size;
-    if (be_moved_begin != be_moved_end) {
-        char *ptr = data_->GetRawDataPtr();
-        std::memmove(ptr + be_moved_begin - tuple_size,
-                     ptr + be_moved_begin,
-                     be_moved_end - be_moved_begin);
+    // move later left forward
+    int size = GetSize();
+    for (int i = left; i < size; i++) {
+        array_[i + 1] = array_[i];
     }
 
-    SetSize(old_size - 1);
+    // since a[left + 1].second point to the page with all keys less than new_key
+    // so a[left].second update to a[left + 1].second and a[left + 1].second
+    // update to new_value.
+    array_[left].first= new_key;
+    array_[left].second = array_[left + 1].second;
+    array_[left + 1].second = new_value;
+    IncreaseSize(1);
 }
 
 
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::RemoveAt(int index) {
+    for (int i = index; i < GetSize() - 1; i++) {
+        array_[i] = array_[i + 1];
+    }
+    IncreaseSize(-1);
+}
 
-int BPlusTreeDirectoryPage::RemoveAndReturnOnlyChild() {
+
+INDEX_TEMPLATE_ARGUMENTS
+ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::RemoveAllChild() {
     SetSize(0);
-    return ValueAt(0);
+    return array_[0].second;
 }
 
 
-void BPlusTreeDirectoryPage::MoveHalfTo(BPlusTreeDirectoryPage *recipient, 
-                                        BufferManager *bpm) {
-    uint half = (GetSize() + 1) / 2;
-    recipient->CopyNFrom(this, half, GetSize() - half, bpm);
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveAllTo(BPlusTreeDirectoryPage *recipient) {
+    recipient->CopyNFrom(array_, GetSize());
+    SetSize(0);
+}
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveHalfTo(BPlusTreeDirectoryPage *recipient) {    
+    uint half = (GetSize() - 1) / 2;
+    recipient->CopyNFrom(&array_[half], GetSize() - half);
     SetSize(half);
 }
 
 
-void BPlusTreeDirectoryPage::MoveAllTo(BPlusTreeDirectoryPage *recipient, 
-                                       BufferManager *bpm) {
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveLastToFirst(BPlusTreeDirectoryPage *recipient) {
+    MappingType last = array_[GetSize() - 1];
+    recipient->CopyFirstFrom(last);
+    IncreaseSize(-1);
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveFirstToLast(BPlusTreeDirectoryPage *recipient) {
+    MappingType first = array_[0];
+    recipient->CopyLastFrom(first);
+    RemoveAt(0);
+}
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyNFrom(MappingType *items, uint32_t size) {
+    for (uint i = 0; i < size; i++) {
+        array_[GetSize() + i] = items[i];
+    }
+    IncreaseSize(size);
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyLastFrom(const MappingType &item) {
+    array_[GetSize()] = item;
+    IncreaseSize(1);
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyFirstFrom(const MappingType &item) {
     int size = GetSize();
-    recipient->CopyNFrom(this, 0, size, bpm);
-    SetSize(0);
-}
-
-
-void BPlusTreeDirectoryPage::MoveFirstToEndOf(BPlusTreeDirectoryPage *recipient, 
-                                              BufferManager *bpm) {
-    auto kv = std::make_pair(KeyAt(0), ValueAt(0));
-    recipient->CopyLastFrom(kv, bpm);
-    Remove(0);
-}
-
-void BPlusTreeDirectoryPage::MoveLastToFrontOf(BPlusTreeDirectoryPage *recipient, 
-                                               BufferManager *bpm) {
-    int size = GetSize();
-    auto kv = std::make_pair(KeyAt(size - 1), ValueAt(size - 1));
-    recipient->CopyFirstFrom(kv, bpm);
-    Remove(size - 1);
-}
-
-void BPlusTreeDirectoryPage::CopyNFrom(BPlusTreeDirectoryPage* sender, 
-                                       int begin, int size, 
-                                       BufferManager *bfm) {
-    int curr_size = GetSize();
-    std::string file_name = GetBlockID().FileName();
-    int curr_block_num = GetBlockID().BlockNum();
-
-    for (int i = 0;i < size; i++) {
-        auto tmp_key = sender->KeyAt(i + begin);
-        auto tmp_value = sender->ValueAt(i + begin);
-        auto child = static_cast<BPlusTreeLeafPage*>
-                     (bfm->PinBlock({file_name, tmp_value}));
-        child->SetParentBlockNum(curr_block_num);
-        bfm->UnpinBlock({file_name, tmp_value}, true);
-
-        SetKeyAt(i + curr_size, tmp_key);
-        SetValueAt(i + curr_size, tmp_value);
+    for (int i = size; i >= 1; i--) {
+        array_[i] = array_[i - 1];
     }
 
-    SetSize(curr_size + size);
+
+    array_[0].first= item.first;
+    array_[0].second = array_[1].second;
+    array_[1].second = item.second;
+    IncreaseSize(1);
 }
 
 
-
-void BPlusTreeDirectoryPage::CopyLastFrom(const KVPair &item, BufferManager *bfm) {
-    int curr_size = GetSize();
-    assert(curr_size != GetMaxSize());
-    std::string file_name = GetBlockID().FileName();
-    int curr_block_num = GetBlockID().BlockNum();
-
-    // update parent num
-    auto child = static_cast<BPlusTreeLeafPage*> 
-                (bfm->PinBlock({file_name, item.second}));
-    child->SetParentBlockNum(curr_block_num);
-    bfm->UnpinBlock({file_name, item.second});
-
-
-    SetSize(curr_size + 1);
-    SetKeyAt(curr_size, item.first);
-    SetValueAt(curr_size, item.second);
-}
-
-
-
-void BPlusTreeDirectoryPage::CopyFirstFrom(const KVPair &item, BufferManager *bfm) {
-    // move data first
-    int tuple_size = GetTupleSize();
-    int current_size = GetSize();
-    std::string file_name = GetBlockID().FileName();
-    int curr_block_num = GetBlockID().BlockNum();
-    
-    // modify parent num
-    auto child = static_cast<BPlusTreeLeafPage*> 
-                (bfm->PinBlock({file_name, item.second}));
-    child->SetParentBlockNum(curr_block_num);
-    bfm->UnpinBlock({file_name, item.second});
-    
-    
-    int be_moved_begin = DIRECTORY_PAGE_HEADER_SIZE;
-    int be_moved_end = DIRECTORY_PAGE_HEADER_SIZE + (current_size) *tuple_size;
-    if (be_moved_begin < be_moved_end) {
-        char *page_begin = data_->GetRawDataPtr();
-        std::memmove(page_begin + be_moved_begin + tuple_size, // dist
-                     page_begin + be_moved_begin,              // src
-                     be_moved_end - be_moved_begin);
-    }
-    
-    // set item
-    SetKeyAt(0, item.first);
-    SetValueAt(0, item.second);
-    SetSize(current_size + 1);
-}
-
-
-
-
+template class BPlusTreeDirectoryPage<GenericKey<4>, int, GenericComparator<4>>;
+template class BPlusTreeDirectoryPage<GenericKey<8>, int, GenericComparator<8>>;
+template class BPlusTreeDirectoryPage<GenericKey<16>, int, GenericComparator<16>>;
+template class BPlusTreeDirectoryPage<GenericKey<32>, int, GenericComparator<32>>;
+template class BPlusTreeDirectoryPage<GenericKey<64>, int, GenericComparator<64>>;
 
 } // namespace SimpleDB
 
