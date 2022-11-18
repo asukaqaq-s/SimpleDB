@@ -3,8 +3,10 @@
 
 #include "index/btree/b_plus_tree.h"
 
+#include <mutex>
 
 namespace SimpleDB {
+
 
 // ----------------------------------------------
 // |        CreateNew Tree Functions            |
@@ -17,10 +19,13 @@ BPLUSTREE_TYPE::BPlusTree(const std::string &index_file_name,
                         : index_file_name_(index_file_name), 
                           root_block_num_(root_block_num),
                           comparator_(comparator),
-                          buffer_manager_(buffer_manager) {
+                          buffer_manager_(buffer_manager) {WriterGuard lock(root_latch_);
     max_leaf_size_ = LeafPage::LEAF_PAGE_MAX_SIZE;
     max_dir_size_ = DirectoryPage::DIRECTORY_PAGE_MAX_SIZE;
     
+    max_leaf_size_ = 7;
+    max_dir_size_ = 7;
+
     if (root_block_num_ == INVALID_BLOCK_NUM) {
         StartNewTree();
     }
@@ -54,24 +59,24 @@ void BPLUSTREE_TYPE::UpdateRootBlockNum(int new_block_num) {
 // ----------------------------------------------
 INDEX_TEMPLATE_ARGUMENTS
 bool BPLUSTREE_TYPE::GetValue(const KeyType &key, std::vector<ValueType> *result) const {
-    
+    ReaderGuard lock(root_latch_);
     // create the leaf page
     int leaf_block_num = SearchLeaf(key);
     Buffer *buffer = buffer_manager_->PinBlock({index_file_name_, leaf_block_num});
     auto *leaf_page = reinterpret_cast<LeafPage*>(buffer->contents()->GetRawDataPtr());
-
+     
 
     // try to access this leaf page
     ValueType tmp_value;
     bool res = leaf_page->Lookup(key, &tmp_value, comparator_);
-    
+
+
     // check if read is sucessfully
     if (!res) {
         buffer_manager_->UnpinBlock({index_file_name_, leaf_block_num}, false);
         return res;
     }
     
-
     
     // try to access bucket chain
     if (tmp_value.GetSlot() == -1) {
@@ -102,9 +107,11 @@ int BPLUSTREE_TYPE::SearchLeaf(const KeyType &search_key) const {
         // binary search finds the child block which contains key
         auto *dir_page = reinterpret_cast<DirectoryPage*>(curr_page);
         int child_block_num = dir_page->Lookup(search_key, comparator_);
-       
+
+
         // unpin old curr_page
         buffer_manager_->UnpinBlock({index_file_name_, dir_page->GetBlockNum()}, false);
+        
         
         // create new curr_page
         curr_buffer = buffer_manager_->PinBlock({index_file_name_, child_block_num});
@@ -125,7 +132,7 @@ int BPLUSTREE_TYPE::SearchLeaf(const KeyType &search_key) const {
 // |           Insert Data Functions              |
 // ------------------------------------------------
 INDEX_TEMPLATE_ARGUMENTS
-void BPLUSTREE_TYPE::Insert(const KeyType &key, const ValueType &value) {
+void BPLUSTREE_TYPE::Insert(const KeyType &key, const ValueType &value) {WriterGuard lock(root_latch_);
     // Insert can be divided into two cases
     // 1. a key is exist so that we need to insert it into bucket chain
     // 2. a key is non-exist so that we need to insert it into leaf page
@@ -211,7 +218,6 @@ void BPLUSTREE_TYPE::Insert(const KeyType &key, const ValueType &value) {
                          leaf_block_num, new_leaf_block_num);
     }
     else {
-        // since we have 
         buffer_manager_->UnpinBlock({index_file_name_, leaf_block_num}, true);
     }
     
@@ -228,19 +234,21 @@ N* BPLUSTREE_TYPE::Split(N* old_page) {
     if (old_page->GetPageType() == PageType::BPLUS_TREE_LEAF_PAGE) {
         LeafPage *new_leaf_page = CreateBTreePage<LeafPage>
                                   (PageType::BPLUS_TREE_LEAF_PAGE, &new_block_num);
+        new_leaf_page->SetParentBlockNum(old_page->GetParentBlockNum());
     
         reinterpret_cast<LeafPage *>(old_page)->MoveHalfTo(new_leaf_page);
         return reinterpret_cast<N*>(new_leaf_page);
     }
 
-
-    // handle directory page
     DirectoryPage *new_dir_page = CreateBTreePage<DirectoryPage>
                                   (PageType::BPLUS_TREE_DIRECTORY_PAGE, &new_block_num);
+    new_dir_page->SetParentBlockNum(old_page->GetParentBlockNum());
     
-    reinterpret_cast<DirectoryPage *>(old_page)->MoveHalfTo(new_dir_page);
+    reinterpret_cast<DirectoryPage*>(old_page)->MoveHalfTo(new_dir_page);
     return reinterpret_cast<N*>(new_dir_page);
 }
+
+
 
 
 
@@ -249,7 +257,7 @@ INDEX_TEMPLATE_ARGUMENTS
 void BPLUSTREE_TYPE::InsertIntoParent(int dir_block_num, const KeyType &key,
                                       int left_block_num, int right_block_num) {
     
-    // left child is the root_page, we should create a new root_page to replace it 
+    // if left child is the root_page, we should create a new root_page to replace it 
     if (dir_block_num == INVALID_BLOCK_NUM) {
         int new_root_block_num;
         DirectoryPage *parent_dir_page = CreateBTreePage<DirectoryPage>
@@ -257,8 +265,9 @@ void BPLUSTREE_TYPE::InsertIntoParent(int dir_block_num, const KeyType &key,
 
         // init new root of btree
         UpdateRootBlockNum(new_root_block_num);
-        parent_dir_page->PopulateNewRoot(key, left_block_num, right_block_num);
+        parent_dir_page->PopulateNewRoot(left_block_num, key, right_block_num);
     
+
         // redistributed parent block of child
         ResetDirChildParent(parent_dir_page);
         buffer_manager_->UnpinBlock({index_file_name_, new_root_block_num}, true);
@@ -270,43 +279,21 @@ void BPLUSTREE_TYPE::InsertIntoParent(int dir_block_num, const KeyType &key,
     Buffer *dir_buffer = buffer_manager_->PinBlock({index_file_name_, dir_block_num});
     DirectoryPage *dir_page = reinterpret_cast<DirectoryPage*>(dir_buffer->contents()->GetRawDataPtr());
     assert(dir_page->GetSize() <= dir_page->GetMaxSize());
-
+    dir_page->InsertNodeAfter(left_block_num, key, right_block_num);
 
     
     // since directory_page tolerates size not splitting immediately when 
     // it reaches maxsize, it needs to be checked before insertion
-    if (dir_page->GetSize() == dir_page->GetMaxSize()) {
+    if (dir_page->GetSize() > dir_page->GetMaxSize()) { 
+        assert(dir_page->GetSize() == dir_page->GetMaxSize() + 1);
         DirectoryPage *sibling_dir_page = Split<DirectoryPage>(dir_page);
         int sibling_dir_block_num = sibling_dir_page->GetBlockNum();
-        int place_right = comparator_(key, sibling_dir_page->KeyAt(0));
-
-        
-        if (place_right == 1) {
-            sibling_dir_page->InsertNode(key, right_block_num, comparator_);
-            sibling_dir_page->MoveFirstToLast(dir_page);
-        }
-        else if (place_right == -1) {
-            dir_page->InsertNode(key, right_block_num, comparator_);
-        }
-        else {
-            SIMPLEDB_ASSERT(false, "the key of dir should unique");
-        }
-
-
-        // prevent the 'key' being the 'middle key'
-        if (comparator_(dir_page->KeyAt(dir_page->GetSize() - 1), key) == 0) {
-            assert(place_right == -1);
-            // move 'key' to sibling_page
-            dir_page->MoveLastToFirst(sibling_dir_page);
-        }
-        // make middle_key which exist in dir_page but null
-        KeyType middle_key = dir_page->KeyAt(dir_page->GetSize() - 1);
+        KeyType middle_key = sibling_dir_page->KeyAt(0);
         
 
         InsertIntoParent(dir_page->GetParentBlockNum(), middle_key, 
                          dir_block_num, sibling_dir_block_num);
         ResetDirChildParent(sibling_dir_page);
-
 
         buffer_manager_->UnpinBlock({index_file_name_, dir_block_num}, true);
         buffer_manager_->UnpinBlock({index_file_name_, sibling_dir_block_num}, true);
@@ -314,18 +301,533 @@ void BPLUSTREE_TYPE::InsertIntoParent(int dir_block_num, const KeyType &key,
     else {
         // don't need to split
         // insert the information of right_block into parent
-        dir_page->InsertNode(key, right_block_num, comparator_);
-        ResetDirChildParent(dir_page);
+
+        ResetDirChildParentOne(dir_page, right_block_num);
         buffer_manager_->UnpinBlock({index_file_name_, dir_block_num}, true);
     }
 
 }
 
 
+// ---------------------------------------------------
+// |             Delete Data functions               |
+// ---------------------------------------------------
+
+INDEX_TEMPLATE_ARGUMENTS
+bool BPLUSTREE_TYPE::Remove(const KeyType &key, const ValueType &value) {WriterGuard lock(root_latch_);
+    // remove has two cases:
+    //     1. this key appears multiple time, only search bucket and remove this pair
+    //     2. this key appears only once, check if need to borrow key or merge
+
+    
+    // create the leaf page
+    int leaf_block_num = SearchLeaf(key);
+    Buffer *buffer = buffer_manager_->PinBlock({index_file_name_, leaf_block_num});
+    auto *leaf_page = reinterpret_cast<LeafPage*>(buffer->contents()->GetRawDataPtr());
+    
+
+    // try to remove it
+    bool key_is_first = comparator_(leaf_page->KeyAt(0), key) == 0;
+    bool remove_is_successful = leaf_page->Remove(key, value, comparator_); 
+    
+
+    // if fail, check if there is a bucket chain
+    if (!remove_is_successful) {
+        ValueType tmp_value;
+        bool is_exist = leaf_page->Lookup(key, &tmp_value, comparator_);
+
+        // this pair is not exist in tree
+        if (!is_exist) {
+            buffer_manager_->UnpinBlock({index_file_name_, leaf_block_num});
+            return false;    
+        }
+
+        assert(tmp_value.GetSlot() == -1);
+        int first_bucket_num = tmp_value.GetBlockNum();
+        bool need_to_delete_chain = false;
+        bool is_exist_in_bucket = RemoveInBucketChain(first_bucket_num, value, &need_to_delete_chain);
+        assert(first_bucket_num != INVALID_BLOCK_NUM);
+
+
+        // maybe we need to update the corresponding value in leaf page
+        int key_index = leaf_page->KeyIndexGreaterEqual(key, comparator_);
+        if (comparator_(leaf_page->KeyAt(key_index), key) != 0) {
+            assert(false);
+        }
+
+
+        if (need_to_delete_chain) {
+            std::vector<ValueType> tmp_array;
+            ReadFromBucketChain(first_bucket_num, &tmp_array);
+            leaf_page->SetValueAt(key_index, tmp_array[0]);
+        }
+        else {
+            leaf_page->SetValueAt(key_index, RID(first_bucket_num, -1));
+        }
+
+        buffer_manager_->UnpinBlock({index_file_name_, leaf_block_num}, true);
+        return is_exist_in_bucket;
+    }
+
+
+    
+    // remove is successful, check if need to merge or borrow a key
+    int min_num = leaf_block_num == root_block_num_ ? 0 : leaf_page->GetMinSize();
+    int leaf_page_size = leaf_page->GetSize();
+    assert(leaf_page_size >= 0);
+
+
+    // update the key in parent block
+    if (key_is_first && (root_block_num_ != leaf_block_num)) {
+        UpdateChildKeyInParent(leaf_page->GetParentBlockNum(), key, leaf_page->KeyAt(0));
+    } 
+    
+
+
+    if (leaf_page_size < min_num) {
+        bool have_borrowed = false;
+        
+        // get the sibling page block num
+        int left_page_block_num = -1;
+        int right_page_block_num = -1;
+        {
+            int parent_block_num = leaf_page->GetParentBlockNum();
+            assert(parent_block_num != -1);
+            Buffer *parent_buffer = buffer_manager_->PinBlock({index_file_name_, parent_block_num});
+            DirectoryPage *parent_page = reinterpret_cast<DirectoryPage*>
+                                         (parent_buffer->contents()->GetRawDataPtr());
+
+            // update variable
+            int index = parent_page->ValueIndex(leaf_block_num);
+            bool is_the_first_child = (index == 0);
+            bool is_the_last_child = (index == parent_page->GetSize() - 1);
+
+
+            if (!is_the_first_child) {
+                left_page_block_num = parent_page->ValueAt(index - 1);
+            }
+            if (!is_the_last_child) {
+                right_page_block_num = parent_page->ValueAt(index + 1);
+            }
+            
+            buffer_manager_->UnpinBlock({index_file_name_, parent_block_num}, false);
+        }
+        
+
+        // avoid error
+        if (left_page_block_num == -1 && right_page_block_num == -1) {
+            SIMPLEDB_ASSERT(false, "the leaf page should has sibling node");
+        }
+
+
+        // try to borrow a key from the left sibling node
+        if (left_page_block_num != -1) {
+            have_borrowed = BorrowLeafKey(false, left_page_block_num, leaf_page);
+        }
+        
+        // try to borrow a key from the right sibling node
+        if (!have_borrowed && right_page_block_num != -1) {
+            have_borrowed = BorrowLeafKey(true, right_page_block_num, leaf_page);
+        }
+
+        
+        // finally, try to merge, merge rule:
+        //    1. if it is not the last node, merge with the right brother node
+        //    2. if it is the last node, merge with the left brother node
+        if (!have_borrowed) {
+        
+            // read parent_block_num before merging to avoid this field be modified
+            int parent_block_num = leaf_page->GetParentBlockNum();
+            KeyType be_removed_key;
+            
+
+            // not the last node
+            // merge | curr | right |
+            if (right_page_block_num != -1) { 
+                MergeLeafs(leaf_page, right_page_block_num, true, &be_removed_key);
+            }
+            // the last node
+            // merge | left | right |
+            else {
+                MergeLeafs(leaf_page, left_page_block_num, false, &be_removed_key);
+            }
+            
+            
+            RemoveFromParent(parent_block_num, be_removed_key);
+
+            // do update in parent block
+            if (key_is_first && (root_block_num_ != leaf_block_num)) {
+                UpdateChildKeyInParent(leaf_page->GetParentBlockNum(), key, leaf_page->KeyAt(0));
+            } 
+
+        }
+    
+    }
+
+
+
+    buffer_manager_->UnpinBlock({index_file_name_, leaf_block_num}, true);
+    return true;
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::RemoveFromParent(int block_num, 
+                                      const KeyType &be_removed_key) {
+    // get parent_dir_page
+    Buffer *dir_buffer = buffer_manager_->PinBlock({index_file_name_, block_num});
+    DirectoryPage *dir_page = reinterpret_cast<DirectoryPage*>
+                              (dir_buffer->contents()->GetRawDataPtr());
+
+
+    // remove this key
+    int key_index = dir_page->KeyIndex(be_removed_key, comparator_);
+    bool key_is_first = (key_index == 0);
+    int old_first_child_num = dir_page->ValueAt(0);
+    
+
+    if (comparator_(dir_page->KeyAt(key_index), be_removed_key) == 0) {
+        dir_page->RemoveAt(key_index);
+    }
+   
+
+    // get the min_size and current size
+    int min_num = (block_num == root_block_num_) ? 2 : dir_page->GetMinSize();
+    int curr_size = dir_page->GetSize();
+    
+    
+    // check if this page is root and its size is one, update to new root
+    if (block_num == root_block_num_ && curr_size < min_num) {
+        root_block_num_ = old_first_child_num;
+        DeleteBTreePage(dir_page);
+        buffer_manager_->UnpinBlock({index_file_name_, block_num}, true);
+        return;
+    }
+
+    if (key_is_first && block_num != root_block_num_) {
+        UpdateChildKeyInParent(dir_page->GetParentBlockNum(), be_removed_key, 
+                        dir_page->KeyAt(dir_page->GetSize() - 1));
+
+    }
+
+     
+
+    // if this page is not root, borrow key and merge like leaf page
+    // don't forget that update if this key is the middle key
+    if (curr_size < min_num) {
+        bool have_borrowed = false;
+        
+        // get the sibling page block num
+        int left_page_block_num = -1;
+        int right_page_block_num = -1;
+        {
+            int parent_block_num = dir_page->GetParentBlockNum();
+            assert(parent_block_num != -1);
+            Buffer *parent_buffer = buffer_manager_->PinBlock({index_file_name_, parent_block_num});
+            DirectoryPage *parent_page = reinterpret_cast<DirectoryPage*>
+                                         (parent_buffer->contents()->GetRawDataPtr());
+
+            // update variable
+            int index = parent_page->ValueIndex(block_num);
+            bool is_the_first_child = (index == 0);
+            bool is_the_last_child = (index == parent_page->GetSize() - 1);
+
+
+            if (!is_the_first_child) {
+                left_page_block_num = parent_page->ValueAt(index - 1);
+            }
+            if (!is_the_last_child) {
+                right_page_block_num = parent_page->ValueAt(index + 1);
+            }
+            
+            buffer_manager_->UnpinBlock({index_file_name_, parent_block_num}, false);
+        }
+        
+
+        // avoid error
+        if (left_page_block_num == -1 && right_page_block_num == -1) {
+            SIMPLEDB_ASSERT(false, "the leaf page should has sibling node");
+        }
+        
+        // try to borrow keys from left sibling node
+        if (left_page_block_num != -1) {
+            have_borrowed = BorrowDirKey(false, left_page_block_num, dir_page);
+        }
+
+        // try to borrow keys from right sibling node
+        if (!have_borrowed && right_page_block_num != -1) {
+            have_borrowed = BorrowDirKey(true, right_page_block_num, dir_page);
+        }
+
+
+        // merge with sibling node, remember that reset children's parent
+        if (!have_borrowed) {
+            
+            KeyType be_removed_key_in_parent;
+            int parent_block_num = dir_page->GetParentBlockNum();
+
+            // if this dir_page is the last page of parent
+            // merge  | prev | dir_page |
+            if (right_page_block_num == -1) {
+                MergeKeys(dir_page, left_page_block_num, false, &be_removed_key_in_parent);
+            }
+            // else merge | dir_page | next |
+            else {
+                MergeKeys(dir_page, right_page_block_num, true, &be_removed_key_in_parent);
+            }
+            
+
+            // unpin immediately if we don't need this page
+            // since we have unpined this block, return immediately also.
+            // buffer_manager_->UnpinBlock({index_file_name_, block_num}, true);
+            RemoveFromParent(parent_block_num, be_removed_key_in_parent);
+            
+            if (key_is_first && block_num != root_block_num_) {
+                UpdateChildKeyInParent(dir_page->GetParentBlockNum(), be_removed_key_in_parent, 
+                        dir_page->KeyAt(dir_page->GetSize() - 1));
+            }
+        }
+    }
+    // else if (key_is_end && block_num != root_block_num_) {
+    //     UpdateChildKeyInParent(dir_page->GetParentBlockNum(), be_removed_key, 
+    //                            dir_page->KeyAt(curr_size - 1));
+        
+    // }
+    
+
+    buffer_manager_->UnpinBlock({index_file_name_, block_num}, true);
+}
+
+
+
+
+// -----------------------------------------------------------
+// |             Borrow key relative functions               |
+// -----------------------------------------------------------
+INDEX_TEMPLATE_ARGUMENTS
+bool BPLUSTREE_TYPE::BorrowLeafKey(bool from_right, 
+                                   int sibling_block_num, 
+                                   LeafPage *borrower) {
+
+    // get sibling_leaf_page
+    Buffer *sibling_buffer = buffer_manager_->PinBlock({index_file_name_, sibling_block_num});
+    LeafPage *lender = reinterpret_cast<LeafPage*>
+                            (sibling_buffer->contents()->GetRawDataPtr());
+
+
+    // check if we can borrow key from this page
+    int min_size = lender->GetMinSize();
+    int lender_size = lender->GetSize();
+
+    
+    SIMPLEDB_ASSERT(lender_size >= min_size, "this page should merge before borrowing key");    
+    if (lender_size > min_size) {
+        // note that leaf page don't need to reset children's parent in borrow key
+        
+        // get parent_block_num
+        int parent_block_num = borrower->GetParentBlockNum();
+
+
+        // if we borrow a key from right sibling page, we should do the following things
+        // 1. move the first key of lender to borrower
+        // 2. update the key of lender in parent_dir_page
+        if (from_right) {
+            KeyType old_key = lender->KeyAt(0);
+            KeyType new_key = lender->KeyAt(1);
+
+            lender->MoveFirstToEndOf(borrower);
+            UpdateChildKeyInParent(parent_block_num, old_key, new_key);
+        }
+
+
+        // if we borrow a key from left sibling page, we should do the following things
+        // 1. move the last key of lender to borrower
+        // 2. update the key of borrower in parent_dir_page
+        if (!from_right) {
+            KeyType old_key = borrower->KeyAt(0);
+            KeyType new_key = lender->KeyAt(lender->GetSize() - 1);
+
+            lender->MoveLastToFrontOf(borrower);
+            UpdateChildKeyInParent(parent_block_num, old_key, new_key);
+        }
+
+
+        // don't need to upin leafpage here.
+        buffer_manager_->UnpinBlock({index_file_name_, sibling_block_num}, true);
+        return true;
+    }
+
+
+    buffer_manager_->UnpinBlock({index_file_name_, sibling_block_num}, false);
+    return false;
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+bool BPLUSTREE_TYPE::BorrowDirKey(bool from_right, 
+                                  int sibling_block_num, 
+                                  DirectoryPage *borrower) {
+    
+    // get sibling_dir_page
+    Buffer *sibling_buffer = buffer_manager_->PinBlock({index_file_name_, sibling_block_num});
+    DirectoryPage *lender = reinterpret_cast<DirectoryPage*>
+                            (sibling_buffer->contents()->GetRawDataPtr());
+
+
+    // check if we can borrow key from this page
+    int min_size = lender->GetMinSize();
+    int lender_size = lender->GetSize();
+
+
+    SIMPLEDB_ASSERT(lender_size >= min_size, "this page should merge before borrowing key");    
+    if (lender_size > min_size) {
+        // note that directory page need to reset children's parent in borrow key
+        
+        // get parent_block_num
+        int parent_block_num = borrower->GetParentBlockNum();
+        assert(parent_block_num != INVALID_BLOCK_NUM);
+
+
+        // if we borrow a key from right sibling page, we should do the following things
+        // 1. move the first key of lender to borrower
+        // 2. update the key of borrow in parent_dir_page
+        if (from_right) {
+            KeyType old_key = lender->KeyAt(0);
+            KeyType new_key = lender->KeyAt(1);
+            int new_child_block_num = lender->ValueAt(0);
+
+            lender->MoveFirstToEndOf(borrower);
+            UpdateChildKeyInParent(parent_block_num, old_key, new_key);
+            ResetDirChildParentOne(borrower, new_child_block_num);
+        }
+
+
+        // if we borrow a key from left sibling page, we should do the following things
+        // 1. move the last key of lender to borrower
+        // 2. update the key of borrower in parent_dir_page
+        if (!from_right) {
+            int lender_curr_size = lender->GetSize();
+            KeyType old_key = borrower->KeyAt(0);
+            KeyType new_key = lender->KeyAt(lender_curr_size - 1);
+            int new_child_block_num = lender->ValueAt(lender_curr_size - 1);
+
+            lender->MoveLastToFrontOf(borrower);
+            UpdateChildKeyInParent(parent_block_num, old_key, new_key);
+            ResetDirChildParentOne(borrower, new_child_block_num);
+        }
+
+
+        // don't need to unpin dir_page here.
+        buffer_manager_->UnpinBlock({index_file_name_, sibling_block_num}, true);
+        return true;
+    }
+
+    buffer_manager_->UnpinBlock({index_file_name_, sibling_block_num}, false);
+    return false;
+}
+
+
+
+// ---------------------------------------------------
+// |            Merge relative functions             |
+// ---------------------------------------------------
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::MergeLeafs(LeafPage *curr_leaf, 
+                                int sibling_block_num, 
+                                bool with_right, 
+                                KeyType *be_removed_key) {
+    
+    // Get the sibling node
+    Buffer *sibling_buffer = buffer_manager_->PinBlock({index_file_name_, sibling_block_num});
+    LeafPage *sibling_leaf = reinterpret_cast<LeafPage*>
+                             (sibling_buffer->contents()->GetRawDataPtr());
+    
+    if (with_right) { 
+        // delete sibling leaf
+        *be_removed_key = sibling_leaf->KeyAt(0);
+        sibling_leaf->MoveAllTo(curr_leaf);
+        DeleteBTreePage(sibling_leaf);
+    }
+    else {
+        // delete curr leaf   
+        *be_removed_key = curr_leaf->KeyAt(0);
+        curr_leaf->MoveAllTo(sibling_leaf);
+        DeleteBTreePage(curr_leaf);
+    }
+    
+    buffer_manager_->UnpinBlock({index_file_name_, sibling_block_num}, true);
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::MergeKeys(DirectoryPage *curr_dir, 
+                               int sibling_block_num, 
+                               bool with_right, 
+                               KeyType *be_removed_key) {
+    
+    // Get the sibling node
+    Buffer *sibling_buffer = buffer_manager_->PinBlock({index_file_name_, sibling_block_num});
+    DirectoryPage *sibling_dir = reinterpret_cast<DirectoryPage*>
+                                 (sibling_buffer->contents()->GetRawDataPtr());
+    
+    if (with_right) { 
+        // delete sibling  
+        *be_removed_key = sibling_dir->KeyAt(0);
+        sibling_dir->MoveAllTo(curr_dir);
+        ResetDirChildParent(curr_dir);
+        DeleteBTreePage(sibling_dir);        
+    }
+    else {
+        // delete curr leaf   
+        *be_removed_key = curr_dir->KeyAt(0);
+        curr_dir->MoveAllTo(sibling_dir);
+        ResetDirChildParent(sibling_dir);
+        DeleteBTreePage(curr_dir);
+    }
+    
+    buffer_manager_->UnpinBlock({index_file_name_, sibling_block_num}, true);
+}
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::UpdateChildKeyInParent(int parent_block_num, 
+                                            const KeyType &old_key,
+                                            const KeyType &new_key) {
+    assert(parent_block_num != INVALID_BLOCK_NUM);
+    Buffer *parent_buffer = buffer_manager_->PinBlock({index_file_name_, parent_block_num});
+    DirectoryPage *parent_page = reinterpret_cast<DirectoryPage*>
+                  (parent_buffer->contents()->GetRawDataPtr());
+
+
+    // get the index of old_key
+    int key_index = parent_page->KeyIndex(old_key, comparator_);
+    int ancestor_block_num = parent_page->GetParentBlockNum();
+    
+    
+    // key of the first child of parent is null
+    if (comparator_(parent_page->KeyAt(key_index), old_key) != 0) {
+        buffer_manager_->UnpinBlock({index_file_name_, parent_block_num}, true);
+        return;
+    }
+    
+
+    // update to new_key and write to disk
+    parent_page->SetKeyAt(key_index, new_key);
+    buffer_manager_->UnpinBlock({index_file_name_, parent_block_num}, true);
+
+
+    // if old_key is the middle key, we also need to update it in ancestor node
+    if (key_index == 0 && ancestor_block_num != INVALID_BLOCK_NUM) {
+        UpdateChildKeyInParent(ancestor_block_num, old_key, new_key);
+    }
+}
+
+
+
 // ----------------------------------------------------
 // |             Read/Write data in Bucket            |
 // ----------------------------------------------------
-
 INDEX_TEMPLATE_ARGUMENTS
 void BPLUSTREE_TYPE::ReadFromBucketChain(int first_bucket_num, 
                                          std::vector<ValueType> *result) const {
@@ -350,6 +852,7 @@ void BPLUSTREE_TYPE::ReadFromBucketChain(int first_bucket_num,
     }
     
 }
+
 
 
 
@@ -411,6 +914,74 @@ void BPLUSTREE_TYPE::InsertIntoBucketChain(int first_bucket_num, const ValueType
 
 
 
+INDEX_TEMPLATE_ARGUMENTS
+bool BPLUSTREE_TYPE::RemoveInBucketChain(int &first_bucket_num, 
+                                         const ValueType &value, 
+                                         bool *need_to_delete_chain) {
+    
+    // count for checking if need to delete the bucket chain
+    int record_count = 0;
+    int prev_block_num = INVALID_BLOCK_NUM;
+    int curr_bucket_num = first_bucket_num;
+    bool remove_is_successful = false;
+    assert(first_bucket_num != INVALID_BLOCK_NUM);
+    
+    std::function<void(int, BucketPage*)> prev_to_next = [&]
+            (int prev_block_num, BucketPage *curr_bucket) {
+        if (prev_block_num != INVALID_BLOCK_NUM) {
+            auto *prev_buffer = buffer_manager_->PinBlock({index_file_name_, prev_block_num});
+            BucketPage *prev_bucket = reinterpret_cast<BucketPage*>
+                                      (prev_buffer->contents()->GetRawDataPtr());
+            prev_bucket->SetNextBucketNum(curr_bucket->GetNextBucketNum());
+            buffer_manager_->UnpinBlock({index_file_name_, prev_block_num}, true);
+        }
+    };
+
+
+    while (curr_bucket_num != INVALID_BLOCK_NUM) {
+        auto *curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_bucket_num});
+        BucketPage *curr_bucket = reinterpret_cast<BucketPage*>
+                                  (curr_buffer->contents()->GetRawDataPtr());
+        
+        // try to remove it
+        remove_is_successful |= curr_bucket->Remove(value);
+        int curr_bucket_size = curr_bucket->GetSize();
+        record_count += curr_bucket_size;
+
+
+        // check if need to delete this bucket
+        if (curr_bucket_size == 0) {   
+            prev_to_next(prev_block_num, curr_bucket);            
+            DeleteBTreePage(curr_bucket);  
+
+            // update header node of linklist
+            if (curr_bucket_num == first_bucket_num) {
+                first_bucket_num = curr_bucket->GetNextBucketNum();
+            }  
+        }
+
+        
+        // release resource
+        bool is_dirty = remove_is_successful | (!curr_bucket_size);
+        prev_block_num = curr_bucket_num;
+        curr_bucket_num = curr_bucket->GetNextBucketNum();
+        buffer_manager_->UnpinBlock({index_file_name_, prev_block_num}, is_dirty);
+    
+
+        if (remove_is_successful) {
+            break;
+        }
+
+    }
+
+
+    // only delete the chain when finish traversing the entire bucket chain.
+    if (record_count == 1 && curr_bucket_num == INVALID_BLOCK_NUM) {
+        *need_to_delete_chain = true;   
+    }
+
+    return remove_is_successful;
+}
 
 
 
@@ -423,23 +994,27 @@ template<typename N>
 N* BPLUSTREE_TYPE::CreateBTreePage(PageType page_type_, int *new_block_num) {
     // prefer to create a btree page from the deleted page
     Buffer *tmp_buffer = nullptr;
+    BPlusTreePage* tmp_page = nullptr;
 
     if (last_deleted_num_ == INVALID_BLOCK_NUM) {
         tmp_buffer = buffer_manager_->NewBlock(index_file_name_, new_block_num);
+        tmp_page = reinterpret_cast<BPlusTreePage*>(tmp_buffer->contents()->GetRawDataPtr());
     }
     else {
         tmp_buffer = buffer_manager_->PinBlock({index_file_name_, last_deleted_num_});
         *new_block_num = last_deleted_num_;
+        tmp_page = reinterpret_cast<BPlusTreePage*>(tmp_buffer->contents()->GetRawDataPtr());
+        last_deleted_num_ = tmp_page->GetDeletedBlockNum();
     }
-
     
+
 
     // reset infor
     switch (page_type_)
     {
     case PageType::BPLUS_TREE_LEAF_PAGE:
     {
-        LeafPage *new_page = reinterpret_cast<LeafPage*>(tmp_buffer->contents()->GetRawDataPtr());
+        LeafPage *new_page = reinterpret_cast<LeafPage*>(tmp_page);
         new_page->Init(*new_block_num, max_leaf_size_);
         return reinterpret_cast<N*>(new_page);
     }
@@ -447,14 +1022,14 @@ N* BPLUSTREE_TYPE::CreateBTreePage(PageType page_type_, int *new_block_num) {
 
     case PageType::BPLUS_TREE_DIRECTORY_PAGE:
     {
-        DirectoryPage *new_page = reinterpret_cast<DirectoryPage*>(tmp_buffer->contents()->GetRawDataPtr());
+        DirectoryPage *new_page = reinterpret_cast<DirectoryPage*>(tmp_page);
         new_page->Init(*new_block_num, max_dir_size_);
         return reinterpret_cast<N*>(new_page);
     }
 
     case PageType::BPLUS_TREE_BUCKET_PAGE:
     {
-        BucketPage *new_page = reinterpret_cast<BucketPage*>(tmp_buffer->contents()->GetRawDataPtr());
+        BucketPage *new_page = reinterpret_cast<BucketPage*>(tmp_page);
         new_page->Init(*new_block_num);
         return reinterpret_cast<N*>(new_page);
     }
@@ -469,12 +1044,14 @@ N* BPLUSTREE_TYPE::CreateBTreePage(PageType page_type_, int *new_block_num) {
 }
 
 
-// template<class BPlusTreePage>
-// void BPlusTree::DeleteBTreePage(BPlusTreePage* old_page, int block_num) {
-//     // the flag is negative for ease of distinction
-//     old_page->SetDeleteBlockList(block_num);
-//     last_deleted_num_ = old_page->GetBlockID().BlockNum();
-// }
+
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::DeleteBTreePage(BPlusTreePage* old_page) {
+    // the flag is negative for ease of distinction
+    old_page->SetPageType(PageType::DEFAULT_PAGE_TYPE);
+    old_page->SetDeletedBlockNum(last_deleted_num_);
+    last_deleted_num_ = old_page->GetBlockNum();
+}
 
 
 
@@ -482,50 +1059,72 @@ N* BPLUSTREE_TYPE::CreateBTreePage(PageType page_type_, int *new_block_num) {
 INDEX_TEMPLATE_ARGUMENTS
 void BPLUSTREE_TYPE::ResetDirChildParent(DirectoryPage *dir_page) {
     int size = dir_page->GetSize();
-    int parent_block_num = dir_page->GetBlockNum();
-
+    
     for (int i = 0;i < size; i++) {
         int child_num = dir_page->ValueAt(i);
-        auto *child_buffer = buffer_manager_->PinBlock({index_file_name_, child_num});
-        auto *child_bplus_page = reinterpret_cast<BPlusTreePage*>
-                                 (child_buffer->contents()->GetRawDataPtr());
-        PageType page_type = child_bplus_page->GetPageType();
-
-
-        switch (page_type)
-        {
-        case PageType::BPLUS_TREE_DIRECTORY_PAGE:
-        {
-            auto *child_dir_page = reinterpret_cast<DirectoryPage*>(child_bplus_page);
-            child_dir_page->SetParentBlockNum(parent_block_num);
-            break;
-        }
-
-        case PageType::BPLUS_TREE_LEAF_PAGE:
-        {
-            auto *child_leaf_page = reinterpret_cast<LeafPage*>(child_bplus_page);
-            child_leaf_page->SetParentBlockNum(parent_block_num);
-            break;
-        }
-
-        default:
-            assert(false);
-            break;
-        }
-
-        buffer_manager_->UnpinBlock({index_file_name_, child_num}, true);
+        ResetDirChildParentOne(dir_page, child_num);
     }
 }
 
 
 INDEX_TEMPLATE_ARGUMENTS
-void BPLUSTREE_TYPE::PrintTree(int block_num) {
+void BPLUSTREE_TYPE::ResetDirChildParentOne(DirectoryPage *dir_page, 
+                                            int child_block_num) {
+
+    int parent_block_num = dir_page->GetBlockNum();
+    auto *child_buffer = buffer_manager_->PinBlock({index_file_name_, child_block_num});
+    auto *child_bplus_page = reinterpret_cast<BPlusTreePage*>
+                             (child_buffer->contents()->GetRawDataPtr());
+    PageType page_type = child_bplus_page->GetPageType();
+    bool need_to_set = (child_bplus_page->GetParentBlockNum() != parent_block_num);
+
+    
+    // if we don't need to, just return immediately and don't need to flush to disk
+    if (!need_to_set) {
+        buffer_manager_->UnpinBlock({index_file_name_, child_block_num}, false);
+        return;
+    }
+
+    
+    // set parent blocknum and flush to disk
+    switch (page_type)
+    {
+    case PageType::BPLUS_TREE_DIRECTORY_PAGE:
+    {
+        auto *child_dir_page = reinterpret_cast<DirectoryPage*>(child_bplus_page);
+        child_dir_page->SetParentBlockNum(parent_block_num);
+        break;
+    }
+
+    case PageType::BPLUS_TREE_LEAF_PAGE:
+    {
+        auto *child_leaf_page = reinterpret_cast<LeafPage*>(child_bplus_page);
+        child_leaf_page->SetParentBlockNum(parent_block_num);
+        break;
+    }
+
+    default:
+        assert(false);
+        break;
+    }
+
+
+    buffer_manager_->UnpinBlock({index_file_name_, child_block_num}, true);
+}
+
+
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::PrintDir(int block_num) const {
+    assert(block_num != INVALID_BLOCK_NUM);
     auto *buffer = buffer_manager_->PinBlock({index_file_name_, block_num});
     auto *bplus_page = reinterpret_cast<BPlusTreePage*>
                              (buffer->contents()->GetRawDataPtr());
     auto *dir_page = reinterpret_cast<DirectoryPage*>(bplus_page);
 
-    std::cout << "start   print  tree   " << std::endl; 
+    std::cout << "start  print  dir   " << std::endl; 
 
     dir_page->PrintDir();
     int size = dir_page->GetSize();
@@ -541,6 +1140,49 @@ void BPLUSTREE_TYPE::PrintTree(int block_num) {
 
     buffer_manager_->UnpinBlock(buffer);
 }
+
+INDEX_TEMPLATE_ARGUMENTS
+void BPLUSTREE_TYPE::PrintTree() const {
+    auto *buffer = buffer_manager_->PinBlock({index_file_name_, root_block_num_});
+    auto *bplus_page = reinterpret_cast<BPlusTreePage*>
+                             (buffer->contents()->GetRawDataPtr());
+
+    if (bplus_page->GetPageType() == PageType::BPLUS_TREE_LEAF_PAGE) {
+        auto *leaf_page = reinterpret_cast<LeafPage*>(bplus_page);
+        leaf_page->PrintLeaf();
+        buffer_manager_->UnpinBlock(buffer);
+        return;
+    }
+    std::cout << "\n\n" << std::endl;
+    
+    auto *dir_page = reinterpret_cast<DirectoryPage*>(bplus_page);
+
+    dir_page->PrintDir();
+    int size = dir_page->GetSize();
+    for (int i = 0; i < size; i++) {
+        std::cout << "\n\n" << std::endl;
+        auto *child_buffer = buffer_manager_->PinBlock({index_file_name_, dir_page->ValueAt(i) });
+        auto *child_bplus_page = reinterpret_cast<BPlusTreePage*>
+                                 (child_buffer->contents()->GetRawDataPtr());
+
+        if (child_bplus_page->GetPageType() == PageType::BPLUS_TREE_DIRECTORY_PAGE) {
+            std::cout << " root's child " << i << " is a dir " << std::endl;
+            PrintDir(dir_page->ValueAt(i));
+        }
+        else {
+            std::cout << " root's child " << i << " is a leaf " << std::endl;
+            auto *child_dir_page = reinterpret_cast<LeafPage*>(child_bplus_page);
+            child_dir_page->PrintLeaf();
+        }
+
+        
+        buffer_manager_->UnpinBlock(child_buffer);
+    }
+
+    buffer_manager_->UnpinBlock(buffer);
+}
+
+
 
 
 template class BPlusTree<GenericKey<4>, RID, GenericComparator<4>>;

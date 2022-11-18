@@ -42,6 +42,30 @@ int B_PLUS_TREE_DIRECTORY_PAGE_TYPE::ValueIndex(const ValueType &value) const {
 
 
 INDEX_TEMPLATE_ARGUMENTS
+int B_PLUS_TREE_DIRECTORY_PAGE_TYPE::KeyIndex(const KeyType &key, 
+                                              const KeyComparator &comparator) const {
+    // binary search the first key which greater equal than search_key 
+    // end to GetSize() - 1 
+    int left = 0, right = GetSize() - 1;
+    while (left < right) {
+        int mid = (left + right) / 2;
+        auto tmp_key = KeyAt(mid);
+
+        if (comparator(tmp_key, key) < 0) {
+            left = mid + 1;
+        }
+        else {
+            right = mid;
+        }
+    }
+
+
+    return left;
+}
+
+
+
+INDEX_TEMPLATE_ARGUMENTS
 ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::ValueAt(int index) const {
     return array_[index].second;
 }
@@ -50,27 +74,19 @@ ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::ValueAt(int index) const {
 
 INDEX_TEMPLATE_ARGUMENTS
 ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::Lookup(const KeyType &key, const KeyComparator &comparator) const {
-    // binary search the first key which greater than search_key 
-    // end to GetSize() - 1 
-    int left = 0, right = GetSize() - 2;
+    // binary search the last key which less equal than key
+    int left = 0, right = GetSize() - 1;
     while (left < right) {
-        int mid = (left + right) / 2;
+        int mid = (left + right + 1) / 2;
         auto tmp_key = KeyAt(mid);
 
-        if (comparator(tmp_key, key) <= 0) {
-            left = mid + 1;
+        if (comparator(tmp_key, key) > 0) {
+            right = mid - 1;
         }
         else {
-            right = mid;
+            left = mid;
         }
     }
-
-
-    if (comparator(key, KeyAt(left)) >= 0 ) {
-        assert(left == GetSize() - 2);
-        left = GetSize() - 1;
-    }
-
 
     return ValueAt(left);
 }
@@ -78,60 +94,37 @@ ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::Lookup(const KeyType &key, const KeyC
 
 
 INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::PopulateNewRoot(const KeyType &key, 
-                                                      const ValueType &left_child,
-                                                      const ValueType &right_child) {
-    array_[0] = std::make_pair(key, left_child);
-    array_[1].second = right_child;
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::PopulateNewRoot(const ValueType &left_child, 
+                                                     const KeyType &key, 
+                                                     const ValueType &right_child) {
+    IncreaseSize(1);
+    array_[0].second = left_child;
 
-    SetSize(2);
+    // before | pointer 0: old_value | key 0: null    | pointer 1: null      | key 1: null |
+    InsertNodeAfter(left_child, key, right_child);
+    // after  | pointer 0: old_value | key 0: null | pointer 1: new_value | key 1: key |
+
 }
 
 INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::InsertNode(const KeyType &new_key, 
-                                                 const ValueType &new_value, 
-                                                 const KeyComparator &comparator) {
-    // binary search to find the first key which greater than new_key
-    int left = 0, right = GetSize() - 2;
-    while (left < right) {
-        int mid = (left + right) / 2;
-        auto tmp_key = KeyAt(mid);
-
-        if (comparator(tmp_key, new_key) <= 0) {
-            left = mid + 1;
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::InsertNodeAfter(const ValueType &old_value, 
+                                                      const KeyType &new_key, 
+                                                      const ValueType &new_value) {
+    for (uint i = GetSize(); i >= 1; i--) {
+        if (array_[i - 1].second == old_value) {
+            array_[i] = std::make_pair(new_key, new_value);
+            break;
         }
-        else {
-            right = mid;
-        }
+        array_[i] = array_[i - 1];
     }
-
-
-    // check if greater than all keys, then insert it into the last position    
-    if (comparator(new_key, KeyAt(left)) >= 0 ) {
-        assert(left == GetSize() - 2);
-        left = GetSize() - 1;
-    }
-
-
-    
-    // move later left forward
-    int size = GetSize();
-    for (int i = left; i < size; i++) {
-        array_[i + 1] = array_[i];
-    }
-
-    // since a[left + 1].second point to the page with all keys less than new_key
-    // so a[left].second update to a[left + 1].second and a[left + 1].second
-    // update to new_value.
-    array_[left].first= new_key;
-    array_[left].second = array_[left + 1].second;
-    array_[left + 1].second = new_value;
     IncreaseSize(1);
 }
 
 
+
 INDEX_TEMPLATE_ARGUMENTS
 void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::RemoveAt(int index) {
+    
     for (int i = index; i < GetSize() - 1; i++) {
         array_[i] = array_[i + 1];
     }
@@ -148,34 +141,29 @@ ValueType B_PLUS_TREE_DIRECTORY_PAGE_TYPE::RemoveAllChild() {
 
 INDEX_TEMPLATE_ARGUMENTS
 void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveAllTo(BPlusTreeDirectoryPage *recipient) {
+    
     recipient->CopyNFrom(array_, GetSize());
     SetSize(0);
 }
 
 INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveHalfTo(BPlusTreeDirectoryPage *recipient) {    
-    uint half = (GetSize() - 1) / 2;
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveHalfTo(BPlusTreeDirectoryPage *recipient) {
+    uint half = (GetSize() + 1) / 2;
     recipient->CopyNFrom(&array_[half], GetSize() - half);
     SetSize(half);
 }
 
-
 INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveLastToFirst(BPlusTreeDirectoryPage *recipient) {
-    MappingType last = array_[GetSize() - 1];
-    recipient->CopyFirstFrom(last);
-    IncreaseSize(-1);
-}
-
-
-INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveFirstToLast(BPlusTreeDirectoryPage *recipient) {
-    MappingType first = array_[0];
-    recipient->CopyLastFrom(first);
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveFirstToEndOf(BPlusTreeDirectoryPage *recipient) {
+    recipient->CopyLastFrom(array_[0]);
     RemoveAt(0);
 }
 
-
+INDEX_TEMPLATE_ARGUMENTS
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::MoveLastToFrontOf(BPlusTreeDirectoryPage *recipient) {
+    recipient->CopyFirstFrom(array_[GetSize() - 1]);
+    RemoveAt(GetSize() - 1);
+}
 
 INDEX_TEMPLATE_ARGUMENTS
 void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyNFrom(MappingType *items, uint32_t size) {
@@ -185,27 +173,21 @@ void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyNFrom(MappingType *items, uint32_t siz
     IncreaseSize(size);
 }
 
-
 INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyLastFrom(const MappingType &item) {
-    array_[GetSize()] = item;
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyLastFrom(const MappingType &pair) {
+    array_[GetSize()] = pair;
     IncreaseSize(1);
 }
 
-
 INDEX_TEMPLATE_ARGUMENTS
-void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyFirstFrom(const MappingType &item) {
-    int size = GetSize();
-    for (int i = size; i >= 1; i--) {
+void B_PLUS_TREE_DIRECTORY_PAGE_TYPE::CopyFirstFrom(const MappingType &pair) {
+    for (uint i = GetSize(); i >= 1; i--) {
         array_[i] = array_[i - 1];
     }
-
-
-    array_[0].first= item.first;
-    array_[0].second = array_[1].second;
-    array_[1].second = item.second;
+    array_[0] = pair;
     IncreaseSize(1);
 }
+
 
 
 template class BPlusTreeDirectoryPage<GenericKey<4>, int, GenericComparator<4>>;

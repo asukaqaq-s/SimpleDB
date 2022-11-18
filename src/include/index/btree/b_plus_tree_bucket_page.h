@@ -55,13 +55,6 @@ public:
     */
     bool Insert(const ValueType &value);
 
-    
-    /**
-    * @return the max tuple count
-    */
-    int GetSize();
-
-
     /**
     * Removes a rid.
     *
@@ -87,11 +80,11 @@ public:
 
 
     inline int GetNextBucketNum() const {
-        return parent_block_num_;
+        return next_bucket_num_;
     }
 
     inline void SetNextBucketNum(int num) {
-        parent_block_num_ = num;
+        next_bucket_num_ = num;
     }
 
 
@@ -165,11 +158,13 @@ private:
     // since the size of rid is constant, we don't need to store tuplesize 
     // and bitmap size. they are constant value also.
     
-    static constexpr int PAGE_HEADER_SIZE = BPLUSTREE_HEADER_SIZE;
+    static constexpr int PAGE_HEADER_SIZE = BPLUSTREE_HEADER_SIZE + sizeof(int);
     static constexpr int FREE_SPACE = SIMPLEDB_BLOCK_SIZE - PAGE_HEADER_SIZE;
     static constexpr int KVPAIR_SIZE = sizeof(ValueType);
     static constexpr int BPLUS_TREE_BUCKET_MAX_SIZE = (4 * FREE_SPACE / (4 * KVPAIR_SIZE + 1));
     static constexpr int BPLUS_TREE_BIT_MAP_SIZE = (BPLUS_TREE_BUCKET_MAX_SIZE - 1) / 8 + 1;
+
+    int next_bucket_num_{INVALID_BLOCK_NUM};
 
     char readable_[BPLUS_TREE_BIT_MAP_SIZE];
     

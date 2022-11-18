@@ -272,6 +272,19 @@ tuple_test/fast:
 .PHONY : tuple_test/fast
 
 #=============================================================================
+# Target rules for targets named table_test
+
+# Build rule for target.
+table_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 table_test
+.PHONY : table_test
+
+# fast build rule for target.
+table_test/fast:
+	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
+.PHONY : table_test/fast
+
+#=============================================================================
 # Target rules for targets named buffer_manager_test
 
 # Build rule for target.
@@ -322,19 +335,6 @@ lock_manager_test: cmake_check_build_system
 lock_manager_test/fast:
 	$(MAKE) -f test/CMakeFiles/lock_manager_test.dir/build.make test/CMakeFiles/lock_manager_test.dir/build
 .PHONY : lock_manager_test/fast
-
-#=============================================================================
-# Target rules for targets named file_test
-
-# Build rule for target.
-file_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_test
-.PHONY : file_test
-
-# fast build rule for target.
-file_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
-.PHONY : file_test/fast
 
 #=============================================================================
 # Target rules for targets named btree_test
@@ -415,6 +415,19 @@ btree_page_test/fast:
 .PHONY : btree_page_test/fast
 
 #=============================================================================
+# Target rules for targets named btree_checkpoint_test_1_
+
+# Build rule for target.
+btree_checkpoint_test_1_: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 btree_checkpoint_test_1_
+.PHONY : btree_checkpoint_test_1_
+
+# fast build rule for target.
+btree_checkpoint_test_1_/fast:
+	$(MAKE) -f test/CMakeFiles/btree_checkpoint_test_1_.dir/build.make test/CMakeFiles/btree_checkpoint_test_1_.dir/build
+.PHONY : btree_checkpoint_test_1_/fast
+
+#=============================================================================
 # Target rules for targets named lru_replacer_test
 
 # Build rule for target.
@@ -428,6 +441,19 @@ lru_replacer_test/fast:
 .PHONY : lru_replacer_test/fast
 
 #=============================================================================
+# Target rules for targets named file_test
+
+# Build rule for target.
+file_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_test
+.PHONY : file_test
+
+# fast build rule for target.
+file_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
+.PHONY : file_test/fast
+
+#=============================================================================
 # Target rules for targets named page_test
 
 # Build rule for target.
@@ -439,19 +465,6 @@ page_test: cmake_check_build_system
 page_test/fast:
 	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
 .PHONY : page_test/fast
-
-#=============================================================================
-# Target rules for targets named table_test
-
-# Build rule for target.
-table_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 table_test
-.PHONY : table_test
-
-# fast build rule for target.
-table_test/fast:
-	$(MAKE) -f test/CMakeFiles/table_test.dir/build.make test/CMakeFiles/table_test.dir/build
-.PHONY : table_test/fast
 
 #=============================================================================
 # Target rules for targets named hard_extendible_hash_table_test
@@ -682,20 +695,21 @@ help:
 	@echo "... recovery_test"
 	@echo "... log_record_test"
 	@echo "... tuple_test"
+	@echo "... table_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
 	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
-	@echo "... file_test"
 	@echo "... btree_test"
 	@echo "... seqscan_executor_test"
 	@echo "... update_parse_test"
 	@echo "... file_manager_test"
 	@echo "... concurrency_test"
 	@echo "... btree_page_test"
+	@echo "... btree_checkpoint_test_1_"
 	@echo "... lru_replacer_test"
+	@echo "... file_test"
 	@echo "... page_test"
-	@echo "... table_test"
 	@echo "... hard_extendible_hash_table_test"
 	@echo "... hash_table_bucket_page_test"
 	@echo "... transaction_test"

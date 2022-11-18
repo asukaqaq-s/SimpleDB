@@ -37,6 +37,8 @@ public:
     */
     bool GetValue(const KeyType &key, std::vector<ValueType> *result) const;
 
+
+
     /**
     * @brief insert a key-value pair into btree.
     * 
@@ -45,6 +47,17 @@ public:
     */
     void Insert(const KeyType &key, const ValueType &value);
     
+
+
+    /**
+    * @brief remove a key-value pair in btree
+    * 
+    * @param key
+    * @param value
+    * @return true if success, false if this pair is not exist.
+    */
+    bool Remove(const KeyType &key, const ValueType &value);
+
 
 
 private:
@@ -70,21 +83,37 @@ private:
 
     void InsertIntoBucketChain(int first_bucket_num, const ValueType &value);
 
+    bool RemoveInBucketChain(int &first_bucket_num, 
+                             const ValueType &value, 
+                             bool *need_to_delete_chain);
+
+
     template<typename N>
     N* CreateBTreePage(PageType page_type_, int *new_block_num);
 
 
-    // template<class BPlusTreePage>
-    // void DeleteBTreePage(BPlusTreePage* old_page, int block_num);
+    void DeleteBTreePage(BPlusTreePage* old_page);
+
 
     template<class N>
     N* Split(N* old_page);
 
 
-    
+
+
+
+    bool BorrowLeafKey(bool from_right, int sibling_block_num, LeafPage *borrower);
+    bool BorrowDirKey(bool from_right, int sibling_block_num, DirectoryPage *dir_page);
+
 
     void InsertIntoParent(int dir_block_num, const KeyType &key,
                           int left_block_num, int right_block_num);
+
+    void UpdateChildKeyInParent(int dir_block_num, 
+                                const KeyType &old_key,
+                                const KeyType &new_key);
+
+    void RemoveFromParent(int parent_block_num, const KeyType &be_removed_key);
 
 
     void UpdateRootBlockNum(int new_block_num);
@@ -92,8 +121,18 @@ private:
 
     void ResetDirChildParent(DirectoryPage *dir_page);
 
+    void ResetDirChildParentOne(DirectoryPage *dir_page, int child_block_num);
 
-    void PrintTree(int block_num);
+
+
+    void MergeLeafs(LeafPage *curr_leaf, int sibling_block_num, bool with_right, KeyType *be_removed_key);
+    void MergeKeys(DirectoryPage *curr_dir, int sibling_block_num, bool with_right, KeyType *be_removed_key);
+
+
+public:
+    void PrintDir(int block_num) const;
+
+    void PrintTree() const;
 
 
 private:
@@ -113,12 +152,12 @@ private:
     BufferManager *buffer_manager_;
     
     // root latch to concurrency
-    std::mutex root_latch_;
+    mutable ReaderWriterLatch root_latch_;
 
     // two variable in memory to debug
     // this is not necessary
     int max_dir_size_;
-    
+
     int max_leaf_size_;
 
 };

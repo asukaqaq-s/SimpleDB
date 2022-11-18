@@ -12,15 +12,16 @@ void B_PLUS_TREE_BUCKET_PAGE_TYPE::Init(int block_num) {
     SetLsn(INVALID_LSN);
     SetPageType(PageType::BPLUS_TREE_BUCKET_PAGE);
     SetBlockNum(block_num);
-    SetSize(-1);
+    SetSize(0);
     SetMaxSize(BPLUS_TREE_BUCKET_MAX_SIZE);
     SetParentBlockNum(INVALID_BLOCK_NUM);
+    SetNextBucketNum(INVALID_BLOCK_NUM);
 }
 
 
 INDEX_TEMPLATE_ARGUMENTS
 bool B_PLUS_TREE_BUCKET_PAGE_TYPE::GetValue(std::vector<ValueType> *result) {
-    int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
+    int max_size = GetMaxSize();
     bool has_found = false;
 
     for (int i = 0;i < max_size; i++) {
@@ -41,9 +42,9 @@ bool B_PLUS_TREE_BUCKET_PAGE_TYPE::GetValue(std::vector<ValueType> *result) {
 
 INDEX_TEMPLATE_ARGUMENTS
 bool B_PLUS_TREE_BUCKET_PAGE_TYPE::Insert(const ValueType &value) {
-    int max_size = BPLUS_TREE_BUCKET_MAX_SIZE;
+    int max_size = GetMaxSize();
     int i;
-
+    
     for (i = 0;i < max_size; i++) {
         if (IsReadable(i)) {
             continue;
@@ -52,6 +53,7 @@ bool B_PLUS_TREE_BUCKET_PAGE_TYPE::Insert(const ValueType &value) {
         SetReadable(i);
         SetOccupied(i);
         data_[i] = value;
+        IncreaseSize(1);
         return true;
     }
 
@@ -59,11 +61,6 @@ bool B_PLUS_TREE_BUCKET_PAGE_TYPE::Insert(const ValueType &value) {
     return false;
 }
 
-
-INDEX_TEMPLATE_ARGUMENTS
-int B_PLUS_TREE_BUCKET_PAGE_TYPE::GetSize() {
-    return BPLUS_TREE_BUCKET_MAX_SIZE;
-}
 
 
 INDEX_TEMPLATE_ARGUMENTS
@@ -161,8 +158,9 @@ ValueType B_PLUS_TREE_BUCKET_PAGE_TYPE::ValueTypeAt(int bucket_idx) const {
 
 INDEX_TEMPLATE_ARGUMENTS
 void B_PLUS_TREE_BUCKET_PAGE_TYPE::RemoveAt(int bucket_idx) {
-    assert(bucket_idx < BPLUS_TREE_BUCKET_MAX_SIZE);
+    assert(bucket_idx < GetMaxSize());
     SetUnReadable(bucket_idx);
+    IncreaseSize(-1);
 }
 
 

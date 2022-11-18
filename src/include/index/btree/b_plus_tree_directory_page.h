@@ -63,6 +63,15 @@ public:
 
 
     /**
+    * @brief
+    * find the index which the key equals to the input "key"
+    * @param key
+    * @return index(>=0) corresponding to the value. or -1 when value doesn't exists
+    */
+    int KeyIndex(const KeyType &key, const KeyComparator &comparator) const; 
+
+
+    /**
     * @brief 
     * get the value though the index
     * @param index 
@@ -86,8 +95,8 @@ public:
     /**
     * @brief init a new root node
     */
-    void PopulateNewRoot(const KeyType &key, 
-                         const ValueType &left_child,
+    void PopulateNewRoot(const ValueType &left_child,
+                         const KeyType &key,  
                          const ValueType &right_child);
     
 
@@ -100,26 +109,13 @@ public:
     * @param new_key 
     * @param new_value 
     */
+    void InsertNodeAfter(const ValueType &old_value,
+                         const KeyType &new_key, 
+                         const ValueType &new_value);
+
     void InsertNode(const KeyType &new_key, 
                     const ValueType &new_value, 
                     const KeyComparator &comparator);
-
-
-    // split related
-
-    /**
-    * @brief 
-    * remove half of key & value pairs from this page to recipient page
-    * @param recipient 
-    * @param bpm 
-    */
-    void MoveHalfTo(BPlusTreeDirectoryPage *recipient);
-
-
-    void MoveLastToFirst(BPlusTreeDirectoryPage *recipient);
-
-
-    void MoveFirstToLast(BPlusTreeDirectoryPage *recipient);
 
 
 
@@ -148,6 +144,10 @@ public:
     * @param recipient 
     */
     void MoveAllTo(BPlusTreeDirectoryPage *recipient);
+    void MoveHalfTo(BPlusTreeDirectoryPage *recipient);
+    void MoveFirstToEndOf(BPlusTreeDirectoryPage *recipient);
+    void MoveLastToFrontOf(BPlusTreeDirectoryPage *recipient);
+
 
 
 

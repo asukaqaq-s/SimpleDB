@@ -137,7 +137,10 @@ public:
     * @return uint32_t 
     */
     int GetMinSize() const {
-        return (max_size_) / 2;
+        if (IsLeafPage()) {
+            return (max_size_) / 2;
+        }
+        return (max_size_ + 1) / 2;
     }
 
     int GetParentBlockNum() const {
@@ -147,6 +150,21 @@ public:
     void SetParentBlockNum(int parent_block_num) {
         parent_block_num_ = parent_block_num;
     }
+    
+
+
+    /**
+    * only used by deleted page
+    */
+    int GetDeletedBlockNum() const {
+        return parent_block_num_;
+    }
+
+    void SetDeletedBlockNum(int num) {
+        parent_block_num_ = num;
+    }
+
+
 
 protected:
     static_assert(sizeof(PageType) == 4);

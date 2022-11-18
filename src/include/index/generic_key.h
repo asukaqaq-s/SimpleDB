@@ -46,6 +46,10 @@ public:
         return data_;
     }
 
+    inline int AsInt() {
+        return *reinterpret_cast<int*>(data_);
+    }
+
 private:
 
     Value GetValueByBytes(const char *src, TypeID type, int length) const {

@@ -120,12 +120,13 @@ public:
 
     /**
     * @brief 
-    * find the key & value pair corresponding "key" and delete it.
+    * find the key & value pair and delete it.
     * @param key 
+    * @param value
     * @param comparator 
     * @return whether deletion is performed
     */
-    bool Remove(const KeyType &key, const KeyComparator &comparator);
+    bool Remove(const KeyType &key, const ValueType &value, const KeyComparator &comparator);
 
 
     /**
@@ -166,11 +167,12 @@ public:
     static constexpr int LEAF_PAGE_MAX_SIZE = (SIMPLEDB_BLOCK_SIZE - LEAF_PAGE_HEADER_SIZE) / sizeof(MappingType);
 
     // for debug purpose
-    void PrintLeaf() {
+    void PrintLeaf()  {
         std::cout << "parent = " << GetParentBlockNum() << "  "
                   << "blocknum = " << block_num_ << "  " 
                   << "size = " << GetSize() << "  " 
-                  << "max_size = " << GetMaxSize() << std::endl;
+                  << "max_size = " << GetMaxSize() << "  " 
+                  << "pagetype = " << static_cast<int>(page_type_)<< std::endl;
         for (int i = 0; i < GetSize(); i++) {
             std::cout << (*reinterpret_cast<int*>(&array_[i].first)) << "   "
                       << (reinterpret_cast<RID*>(&array_[i].second)->ToString()) << std::endl;

@@ -147,7 +147,7 @@ bool B_PLUS_TREE_LEAF_PAGE_TYPE::Insert(const KeyType &key, const ValueType &val
 INDEX_TEMPLATE_ARGUMENTS
 bool B_PLUS_TREE_LEAF_PAGE_TYPE::Lookup(const KeyType &key, ValueType *value, const KeyComparator &comparator) const {
     auto index = KeyIndexGreaterEqual(key, comparator);
-    if (comparator(array_[index].first, key) == 0) {
+    if (GetSize() && comparator(array_[index].first, key) == 0) {
         if (value != nullptr) {
             *value = array_[index].second;
         }
@@ -158,9 +158,11 @@ bool B_PLUS_TREE_LEAF_PAGE_TYPE::Lookup(const KeyType &key, ValueType *value, co
 }
 
 INDEX_TEMPLATE_ARGUMENTS
-bool B_PLUS_TREE_LEAF_PAGE_TYPE::Remove(const KeyType &key, const KeyComparator &comparator) {
+bool B_PLUS_TREE_LEAF_PAGE_TYPE::Remove(const KeyType &key, const ValueType &value, 
+                                        const KeyComparator &comparator) {
     auto index = KeyIndexGreaterEqual(key, comparator);
-    if (comparator(array_[index].first, key) == 0) {
+    if (comparator(array_[index].first, key) == 0 &&
+        value == array_[index].second) {
         for (auto i = index; i < GetSize() - 1; i++) {
             array_[i] = array_[i + 1];
         }
