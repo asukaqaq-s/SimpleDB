@@ -155,7 +155,7 @@ TEST(BtreeTest, SeqInsertTest) {
     RID rid;
 
 
-    int key_num = 3000;
+    int key_num = 30000;
     std::vector<int> keys(key_num);
     for (int i = 0; i < key_num; i++) {
         keys[i] = i;
@@ -528,7 +528,7 @@ TEST(BtreeTest, RandomInsertTest) {
     RID rid;
 
 
-    int key_num = 3000;
+    int key_num = 30000;
     // std::vector<int> keys {
     //     26, 28, 15, 6, 11, 0, 4, 9, 20, 17, 14, 22, 2, 5, 1, 19, 29, 18
     //     ,3, 10, 25, 7, 23, 16, 13, 24, 27, 12, 21, 8    };
@@ -568,43 +568,32 @@ TEST(BtreeTest, RandomInsertTest) {
     
 
     // remove them
-    for (auto key : keys) {
-        
-            int value = key;
-            rid = RID(value, value);
-            auto tmp = Tuple({Value(key)}, schema);
-            index_key.SetFromKey(tmp);
-            std::vector<RID> result;
-            EXPECT_EQ(btree.GetValue(index_key, &result), true);
-        
-
-            btree.Remove(index_key, rid);
-
-
-            EXPECT_EQ(btree.GetValue(index_key, &result), false);
-            // btree.PrintTree();
-        //}
-        
-    }
-    
-     // btree.PrintTree();
-        // read them
-    for (auto key : keys) {
-        
-        std::vector<RID> result;
+    for (int i = 0;i < key_num - 100;i ++) {
+        int key = keys[i];
         auto k = Tuple({Value(key)}, schema);
         index_key.SetFromKey(k);
-        // if (key % 2 == 1) {
-        //     EXPECT_EQ(btree.GetValue(index_key, &result), true);
-        //     ASSERT_EQ(result.size(), 1);
-        //     EXPECT_EQ(result[0], RID(key, key));
-        // }
-        // else {
-            EXPECT_EQ(btree.GetValue(index_key, &result), false);
-        // }
+        btree.Remove(index_key, {key, key});
+    }
+    
+     
 
-        
-    } 
+    for (int i = 0;i < key_num - 100;i ++) {
+        std::vector<RID> result;
+        int key = keys[i];
+        auto k = Tuple({Value(key)}, schema);
+        index_key.SetFromKey(k);
+        EXPECT_FALSE(btree.GetValue(index_key, &result));
+        EXPECT_EQ(result.size(), 0);
+    }
+
+    for (int i = key_num - 100;i < key_num;i ++) {
+        std::vector<RID> result;
+        int key = keys[i];
+        auto k = Tuple({Value(key)}, schema);
+        index_key.SetFromKey(k);
+        EXPECT_TRUE(btree.GetValue(index_key, &result));
+        EXPECT_EQ(result.size(), 1);
+    }
 
 
 

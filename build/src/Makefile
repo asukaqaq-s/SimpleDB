@@ -182,33 +182,6 @@ SimpleDB_lib/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/build
 .PHONY : SimpleDB_lib/fast
 
-buffer/buffer.o: buffer/buffer.cc.o
-
-.PHONY : buffer/buffer.o
-
-# target to build an object file
-buffer/buffer.cc.o:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.o
-.PHONY : buffer/buffer.cc.o
-
-buffer/buffer.i: buffer/buffer.cc.i
-
-.PHONY : buffer/buffer.i
-
-# target to preprocess a source file
-buffer/buffer.cc.i:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.i
-.PHONY : buffer/buffer.cc.i
-
-buffer/buffer.s: buffer/buffer.cc.s
-
-.PHONY : buffer/buffer.s
-
-# target to generate assembly for a file
-buffer/buffer.cc.s:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.s
-.PHONY : buffer/buffer.cc.s
-
 buffer/buffer_manager.o: buffer/buffer_manager.cc.o
 
 .PHONY : buffer/buffer_manager.o
@@ -721,6 +694,33 @@ index/btree/b_plus_tree_directory_page.s: index/btree/b_plus_tree_directory_page
 index/btree/b_plus_tree_directory_page.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.s
 .PHONY : index/btree/b_plus_tree_directory_page.cc.s
+
+index/btree/b_plus_tree_iterator.o: index/btree/b_plus_tree_iterator.cc.o
+
+.PHONY : index/btree/b_plus_tree_iterator.o
+
+# target to build an object file
+index/btree/b_plus_tree_iterator.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_iterator.cc.o
+.PHONY : index/btree/b_plus_tree_iterator.cc.o
+
+index/btree/b_plus_tree_iterator.i: index/btree/b_plus_tree_iterator.cc.i
+
+.PHONY : index/btree/b_plus_tree_iterator.i
+
+# target to preprocess a source file
+index/btree/b_plus_tree_iterator.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_iterator.cc.i
+.PHONY : index/btree/b_plus_tree_iterator.cc.i
+
+index/btree/b_plus_tree_iterator.s: index/btree/b_plus_tree_iterator.cc.s
+
+.PHONY : index/btree/b_plus_tree_iterator.s
+
+# target to generate assembly for a file
+index/btree/b_plus_tree_iterator.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f src/CMakeFiles/SimpleDB_lib.dir/build.make src/CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_iterator.cc.s
+.PHONY : index/btree/b_plus_tree_iterator.cc.s
 
 index/btree/b_plus_tree_leaf_page.o: index/btree/b_plus_tree_leaf_page.cc.o
 
@@ -1681,9 +1681,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... SimpleDB_lib"
-	@echo "... buffer/buffer.o"
-	@echo "... buffer/buffer.i"
-	@echo "... buffer/buffer.s"
 	@echo "... buffer/buffer_manager.o"
 	@echo "... buffer/buffer_manager.i"
 	@echo "... buffer/buffer_manager.s"
@@ -1741,6 +1738,9 @@ help:
 	@echo "... index/btree/b_plus_tree_directory_page.o"
 	@echo "... index/btree/b_plus_tree_directory_page.i"
 	@echo "... index/btree/b_plus_tree_directory_page.s"
+	@echo "... index/btree/b_plus_tree_iterator.o"
+	@echo "... index/btree/b_plus_tree_iterator.i"
+	@echo "... index/btree/b_plus_tree_iterator.s"
 	@echo "... index/btree/b_plus_tree_leaf_page.o"
 	@echo "... index/btree/b_plus_tree_leaf_page.i"
 	@echo "... index/btree/b_plus_tree_leaf_page.s"

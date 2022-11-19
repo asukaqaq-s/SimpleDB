@@ -61,7 +61,9 @@ void RecoveryManager::UndoLog(Transaction *txn, LogRecord *log, lsn_t undo_lsn) 
         
         // undo
         bool res = table_page->Delete(rid, &tuple);
-        SIMPLEDB_ASSERT(res == true && tuple == log_record->GetTuple(), "logic error");
+        if (res == false || tuple != log_record->GetTuple()) {
+            SIMPLEDB_ASSERT(false, "logic error");
+        }
         table_page->SetPageLsn(undo_lsn);
         
         // release resource

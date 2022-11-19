@@ -23,8 +23,8 @@ BPLUSTREE_TYPE::BPlusTree(const std::string &index_file_name,
     max_leaf_size_ = LeafPage::LEAF_PAGE_MAX_SIZE;
     max_dir_size_ = DirectoryPage::DIRECTORY_PAGE_MAX_SIZE;
     
-    max_leaf_size_ = 7;
-    max_dir_size_ = 7;
+    // max_leaf_size_ = 7;
+    // max_dir_size_ = 7;
 
     if (root_block_num_ == INVALID_BLOCK_NUM) {
         StartNewTree();
@@ -165,7 +165,9 @@ void BPLUSTREE_TYPE::Insert(const KeyType &key, const ValueType &value) {WriterG
             int new_block_num;
             BucketPage* bucket = CreateBTreePage<BucketPage>
                                  (PageType::BPLUS_TREE_BUCKET_PAGE, &new_block_num);
-
+            if (bucket->GetBlockNum() != new_block_num) {
+                assert(false);
+            }
 
             // insert into it
             assert(bucket->Insert(tmp_value));
@@ -495,7 +497,7 @@ void BPLUSTREE_TYPE::RemoveFromParent(int block_num,
     int min_num = (block_num == root_block_num_) ? 2 : dir_page->GetMinSize();
     int curr_size = dir_page->GetSize();
     
-    
+
     // check if this page is root and its size is one, update to new root
     if (block_num == root_block_num_ && curr_size < min_num) {
         root_block_num_ = old_first_child_num;
@@ -1113,6 +1115,94 @@ void BPLUSTREE_TYPE::ResetDirChildParentOne(DirectoryPage *dir_page,
 }
 
 
+INDEX_TEMPLATE_ARGUMENTS
+std::unique_ptr<BPLUSTREE_ITERATOR_TYPE> BPLUSTREE_TYPE::Begin() {
+    // move to the first leaf node
+    ReaderGuard lock(root_latch_);
+    Buffer *curr_buffer = buffer_manager_->PinBlock({index_file_name_, root_block_num_});
+    BPlusTreePage *curr_page = reinterpret_cast<BPlusTreePage*>(curr_buffer->contents()->GetRawDataPtr());  
+    curr_buffer->RLock();
+
+
+    // search for a leaf page 
+    while (!curr_page->IsLeafPage()) {
+        
+        // move to the first child
+        auto *dir_page = reinterpret_cast<DirectoryPage*>(curr_page);
+        int child_block_num = dir_page->ValueAt(0);
+
+
+        // unpin old curr_page
+        curr_buffer->RUnlock();
+        buffer_manager_->UnpinBlock({index_file_name_, dir_page->GetBlockNum()}, false);
+        
+        
+        // create new curr_page
+        curr_buffer = buffer_manager_->PinBlock({index_file_name_, child_block_num});
+        curr_page = reinterpret_cast<BPlusTreePage*>(curr_buffer->contents()->GetRawDataPtr());
+        curr_buffer->RLock();
+    }
+
+
+
+    // if exist, this page is a leaf page
+    int block_num = curr_page->GetBlockNum();
+    // check some special cases
+    if (block_num == root_block_num_ && curr_page->GetSize() == 0) {
+        block_num = INVALID_BLOCK_NUM;
+        curr_buffer->RUnlock();
+        buffer_manager_->UnpinBlock({index_file_name_, root_block_num_}, false);
+        curr_buffer = nullptr;
+    }
+    
+    return std::make_unique<BPLUSTREE_ITERATOR_TYPE>(0, block_num, curr_buffer, this);
+}
+
+
+INDEX_TEMPLATE_ARGUMENTS
+std::unique_ptr<BPLUSTREE_ITERATOR_TYPE> BPLUSTREE_TYPE::Begin(const KeyType &search_key) {
+    // move to the first key which greater equal than search key
+    ReaderGuard lock(root_latch_);
+    int curr_block_num = SearchLeaf(search_key);
+    Buffer *curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_block_num});
+    auto *curr_leaf = reinterpret_cast<LeafPage*>(curr_buffer->contents()->GetRawDataPtr());
+
+    curr_buffer->RLock();
+    int curr_slot = curr_leaf->KeyIndexGreaterEqual(search_key, comparator_);
+    
+
+    // two special cases:
+    // 1. the tree is empty
+    // 2. bigger than any keys of block
+    if (curr_block_num == root_block_num_ && curr_leaf->GetSize() == 0) {
+        curr_block_num = INVALID_BLOCK_NUM;
+    }
+    else if (curr_slot == curr_leaf->GetSize() - 1 && 
+             comparator_(search_key, curr_leaf->KeyAt(curr_leaf->GetSize() - 1)) > 0) {
+        int next_block_num = curr_leaf->GetNextBlockNum();
+        curr_block_num = next_block_num;std::cout << curr_block_num << std::endl;
+
+        if (curr_block_num != INVALID_BLOCK_NUM) {
+            curr_buffer->RUnlock();
+            buffer_manager_->UnpinBlock({index_file_name_, curr_block_num}, false);
+        
+            // create new buffer and new leaf page
+            curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_block_num});
+            curr_leaf = reinterpret_cast<LeafPage*>(curr_buffer->contents()->GetRawDataPtr());
+            curr_slot = 0;
+            curr_buffer->RLock();
+        }
+    }
+    
+
+    if (curr_block_num == INVALID_BLOCK_NUM) {
+        curr_buffer->RUnlock();
+        buffer_manager_->UnpinBlock({index_file_name_, root_block_num_}, false);
+        curr_buffer = nullptr;
+    }
+
+    return std::make_unique<BPLUSTREE_ITERATOR_TYPE>(curr_slot, curr_block_num, curr_buffer, this);
+}
 
 
 

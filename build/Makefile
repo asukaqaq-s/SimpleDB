@@ -285,6 +285,32 @@ table_test/fast:
 .PHONY : table_test/fast
 
 #=============================================================================
+# Target rules for targets named update_parse_test
+
+# Build rule for target.
+update_parse_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 update_parse_test
+.PHONY : update_parse_test
+
+# fast build rule for target.
+update_parse_test/fast:
+	$(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
+.PHONY : update_parse_test/fast
+
+#=============================================================================
+# Target rules for targets named seqscan_executor_test
+
+# Build rule for target.
+seqscan_executor_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+#=============================================================================
 # Target rules for targets named buffer_manager_test
 
 # Build rule for target.
@@ -350,45 +376,6 @@ btree_test/fast:
 .PHONY : btree_test/fast
 
 #=============================================================================
-# Target rules for targets named seqscan_executor_test
-
-# Build rule for target.
-seqscan_executor_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 seqscan_executor_test
-.PHONY : seqscan_executor_test
-
-# fast build rule for target.
-seqscan_executor_test/fast:
-	$(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
-.PHONY : seqscan_executor_test/fast
-
-#=============================================================================
-# Target rules for targets named update_parse_test
-
-# Build rule for target.
-update_parse_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 update_parse_test
-.PHONY : update_parse_test
-
-# fast build rule for target.
-update_parse_test/fast:
-	$(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
-.PHONY : update_parse_test/fast
-
-#=============================================================================
-# Target rules for targets named file_manager_test
-
-# Build rule for target.
-file_manager_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-#=============================================================================
 # Target rules for targets named concurrency_test
 
 # Build rule for target.
@@ -413,6 +400,45 @@ btree_page_test: cmake_check_build_system
 btree_page_test/fast:
 	$(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/build
 .PHONY : btree_page_test/fast
+
+#=============================================================================
+# Target rules for targets named file_manager_test
+
+# Build rule for target.
+file_manager_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_manager_test
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	$(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+#=============================================================================
+# Target rules for targets named btree_concurrency_test
+
+# Build rule for target.
+btree_concurrency_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 btree_concurrency_test
+.PHONY : btree_concurrency_test
+
+# fast build rule for target.
+btree_concurrency_test/fast:
+	$(MAKE) -f test/CMakeFiles/btree_concurrency_test.dir/build.make test/CMakeFiles/btree_concurrency_test.dir/build
+.PHONY : btree_concurrency_test/fast
+
+#=============================================================================
+# Target rules for targets named page_test
+
+# Build rule for target.
+page_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 page_test
+.PHONY : page_test
+
+# fast build rule for target.
+page_test/fast:
+	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
 
 #=============================================================================
 # Target rules for targets named btree_checkpoint_test_1_
@@ -452,19 +478,6 @@ file_test: cmake_check_build_system
 file_test/fast:
 	$(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
 .PHONY : file_test/fast
-
-#=============================================================================
-# Target rules for targets named page_test
-
-# Build rule for target.
-page_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 page_test
-.PHONY : page_test
-
-# fast build rule for target.
-page_test/fast:
-	$(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
 
 #=============================================================================
 # Target rules for targets named hard_extendible_hash_table_test
@@ -696,20 +709,21 @@ help:
 	@echo "... log_record_test"
 	@echo "... tuple_test"
 	@echo "... table_test"
+	@echo "... update_parse_test"
+	@echo "... seqscan_executor_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
 	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
 	@echo "... btree_test"
-	@echo "... seqscan_executor_test"
-	@echo "... update_parse_test"
-	@echo "... file_manager_test"
 	@echo "... concurrency_test"
 	@echo "... btree_page_test"
+	@echo "... file_manager_test"
+	@echo "... btree_concurrency_test"
+	@echo "... page_test"
 	@echo "... btree_checkpoint_test_1_"
 	@echo "... lru_replacer_test"
 	@echo "... file_test"
-	@echo "... page_test"
 	@echo "... hard_extendible_hash_table_test"
 	@echo "... hash_table_bucket_page_test"
 	@echo "... transaction_test"

@@ -119,6 +119,8 @@ private:
             SIMPLEDB_ASSERT(false, "can't reach it");
             break;
         }
+        assert(false);
+        return -1;
     }
     
     

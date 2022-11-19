@@ -35,7 +35,7 @@ public:
     * @param block logical block number
     * @param page page
     */
-    void Read(const BlockId &block, Page &page);
+    void Read(const BlockId &block, Page *page);
 
     /**
     * @brief write a page's content to disk-block
@@ -45,7 +45,7 @@ public:
     * @param block logical block number
     * @param page
     */
-    void Write(const BlockId &block, Page &page);
+    void Write(const BlockId &block, Page *page);
 
     /**
     * @brief read a page from log file
@@ -105,7 +105,7 @@ private:
     * 
     * @param file_name
     */
-    std::shared_ptr<std::fstream> GetFile(const std::string &file_name);
+    std::fstream* GetFile(const std::string &file_name);
 
     /**
     * @brief Get the corresponding log-file-stream by log name
@@ -113,7 +113,7 @@ private:
     * @param log_name
     * @return the file-stream of log file
     */
-    std::shared_ptr<std::fstream> GetLogFile(const std::string &log_name);
+    std::fstream* GetLogFile(const std::string &log_name);
     
     /**
     * @brief Get the file'size by file name
@@ -129,7 +129,7 @@ private:
     // is this db newly created?
     bool is_new_;
     // map file_name to pointer which point to their fstream and cache it(optimization)
-    std::map<std::string, std::shared_ptr<std::fstream>> open_files_;
+    std::map<std::string, std::unique_ptr<std::fstream>> open_files_;
     // mutex latch
     std::mutex latch_;
     // may use  int next_page_id;

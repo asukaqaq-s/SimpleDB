@@ -5,6 +5,8 @@
 #include "config/rw_latch.h"
 #include "config/type.h"
 
+#include <cstring>
+
 namespace SimpleDB {
 
 
@@ -26,63 +28,91 @@ friend class BufferManager;
 public:
 
 
-    explicit Buffer(FileManager *file_manager);
+    explicit Buffer(FileManager *file_manager) {
+        data_ = std::make_unique<Page> (file_manager->BlockSize());         
+    }
+
 
     /**
     * @brief return a data ptr which wrapped by page object
     */    
-    Page* contents() { return data_.get(); }
+    inline Page* contents() { 
+        return data_.get(); 
+    }
 
 
     /**
     * @brief Mark as dirty pages and set the lastest lsn of buffer
     */
-    void SetPageLsn(lsn_t lsn);
+    inline void SetPageLsn(lsn_t lsn) {
+        if (lsn > INVALID_LSN) {
+            SIMPLEDB_ASSERT(lsn >= data_->GetLsn(), "lsn error");
+            data_->SetLsn(lsn);
+            is_dirty_ = true;
+        }
+    }
 
 
     /**
     * @brief Get the PageLsn
     */
-    inline lsn_t GetPageLsn() { return data_->GetLsn(); }
+    inline lsn_t GetPageLsn() const { 
+        return data_->GetLsn(); 
+    }
+
+
+    /**
+    * @brief init page type
+    */
+    inline void SetPageType(PageType type) {
+        data_->SetPageType(type);
+    }
+
+
+    /**
+    * @brief get page type
+    */
+    inline PageType GetPageType() const {
+        return data_->GetPageType();
+    }
 
 
     /**
     * @return check if the buffer is pinned
     */
-    bool IsPinned() { return pin_count_ > 0; } 
-
-    
-    /**
-    * @brief assign a new block and reset information
-    * 
-    * @param file_manager shared filemangaer ptr which offered by bufferpool
-    * @param recovery_manager shared recoverymanager ptr which offered by bufferpool
-    */
-    void AssignBlock(BlockId blk, 
-                     FileManager *file_manager, 
-                     RecoveryManager *recovery_manager);
+    inline bool IsPinned() const { 
+        return pin_count_ > 0; 
+    } 
 
 
     /**
-    * @brief flush data to disk.
-    * 
-    * @param file_manager shared filemangaer ptr which offered by bufferpool
-    * @param recovery_manager shared recoverymanager ptr which offered by bufferpool
+    * @brief always called by newblock method
     */
-    void flush(FileManager *file_manager, RecoveryManager *recovery_manager);
+    void Init() {
+        int size = data_->GetSize();
+        memset(data_->GetRawDataPtr(), 0, size);
+    }
 
+    
+    inline void pin() { 
+        pin_count_++; 
+    }
+    
+    inline void unpin() { 
+        pin_count_--; 
+    }
 
-    inline void pin() { pin_count_++; }
-    
-    inline void unpin() { pin_count_--; }
+    inline int GetPinCount() { 
+        return pin_count_; 
+    }
 
-    inline BlockId GetBlockID() { return block_; }
+    inline const BlockId &GetBlockID() { 
+        return block_; 
+    }
     
-    inline int GetPinCount() { return pin_count_; }
-    
-    // for debugging purpose
-    // because of AssignBlock method, we don't need to this function maybe.
-    inline bool IsDirty() { return is_dirty_; }
+    inline bool IsDirty() { 
+        return is_dirty_; 
+    }
 
     // avoid multiple transaction access at the same time
     inline void RLock() { latch.RLock(); }

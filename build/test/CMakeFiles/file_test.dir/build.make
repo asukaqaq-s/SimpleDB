@@ -60,15 +60,15 @@ include test/CMakeFiles/file_test.dir/flags.make
 test/CMakeFiles/file_test.dir/file/file_test.cc.o: test/CMakeFiles/file_test.dir/flags.make
 test/CMakeFiles/file_test.dir/file/file_test.cc.o: ../test/file/file_test.cc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/file_test.dir/file/file_test.cc.o"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/file_test.dir/file/file_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/file_test.dir/file/file_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc
 
 test/CMakeFiles/file_test.dir/file/file_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/file_test.dir/file/file_test.cc.i"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc > CMakeFiles/file_test.dir/file/file_test.cc.i
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc > CMakeFiles/file_test.dir/file/file_test.cc.i
 
 test/CMakeFiles/file_test.dir/file/file_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/file_test.dir/file/file_test.cc.s"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc -o CMakeFiles/file_test.dir/file/file_test.cc.s
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/test/file/file_test.cc -o CMakeFiles/file_test.dir/file/file_test.cc.s
 
 # Object files for target file_test
 file_test_OBJECTS = \
@@ -79,9 +79,9 @@ file_test_EXTERNAL_OBJECTS =
 
 test/file_test: test/CMakeFiles/file_test.dir/file/file_test.cc.o
 test/file_test: test/CMakeFiles/file_test.dir/build.make
-test/file_test: lib/libgtest_maind.a
+test/file_test: lib/libgtest_main.a
 test/file_test: src/libSimpleDB_lib.a
-test/file_test: lib/libgtestd.a
+test/file_test: lib/libgtest.a
 test/file_test: test/CMakeFiles/file_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable file_test"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/file_test.dir/link.txt --verbose=$(VERBOSE)

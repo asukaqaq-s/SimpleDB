@@ -66,7 +66,9 @@ Schema IndexInfo::CreateIdxSchema() {
     
     auto type1 = table_schema_.GetColumn(field_name_).GetType();
     auto type2 = index_schema.GetColumn(field_name_).GetType();
-    SIMPLEDB_ASSERT(type1 == type2, "add field error");
+    if (type1 != type2) {
+        SIMPLEDB_ASSERT(false, "add field error");
+    }
 
     return index_schema;
 }

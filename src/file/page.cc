@@ -183,24 +183,22 @@ Value Page::GetValue(int offset,TypeID type) {
     
     case TypeID::CHAR:
         return Value(GetString(offset), TypeID::CHAR);
-        break;
 
     case TypeID::VARCHAR:
         return Value(GetString(offset), TypeID::VARCHAR);
-        break;
         
     case TypeID::DECIMAL:
         return Value(GetDec(offset));
-        break;
     
     case TypeID::INTEGER:
         return Value(GetInt(offset));
-        break;
     
     default:
         SIMPLEDB_ASSERT(false, "");
         break;
     }
+
+    return Value();
 }
 
 

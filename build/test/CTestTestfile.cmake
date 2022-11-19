@@ -5,6 +5,7 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 include("/home/asuka/workbench/project/SimpleDB/build/test/btree_checkpoint_test_1_[1]_include.cmake")
+include("/home/asuka/workbench/project/SimpleDB/build/test/btree_concurrency_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/btree_page_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/btree_test[1]_include.cmake")
 include("/home/asuka/workbench/project/SimpleDB/build/test/buffer_manager_test[1]_include.cmake")
@@ -38,6 +39,8 @@ include("/home/asuka/workbench/project/SimpleDB/build/test/recovery_test[1]_incl
 include("/home/asuka/workbench/project/SimpleDB/build/test/transaction_test[1]_include.cmake")
 add_test(btree_checkpoint_test_1_ "/home/asuka/workbench/project/SimpleDB/build/test/btree_checkpoint_test_1_" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/btree_checkpoint_test_1_.xml")
 set_tests_properties(btree_checkpoint_test_1_ PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
+add_test(btree_concurrency_test "/home/asuka/workbench/project/SimpleDB/build/test/btree_concurrency_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/btree_concurrency_test.xml")
+set_tests_properties(btree_concurrency_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(btree_page_test "/home/asuka/workbench/project/SimpleDB/build/test/btree_page_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/btree_page_test.xml")
 set_tests_properties(btree_page_test PROPERTIES  _BACKTRACE_TRIPLES "/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;48;add_test;/home/asuka/workbench/project/SimpleDB/test/CMakeLists.txt;0;")
 add_test(btree_test "/home/asuka/workbench/project/SimpleDB/build/test/btree_test" "--gtest_color=yes" "--gtest_output=xml:/home/asuka/workbench/project/SimpleDB/build/test/btree_test.xml")

@@ -675,7 +675,7 @@ void RecoveryManager::DoUndo(Transaction *txn) {
         txn_id_t txn_id = log_record->GetTxnID();
         lsn_t prev_lsn = log_record->GetPrevLSN();
         lsn_t last_lsn = GetLastLsn(txn_id); 
-        lsn_t curr_lsn; // clr log's lsn
+        lsn_t curr_lsn = INVALID_LSN; // clr log's lsn
 
        
         SIMPLEDB_ASSERT(log_record->GetLsn() == lsn, "log error");

@@ -31,14 +31,15 @@ namespace SimpleDB {
 
 TEST(BufferManagerTest, Simpletest1) {
   // simpledb db("buffertest", 400, 3); // three buffers
-    // return;
+    // // return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
     int block_size = 4 * 1024;
     std::string file_name = "test1.txt";
     std::default_random_engine e;
-    std::uniform_int_distribution<unsigned> u(0, 9);
+    std::uniform_int_distribution<unsigned> u(0, 9);std::string cmd = "rm -rf " + directory_path;
+    system(cmd.c_str());
 
     const int buffer_pool_size = 500;
     const int num_page = 5000;
@@ -57,11 +58,12 @@ TEST(BufferManagerTest, Simpletest1) {
     
     /* create new file */
     for(int i = 0;i < 5000;i ++) {
-        auto page = bfm->NewPage(BlockId(file_name, i));
+        auto page = bfm->NewBlock(file_name, nullptr);
         bfm->UnpinBlock(BlockId(file_name, i));
         buffer_array.push_back(page);
     }
     
+
     for(int i = 0;i < buffer_pool_size;i ++) {
         bfm->PinBlock(BlockId(file_name, i));
     }
@@ -96,9 +98,10 @@ TEST(BufferManagerTest, Simpletest1) {
             EXPECT_NE(page, buffer_array[j]);
         }
     }
+    // std::cout << "unpin time = " << bfm->GetPinTime() << std::endl;
+    // std::cout << "pin time = " << bfm->GetUnpinTime() << std::endl;
 
-
-    std::string cmd = "rm -rf " + directory_path;
+    cmd = "rm -rf " + directory_path;
     system(cmd.c_str());
 
     delete fm;
@@ -136,7 +139,7 @@ TEST(BufferManagerTest, VictimTest) {
     
     /* create new file */
     for(int i = 0;i < 5000;i ++) {
-        auto page = bfm->NewPage(BlockId(file_name, i));
+        auto page = bfm->NewBlock(file_name, nullptr);
         bfm->UnpinBlock(BlockId(file_name, i));
         buffer_array.push_back(page);
     }
@@ -164,23 +167,15 @@ TEST(BufferManagerTest, VictimTest) {
         }
     }
 
-    for(int i = 0;i < 400;i ++) {
-        auto page = bfm->PinBlock(BlockId(file_name, i));
-        int j;
-        for(j = 0;j < 500;j ++) {
-            if(buffer_array[j] == page)
-                break;
-        }
-    }
 
     for(int i = 0;i < 100;i ++) {
         auto page = bfm->PinBlock(BlockId(file_name, i));   
-        EXPECT_EQ(page, buffer_array[i + 100]); // 0 ~ 100 is in bufferpool    
+        EXPECT_EQ(page, buffer_array[i]); // 0 ~ 100 is in bufferpool    
     }
 
     for(int i = 400;i < 500;i ++) {
         auto page = bfm->PinBlock(BlockId(file_name, i));   
-        EXPECT_EQ(page, buffer_array[i - 400]); // now, the buffer 0 ~ 100 is unpinned 
+        EXPECT_EQ(page, buffer_array[i]); // now, the buffer 0 ~ 100 is unpinned 
     }
 
     std::string cmd = "rm -rf " + directory_path;
@@ -194,7 +189,7 @@ TEST(BufferManagerTest, VictimTest) {
 }
 
 
-TEST(BufferManagerTest, BinaryDataTest) {
+TEST(BufferManagerTest, BinaryDataTest) {// return;
     char buf[100];
     std::string local_path = getcwd(buf, 100);
     std::string directory_path = local_path + "/test_directory";
@@ -215,7 +210,7 @@ TEST(BufferManagerTest, BinaryDataTest) {
     BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
 
     BlockId block_id[buffer_pool_size * 2];
-    auto page0 = bpm->NewPage(file_name);
+    auto page0 = bpm->NewBlock(file_name, nullptr);
     block_id[0] = BlockId(file_name, 0);
 
     // we shouldn't have any assumption on the page number, since it's decided by disk manager
@@ -238,12 +233,12 @@ TEST(BufferManagerTest, BinaryDataTest) {
     // we should be able to allocate there pages
     for (size_t i = 1; i < buffer_pool_size; i++) {
         block_id[i] = BlockId(file_name, i);
-        EXPECT_NE(nullptr, bpm->NewPage(file_name));
+        EXPECT_NE(nullptr, bpm->NewBlock(file_name));
     }
 
     // we should not be able to allocate any new pages
     for (size_t i = buffer_pool_size; i < buffer_pool_size * 2; i++) {
-        EXPECT_EQ(nullptr, bpm->NewPage(file_name));
+        EXPECT_EQ(nullptr, bpm->NewBlock(file_name));
     }
 
     // unpin 5 pages and allocate 5 new pages
@@ -254,7 +249,7 @@ TEST(BufferManagerTest, BinaryDataTest) {
 
     BlockId more_pages[5];
     for (int i = 0; i < 5; i++) {
-        auto *buffer = bpm->NewPage(file_name);
+        auto *buffer = bpm->NewBlock(file_name, nullptr);
         EXPECT_NE(buffer, nullptr);
         more_pages[i] = buffer->GetBlockID();
         bpm->UnpinBlock(more_pages[i]);
@@ -274,7 +269,7 @@ TEST(BufferManagerTest, BinaryDataTest) {
     system(cmd.c_str());
 }
 
-TEST(BufferManagerTest, ConcurrentTest) {
+TEST(BufferManagerTest, ConcurrentTest) {// return;
     const std::string filename = "test.db";
     const size_t buffer_pool_size = 8;
     const size_t worker_size = 6;
@@ -303,7 +298,7 @@ TEST(BufferManagerTest, ConcurrentTest) {
     // allocate total_page_size pages
     for (size_t i = 0; i < total_page_size; i++) {
         page_list[i] = BlockId(file_name, i);
-        EXPECT_NE(bpm->NewPage(file_name), nullptr);
+        EXPECT_NE(bpm->NewBlock(file_name), nullptr);
         EXPECT_EQ(bpm->UnpinBlock(page_list[i], false), true);
     }
 
@@ -360,6 +355,10 @@ TEST(BufferManagerTest, ConcurrentTest) {
         bpm->UnpinBlock(block_id, false);
     }
 
+
+    // std::cout << "unpin time = " << bpm->GetPinTime() << std::endl;
+    // std::cout << "pin time = " << bpm->GetUnpinTime() << std::endl;
+
     delete fm;
     delete rm;
     delete bpm;
@@ -369,6 +368,68 @@ TEST(BufferManagerTest, ConcurrentTest) {
     system(cmd.c_str());
 }
 
+
+TEST(BufferManagerTest, SpeedTest) {// return;
+    const std::string filename = "test.db";
+    const size_t buffer_pool_size = 8;
+    const size_t worker_size = 6;
+    const size_t total_page_size = 10000;
+    const size_t iteration_num = 10;
+
+    
+
+
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string directory_path = local_path + "/test_directory";    std::string cmd = "rm -rf " + directory_path;
+    system(cmd.c_str());
+    int block_size = 4 * 1024;
+    std::string file_name = "test1.txt";
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    // generate random number range from 0 to max
+    std::uniform_int_distribution<char> dis(0);
+
+    const int num_page = 5000;
+    const int PAGE_SIZE = 4096;
+    
+
+    for (int i = 0; i < 100;i ++) {
+        FileManager *fm = new FileManager(directory_path, block_size);
+        LogManager *lm = new LogManager(fm, "buffertest.log");
+        RecoveryManager *rm = new RecoveryManager(lm);
+        BufferManager *bpm = new BufferManager(fm, rm, buffer_pool_size);
+
+        std::vector<BlockId> page_list(total_page_size);
+        // allocate total_page_size pages
+        for (size_t i = 0; i < total_page_size; i++) {
+            page_list[i] = BlockId(file_name, i);
+            EXPECT_NE(bpm->NewBlock(file_name, nullptr), nullptr);
+            bool res = (bpm->UnpinBlock(page_list[i], true));
+            if (res == false) {
+                std::cout << i << std::endl;
+                assert(false);
+            }
+        }
+
+
+        for (size_t i = 0; i < total_page_size; i++) {
+            page_list[i] = BlockId(file_name, i);
+            EXPECT_NE(bpm->PinBlock({file_name, i}), nullptr);
+            EXPECT_EQ(bpm->UnpinBlock(page_list[i], true), true);
+        }
+        // bpm->GetBufferPoolConsumeTime();
+
+
+        delete fm;
+        delete rm;
+        delete bpm;
+        delete lm;
+
+        cmd = "rm -rf " + directory_path;
+        system(cmd.c_str());
+    }
+}
 
 
 

@@ -8,71 +8,60 @@
 
 SimpleDB is a tiny-database-manage-system for learning purpose.Note that this is just a toy for learning and is NOT a robust and full solution to Database.
 
-Schedule 
+## Feature of SimpleDB
 
-- FileManager (comepleted in 9/16/2022)
-- BufferManager(completed in 9/23/2022)
-- Recover by WAL(completed in 1/10/2022)
-- Transaction by 2pl(completed in 1/10/2022)
-- Record Manager(completed in 5/10/2022)
-- Metadata Manager(completed in 7/10/2022)
-- Query(completed in 12/10/2022)
-- Parsing(completed in 14/10/2022)
-- Planning(completed in 15/10/2022)
-- JDBC(completed in 17/10/2022)
-- Indexing(todo)
-- Materialization and Sorting(todo)
-- Effective buffer Utilization(todo)
-- Query Optimization(todo)
+I finish some features which different from the original version of SimpleDB.
+
+Listed below:
+
+**File Manager & Log Manager**: 
+
+- File manager separate the log read/write from the table read/write.By append mode of fstream, reading and writing logs will be more efficient.
+
+**Memory Manager**: 
+
+- Bufferpool supports LRU algorithm to find a victim.
+- The page table of bufferpool will help us find a buffer in the bufferpool only requires O1 time complexity.
+- We only write a page to disk when it becomes a victim even if the pin_count of page is reduced to 0.
+
+**Transaction Manager**:
+
+- Support Wound-Wait deadlock prevent algorithm to resolve deadlock problems.
+- But since I want to use row-level-locking, still doesn't solve the phantom reading problem, only support read-repeatable isolation level.
+
+**Recovery Manager**:
+
+- Crash recovery process will be more efficient by ARIES algorithm and Fuzzy Checkpoint 
+
+**Record Manager**:
+
+- Tuple oritened structure will support varlen record and reduce space waste.
+
+**Metadata Manager**:
+
+- There are no additional features
+
+**Query Processing**:
+
+- support >=, <, >, <=, != 
+- support some simple arithmetic op.
+- support and, or.
+
+**paring**:
+
+- after parsing, we should verify correctness of SQL syntactic. 
+
+**Planning**:
+
+- ...
 
 
-## Development process
+## TODOPlan
 
-- A most simplest Database which support all features before JDBC and JDBC. 
-
-## important todo
-
-- asynchronous IO in LogManager
-
-- ARIES: Currently, the recovery mechanism still uses non-fuzzy checkpoint.I will update it to ARIES and FUZZY-checkpoint soon.
-    - implement index log
-
-- Concurrency: implement rid-level locking is diffculty, because we should solve with phantom read problem.
-   - implement index lock
-
-- DeadLock: Currently, I haven't dealt with how to resolve a deadlock problem.I will update it to WOUND-WAIT or WAIT-DIE.
-
-- Record: maybe we can only implement schema and stores the information of offset in schema but not layout.
-
-- TablePage: 
-    
-    - we should support variable length tuple.Currently, we just implement slotted page on fixed-length tuple.
-    - of course, i think support char、varchar、blob type is necessary.
-
-
-- Metadata: 
-
-    - Can we make a background transaction or a transaction which ioslation level is "READ UNCOMMITED ?" 
-    - Can we maintain more informations which help planner working
-    - secury manager to ensure user permissions
-
-
-- Query:
-
-    - not only ==, we should also implement <,>,!=,- and so on
-    - not only 'and', we should also implement 'or', 'not'
-    - support computation, sorting, grouping, nextsing, renaming
-
-- Update:
-  
-    - we should support drop table
-    - can we support change database?
-  
-- Planner:
-
-    - planner should support big table query so that filter more early
-    - planner should have more efficient optimize.
-    - planner should verify correntness
+- Parser, planner and Verifyer
+- Row level locking to replace Page level locking and implement serializable isolation level by row level locking.
+- Aggregation Function
+- Index update log record. 
 
 
 

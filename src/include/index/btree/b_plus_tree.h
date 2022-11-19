@@ -5,6 +5,7 @@
 #include "index/btree/b_plus_tree_bucket_page.h"
 #include "index/btree/b_plus_tree_directory_page.h"
 #include "index/btree/b_plus_tree_leaf_page.h"
+#include "index/btree/b_plus_tree_iterator.h"
 
 
 namespace SimpleDB {
@@ -14,6 +15,8 @@ namespace SimpleDB {
 
 INDEX_TEMPLATE_ARGUMENTS
 class BPlusTree {
+
+     friend class BPlusTreeIterator<KeyType, ValueType, KeyComparator>;
 
     using DirectoryPage = BPlusTreeDirectoryPage<KeyType, int, KeyComparator>;
     using LeafPage = BPlusTreeLeafPage<KeyType, RID, KeyComparator>;
@@ -58,6 +61,10 @@ public:
     */
     bool Remove(const KeyType &key, const ValueType &value);
 
+
+    std::unique_ptr<BPLUSTREE_ITERATOR_TYPE> Begin();
+
+    std::unique_ptr<BPLUSTREE_ITERATOR_TYPE> Begin(const KeyType &key);
 
 
 private:
@@ -127,6 +134,9 @@ private:
 
     void MergeLeafs(LeafPage *curr_leaf, int sibling_block_num, bool with_right, KeyType *be_removed_key);
     void MergeKeys(DirectoryPage *curr_dir, int sibling_block_num, bool with_right, KeyType *be_removed_key);
+
+
+    
 
 
 public:

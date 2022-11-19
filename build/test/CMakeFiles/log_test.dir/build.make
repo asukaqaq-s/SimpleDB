@@ -60,15 +60,15 @@ include test/CMakeFiles/log_test.dir/flags.make
 test/CMakeFiles/log_test.dir/log/log_test.cc.o: test/CMakeFiles/log_test.dir/flags.make
 test/CMakeFiles/log_test.dir/log/log_test.cc.o: ../test/log/log_test.cc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/log_test.dir/log/log_test.cc.o"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/log_test.dir/log/log_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/log/log_test.cc
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/log_test.dir/log/log_test.cc.o -c /home/asuka/workbench/project/SimpleDB/test/log/log_test.cc
 
 test/CMakeFiles/log_test.dir/log/log_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/log_test.dir/log/log_test.cc.i"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/test/log/log_test.cc > CMakeFiles/log_test.dir/log/log_test.cc.i
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/asuka/workbench/project/SimpleDB/test/log/log_test.cc > CMakeFiles/log_test.dir/log/log_test.cc.i
 
 test/CMakeFiles/log_test.dir/log/log_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/log_test.dir/log/log_test.cc.s"
-	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/test/log/log_test.cc -o CMakeFiles/log_test.dir/log/log_test.cc.s
+	cd /home/asuka/workbench/project/SimpleDB/build/test && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/asuka/workbench/project/SimpleDB/test/log/log_test.cc -o CMakeFiles/log_test.dir/log/log_test.cc.s
 
 # Object files for target log_test
 log_test_OBJECTS = \
@@ -79,9 +79,9 @@ log_test_EXTERNAL_OBJECTS =
 
 test/log_test: test/CMakeFiles/log_test.dir/log/log_test.cc.o
 test/log_test: test/CMakeFiles/log_test.dir/build.make
-test/log_test: lib/libgtest_maind.a
+test/log_test: lib/libgtest_main.a
 test/log_test: src/libSimpleDB_lib.a
-test/log_test: lib/libgtestd.a
+test/log_test: lib/libgtest.a
 test/log_test: test/CMakeFiles/log_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/asuka/workbench/project/SimpleDB/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable log_test"
 	cd /home/asuka/workbench/project/SimpleDB/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/log_test.dir/link.txt --verbose=$(VERBOSE)

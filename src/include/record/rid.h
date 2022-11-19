@@ -16,6 +16,9 @@ class RID {
 public:
     RID() = default;
 
+    // RID(int64_t total) : 
+    //     block_number_(total >> 32), slot_(total & ((1 << 32) - 1)) {}
+
     RID(int block_number, int slot) :
         block_number_(block_number), slot_(slot) {}
     

@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SimpleDB_lib.dir/buffer/buffer.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/buffer/buffer_manager.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/buffer/lru_replace.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/concurrency/lock_manager.cc.o"
@@ -19,6 +18,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/SimpleDB_lib.dir/file/page.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_bucket_page.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_directory_page.cc.o"
+  "CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_iterator.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/index/btree/b_plus_tree_leaf_page.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/index/btree/bplus_tree.cc.o"
   "CMakeFiles/SimpleDB_lib.dir/index/hash/extendible_hash_table.cc.o"

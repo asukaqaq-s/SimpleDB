@@ -31,6 +31,16 @@ public:
         memcpy(data_, tuple.GetDataPtr(), std::min(tuple.GetSize(), KeySize));
     }
 
+    inline void SetFromInteger(int value) {
+        // initialize to all zero
+        memset(data_, 0, KeySize);
+
+        // if overflow, will discard it
+        // if less than keysize, will padded by 0
+        memcpy(data_, &value, 4);
+    }
+
+
 
     Value ToValue(Schema *schema, uint32_t column_idx) const {
         auto col = schema->GetColumn(column_idx);

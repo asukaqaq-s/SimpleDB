@@ -336,7 +336,7 @@ void LockManager::DeadLockPrevent(Transaction *txn,
                                   LockRequestQueue* lock_request_queue, 
                                   const BlockId &block) {
     // find the lockmode of txn
-    LockMode lock_mode;
+    LockMode lock_mode{LockMode::SHARED};
     auto it_origin = lock_request_queue->request_queue_.begin();
     for (; it_origin != lock_request_queue->request_queue_.end(); it_origin++) {
         if (it_origin->txn_id_ == txn->GetTxnID()) {

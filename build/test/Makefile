@@ -228,6 +228,36 @@ table_test/fast:
 .PHONY : table_test/fast
 
 # Convenience name for target.
+test/CMakeFiles/update_parse_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/update_parse_test.dir/rule
+.PHONY : test/CMakeFiles/update_parse_test.dir/rule
+
+# Convenience name for target.
+update_parse_test: test/CMakeFiles/update_parse_test.dir/rule
+
+.PHONY : update_parse_test
+
+# fast build rule for target.
+update_parse_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
+.PHONY : update_parse_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/seqscan_executor_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/seqscan_executor_test.dir/rule
+.PHONY : test/CMakeFiles/seqscan_executor_test.dir/rule
+
+# Convenience name for target.
+seqscan_executor_test: test/CMakeFiles/seqscan_executor_test.dir/rule
+
+.PHONY : seqscan_executor_test
+
+# fast build rule for target.
+seqscan_executor_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
+.PHONY : seqscan_executor_test/fast
+
+# Convenience name for target.
 test/CMakeFiles/buffer_manager_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/buffer_manager_test.dir/rule
 .PHONY : test/CMakeFiles/buffer_manager_test.dir/rule
@@ -303,51 +333,6 @@ btree_test/fast:
 .PHONY : btree_test/fast
 
 # Convenience name for target.
-test/CMakeFiles/seqscan_executor_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/seqscan_executor_test.dir/rule
-.PHONY : test/CMakeFiles/seqscan_executor_test.dir/rule
-
-# Convenience name for target.
-seqscan_executor_test: test/CMakeFiles/seqscan_executor_test.dir/rule
-
-.PHONY : seqscan_executor_test
-
-# fast build rule for target.
-seqscan_executor_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/seqscan_executor_test.dir/build.make test/CMakeFiles/seqscan_executor_test.dir/build
-.PHONY : seqscan_executor_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/update_parse_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/update_parse_test.dir/rule
-.PHONY : test/CMakeFiles/update_parse_test.dir/rule
-
-# Convenience name for target.
-update_parse_test: test/CMakeFiles/update_parse_test.dir/rule
-
-.PHONY : update_parse_test
-
-# fast build rule for target.
-update_parse_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/update_parse_test.dir/build.make test/CMakeFiles/update_parse_test.dir/build
-.PHONY : update_parse_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/file_manager_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
-.PHONY : test/CMakeFiles/file_manager_test.dir/rule
-
-# Convenience name for target.
-file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
-
-.PHONY : file_manager_test
-
-# fast build rule for target.
-file_manager_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
-.PHONY : file_manager_test/fast
-
-# Convenience name for target.
 test/CMakeFiles/concurrency_test.dir/rule:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/concurrency_test.dir/rule
 .PHONY : test/CMakeFiles/concurrency_test.dir/rule
@@ -376,6 +361,51 @@ btree_page_test: test/CMakeFiles/btree_page_test.dir/rule
 btree_page_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_page_test.dir/build.make test/CMakeFiles/btree_page_test.dir/build
 .PHONY : btree_page_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/file_manager_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/file_manager_test.dir/rule
+.PHONY : test/CMakeFiles/file_manager_test.dir/rule
+
+# Convenience name for target.
+file_manager_test: test/CMakeFiles/file_manager_test.dir/rule
+
+.PHONY : file_manager_test
+
+# fast build rule for target.
+file_manager_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_manager_test.dir/build.make test/CMakeFiles/file_manager_test.dir/build
+.PHONY : file_manager_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/btree_concurrency_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/btree_concurrency_test.dir/rule
+.PHONY : test/CMakeFiles/btree_concurrency_test.dir/rule
+
+# Convenience name for target.
+btree_concurrency_test: test/CMakeFiles/btree_concurrency_test.dir/rule
+
+.PHONY : btree_concurrency_test
+
+# fast build rule for target.
+btree_concurrency_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_concurrency_test.dir/build.make test/CMakeFiles/btree_concurrency_test.dir/build
+.PHONY : btree_concurrency_test/fast
+
+# Convenience name for target.
+test/CMakeFiles/page_test.dir/rule:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
+.PHONY : test/CMakeFiles/page_test.dir/rule
+
+# Convenience name for target.
+page_test: test/CMakeFiles/page_test.dir/rule
+
+.PHONY : page_test
+
+# fast build rule for target.
+page_test/fast:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
+.PHONY : page_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/btree_checkpoint_test_1_.dir/rule:
@@ -421,21 +451,6 @@ file_test: test/CMakeFiles/file_test.dir/rule
 file_test/fast:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/file_test.dir/build.make test/CMakeFiles/file_test.dir/build
 .PHONY : file_test/fast
-
-# Convenience name for target.
-test/CMakeFiles/page_test.dir/rule:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/page_test.dir/rule
-.PHONY : test/CMakeFiles/page_test.dir/rule
-
-# Convenience name for target.
-page_test: test/CMakeFiles/page_test.dir/rule
-
-.PHONY : page_test
-
-# fast build rule for target.
-page_test/fast:
-	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/page_test.dir/build.make test/CMakeFiles/page_test.dir/build
-.PHONY : page_test/fast
 
 # Convenience name for target.
 test/CMakeFiles/hard_extendible_hash_table_test.dir/rule:
@@ -703,6 +718,33 @@ btree/btree_checkpoint_test_1_.s: btree/btree_checkpoint_test_1_.cc.s
 btree/btree_checkpoint_test_1_.cc.s:
 	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_checkpoint_test_1_.dir/build.make test/CMakeFiles/btree_checkpoint_test_1_.dir/btree/btree_checkpoint_test_1_.cc.s
 .PHONY : btree/btree_checkpoint_test_1_.cc.s
+
+btree/btree_concurrency_test.o: btree/btree_concurrency_test.cc.o
+
+.PHONY : btree/btree_concurrency_test.o
+
+# target to build an object file
+btree/btree_concurrency_test.cc.o:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_concurrency_test.dir/build.make test/CMakeFiles/btree_concurrency_test.dir/btree/btree_concurrency_test.cc.o
+.PHONY : btree/btree_concurrency_test.cc.o
+
+btree/btree_concurrency_test.i: btree/btree_concurrency_test.cc.i
+
+.PHONY : btree/btree_concurrency_test.i
+
+# target to preprocess a source file
+btree/btree_concurrency_test.cc.i:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_concurrency_test.dir/build.make test/CMakeFiles/btree_concurrency_test.dir/btree/btree_concurrency_test.cc.i
+.PHONY : btree/btree_concurrency_test.cc.i
+
+btree/btree_concurrency_test.s: btree/btree_concurrency_test.cc.s
+
+.PHONY : btree/btree_concurrency_test.s
+
+# target to generate assembly for a file
+btree/btree_concurrency_test.cc.s:
+	cd /home/asuka/workbench/project/SimpleDB/build && $(MAKE) -f test/CMakeFiles/btree_concurrency_test.dir/build.make test/CMakeFiles/btree_concurrency_test.dir/btree/btree_concurrency_test.cc.s
+.PHONY : btree/btree_concurrency_test.cc.s
 
 btree/btree_page_test.o: btree/btree_page_test.cc.o
 
@@ -1556,21 +1598,22 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... tuple_test"
 	@echo "... table_test"
+	@echo "... install"
+	@echo "... update_parse_test"
+	@echo "... seqscan_executor_test"
 	@echo "... buffer_manager_test"
 	@echo "... expreesion_test"
 	@echo "... static_hash_index_test"
 	@echo "... lock_manager_test"
 	@echo "... btree_test"
-	@echo "... install"
-	@echo "... seqscan_executor_test"
-	@echo "... update_parse_test"
-	@echo "... file_manager_test"
 	@echo "... concurrency_test"
 	@echo "... btree_page_test"
+	@echo "... file_manager_test"
+	@echo "... btree_concurrency_test"
+	@echo "... page_test"
 	@echo "... btree_checkpoint_test_1_"
 	@echo "... lru_replacer_test"
 	@echo "... file_test"
-	@echo "... page_test"
 	@echo "... hard_extendible_hash_table_test"
 	@echo "... hash_table_bucket_page_test"
 	@echo "... transaction_test"
@@ -1591,6 +1634,9 @@ help:
 	@echo "... btree/btree_checkpoint_test_1_.o"
 	@echo "... btree/btree_checkpoint_test_1_.i"
 	@echo "... btree/btree_checkpoint_test_1_.s"
+	@echo "... btree/btree_concurrency_test.o"
+	@echo "... btree/btree_concurrency_test.i"
+	@echo "... btree/btree_concurrency_test.s"
 	@echo "... btree/btree_page_test.o"
 	@echo "... btree/btree_page_test.i"
 	@echo "... btree/btree_page_test.s"

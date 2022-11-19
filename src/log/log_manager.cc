@@ -148,9 +148,9 @@ void LogManager::SetMasterLsnOffset(int offset) {
     chkpt_page.SetInt(0, offset);
 
     
-    file_manager_->Write(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
+    file_manager_->Write(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), &chkpt_page);
     // debug purpose
-    file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
+    file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), &chkpt_page);
     SIMPLEDB_ASSERT(chkpt_page.GetInt(0) == offset, "write chkpt log error");
 }
 
@@ -163,7 +163,7 @@ int LogManager::GetMasterLsnOffset() {
 
     auto byte_array = std::make_shared<std::vector<char>> (4);
     Page chkpt_page(byte_array);
-    file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), chkpt_page);
+    file_manager_->Read(BlockId(SIMPLEDB_CHKPT_FILE_NAME, 0), &chkpt_page);
     return chkpt_page.GetInt(0);
 }
 
