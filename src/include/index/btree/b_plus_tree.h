@@ -7,11 +7,95 @@
 #include "index/btree/b_plus_tree_leaf_page.h"
 #include "index/btree/b_plus_tree_iterator.h"
 
+#include <queue>
+
 
 namespace SimpleDB {
 
 
 #define BPLUSTREE_TYPE BPlusTree<KeyType, ValueType, KeyComparator>
+
+
+class BPlusTreeContext {
+
+public:
+
+    BPlusTreeContext(BufferManager *buf) : buffer_manager_(buf) {}
+
+
+    void AddToWritePageSet(Buffer *buffer) {
+        if (std::find(write_page_set_.begin(), write_page_set_.end(), buffer) !=
+            write_page_set_.end()) {
+
+            return;
+        }
+
+        int block_num = buffer->GetBlockID().BlockNum();
+        page_map_[block_num] = buffer;
+        buffer->WLock();
+        write_page_set_.push_front(buffer);
+    }
+
+    void AddToReadPageSet(Buffer *buffer) {
+        if (std::find(read_page_set_.begin(), read_page_set_.end(), buffer) !=
+            read_page_set_.end()) {
+            return;
+        }
+
+        int block_num = buffer->GetBlockID().BlockNum();
+        page_map_[block_num] = buffer;
+        buffer->RLock();
+        read_page_set_.push_front(buffer);
+    }
+
+    
+    const std::deque<Buffer*>& GetWritePageSet() {
+        return write_page_set_;
+    }
+
+    const std::deque<Buffer*>& GetReadPageSet() {
+        return read_page_set_;
+    }
+
+
+    void ClearPageSet() {
+        for (auto &t : write_page_set_) {
+            auto block_id = t->GetBlockID();
+            t->WUnlock();
+            assert(buffer_manager_->UnpinBlock(block_id, true));
+        }
+
+        for (auto &t : read_page_set_) {
+            auto block_id = t->GetBlockID();
+            t->RUnlock();
+            assert(buffer_manager_->UnpinBlock(block_id, false));
+        }
+
+        write_page_set_.clear();
+        read_page_set_.clear();
+    }
+
+
+    Buffer *GetPageInSet(int block_num) {
+        if (page_map_.find(block_num) == page_map_.end()) {
+            return nullptr;
+        }
+
+        return page_map_[block_num];
+    }
+
+
+private:
+
+    std::deque<Buffer *> write_page_set_;
+    std::deque<Buffer *> read_page_set_;
+    
+    std::unordered_map<int, Buffer*> page_map_;
+
+    BufferManager *buffer_manager_;
+
+};
+
 
 INDEX_TEMPLATE_ARGUMENTS
 class BPlusTree {
@@ -106,21 +190,26 @@ private:
     N* Split(N* old_page);
 
 
+    std::tuple<int, int> GetBrotherNodeBlockNum(int parent_block_num, 
+                                                int child_block_num, 
+                                                BPlusTreeContext *context);
 
 
 
-    bool BorrowLeafKey(bool from_right, int sibling_block_num, LeafPage *borrower);
-    bool BorrowDirKey(bool from_right, int sibling_block_num, DirectoryPage *dir_page);
+
+
+    bool BorrowLeafKey(bool from_right, int sibling_block_num, LeafPage *borrower, BPlusTreeContext *context);
+    bool BorrowDirKey(bool from_right, int sibling_block_num, DirectoryPage *dir_page, BPlusTreeContext *context);
 
 
     void InsertIntoParent(int dir_block_num, const KeyType &key,
-                          int left_block_num, int right_block_num);
+                          int left_block_num, int right_block_num, BPlusTreeContext *context);
 
     void UpdateChildKeyInParent(int dir_block_num, 
                                 const KeyType &old_key,
-                                const KeyType &new_key);
+                                const KeyType &new_key, BPlusTreeContext *context);
 
-    void RemoveFromParent(int parent_block_num, const KeyType &be_removed_key);
+    void RemoveFromParent(int parent_block_num, const KeyType &be_removed_key, BPlusTreeContext *context);
 
 
     void UpdateRootBlockNum(int new_block_num);
@@ -132,8 +221,8 @@ private:
 
 
 
-    void MergeLeafs(LeafPage *curr_leaf, int sibling_block_num, bool with_right, KeyType *be_removed_key);
-    void MergeKeys(DirectoryPage *curr_dir, int sibling_block_num, bool with_right, KeyType *be_removed_key);
+    void MergeLeafs(LeafPage *curr_leaf, int sibling_block_num, bool with_right, KeyType *be_removed_key, BPlusTreeContext *context);
+    void MergeKeys(DirectoryPage *curr_dir, int sibling_block_num, bool with_right, KeyType *be_removed_key, BPlusTreeContext *context);
 
 
     

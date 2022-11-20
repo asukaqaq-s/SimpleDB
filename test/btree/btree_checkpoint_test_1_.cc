@@ -77,7 +77,8 @@ TEST(BPlusTreeTest, SequentialInsertTest) {
         auto tmp = Tuple({Value(key)}, schema);
         index_key.SetFromKey(tmp);
         btree.Insert(index_key, rid);
-    }
+    } 
+    
     
     // read them
     for (auto key : keys) {
@@ -88,12 +89,15 @@ TEST(BPlusTreeTest, SequentialInsertTest) {
         EXPECT_EQ(result[0], RID(key, key));
     }
 
+
+    EXPECT_EQ(bfm->CheckPinCount(), true);
     // delete them
     for (uint i = 0; i < keys.size(); i++) {
         RID value(i,i);
         auto k = Tuple({Value(keys[i])}, schema);
         index_key.SetFromKey(k);
         EXPECT_EQ(btree.Remove(index_key, value), true);
+        
     }
 
     for (auto key : keys) {
@@ -102,12 +106,14 @@ TEST(BPlusTreeTest, SequentialInsertTest) {
         index_key.SetFromKey(k);
         EXPECT_EQ(btree.GetValue(index_key, &result), false);
     }
-
-
+    
+    EXPECT_EQ(bfm->CheckPinCount(), true);
+    bfm->PrintBufferPool();
     remove(filename.c_str());
+
 }
 
-TEST(BPlusTreeTest, RandomInsertTest) {return;
+TEST(BPlusTreeTest, RandomInsertTest) {
     const std::string filename = "test.db";
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -669,125 +675,159 @@ TEST(BPlusTreeTest, BasicIteratorTest2) {
 
 
 
-// TEST(BPlusTreeTest, ConcurrentIteratorTest) {
-//     const std::string filename = "test.db";
-//     const size_t buffer_pool_size = 50;
-//     remove(filename.c_str());
+TEST(BPlusTreeTest, ConcurrentIteratorTest) {
+   const std::string filename = "test.db";
+    char buf[100];
+    std::string local_path = getcwd(buf, 100);
+    std::string test_dir = local_path + "/" + "test_dir";
+    std::string test_file = "test1.txt";
+    std::string cmd;
+    cmd = "rm -rf " + test_dir;
+    system(cmd.c_str());
 
-//     auto disk_manager = new DiskManager(filename);
-//     auto bfm = new BufferPoolManager(buffer_pool_size, disk_manager);
-
-//     auto colA = Column("colA", TypeID::INTEGER);
-//     std::vector<Column> cols;
-//     cols.push_back(colA);
-//     auto schema = Schema(cols);
-
-//     GenericComparator<4> comparator(schema);
-//     BPlusTree<GenericKey<4>, RID, GenericComparator<4>> tree("basic_test", bfm, comparator);
-
-//     int key_num = 2000;
-//     int worker_num = 8;
-//     std::vector<int> keys(key_num * worker_num);
-//     std::vector<int> keys_sorted(key_num * worker_num);
-//     for (int i = 0; i < key_num * worker_num; i++) {
-//         keys[i] = i;
-//         keys_sorted[i] = i;
-//     }
-//     std::random_shuffle(keys.begin(), keys.end());
-
-//     std::vector<std::thread> worker_list;
-//     std::vector<std::thread> daemon_list;
-
-//     std::atomic_bool shutdown(false);
-//     // there will be a worker keep on reading
-//     daemon_list.emplace_back(std::thread([&](){
-//         while (shutdown.load() == false) {
-//             // INVARIANT: the result should always be an ascending sequence
-//             int last = -1;
-//             int read_cnt = 0;
-//             auto it = btree.Begin();
-//             for (; !it->IsEnd(); it->Advance()) {
-//                 int cur = it->Get().Get();
-//                 EXPECT_GT(cur, last);
-//                 last = cur;
-//                 read_cnt++;
-//             }
-//             // LOG_INFO("retry times %d read_cnt %d", it.GetRetryCnt(), read_cnt);
-//         }
-//     }));
-
-//     for (int i = 0; i < worker_num; i++) {
-//         worker_list.emplace_back(std::thread([&](int begin, int end) {
-            
-//             GenericKey<4> index_key;
-//             for (int j = begin; j < end; j++) {
-        
-//                 auto rid = RID(keys[j]);
-//                 auto tmp = Tuple({Value(keys[j])}, schema);
-//                 index_key.SetFromKey(tmp);
-//                 btree.Insert(index_key, rid);
-
-//                 // could we read what we just write?
-//                 std::vector<RID> result;
-//                 EXPECT_EQ(btree.GetValue(index_key, &result), true);
-//                 EXPECT_EQ(result[0], RID(keys[j]));
-//             }
-//         }, i * key_num, (i + 1) * key_num));
-//     }
-//     for (uint i = 0; i < worker_list.size(); i++) {
-//         worker_list[i].join();
-//     }
+    std::string log_file_name = "log.log";
+    std::string log_file_path = test_dir + "/" + log_file_name;
+    std::unique_ptr<FileManager> fm 
+        = std::make_unique<FileManager>(test_dir, 4096);
     
-//     // read them by iterator
-//     int ptr = 0;
-//     for (auto it = btree.Begin(); !it->IsEnd(); it->Advance()) {
-//         EXPECT_EQ(it->Get(), RID(keys_sorted[ptr]));
-//         ptr++;
-//     }
-//     EXPECT_EQ(ptr, key_num * worker_num);
+    std::unique_ptr<LogManager> lm 
+        = std::make_unique<LogManager>(fm.get(), log_file_name);
 
-//     // delete them
-//     worker_list.clear();
-//     for (int i = 0; i < worker_num; i++) {
-//         worker_list.emplace_back(std::thread([&](int begin, int end) {
+    std::unique_ptr<RecoveryManager> rm 
+        = std::make_unique<RecoveryManager>(lm.get());
+
+    std::unique_ptr<BufferManager> bfm
+        = std::make_unique<BufferManager>(fm.get(), rm.get(), 100);
+
+    // --------------------
+    //  create execution context
+    // --------------------
+    auto lock = std::make_unique<LockManager> ();
+    TransactionManager txn_mgr(std::move(lock), rm.get(), fm.get(), bfm.get());
+
+
+    auto colA = Column("colA", TypeID::INTEGER);
+    std::vector<Column> cols;
+    cols.push_back(colA);
+    auto schema = Schema(cols);
+
+    
+    GenericComparator<4> comparator(&schema);
+    BPlusTree<GenericKey<4>, RID, GenericComparator<4>> btree("basic_test", INVALID_BLOCK_NUM, 
+                                                             comparator, bfm.get());
+    GenericKey<4> index_key;
+
+    RID rid;
+
+    int key_num = 2000;
+    int worker_num = 8;
+    std::vector<int> keys(key_num * worker_num);
+    std::vector<int> keys_sorted(key_num * worker_num);
+    for (int i = 0; i < key_num * worker_num; i++) {
+        keys[i] = i;
+        keys_sorted[i] = i;
+    }
+    std::random_shuffle(keys.begin(), keys.end());
+
+    std::vector<std::thread> worker_list;
+    std::vector<std::thread> daemon_list;
+
+    std::atomic_bool shutdown(false);
+
+
+    // there will be a worker keep on reading
+    // daemon_list.emplace_back(std::thread([&](){
+    //     while (shutdown.load() == false) {
+    //         // INVARIANT: the result should always be an ascending sequence
+    //         int last = -1;
+    //         int read_cnt = 0;
+    //         auto it = btree.Begin();
+    //         for (; !it->IsEnd(); it->Advance()) {
+    //             int cur = it->GetKey().AsInt();
+    //             EXPECT_GT(cur, last);
+    //             last = cur;
+    //             read_cnt++;
+    //         }
+    //         // LOG_INFO("retry times %d read_cnt %d", it.GetRetryCnt(), read_cnt);
+    //     }
+    // }));
+
+    
+
+    for (int i = 0; i < worker_num; i++) {
+        worker_list.emplace_back(std::thread([&](int begin, int end) {
             
-//             GenericKey<4> index_key;
-//             for (int j = begin; j < end; j++) {
+            GenericKey<4> index_key;
+            for (int j = begin; j < end; j++) {
         
-//                 auto k = Tuple({Value(keys[j])}, schema);
-//                 index_key.SetFromKey(k);
-//                 EXPECT_EQ(btree.Remove(index_key, value), true);
+                auto rid = RID(keys[j], keys[j]);
+                auto tmp = Tuple({Value(keys[j])}, schema);
+                index_key.SetFromKey(tmp);
+                btree.Insert(index_key, rid);
 
-//                 // we shouldn't see what we just deleted
-//                 std::vector<RID> result;
-//                 EXPECT_EQ(btree.GetValue(index_key, &result), false);
-//             }
-//         }, i * key_num, (i + 1) * key_num));
-//     }
-//     for (uint i = 0; i < worker_list.size(); i++) {
-//         worker_list[i].join();
-//     }
+                // could we read what we just write?
+                std::vector<RID> result;
+                EXPECT_EQ(btree.GetValue(index_key, &result), true);
+                EXPECT_EQ(result[0], RID(keys[j], keys[j]));
+            }
+        }, i * key_num, (i + 1) * key_num));
+    }
 
-//     ptr = 0;
-//     for (auto it = btree.Begin(); !it->IsEnd(); it->Advance()) {
-//         EXPECT_EQ(it->Get(), RID(keys_sorted[ptr]));
-//         ptr++;
-//     }
-//     EXPECT_EQ(ptr, 0);
 
-//     shutdown.store(true);
-//     for (uint i = 0; i < daemon_list.size(); i++) {
-//         daemon_list[i].join();
-//     }
+    for (uint i = 0; i < worker_list.size(); i++) {
+        worker_list[i].join();
+    }
 
-//     EXPECT_EQ(bfm->CheckPinCount(), true);
+    
+    // read them by iterator
+    int ptr = 0;
+    for (auto it = btree.Begin(); !it->IsEnd(); it->Advance()) {
+        EXPECT_EQ(it->GetKey().AsInt(), keys_sorted[ptr]);
+        ptr++;
+    }
+    EXPECT_EQ(ptr, key_num * worker_num);
 
-//     // check whether we've returned the page back to disk
-//     EXPECT_EQ(disk_manager->GetAllocateCount(), disk_manager->GetDeallocateCount());
 
-//     delete disk_manager;
-//     delete bfm;
-//     remove(filename.c_str());
-// }
+return;
+    // delete them
+    worker_list.clear();
+    for (int i = 0; i < worker_num; i++) {
+        worker_list.emplace_back(std::thread([&](int begin, int end) {
+            
+            GenericKey<4> index_key;
+            for (int j = begin; j < end; j++) {
+        
+                auto k = Tuple({Value(keys[j])}, schema);
+                auto value = RID(keys[j], keys[j]);
+                index_key.SetFromKey(k);
+                EXPECT_EQ(btree.Remove(index_key, value), true);
+
+                // we shouldn't see what we just deleted
+                std::vector<RID> result;
+                EXPECT_EQ(btree.GetValue(index_key, &result), false);
+            }
+        }, i * key_num, (i + 1) * key_num));
+    }
+    for (uint i = 0; i < worker_list.size(); i++) {
+        worker_list[i].join();
+    }
+
+    ptr = 0;
+    for (auto it = btree.Begin(); !it->IsEnd(); it->Advance()) {
+        EXPECT_EQ(it->GetKey().AsInt(), (keys_sorted[ptr]));
+        ptr++;
+    }
+    EXPECT_EQ(ptr, 0);
+
+    shutdown.store(true);
+    for (uint i = 0; i < daemon_list.size(); i++) {
+        daemon_list[i].join();
+    }
+
+    EXPECT_EQ(bfm->CheckPinCount(), true);
+
+
+    remove(filename.c_str());
+}
 
 }
