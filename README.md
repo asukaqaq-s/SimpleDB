@@ -55,6 +55,11 @@ Listed below:
 
 - ...
 
+**Index**:
+
+- SimpleDB support 3 Index data structures: static hash table, extendible hash table and b plus tree hash table.
+- I have tried crab-concurrency-scheme in btree, but it doesn't seem to be efficient, and there are no new changes at the moment.
+
 
 ## TODOPlan
 

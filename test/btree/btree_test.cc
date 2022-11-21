@@ -25,7 +25,7 @@ namespace SimpleDB {
 
 
 TEST(BtreeTest, BasicTest) {
-    return;
+    return;;
     const std::string filename = "test.db";
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -112,7 +112,7 @@ TEST(BtreeTest, BasicTest) {
 
 
 TEST(BtreeTest, SeqInsertTest) {
-    return;
+    return;;
     const std::string filename = "test.db";
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -180,7 +180,7 @@ TEST(BtreeTest, SeqInsertTest) {
         ASSERT_EQ(result.size(), 1);
         EXPECT_EQ(result[0], RID(key, key));
     }
-    return;
+    return;;
     // bfm->PrintBufferPool();
 
 
@@ -206,7 +206,7 @@ TEST(BtreeTest, SeqInsertTest) {
 
 
 TEST(BtreeTest, BucketRemoveTest) {
-    return;
+    return;;
     const std::string filename = "test.db";
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -295,7 +295,7 @@ TEST(BtreeTest, BucketRemoveTest) {
 
 
 TEST(BtreeTest, SimpleRemoveTest) {
-    return;
+    return;;
     const std::string filename = "test.db";
     char buf[100];
     std::string local_path = getcwd(buf, 100);
@@ -389,7 +389,7 @@ TEST(BtreeTest, SimpleRemoveTest) {
 
 
 
-TEST(BtreeTest, HigherRemoveTest) {
+TEST(BtreeTest, HigherRemoveTest) {return;
 
     const std::string filename = "test.db";
     char buf[100];
@@ -433,7 +433,7 @@ TEST(BtreeTest, HigherRemoveTest) {
     RID rid;
 
 
-    int key_num = 100;
+    int key_num = 30000;
     std::vector<int> keys(key_num);
     for (int i = 0; i < key_num; i++) {
         keys[i] = i;
@@ -445,8 +445,9 @@ TEST(BtreeTest, HigherRemoveTest) {
         rid = RID(value, value);
         auto tmp = Tuple({Value(key)}, schema);
         index_key.SetFromKey(tmp);
-        btree.Insert(index_key, rid);
+        btree.Insert(index_key, rid);     
     }
+
 
     // read them
     for (auto key : keys) {
@@ -540,19 +541,42 @@ TEST(BtreeTest, RandomInsertTest) {
 
     auto rng = std::default_random_engine{};
     std::shuffle(keys.begin(), keys.end(), rng);
-    for (auto key : keys) {
+    EXPECT_EQ(keys.size(), key_num);
+    std::unordered_map<int,int> mp;
+    for (auto key:keys) {
+        mp[key] ++;
+        if (mp[key] > 1) {
+            assert(false);
+        }
     }
 
     // insert  keys
-    for (auto key : keys) {
+    for (int i = 0;i < keys.size();i ++) {
+        int key = keys[i];
+        // std::cout << "key = " << key << std::endl;
         int value = key;
         rid = RID(value, value);
         auto tmp = Tuple({Value(key)}, schema);
         index_key.SetFromKey(tmp);
         btree.Insert(index_key, rid);
-
+        
+        // for (int j = 0;j < i;j ++) {
+        //     int key = keys[j];
+        //     auto tmp = Tuple({Value(key)}, schema);
+        //     index_key.SetFromKey(tmp);
+        //     std::vector<RID> result;
+        //     btree.GetValue(index_key, &result);
+            
+        //     if (result.size() == 0) {
+        //         btree.PrintTree();
+        //     }
+        //     ASSERT_EQ(result.size(), 1);
+        //     EXPECT_EQ(result[0], RID(key, key));
+        // }
+        // btree.PrintTree();
     }
-
+    
+    // std::cout << "finish\n\n\n" << std::endl;
 
     // read them
     for (auto key : keys) {
