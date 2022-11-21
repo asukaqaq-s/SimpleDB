@@ -1206,94 +1206,111 @@ void BPLUSTREE_TYPE::ResetDirChildParentOne(DirectoryPage *dir_page,
 
 INDEX_TEMPLATE_ARGUMENTS
 std::unique_ptr<BPLUSTREE_ITERATOR_TYPE> BPLUSTREE_TYPE::Begin() {
-    // // move to the first leaf node
-    // ReaderGuard lock(root_latch_);
-    // Buffer *curr_buffer = buffer_manager_->PinBlock({index_file_name_, root_block_num_});
-    // BPlusTreePage *curr_page = reinterpret_cast<BPlusTreePage*>(curr_buffer->contents()->GetRawDataPtr());  
-    // curr_buffer->RLock();
+    // move to the first leaf node
+    root_latch_.RLock();
+    Buffer *curr_buffer = buffer_manager_->PinBlock({index_file_name_, root_block_num_});
+    BPlusTreePage *curr_page = reinterpret_cast<BPlusTreePage*>(curr_buffer->contents()->GetRawDataPtr());  
+    curr_buffer->RLock();
 
 
-    // // search for a leaf page 
-    // while (!curr_page->IsLeafPage()) {
+    // search for a leaf page 
+    while (!curr_page->IsLeafPage()) {
         
-    //     // move to the first child
-    //     auto *dir_page = reinterpret_cast<DirectoryPage*>(curr_page);
-    //     int child_block_num = dir_page->ValueAt(0);
+        // move to the first child
+        auto *dir_page = reinterpret_cast<DirectoryPage*>(curr_page);
+        int child_block_num = dir_page->ValueAt(0);
 
 
-    //     // unpin old curr_page
-    //     curr_buffer->RUnlock();
-    //     buffer_manager_->UnpinBlock({index_file_name_, dir_page->GetBlockNum()}, false);
+        // unpin old curr_page
+        if (curr_buffer->GetBlockID().BlockNum() == root_block_num_) {
+            root_latch_.RUnlock();
+        }
+        curr_buffer->RUnlock();
+        buffer_manager_->UnpinBlock({index_file_name_, dir_page->GetBlockNum()}, false);
         
         
-    //     // create new curr_page
-    //     curr_buffer = buffer_manager_->PinBlock({index_file_name_, child_block_num});
-    //     curr_page = reinterpret_cast<BPlusTreePage*>(curr_buffer->contents()->GetRawDataPtr());
-    //     curr_buffer->RLock();
-    // }
+        // create new curr_page
+        curr_buffer = buffer_manager_->PinBlock({index_file_name_, child_block_num});
+        curr_page = reinterpret_cast<BPlusTreePage*>(curr_buffer->contents()->GetRawDataPtr());
+        curr_buffer->RLock();
+    }
 
 
 
-    // // if exist, this page is a leaf page
-    // int block_num = curr_page->GetBlockNum();
-    // // check some special cases
-    // if (block_num == root_block_num_ && curr_page->GetSize() == 0) {
-    //     block_num = INVALID_BLOCK_NUM;
-    //     curr_buffer->RUnlock();
-    //     buffer_manager_->UnpinBlock({index_file_name_, root_block_num_}, false);
-    //     curr_buffer = nullptr;
-    // }
+    // if exist, this page is a leaf page
+    int block_num = curr_page->GetBlockNum();
+    // check some special cases
+    if (block_num == root_block_num_ && curr_page->GetSize() == 0) {
+        block_num = INVALID_BLOCK_NUM;
+        curr_buffer->RUnlock();
+        buffer_manager_->UnpinBlock({index_file_name_, root_block_num_}, false);
+        curr_buffer = nullptr;
+    }
     
-    // return std::make_unique<BPLUSTREE_ITERATOR_TYPE>(0, block_num, curr_buffer, this);
+    return std::make_unique<BPLUSTREE_ITERATOR_TYPE>(0, block_num, curr_buffer, this);
 }
 
 
 INDEX_TEMPLATE_ARGUMENTS
 std::unique_ptr<BPLUSTREE_ITERATOR_TYPE> BPLUSTREE_TYPE::Begin(const KeyType &search_key) {
     // move to the first key which greater equal than search key
-    // ReaderGuard lock(root_latch_);
-    // int curr_block_num = SearchLeaf(search_key);
-    // Buffer *curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_block_num});
-    // auto *curr_leaf = reinterpret_cast<LeafPage*>(curr_buffer->contents()->GetRawDataPtr());
+    root_latch_.RLock();
+    BPlusTreeContext context(buffer_manager_);
+    bool is_root_locked = true;
+    int curr_block_num = SearchLeaf(search_key, &context, BPlusTreeOpearion::QUERY, &is_root_locked);
+    int old_curr_block_num = curr_block_num;
 
-    // curr_buffer->RLock();
-    // int curr_slot = curr_leaf->KeyIndexGreaterEqual(search_key, comparator_);
+
+    // create curr page, don't need to acquire read lock since we have granted in search leaf
+    Buffer *curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_block_num});
+    auto *curr_leaf = reinterpret_cast<LeafPage*>(curr_buffer->contents()->GetRawDataPtr());
+    int curr_slot = curr_leaf->KeyIndexGreaterEqual(search_key, comparator_);
     
 
-    // // two special cases:
-    // // 1. the tree is empty
-    // // 2. bigger than any keys of block
-    // if (curr_block_num == root_block_num_ && curr_leaf->GetSize() == 0) {
-    //     curr_block_num = INVALID_BLOCK_NUM;
-    // }
-    // else if (curr_slot == curr_leaf->GetSize() - 1 && 
-    //          comparator_(search_key, curr_leaf->KeyAt(curr_leaf->GetSize() - 1)) > 0) {
-    //     int next_block_num = curr_leaf->GetNextBlockNum();
-    //     curr_block_num = next_block_num;
-
-    //     if (curr_block_num != INVALID_BLOCK_NUM) {
-    //         curr_buffer->RUnlock();
-    //         buffer_manager_->UnpinBlock({index_file_name_, curr_block_num}, false);
+    // two special cases:
+    // 1. the tree is empty
+    // 2. bigger than any keys of block
+    if (curr_block_num == root_block_num_ && curr_leaf->GetSize() == 0) {
+        curr_block_num = INVALID_BLOCK_NUM;
+    }
+    else if (curr_slot == curr_leaf->GetSize() - 1 && 
+             comparator_(search_key, curr_leaf->KeyAt(curr_leaf->GetSize() - 1)) > 0) {
         
-    //         // create new buffer and new leaf page
-    //         curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_block_num});
-    //         curr_leaf = reinterpret_cast<LeafPage*>(curr_buffer->contents()->GetRawDataPtr());
-    //         curr_slot = 0;
-    //         curr_buffer->RLock();
-    //     }
-    // }
+        int next_block_num = curr_leaf->GetNextBlockNum();
+        curr_block_num = next_block_num;
+
+        if (curr_block_num != INVALID_BLOCK_NUM) {
+            curr_buffer->RUnlock();
+            buffer_manager_->UnpinBlock({index_file_name_, old_curr_block_num}, false);
+        
+            // create new buffer and new leaf page
+            curr_buffer = buffer_manager_->PinBlock({index_file_name_, curr_block_num});
+            curr_leaf = reinterpret_cast<LeafPage*>(curr_buffer->contents()->GetRawDataPtr());
+            curr_slot = 0;
+            curr_buffer->RLock();
+        }
+    }
     
 
-    // if (curr_block_num == INVALID_BLOCK_NUM) {
-    //     curr_buffer->RUnlock();
-    //     buffer_manager_->UnpinBlock({index_file_name_, root_block_num_}, false);
-    //     curr_buffer = nullptr;
-    // }
+    if (is_root_locked) {
+        root_latch_.RUnlock();
+    }
 
-    // return std::make_unique<BPLUSTREE_ITERATOR_TYPE>(curr_slot, curr_block_num, curr_buffer, this);
+    if (curr_block_num == INVALID_BLOCK_NUM) {
+        curr_buffer->RUnlock();
+        buffer_manager_->UnpinBlock({index_file_name_, old_curr_block_num}, false);
+        curr_buffer = nullptr;
+    }
+
+
+    // unpin once since we have pin block in searchkey, curr_pin_count: 2->1
+    buffer_manager_->UnpinBlock({index_file_name_, old_curr_block_num}, false);
+    return std::make_unique<BPLUSTREE_ITERATOR_TYPE>(curr_slot, curr_block_num, curr_buffer, this);
 }
 
 
+
+#ifdef DEBUG
 
 INDEX_TEMPLATE_ARGUMENTS
 void BPLUSTREE_TYPE::PrintDir(int block_num) const {
@@ -1365,6 +1382,8 @@ void BPLUSTREE_TYPE::PrintTree() const {
 
     buffer_manager_->UnpinBlock(buffer);
 }
+
+#endif
 
 
 
